@@ -1,0 +1,42 @@
+.clearFix() {
+  &::after {
+    display: block;
+    content: '';
+    clear: both;
+  }
+}
+
+.size(@w,@h) {
+  width: @w;
+  height: @h;
+}
+
+.ulReset() {
+  padding-left: unset;
+  margin-bottom: unset;
+  list-style-type: none;
+}
+
+.typo-h1() {
+  // font-family: Futura PT; //TODO
+  font-size: 48px;
+  line-height: 44px;
+  letter-spacing: -0.02em;
+}
+.typo-h2() {
+  font-size: 24px;
+  line-height: 28px;
+}
+.typo-p() {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+.typo-b() {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 700;
+}
+.typo-small() {
+  font-size: 13px;
+  line-height: 20px;
+}

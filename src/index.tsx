@@ -1,11 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import reportWebVitals from './reportWebVitals'
-// import LayoutTemplate from './view/LayoutTemplate'
+import LayoutTemplate from './view/LayoutTemplate'
 import './index.less'
 
 ReactDOM.render(
-  <div>test new version</div>,
+  <React.StrictMode>
+    <LayoutTemplate />
+  </React.StrictMode>,
   document.getElementById('root')
 )
 
