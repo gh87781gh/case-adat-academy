@@ -17,22 +17,22 @@ export default class LoginApi {
         })
     })
   }
-  createCheck = (data: any) => {
+  checkAccount = (data: any) => {
     return new Promise((resolve, reject) => {
       this.restAPI
-        .request('post', '/create/check', data)
+        .request('post', '/auth/check', data)
         .then((res: any) => {
           resolve(res)
         })
         .catch((err: any) => {
-          reject(err.msg)
+          reject(false)
         })
     })
   }
   create = (data: any) => {
     return new Promise((resolve, reject) => {
       this.restAPI
-        .request('post', '/create', data)
+        .request('post', '/auth/signup', data)
         .then((res: any) => {
           resolve(res)
         })
@@ -41,30 +41,30 @@ export default class LoginApi {
         })
     })
   }
-  recoverPassword = (data: any) => {
-    return new Promise((resolve, reject) => {
-      this.restAPI
-        .request('post', '/password/recover', data)
-        .then((res: any) => {
-          resolve(res)
-        })
-        .catch((err: any) => {
-          reject(false)
-        })
-    })
-  }
-  getUserProfile = (uuid: string) => {
-    return new Promise((resolve, reject) => {
-      this.restAPI
-        .request('get', `/password/temp/${uuid}`, {})
-        .then((res: any) => {
-          resolve(res)
-        })
-        .catch((err: any) => {
-          reject(false)
-        })
-    })
-  }
+  // recoverPassword = (data: any) => {
+  //   return new Promise((resolve, reject) => {
+  //     this.restAPI
+  //       .request('post', '/password/recover', data)
+  //       .then((res: any) => {
+  //         resolve(res)
+  //       })
+  //       .catch((err: any) => {
+  //         reject(false)
+  //       })
+  //   })
+  // }
+  // getUserProfile = (uuid: string) => {
+  //   return new Promise((resolve, reject) => {
+  //     this.restAPI
+  //       .request('get', `/password/temp/${uuid}`, {})
+  //       .then((res: any) => {
+  //         resolve(res)
+  //       })
+  //       .catch((err: any) => {
+  //         reject(false)
+  //       })
+  //   })
+  // }
   contact = (data: any) => {
     return new Promise((resolve, reject) => {
       this.restAPI
@@ -73,7 +73,7 @@ export default class LoginApi {
           resolve(res)
         })
         .catch((err: any) => {
-          reject(err.msg)
+          reject(false)
         })
     })
   }

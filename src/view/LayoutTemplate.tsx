@@ -33,8 +33,8 @@ const LayoutTemplate = () => {
         <Spin spinning={isLoading} size='large'>
           <HashRouter>
             <Switch>
-              <Route path='/Login' render={componentPage.bind(this, Login)} />
-              <Redirect to='/Login' />
+              <Route path='/' render={componentPage.bind(this, Login)} />
+              <Redirect to='/' />
             </Switch>
           </HashRouter>
         </Spin>

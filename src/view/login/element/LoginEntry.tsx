@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react'
-import { useHistory, useRouteMatch } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { MyContext, BrowserStorage } from '../../../storage/storage'
 import LoginApi from '../../../api/LoginApi'
 import FormGroupMsg from '../../../component/FormGroupMsg'
@@ -16,7 +16,6 @@ const LoginEntry = () => {
   const api = new LoginApi()
   const browserStorage = new BrowserStorage()
   const history = useHistory()
-  let { path } = useRouteMatch()
 
   const [data, setData] = useState<IState>({
     account: '',
@@ -30,6 +29,9 @@ const LoginEntry = () => {
       switch (key) {
         case 'account':
           if (value && !ValidateStr('isUserName', value)) return false
+          setIsEmail(
+            value.match('@') ? ValidateStr('isEmail', value) : undefined
+          )
           value = value.toLowerCase()
           break
         case 'password':
@@ -39,15 +41,6 @@ const LoginEntry = () => {
     }
     setData({ ...data, [key]: value })
   }
-  useEffect(() => {
-    if (data.account) {
-      setIsEmail(
-        data.account.match('@')
-          ? ValidateStr('isEmail', data.account)
-          : undefined
-      )
-    }
-  }, [data.account])
 
   const [isKeep, setIsKeep] = useState<boolean>(false)
   useEffect(() => {
@@ -70,6 +63,7 @@ const LoginEntry = () => {
       .then((res: any) => {
         // TODO 判斷為 admin 或 user
         setLoginErr('')
+        setStep(1)
       })
       .catch((err: any) => {
         setLoginErr(err || '')
@@ -79,14 +73,15 @@ const LoginEntry = () => {
       })
   }
 
-  return (
+  const [step, setStep] = useState<number>(0)
+  const renderLogin = () => (
     <div className='ad-login-content'>
       <h2 style={{ visibility: loginErr ? 'unset' : 'hidden' }}>{loginErr}</h2>
       <h1>
         Log in account
         <Button
           className='ad-float-right'
-          onClick={() => history.push(`${path}/Create`)}
+          onClick={() => history.push('/Create')}
         >
           Create account
         </Button>
@@ -146,10 +141,35 @@ const LoginEntry = () => {
           Log in
         </Button>
       </div>
-      <Button type='link' onClick={() => history.push(`${path}/Recover`)}>
+      <Button type='link' onClick={() => history.push('/Recover')}>
         Forgot password ?
       </Button>
     </div>
   )
+  const renderLoginSuccessfully = () => (
+    <>
+      <div className='ad-login-content-header'>
+        <h1>Successfully login!</h1>
+      </div>
+      <div className='ad-login-content-body'>
+        <p>We’ve send a confirmation letter to your mailbox...</p>
+      </div>
+      <div className='ad-login-content-footer'>
+        <Button
+          className='ad-login-content-actionBtn'
+          type='primary'
+          block
+          onClick={() => setStep(0)}
+        >
+          Continue
+        </Button>
+      </div>
+    </>
+  )
+  return step === 0
+    ? renderLogin()
+    : step === 1
+    ? renderLoginSuccessfully()
+    : null
 }
 export default LoginEntry

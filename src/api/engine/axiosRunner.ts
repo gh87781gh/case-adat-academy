@@ -48,11 +48,22 @@ export class ApiEngine {
         return res.data
       },
       (err: any) => {
-        if (err.response && url !== '/auth/login')
-          notification.error({
-            message: '',
-            description: err.response.data.msg
-          })
+        if (err.response) {
+          switch (err.response.status) {
+            case 404:
+              notification.error({
+                message: '',
+                description: '404 error'
+              })
+              break
+            default:
+              if (url !== '/auth/login')
+                notification.error({
+                  message: '',
+                  description: err.response.data.msg
+                })
+          }
+        }
         return Promise.reject(err.response.data)
       }
     )

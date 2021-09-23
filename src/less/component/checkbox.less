@@ -1,0 +1,23 @@
+.ant-checkbox-group {
+  width: 100%;
+}
+.ad-checkbox-btn-group .ad-checkbox-btn {
+  margin-bottom: 5px;
+}
+.ad-checkbox-btn {
+  height: 100%;
+  background-color: @color-gray02;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .ant-checkbox {
+    display: none;
+    & + span {
+      padding: 15px 8px;
+    }
+  }
+}
+.ant-checkbox-wrapper-checked.ad-checkbox-btn {
+  background-color: @color-black;
+  color: @color-white;
+}

@@ -1,16 +1,12 @@
 import { Row, Col, Button } from 'antd'
-import {
-  Switch,
-  Route,
-  Redirect,
-  useHistory,
-  useRouteMatch
-} from 'react-router-dom'
+import { Switch, Route, Redirect, useHistory } from 'react-router-dom'
 import LoginEntry from './element/LoginEntry'
+import Create from './element/Create'
+import Contact from './element/Contact'
+import TermsPrivacy from './element/TermsPrivacy'
 
 const Login = () => {
   const history = useHistory()
-  let { path } = useRouteMatch()
 
   return (
     <>
@@ -19,13 +15,19 @@ const Login = () => {
         <Col span={12} className='ad-login-col ad-login-container'>
           <div style={{ width: '100%' }}>
             <Switch>
-              <Route exact path={path}>
+              <Route exact path={'/'}>
                 <LoginEntry />
               </Route>
-              <Route exact path={`${path}/Create`}>
-                Create
+              <Route exact path={'/Create'}>
+                <Create />
               </Route>
-              <Redirect to={path} />
+              <Route exact path={'/Contact'}>
+                <Contact />
+              </Route>
+              <Route exact path={'/Terms&Privacy'}>
+                <TermsPrivacy />
+              </Route>
+              <Redirect to={'/'} />
             </Switch>
           </div>
           <div className='ad-login-footer'>
@@ -33,7 +35,10 @@ const Login = () => {
               <Button type='link' onClick={() => history.push('/Contact')}>
                 Contact us
               </Button>
-              <Button type='link' onClick={() => history.push('/TermsPrivacy')}>
+              <Button
+                type='link'
+                onClick={() => history.push('/Terms&Privacy')}
+              >
                 Terms & policy
               </Button>
             </div>
