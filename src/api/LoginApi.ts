@@ -4,9 +4,11 @@ export default class LoginApi {
   restAPI: any = new RestAPI()
 
   login = (data: any) => {
+    data.keep = false
+    data.scope = ['account', 'name', 'permission']
     return new Promise((resolve, reject) => {
       this.restAPI
-        .request('post', '/login', data)
+        .request('post', '/auth/login', data)
         .then((res: any) => {
           resolve(res)
         })

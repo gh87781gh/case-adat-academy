@@ -1,0 +1,56 @@
+.ad-btn-group {
+  .ant-btn:not(:last-child) {
+    margin-right: 30px;
+  }
+}
+.ant-btn {
+  .typo-b();
+  padding: 12px;
+
+  &:hover,
+  &:focus {
+    color: @color-primary-light03;
+    background-color: @color-primary;
+  }
+  &:active {
+    color: @color-primary-light01;
+  }
+}
+.ant-btn-link {
+  padding: unset;
+  height: auto;
+  &:hover,
+  &:focus {
+    color: @color-primary;
+    background-color: unset;
+  }
+  span {
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
+    &,
+    &:active {
+      text-decoration: underline;
+    }
+  }
+}
+// .ant-btn-text {
+//   color: @color-primary;
+//   &:hover,
+//   &:focus {
+//     color: @color-primary;
+//     background-color: @color-primary-light02;
+//   }
+//   &:active {
+//     color: @color-primary-light01;
+//   }
+//   &[disabled] {
+//     color: @color-gray03;
+//     background-color: @color-gray02;
+//     &:hover {
+//       color: @color-gray03;
+//       background-color: @color-gray02;
+//     }
+//   }
+// }

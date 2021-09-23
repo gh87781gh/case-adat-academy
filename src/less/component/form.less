@@ -1,0 +1,31 @@
+.ad-form-group {
+  margin-bottom: 40px;
+  position: relative;
+
+  & > label {
+    display: block;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    &.required {
+      &::before {
+        content: '*';
+      }
+    }
+
+    em {
+      font-size: 12px;
+      font-weight: 300;
+    }
+  }
+}
+.ad-form-group-horizontal {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  & > label {
+    margin-bottom: unset;
+    margin-right: 20px;
+    .typo-b();
+  }
+}

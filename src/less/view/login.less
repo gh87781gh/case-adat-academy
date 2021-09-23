@@ -1,0 +1,39 @@
+@page-login-container-padding-x: 130px;
+@page-login-container-padding-y: 50px;
+
+.ad-login-col {
+  min-height: 100vh;
+}
+.ad-login-pic {
+  background-color: #ccc;
+}
+.ad-login-container {
+  padding: @page-login-container-padding-y @page-login-container-padding-x;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  position: relative;
+
+  h1 {
+    margin-bottom: 45px;
+    .clearFix();
+  }
+  h2 {
+    background-color: rgba(255, 65, 65, 0.08);
+    color: @color-error;
+    padding: 10px 30px;
+    margin-bottom: 50px;
+  }
+}
+.ad-login-content {
+  & > *:not(:last-child) {
+    margin-bottom: @page-login-content-space;
+  }
+}
+.ad-login-footer {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: @page-login-container-padding-y;
+  padding: 0 @page-login-container-padding-x;
+}

@@ -8,20 +8,21 @@ interface IContext {
 }
 export const MyContext = React.createContext<IContext>({
   // profile: {},
-  setIsLoading: (spinning: boolean) => {},
+  setIsLoading: (spinning: boolean) => {}
 })
 
-// Use when: globally but updated only once time
+// Globally but updated only once time
 export class StaticService {
+  static apiUrl: string = `${process.env.REACT_APP_API_URL}${process.env.REACT_APP_API_VERSION}`
   static tablePageSize: number = 15
   static deviceType: { A: string; B: string } = {
     A: 'textA',
-    B: 'textB',
+    B: 'textB'
   }
 }
 
-// Use when: keep data when window reload.
-export class BrowserStoreService {
+// Keep data when window reload.
+export class BrowserStorage {
   setLoginUsername(val: string) {
     sessionStorage.setItem('LOGIN_USERNAME', val)
   }
@@ -33,7 +34,7 @@ export class BrowserStoreService {
   }
 
   // getToken() {
-  //   const token = sessionStorage.getItem('TOKEN')
+  //   const token = SessionStorage.getItem('TOKEN')
   //   if (!token) {
   //     console.warn('Token is not found.')
   //   }

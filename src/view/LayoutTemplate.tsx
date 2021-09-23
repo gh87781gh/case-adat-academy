@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom'
-import Login from './login/Login';
+import Login from './login/Login'
 // import LoginSuccessfully from './entry/login/LoginSuccessfully'
 // import Create from './entry/create/Create'
 // import CreateSuccessfully from './entry/create/CreateSuccessfully'
@@ -27,18 +27,14 @@ const LayoutTemplate = () => {
     <>
       <MyContext.Provider
         value={{
-          setIsLoading,
+          setIsLoading
         }}
       >
         <Spin spinning={isLoading} size='large'>
           <HashRouter>
             <Switch>
-              <Route
-                path='/'
-                exact={true}
-                render={componentPage.bind(this, Login)}
-              />
-              <Redirect to='/' />
+              <Route path='/Login' render={componentPage.bind(this, Login)} />
+              <Redirect to='/Login' />
             </Switch>
           </HashRouter>
         </Spin>
