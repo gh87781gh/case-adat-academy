@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { MyContext, BrowserStorage } from '../../../storage/storage'
 import LoginApi from '../../../api/LoginApi'
-import FormGroupMsg from '../../../component/FormGroupMsg'
+import FormGroupMsg from '../../../utility/component/FormGroupMsg'
 import { ValidateStr, Validation } from '../../../utility/validate'
 import { Button, Input, Checkbox } from 'antd'
 

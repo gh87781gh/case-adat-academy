@@ -2,22 +2,23 @@ import { useState, useEffect, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { MyContext } from '../../../storage/storage'
 import { Validation, ValidateStr } from '../../../utility/validate'
-import FormGroupMsg from '../../../component/FormGroupMsg'
+import FormGroupMsg from '../../../utility/component/FormGroupMsg'
 // import GlobalApi from '../../../api/GlobalApi'
 import LoginApi from '../../../api/LoginApi'
 import { Row, Col, Button, Input, Checkbox, Select } from 'antd'
 const { Option } = Select
 
 interface IState {
-  account: string
+  user_id: string
   password: string
   passwordAgain?: string
   email: string
   industry: string
   profession: string
-  level: string
-  company: string
-  experience: any
+  current_company: string
+  experience: string[]
+  experience_level: string
+  is_login: boolean
 }
 
 const Create = () => {
@@ -53,21 +54,22 @@ const Create = () => {
 
   const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
   const [data, setData] = useState<IState>({
-    account: '',
+    user_id: '',
     password: '',
     passwordAgain: '',
     email: '',
     industry: '',
     profession: '',
-    level: '',
-    company: '',
-    experience: []
+    current_company: '',
+    experience: [],
+    experience_level: '',
+    is_login: true
   })
   const onChange = (key: string, e: any) => {
     let value = e.target.value
     if (value) {
       switch (key) {
-        case 'account':
+        case 'user_id':
           if (value && !ValidateStr('isEngInt', value)) return false
           value = value.toLowerCase()
           break
@@ -80,7 +82,7 @@ const Create = () => {
           if (value && !ValidateStr('isEngInt', value)) return false
           break
         case 'profession':
-        case 'company':
+        case 'current_company':
           if (value && ValidateStr('isSymbol', value)) return false
           break
       }
@@ -103,7 +105,7 @@ const Create = () => {
     context.setIsLoading(true)
 
     const toCheck = {
-      account: data.account,
+      user_id: data.user_id,
       email: data.email
     }
     // TODO 需考慮正式送出時 create check 已失效的情形
@@ -153,8 +155,8 @@ const Create = () => {
           <Input
             placeholder={Validation.input_placeholder}
             maxLength={Validation.input_email_max}
-            value={data.account}
-            onChange={(e) => onChange('account', e)}
+            value={data.user_id}
+            onChange={(e) => onChange('user_id', e)}
           />
           <FormGroupMsg
             isShow={true}
@@ -214,7 +216,7 @@ const Create = () => {
       <div className='ad-login-content-footer'>
         <Button
           disabled={
-            !data.account ||
+            !data.user_id ||
             !data.password ||
             !data.passwordAgain ||
             !data.email ||
@@ -283,8 +285,8 @@ const Create = () => {
               <Select
                 placeholder='Please select'
                 maxLength={50}
-                value={data.level}
-                onChange={(val) => onSelect('level', val)}
+                value={data.experience_level}
+                onChange={(val) => onSelect('experience_level', val)}
               >
                 <Option value={'test'}>test</Option>
                 {/* TODO */}
@@ -300,9 +302,9 @@ const Create = () => {
             <div className='ad-form-group'>
               <label>Current Company</label>
               <Input
-                value={data.company}
+                value={data.current_company}
                 placeholder={Validation.input_placeholder}
-                onChange={(e) => onChange('company', e)}
+                onChange={(e) => onChange('current_company', e)}
               />
             </div>
           </Col>
@@ -313,7 +315,7 @@ const Create = () => {
             <em className='ad-float-right'>multiple choices</em>
           </label>
           <Checkbox.Group
-            value={data.experience}
+            // value={data.experience}
             className='ad-checkbox-btn-group'
             onChange={onChecks}
           >
@@ -350,7 +352,7 @@ const Create = () => {
           disabled={
             !data.industry ||
             !data.profession ||
-            !data.level ||
+            // !data.level ||
             data.experience.length === 0
           }
           className='ad-login-content-actionBtn'

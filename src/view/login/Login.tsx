@@ -3,6 +3,7 @@ import { Switch, Route, Redirect, useHistory } from 'react-router-dom'
 import LoginEntry from './element/LoginEntry'
 import Create from './element/Create'
 import Contact from './element/Contact'
+import Recover from './element/Recover'
 import TermsPrivacy from './element/TermsPrivacy'
 
 const Login = () => {
@@ -20,6 +21,9 @@ const Login = () => {
               </Route>
               <Route exact path={'/Create'}>
                 <Create />
+              </Route>
+              <Route exact path={'/Recover/:uuid?'}>
+                <Recover />
               </Route>
               <Route exact path={'/Contact'}>
                 <Contact />

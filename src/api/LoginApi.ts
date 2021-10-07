@@ -4,8 +4,6 @@ export default class LoginApi {
   restAPI: any = new RestAPI()
 
   login = (data: any) => {
-    data.keep = false
-    data.scope = ['account', 'name', 'permission']
     return new Promise((resolve, reject) => {
       this.restAPI
         .request('post', '/auth/login', data)
@@ -41,18 +39,18 @@ export default class LoginApi {
         })
     })
   }
-  // recoverPassword = (data: any) => {
-  //   return new Promise((resolve, reject) => {
-  //     this.restAPI
-  //       .request('post', '/password/recover', data)
-  //       .then((res: any) => {
-  //         resolve(res)
-  //       })
-  //       .catch((err: any) => {
-  //         reject(false)
-  //       })
-  //   })
-  // }
+  recoverPassword = (data: any) => {
+    return new Promise((resolve, reject) => {
+      this.restAPI
+        .request('post', '/auth/pwd_recover', data)
+        .then((res: any) => {
+          resolve(res)
+        })
+        .catch((err: any) => {
+          reject(false)
+        })
+    })
+  }
   // getUserProfile = (uuid: string) => {
   //   return new Promise((resolve, reject) => {
   //     this.restAPI

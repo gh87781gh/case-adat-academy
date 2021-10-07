@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { MyContext } from '../../../storage/storage'
-import FormGroupMsg from '../../../component/FormGroupMsg'
+import FormGroupMsg from '../../../utility/component/FormGroupMsg'
 import { ValidateStr, Validation } from '../../../utility/validate'
 import LoginApi from '../../../api/LoginApi'
 import { Button, Input } from 'antd'
