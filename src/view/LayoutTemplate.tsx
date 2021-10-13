@@ -1,17 +1,7 @@
 import { useState } from 'react'
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom'
 import Login from './login/Login'
-// import LoginSuccessfully from './entry/login/LoginSuccessfully'
-// import Create from './entry/create/Create'
-// import CreateSuccessfully from './entry/create/CreateSuccessfully'
-// import Recover from './entry/recover/Recover'
-// import RecoverSend from './entry/recover/RecoverSend'
-// import RecoverCopy from './entry/recover/RecoverCopy'
-// import RecoverChange from './entry/recover/RecoverChange'
-// import Contact from './entry/contact/Contact'
-// import ContactSuccessfully from './entry/contact/ContactSuccessfully'
-// import TermsPrivacy from './entry/terms&privacy/TermsPrivacy'
-// import Index from './Index/Index'
+import Admin from './admin/Admin'
 
 import { Spin } from 'antd'
 import { MyContext } from '../storage/storage'
@@ -33,8 +23,13 @@ const LayoutTemplate = () => {
         <Spin spinning={isLoading} size='large'>
           <HashRouter>
             <Switch>
-              <Route path='/' render={componentPage.bind(this, Login)} />
-              <Redirect to='/' />
+              <Route path='/login' render={componentPage.bind(this, Login)} />
+              <Route
+                exact={true}
+                path='/admin'
+                render={componentPage.bind(this, Admin)}
+              />
+              <Redirect to='/login' />
             </Switch>
           </HashRouter>
         </Spin>

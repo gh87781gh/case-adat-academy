@@ -61,7 +61,8 @@ const LoginEntry = () => {
     api
       .login(data)
       .then((res: any) => {
-        // TODO 判斷為 admin 或 user
+        // history.push('/admin')
+        // TODO 判斷為 admin 或 user & 其他條件的導向
         setLoginErr('')
         setStep(1)
       })
@@ -81,7 +82,7 @@ const LoginEntry = () => {
         Log in account
         <Button
           className='ad-float-right'
-          onClick={() => history.push('/Create')}
+          onClick={() => history.push('/login/create')}
         >
           Create account
         </Button>
@@ -108,7 +109,6 @@ const LoginEntry = () => {
             maxLength={Validation.input_password_max}
             value={data.password}
             onChange={(e) => onChange('password', e)}
-            onPressEnter={() => login()}
           />
           <FormGroupMsg
             isShow={
@@ -131,7 +131,7 @@ const LoginEntry = () => {
           disabled={
             !data.account ||
             !data.password ||
-            //TODO data.password.length < Validation.input_password_min ||
+            data.password.length < Validation.input_password_min ||
             isEmail === false
           }
           type='primary'
@@ -141,7 +141,7 @@ const LoginEntry = () => {
           Log in
         </Button>
       </div>
-      <Button type='link' onClick={() => history.push('/Recover')}>
+      <Button type='link' onClick={() => history.push('/login/recover')}>
         Forgot password ?
       </Button>
     </div>

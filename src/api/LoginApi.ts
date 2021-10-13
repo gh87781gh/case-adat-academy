@@ -1,4 +1,6 @@
 import { RestAPI } from './engine/axiosRunner'
+import { notification } from 'antd'
+import { resMsg } from './engine/resMsg'
 
 export default class LoginApi {
   restAPI: any = new RestAPI()
@@ -11,7 +13,7 @@ export default class LoginApi {
           resolve(res)
         })
         .catch((err: any) => {
-          reject(err.msg)
+          reject(err.message)
         })
     })
   }
@@ -20,7 +22,12 @@ export default class LoginApi {
       this.restAPI
         .request('post', '/auth/check', data)
         .then((res: any) => {
-          resolve(res)
+          if (res.is_exist)
+            notification.error({
+              message: resMsg.accountExist,
+              description: ''
+            })
+          resolve(res.is_exist)
         })
         .catch((err: any) => {
           reject(false)
@@ -28,6 +35,8 @@ export default class LoginApi {
     })
   }
   create = (data: any) => {
+    data.is_login = false //true -> 順便登入,並返回token
+    data.experience = data.experience.join(',')
     return new Promise((resolve, reject) => {
       this.restAPI
         .request('post', '/auth/signup', data)

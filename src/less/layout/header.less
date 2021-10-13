@@ -1,0 +1,119 @@
+@header-height: 90px;
+@header-padding-top: 24px;
+
+.ad-header {
+  .size(100%,90px);
+  background-color: @color-white;
+  position: relative;
+
+  box-shadow: 0px 1px 0px 0px @color-gray02; //TODO
+
+  &::before {
+    .size(100%, 6px);
+    display: block;
+    content: '';
+    background-color: @color-primary;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+.ad-header-container {
+  .size(100%,100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: @header-padding-top;
+}
+.ad-header-container-logo {
+  margin-top: @header-padding-top * -0.5;
+  color: @color-primary;
+}
+.ad-header-container-logo-primary {
+  background-color: @color-primary;
+  padding: 36px 65px 33px 57px;
+  z-index: @header-logo-primary;
+  color: @color-primary-light03;
+}
+.ad-header-searchBar {
+  .size(376px,100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  .ant-input {
+    width: calc(100% - @height-base - 8px);
+  }
+  .ant-btn {
+    margin-left: 8px;
+  }
+}
+.ad-header-tabHead {
+  .ulReset();
+  .size(auto,100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  .ad-header-btn {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+}
+.ad-header-btn {
+  .size(auto,100%);
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+
+  &::after {
+    content: '';
+    .size(0px,5px);
+    background-color: @color-primary;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    transition: all 0.3s ease;
+  }
+  &:hover,
+  &.ad-header-btn-active,
+  &.ant-dropdown-open {
+    &::after {
+      width: 100%;
+    }
+  }
+
+  .anticon {
+    margin-left: 8px;
+  }
+}
+.ad-header-profile-menu {
+  padding: 24px;
+  background-color: @color-primary;
+  min-width: 246px;
+  border-radius: unset;
+}
+.ad-header-profile-menu-text {
+  padding-top: unset;
+  padding-bottom: unset;
+}
+.ad-header-profile-menu .ant-dropdown-menu-item-disabled,
+.ad-header-profile-menu .ant-dropdown-menu-title-content {
+  color: @color-white;
+}
+.ad-header-profile-menu-text .ant-dropdown-menu-title-content span {
+  color: @color-primary-light01;
+}
+.ad-header-profile-menu .ant-dropdown-menu-item:hover {
+  background-color: unset;
+  font-weight: 700;
+}
+.ad-header-profile-menu .ant-dropdown-menu-item-disabled:hover {
+  background-color: unset;
+  font-weight: unset;
+  cursor: auto;
+}

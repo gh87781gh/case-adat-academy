@@ -16,32 +16,35 @@ const Login = () => {
         <Col span={12} className='ad-login-col ad-login-container'>
           <div style={{ width: '100%' }}>
             <Switch>
-              <Route exact path={'/'}>
+              <Route exact path={'/login'}>
                 <LoginEntry />
               </Route>
-              <Route exact path={'/Create'}>
+              <Route exact path={'/login/create'}>
                 <Create />
               </Route>
-              <Route exact path={'/Recover/:uuid?'}>
+              <Route exact path={'/login/recover/:uuid?'}>
                 <Recover />
               </Route>
-              <Route exact path={'/Contact'}>
+              <Route exact path={'/login/contact'}>
                 <Contact />
               </Route>
-              <Route exact path={'/Terms&Privacy'}>
+              <Route exact path={'/login/terms&privacy'}>
                 <TermsPrivacy />
               </Route>
-              <Redirect to={'/'} />
+              <Redirect to='/login' />
             </Switch>
           </div>
           <div className='ad-login-footer'>
             <div className='ad-btn-group'>
-              <Button type='link' onClick={() => history.push('/Contact')}>
+              <Button
+                type='link'
+                onClick={() => history.push('/login/contact')}
+              >
                 Contact us
               </Button>
               <Button
                 type='link'
-                onClick={() => history.push('/Terms&Privacy')}
+                onClick={() => history.push('/login/terms&privacy')}
               >
                 Terms & policy
               </Button>

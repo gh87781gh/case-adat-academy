@@ -56,7 +56,7 @@ const Recover = () => {
   const renderStep1 = () => (
     <>
       <div className='ad-login-content-header'>
-        <Button className='ad-mb-1' onClick={() => history.push('/')}>
+        <Button className='ad-mb-1' onClick={() => history.push('/login')}>
           Back
         </Button>
         <h1>Recover password</h1>
@@ -77,7 +77,7 @@ const Recover = () => {
             msg={Validation.errMsg_email_format_wrong}
           />
         </div>
-        <Button type='link' onClick={() => history.push('/Contact')}>
+        <Button type='link' onClick={() => history.push('/login/contact')}>
           Forgot user ID or Email? Contact us
         </Button>
       </div>
@@ -103,7 +103,7 @@ const Recover = () => {
         <p>
           If account exists, an email will be sent with further instructions
         </p>
-        <Button type='link' onClick={() => history.push('/Contact')}>
+        <Button type='link' onClick={() => history.push('/login/contact')}>
           Invaild email? Contact us.
         </Button>
       </div>
@@ -149,7 +149,7 @@ const Recover = () => {
           type='primary'
           className='ad-login-content-actionBtn'
           block
-          onClick={() => history.push('/')}
+          onClick={() => history.push('/login')}
         >
           Go to Log in
         </Button>

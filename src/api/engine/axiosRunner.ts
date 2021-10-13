@@ -1,6 +1,7 @@
+import { StaticService } from '../../storage/storage'
+import { resMsg } from './resMsg'
 import axios from 'axios'
 import { notification } from 'antd'
-import { StaticService } from '../../storage/storage'
 
 // import { createHashHistory } from 'history'
 
@@ -43,26 +44,16 @@ export class ApiEngine {
         if (res.data.code === 'SUCCESS')
           notification.success({
             message: '',
-            description: 'Success.' //res.data.msg
+            description: resMsg.success
           })
         return res.data
       },
       (err: any) => {
-        if (err.response) {
-          switch (err.response.status) {
-            case 404:
-              notification.error({
-                message: '',
-                description: '404 error'
-              })
-              break
-            default:
-              if (url !== '/auth/login')
-                notification.error({
-                  message: '',
-                  description: err.response.data.msg
-                })
-          }
+        if (err.response && url !== '/auth/login') {
+          notification.error({
+            message: '',
+            description: err.response.data.message
+          })
         }
         return Promise.reject(err.response.data)
       }
@@ -82,7 +73,7 @@ export class RestAPI extends ApiEngine {
       this.instance
         .request(config)
         .then((res: any) => {
-          resolve(res)
+          resolve(res?.data)
         })
         .catch((err: any) => {
           reject(err)

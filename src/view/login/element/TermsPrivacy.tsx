@@ -6,7 +6,7 @@ const TermsPrivacy = () => {
   return (
     <>
       <div className='ad-login-content-header'>
-        <Button className='ad-mb-1' onClick={() => history.push('/')}>
+        <Button className='ad-mb-1' onClick={() => history.push('/login')}>
           Back
         </Button>
         <h1>Terms & privacy</h1>

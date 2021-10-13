@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom'
 import { MyContext } from '../../../storage/storage'
 import { Validation, ValidateStr } from '../../../utility/validate'
 import FormGroupMsg from '../../../utility/component/FormGroupMsg'
-// import GlobalApi from '../../../api/GlobalApi'
 import LoginApi from '../../../api/LoginApi'
 import { Row, Col, Button, Input, Checkbox, Select } from 'antd'
 const { Option } = Select
@@ -18,39 +17,12 @@ interface IState {
   current_company: string
   experience: string[]
   experience_level: string
-  is_login: boolean
 }
 
 const Create = () => {
   const context = useContext(MyContext)
-  // const globalApi = new GlobalApi()
   const api = new LoginApi()
   const history = useHistory()
-
-  // const [optionIndustry, setOptionIndustry] = useState<any>([])
-  // const [optionLevel, setOptionLevel] = useState<any>([])
-  useEffect(() => {
-    // TODO async and api
-    // context.setIsLoading(true)
-    // globalApi
-    //   .getOption('industry')
-    //   .then((res: any) => {
-    //     setOptionIndustry(res)
-    //   })
-    //   .catch((err: any) => {})
-    //   .finally(() => {
-    //     context.setIsLoading(false)
-    //   })
-    // globalApi
-    //   .getOption('level')
-    //   .then((res: any) => {
-    //     setOptionLevel(res)
-    //   })
-    //   .catch((err: any) => {})
-    //   .finally(() => {
-    //     context.setIsLoading(false)
-    //   })
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
   const [data, setData] = useState<IState>({
@@ -62,8 +34,7 @@ const Create = () => {
     profession: '',
     current_company: '',
     experience: [],
-    experience_level: '',
-    is_login: true
+    experience_level: ''
   })
   const onChange = (key: string, e: any) => {
     let value = e.target.value
@@ -100,7 +71,6 @@ const Create = () => {
     }
     setData({ ...data, experience: checkedValues })
   }
-
   const checkAccount = () => {
     context.setIsLoading(true)
 
@@ -108,15 +78,13 @@ const Create = () => {
       user_id: data.user_id,
       email: data.email
     }
-    // TODO 需考慮正式送出時 create check 已失效的情形
     api
       .checkAccount(toCheck)
-      .then(() => {
-        setStep(1)
+      .then((is_exist: any) => {
+        if (!is_exist) setStep(1)
       })
       .catch()
       .finally(() => {
-        setStep(1) //TODO
         context.setIsLoading(false)
       })
   }
@@ -133,7 +101,6 @@ const Create = () => {
       })
       .catch()
       .finally(() => {
-        setStep(2) //TODO
         context.setIsLoading(false)
       })
   }
@@ -144,7 +111,10 @@ const Create = () => {
       <div className='ad-login-content-header'>
         <h1>
           Create account
-          <Button className='ad-float-right' onClick={() => history.push('/')}>
+          <Button
+            className='ad-float-right'
+            onClick={() => history.push('/login')}
+          >
             Log in
           </Button>
         </h1>
@@ -239,7 +209,10 @@ const Create = () => {
       <div className='ad-login-content-header'>
         <h1>
           Create account
-          <Button className='ad-float-right' onClick={() => history.push('/')}>
+          <Button
+            className='ad-float-right'
+            onClick={() => history.push('/login')}
+          >
             Log in
           </Button>
         </h1>
@@ -258,7 +231,9 @@ const Create = () => {
                 placeholder='Please select'
                 onChange={(val) => onSelect('industry', val)}
               >
-                <Option value={'test'}>test</Option>
+                <Option value={'industry-1'}>industry-1</Option>
+                <Option value={'industry-2'}>industry-2</Option>
+                <Option value={'industry-3'}>industry-3</Option>
                 {/* TODO */}
                 {/* {optionIndustry.map((item: any) => (
                   <Option value={item.value} key={item.value}>
@@ -288,7 +263,9 @@ const Create = () => {
                 value={data.experience_level}
                 onChange={(val) => onSelect('experience_level', val)}
               >
-                <Option value={'test'}>test</Option>
+                <Option value={'level-1'}>level-1</Option>
+                <Option value={'level-2'}>level-2</Option>
+                <Option value={'level-3'}>level-3</Option>
                 {/* TODO */}
                 {/* {optionLevel.map((item: any) => (
                   <Option value={item.value} key={item.value}>
@@ -315,7 +292,7 @@ const Create = () => {
             <em className='ad-float-right'>multiple choices</em>
           </label>
           <Checkbox.Group
-            // value={data.experience}
+            value={data.experience}
             className='ad-checkbox-btn-group'
             onChange={onChecks}
           >
@@ -352,7 +329,7 @@ const Create = () => {
           disabled={
             !data.industry ||
             !data.profession ||
-            // !data.level ||
+            !data.experience_level ||
             data.experience.length === 0
           }
           className='ad-login-content-actionBtn'
@@ -381,7 +358,7 @@ const Create = () => {
           className='ad-login-content-actionBtn'
           type='primary'
           block
-          onClick={() => history.push('/')}
+          onClick={() => history.push('/login')}
         >
           Continue
         </Button>
