@@ -12,9 +12,9 @@ const Login = () => {
   return (
     <>
       <Row>
-        <Col span={12} className='ad-login-col ad-login-pic'></Col>
-        <Col span={12} className='ad-login-col ad-login-container'>
-          <div style={{ width: '100%' }}>
+        <Col span={12} className='ad-login-col ad-login-left'></Col>
+        <Col span={12} className='ad-login-col ad-login-right'>
+          <div className='ad-login-container'>
             <Switch>
               <Route exact path={'/login'}>
                 <LoginEntry />

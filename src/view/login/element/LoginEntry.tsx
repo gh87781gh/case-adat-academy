@@ -76,18 +76,22 @@ const LoginEntry = () => {
 
   const [step, setStep] = useState<number>(0)
   const renderLogin = () => (
-    <div className='ad-login-content'>
-      <h2 style={{ visibility: loginErr ? 'unset' : 'hidden' }}>{loginErr}</h2>
-      <h1>
-        Log in account
-        <Button
-          className='ad-float-right'
-          onClick={() => history.push('/login/create')}
-        >
-          Create account
-        </Button>
-      </h1>
-      <div>
+    <>
+      <div className='ad-login-content-header'>
+        <h2 style={{ visibility: loginErr ? 'unset' : 'hidden' }}>
+          {loginErr}
+        </h2>
+        <h1>
+          Log in account
+          <Button
+            className='ad-float-right'
+            onClick={() => history.push('/login/create')}
+          >
+            Create account
+          </Button>
+        </h1>
+      </div>
+      <div className='ad-login-content-body'>
         <div className='ad-form-group'>
           <label>User ID or Email</label>
           <Input
@@ -120,7 +124,7 @@ const LoginEntry = () => {
           />
         </div>
       </div>
-      <div>
+      <div className='ad-login-content-footer'>
         <Checkbox
           checked={isKeep}
           onChange={(e) => setIsKeep(e.target.checked)}
@@ -140,11 +144,11 @@ const LoginEntry = () => {
         >
           Log in
         </Button>
+        <Button type='link' onClick={() => history.push('/login/recover')}>
+          Forgot password ?
+        </Button>
       </div>
-      <Button type='link' onClick={() => history.push('/login/recover')}>
-        Forgot password ?
-      </Button>
-    </div>
+    </>
   )
   const renderLoginSuccessfully = () => (
     <>

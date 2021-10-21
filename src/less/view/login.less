@@ -4,10 +4,10 @@
 .ad-login-col {
   min-height: 100vh;
 }
-.ad-login-pic {
+.ad-login-left {
   background-color: #ccc;
 }
-.ad-login-container {
+.ad-login-right {
   padding: @page-login-container-padding-y @page-login-container-padding-x;
   display: flex;
   flex-wrap: wrap;
@@ -25,9 +25,15 @@
     margin-bottom: 50px;
   }
 }
-.ad-login-content {
+.ad-login-container {
+  width: 100%;
   & > *:not(:last-child) {
-    margin-bottom: @page-login-content-space;
+    margin-bottom: 50px;
+  }
+}
+.ad-login-content-body {
+  & > *:not(:last-child) {
+    margin-bottom: 40px;
   }
 }
 .ad-login-footer {
