@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
-import { MyContext } from '../../../storage/storage'
+import { MyContext } from '../../../storage'
 import FormGroupMsg from '../../../utility/component/FormGroupMsg'
 import { ValidateStr, Validation } from '../../../utility/validate'
 import LoginApi from '../../../api/LoginApi'

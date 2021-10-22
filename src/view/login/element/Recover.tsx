@@ -1,7 +1,6 @@
 import { useState, useContext } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
-import { MyContext } from '../../../storage/storage'
-// import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { MyContext } from '../../../storage'
 import FormGroupMsg from '../../../utility/component/FormGroupMsg'
 import { ValidateStr, Validation } from '../../../utility/validate'
 import LoginApi from '../../../api/LoginApi'

@@ -1,29 +1,37 @@
+import { useContext } from 'react'
+import { useHistory } from 'react-router-dom'
 import { LogoADAT } from '../../utility/icon'
 import { IconSearch, IconArrowDown } from '../../utility/icon'
 import { Input, Button, Menu, Dropdown } from 'antd'
+import { MyContext } from '../../storage'
 
 // interface IProps {}
 // interface IState {}
 
-// TODO need to add Auth validate rule
 const Header = () => {
-  // const handleClick = (e: any) => {
-  //   console.log('click ', e)
-  //   // this.setState({ current: e.key })
-  // }
+  const context = useContext(MyContext)
+  const history = useHistory()
+
+  const logout = () => {
+    // TODO api?
+    history.push('/login')
+  }
 
   const menu = () => {
     return (
       <Menu className='ad-header-profile-menu'>
         <Menu.Item className='ad-header-profile-menu-text' key='user' disabled>
-          echochuang <br />
-          <span>user ID</span>
+          {/* TODO name */}
+          {context.auth.user_id} <br />
+          <span>{context.auth.user_id}</span>
         </Menu.Item>
         <Menu.Item key='learning profile'>learning profile</Menu.Item>
         <Menu.Item key='course management'>course management</Menu.Item>
         <Menu.Item key='change password'>change password</Menu.Item>
         <Menu.Item key='-'>---------------</Menu.Item>
-        <Menu.Item key='log out'>log out</Menu.Item>
+        <Menu.Item key='log out' onClick={logout}>
+          log out
+        </Menu.Item>
       </Menu>
     )
   }
@@ -49,7 +57,8 @@ const Header = () => {
             className='ad-header-btn'
             // onClick={(e) => e.preventDefault()} TODO
           >
-            EchoChuang
+            {/* TODO name */}
+            {context.auth.user_id}
             <IconArrowDown />
           </div>
         </Dropdown>

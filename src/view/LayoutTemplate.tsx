@@ -4,10 +4,11 @@ import Login from './login/Login'
 import Admin from './admin/Admin'
 
 import { Spin } from 'antd'
-import { MyContext } from '../storage/storage'
+import { MyContext } from '../storage'
 
 const LayoutTemplate = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [auth, setAuth] = useState<any>({})
 
   const componentPage = (Component: any, props: any) => {
     return <Component {...props} />
@@ -17,7 +18,9 @@ const LayoutTemplate = () => {
     <>
       <MyContext.Provider
         value={{
-          setIsLoading
+          setIsLoading,
+          auth,
+          setAuth
         }}
       >
         <Spin className='ad-spin-global' spinning={isLoading} size='large'>

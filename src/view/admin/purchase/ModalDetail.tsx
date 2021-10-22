@@ -1,21 +1,6 @@
 import { useState } from 'react'
-import FormGroupMsg from '../../../utility/component/FormGroupMsg'
 import ModalRecord from './ModalRecord'
-import { IconSearch } from '../../../utility/icon'
-import {
-  DatePicker,
-  Row,
-  Col,
-  Button,
-  Input,
-  Select,
-  Table,
-  Tag,
-  Modal
-} from 'antd'
-const { Option } = Select
-const { RangePicker } = DatePicker
-const { confirm } = Modal
+import { Row, Col, Button, Modal } from 'antd'
 
 interface IProps {
   isShow: boolean
@@ -23,7 +8,6 @@ interface IProps {
   onCancel: () => void
   showCreateModal: () => void
 }
-interface IState {}
 
 const ModalDetail = (props: IProps) => {
   const [isModalRecordShow, setIsModalRecordShow] = useState(false)

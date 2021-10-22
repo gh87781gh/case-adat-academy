@@ -1,15 +1,18 @@
 import { RestAPI } from './engine/axiosRunner'
 import { notification } from 'antd'
 import { resMsg } from './engine/resMsg'
+import { BrowserStorage } from '../storage'
 
 export default class LoginApi {
   restAPI: any = new RestAPI()
+  browserStorage = new BrowserStorage()
 
   login = (data: any) => {
     return new Promise((resolve, reject) => {
       this.restAPI
         .request('post', '/auth/login', data)
         .then((res: any) => {
+          this.browserStorage.setStorage('AUTH', res.token)
           resolve(res)
         })
         .catch((err: any) => {
@@ -29,7 +32,7 @@ export default class LoginApi {
             })
           resolve(res.is_exist)
         })
-        .catch((err: any) => {
+        .catch(() => {
           reject(false)
         })
     })
@@ -43,7 +46,7 @@ export default class LoginApi {
         .then((res: any) => {
           resolve(res)
         })
-        .catch((err: any) => {
+        .catch(() => {
           reject(false)
         })
     })
@@ -55,23 +58,11 @@ export default class LoginApi {
         .then((res: any) => {
           resolve(res)
         })
-        .catch((err: any) => {
+        .catch(() => {
           reject(false)
         })
     })
   }
-  // getUserProfile = (uuid: string) => {
-  //   return new Promise((resolve, reject) => {
-  //     this.restAPI
-  //       .request('get', `/password/temp/${uuid}`, {})
-  //       .then((res: any) => {
-  //         resolve(res)
-  //       })
-  //       .catch((err: any) => {
-  //         reject(false)
-  //       })
-  //   })
-  // }
   contact = (data: any) => {
     return new Promise((resolve, reject) => {
       this.restAPI
@@ -79,7 +70,7 @@ export default class LoginApi {
         .then((res: any) => {
           resolve(res)
         })
-        .catch((err: any) => {
+        .catch(() => {
           reject(false)
         })
     })

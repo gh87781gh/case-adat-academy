@@ -1,12 +1,10 @@
-import { StaticService } from '../../storage/storage'
+import { StaticService, BrowserStorage } from '../../storage'
 import { resMsg } from './resMsg'
 import axios from 'axios'
 import { notification } from 'antd'
 
-// import { createHashHistory } from 'history'
-
 export class ApiEngine {
-  // history: any = createHashHistory()
+  browserStorage = new BrowserStorage()
   instance: any = axios.create()
   config: any = {
     baseURL:
@@ -15,19 +13,16 @@ export class ApiEngine {
       process.env.REACT_APP_API_URL,
     timeout: 10000,
     headers: {
-      // 'X-App-ID': 'test',
       'Content-Type': 'application/json',
       Accept: 'application/json'
     }
   }
-
-  // setToken = () => {
-  //   // const token = //get token from storage
-  //   // if (token) {
-  //   //   this.config.headers.Authorization = `Bearer ${authToken}`
-  //   // }
-  // }
-
+  setToken = () => {
+    const token = this.browserStorage.getStorage('AUTH')
+    if (token) {
+      this.config.headers.Authorization = `Bearer ${token}`
+    }
+  }
   setInterceptor = (url: string) => {
     this.instance.interceptors.request.use(
       function (config: any) {
@@ -60,10 +55,9 @@ export class ApiEngine {
     )
   }
 }
-
 export class RestAPI extends ApiEngine {
   request = (method: string, url: string, body: any): Promise<any> => {
-    // this.setToken()
+    this.setToken()
     this.setInterceptor(url)
     const config = this.config
     config.url = StaticService.apiUrl + url
@@ -80,27 +74,4 @@ export class RestAPI extends ApiEngine {
         })
     })
   }
-  // requestBlob = (method: string, url: string, body: any): Promise<any> => {
-  //   this.setToken()
-  //   this.setInterceptor()
-  //   const config = this.config
-  //   config.url = this.config.baseURL + url
-  //   config.method = method
-  //   config[method === 'get' ? 'params' : 'data'] = body
-  //   config.responseType = 'blob' // Use blob to transmit the file.
-  //   return new Promise((resolve, reject) => {
-  //     this.instance
-  //       .request(config)
-  //       .then((res: any) => {
-  //         // Return file and the fileName from response. Backend decide the file name.
-  //         resolve({
-  //           blob: new Blob([res?.data]),
-  //           fileName: res?.headers['content-disposition'].split('filename=')[1],
-  //         })
-  //       })
-  //       .catch(() => {
-  //         reject(false)
-  //       })
-  //   })
-  // }
 }

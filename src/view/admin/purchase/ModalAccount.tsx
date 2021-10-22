@@ -1,26 +1,9 @@
-import { useState } from 'react'
-import FormGroupMsg from '../../../utility/component/FormGroupMsg'
-import { IconSearch } from '../../../utility/icon'
-import {
-  DatePicker,
-  Row,
-  Col,
-  Button,
-  Input,
-  Select,
-  Table,
-  Tag,
-  Modal
-} from 'antd'
-const { Option } = Select
-const { RangePicker } = DatePicker
-const { TextArea } = Input
+import { Row, Col, Button, Input, Modal } from 'antd'
 
 interface IProps {
   isShow: boolean
   onCancel: () => void
 }
-interface IState {}
 
 const ModalAccount = (props: IProps) => {
   return (

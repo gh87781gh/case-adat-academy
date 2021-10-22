@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import { MyContext, BrowserStorage } from '../../../storage/storage'
+import { MyContext, BrowserStorage } from '../../../storage'
 import LoginApi from '../../../api/LoginApi'
 import FormGroupMsg from '../../../utility/component/FormGroupMsg'
 import { ValidateStr, Validation } from '../../../utility/validate'
@@ -44,7 +44,7 @@ const LoginEntry = () => {
 
   const [isKeep, setIsKeep] = useState<boolean>(false)
   useEffect(() => {
-    const keepUsername = browserStorage.getLoginUsername()
+    const keepUsername = browserStorage.getStorage('LOGIN_USERNAME')
     if (keepUsername) {
       setIsKeep(true)
       setData({ ...data, account: keepUsername })
@@ -55,16 +55,16 @@ const LoginEntry = () => {
     context.setIsLoading(true)
 
     isKeep
-      ? browserStorage.setLoginUsername(data.account)
-      : browserStorage.removeLoginUsername()
+      ? browserStorage.setStorage('LOGIN_USERNAME', data.account)
+      : browserStorage.removeStorage('LOGIN_USERNAME')
 
     api
       .login(data)
       .then((res: any) => {
-        // history.push('/admin')
+        history.push('/admin')
         // TODO 判斷為 admin 或 user & 其他條件的導向
-        setLoginErr('')
-        setStep(1)
+        // setLoginErr('')
+        // setStep(1)
       })
       .catch((err: any) => {
         setLoginErr(err || '')

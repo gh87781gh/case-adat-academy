@@ -1,35 +1,24 @@
-import { useState } from 'react'
-import FormGroupMsg from '../../../utility/component/FormGroupMsg'
-import { IconSearch } from '../../../utility/icon'
-import {
-  DatePicker,
-  Row,
-  Col,
-  Button,
-  Input,
-  Select,
-  Table,
-  Tag,
-  Modal
-} from 'antd'
-const { Option } = Select
-const { RangePicker } = DatePicker
+import { useState, useEffect } from 'react'
+import { Table, Modal } from 'antd'
 
 interface IProps {
   isShow: boolean
   recordNumber: string
   onCancel: () => void
 }
-interface IState {}
 
 const ModalRecord = (props: IProps) => {
+  useEffect(() => {
+    setList([])
+  }, [])
+
   const [list, setList] = useState([])
   const columns = [
     {
       title: 'Purchase number',
       dataIndex: 'number',
       key: 'number',
-      render: (text: any) => <a>{text}</a>
+      render: (text: any) => <span>{text}</span>
     },
     {
       title: 'Company',
