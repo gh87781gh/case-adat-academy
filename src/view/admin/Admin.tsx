@@ -1,5 +1,5 @@
 import Header from '../layout/Header'
-import Purchase from './element/Purchase'
+import Purchase from './purchase/Purchase'
 
 import { Tabs } from 'antd'
 const { TabPane } = Tabs

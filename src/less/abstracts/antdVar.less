@@ -412,15 +412,15 @@
 @input-placeholder-color: @color-gray03; //hsv(0, 0, 75%);NOTE
 @input-color: @text-color;
 @input-icon-color: @input-cus-icon-color; //@input-color; NOTE
-@input-border-color: @border-color-base;
+@input-border-color: @color-input-border; //@border-color-base; NOTE
 @input-bg: @component-background;
 @input-number-hover-border-color: @input-hover-border-color;
 @input-number-handler-active-bg: #f4f4f4;
 @input-number-handler-hover-bg: @primary-5;
 @input-number-handler-bg: @component-background;
-@input-number-handler-border-color: @border-color-base;
+@input-number-handler-border-color: @color-input-border; //@border-color-base; NOTE
 @input-addon-bg: @background-color-light;
-@input-hover-border-color: @color-primary; //@primary-5; NOTE
+@input-hover-border-color: @color-input-border; //@primary-5; NOTE
 @input-disabled-bg: @disabled-bg;
 @input-outline-offset: 0 0;
 @input-icon-hover-color: fade(@black, 85%);
@@ -433,7 +433,7 @@
 
 // Select
 // ---
-@select-border-color: @color-primary; // @border-color-base;NOTE
+@select-border-color: @color-input-border; // @border-color-base;NOTE
 @select-item-selected-color: @color-black; // @text-color;NOTE
 @select-item-selected-font-weight: normal; //600;NOTE
 @select-dropdown-bg: @color-white; // @component-background; NOTE
@@ -597,7 +597,7 @@
 // Table
 // --
 @table-bg: @component-background;
-@table-header-bg: @background-color-light;
+@table-header-bg: transparent; //@background-color-light; NOTE
 @table-header-color: @heading-color;
 @table-header-sort-bg: @background-color-base;
 @table-body-sort-bg: #fafafa;
@@ -621,7 +621,7 @@
 @table-font-size: @font-size-base;
 @table-font-size-md: @table-font-size;
 @table-font-size-sm: @table-font-size;
-@table-header-cell-split-color: rgba(0, 0, 0, 0.06);
+@table-header-cell-split-color: transparent; //rgba(0, 0, 0, 0.06); NOTE
 // Sorter
 // Legacy: `table-header-sort-active-bg` is used for hover not real active
 @table-header-sort-active-bg: rgba(0, 0, 0, 0.04);

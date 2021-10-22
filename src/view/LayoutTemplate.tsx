@@ -20,7 +20,7 @@ const LayoutTemplate = () => {
           setIsLoading
         }}
       >
-        <Spin spinning={isLoading} size='large'>
+        <Spin className='ad-spin-global' spinning={isLoading} size='large'>
           <HashRouter>
             <Switch>
               <Route path='/login' render={componentPage.bind(this, Login)} />

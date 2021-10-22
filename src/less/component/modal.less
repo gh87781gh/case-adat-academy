@@ -1,0 +1,43 @@
+.ant-modal-reset() {
+  padding: 26px 84px;
+  border: unset;
+}
+
+.ant-modal-header {
+  .ant-modal-reset();
+  padding-top: 56px;
+  .ant-modal-title {
+    .clearFix();
+    line-height: 48px;
+    &:not(.ad-btn-group) {
+      font-size: 30px;
+      font-weight: 700;
+    }
+    .ad-modal-title-sub {
+      display: inline-block;
+      margin-left: 2rem;
+    }
+  }
+}
+.ant-modal-body {
+  .ant-modal-reset();
+  .ad-form-group {
+    margin-bottom: 20px;
+  }
+}
+.ant-modal-footer {
+  .ant-modal-reset();
+  text-align: left;
+  .ant-btn {
+    min-width: 200px;
+  }
+}
+
+.ad-modal-edit {
+  .ant-modal-close {
+    display: none;
+  }
+  .ant-modal-body {
+    background-color: #f0f0f0;
+  }
+}

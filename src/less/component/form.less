@@ -1,10 +1,8 @@
 .ad-form-group {
-  // margin-bottom: 40px;
   position: relative;
-
   & > label {
     display: block;
-    font-size: 1rem;
+    font-size: @form-group-font-size;
     font-weight: 400;
     margin-bottom: 0.5rem;
     &.required {
@@ -12,7 +10,6 @@
         content: '*';
       }
     }
-
     em {
       font-size: 12px;
       font-weight: 300;
@@ -28,4 +25,8 @@
     margin-right: 20px;
     .typo-b();
   }
+}
+.ad-form-group-value {
+  font-size: @form-group-font-size;
+  color: @form-group-value-color;
 }
