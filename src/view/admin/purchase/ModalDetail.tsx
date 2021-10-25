@@ -9,7 +9,7 @@ interface IProps {
   isShow: boolean
   onCancel: () => void
   showEditModal: () => void
-  getList: () => void
+  getPurchaseList: () => void
   purchaseDetail: any
 }
 
@@ -25,7 +25,7 @@ const ModalDetail = (props: IProps) => {
     api
       .deletePurchase(props.purchaseDetail.id)
       .then(() => {
-        props.getList()
+        props.getPurchaseList()
         props.onCancel()
       })
       .catch()

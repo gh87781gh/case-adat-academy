@@ -1,5 +1,4 @@
 import { StaticService, BrowserStorage } from '../../storage'
-import { resMsg } from './resMsg'
 import axios from 'axios'
 import { notification } from 'antd'
 
@@ -40,7 +39,12 @@ export class ApiEngine {
         return res
       },
       (err: any) => {
-        if (err.response && url !== '/auth/login') {
+        if (err.response.status === 404) {
+          notification.error({
+            message: '',
+            description: '404 Not Found'
+          })
+        } else if (err.response && url !== '/auth/login') {
           notification.error({
             message: '',
             description: err.response.data.message

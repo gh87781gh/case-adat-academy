@@ -20,7 +20,7 @@ interface IProps {
   mode: string // CREATE, UPDATE
   isShow: boolean
   onCancel: () => void
-  getList: () => void
+  getPurchaseList: () => void
   getPurchaseDetail: () => void
   purchaseDetail: any
 }
@@ -57,7 +57,7 @@ const ModalEdit = (props: IProps) => {
       setData(
         props.mode === 'CREATE' ? { ...initData } : { ...props.purchaseDetail }
       )
-  }, [props.isShow])
+  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const onSelect = (key: string, value: any) => {
     setData({ ...data, [key]: value })
@@ -84,9 +84,7 @@ const ModalEdit = (props: IProps) => {
         duration_end: dates[1]
       })
   }
-  const disabledDate = (current: any) => {
-    return current < moment().endOf('day')
-  }
+  const disabledDate = (current: any) => current < moment().endOf('day')
 
   const submit = () => {
     context.setIsLoading(true)
@@ -94,7 +92,7 @@ const ModalEdit = (props: IProps) => {
       .editPurchase(props.mode, data)
       .then(() => {
         if (props.mode === 'UPDATE') props.getPurchaseDetail()
-        props.getList()
+        props.getPurchaseList()
         props.onCancel()
       })
       .catch()

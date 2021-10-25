@@ -1,6 +1,5 @@
 import { RestAPI } from './engine/axiosRunner'
 import { notification } from 'antd'
-import { resMsg } from './engine/resMsg'
 import { BrowserStorage } from '../storage'
 
 export default class LoginApi {
@@ -27,7 +26,7 @@ export default class LoginApi {
         .then((res: any) => {
           if (res.is_exist)
             notification.error({
-              message: resMsg.accountExist,
+              message: 'The User ID or Email is exist.',
               description: ''
             })
           resolve(res.is_exist)

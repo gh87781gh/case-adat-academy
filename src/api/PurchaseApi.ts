@@ -16,13 +16,27 @@ export default class PurchaseApi {
         })
     })
   }
-  getPurchaseDetail = (purchase_id: string) => {
+  getPurchaseDetail = (id: string) => {
     return new Promise((resolve, reject) => {
       this.restAPI
-        .request('get', `/purchase/${purchase_id}`, {})
+        .request('get', `/purchase/${id}`, {})
         .then((res: any) => {
           res.duration_start = moment(res.duration_start)
           res.duration_end = moment(res.duration_end)
+          resolve(res)
+        })
+        .catch(() => {
+          reject(false)
+        })
+    })
+  }
+  getPurchaseAccount = (id: string) => {
+    return new Promise((resolve, reject) => {
+      this.restAPI
+        .request('get', `/purchase/${id}/accounts`, {})
+        .then((res: any) => {
+          // TODO
+          // res.forEach((item: any, index: number) => (item.key = index))
           resolve(res)
         })
         .catch(() => {
@@ -77,6 +91,18 @@ export default class PurchaseApi {
         .request('delete', `/purchase/${id}`, {})
         .then(() => {
           resolve(true)
+        })
+        .catch(() => {
+          reject(false)
+        })
+    })
+  }
+  addPurchaseAccount = (id: string, data: any) => {
+    return new Promise((resolve, reject) => {
+      this.restAPI
+        .request('post', `/purchase/${id}/accounts`, data)
+        .then((res: any) => {
+          resolve(res)
         })
         .catch(() => {
           reject(false)

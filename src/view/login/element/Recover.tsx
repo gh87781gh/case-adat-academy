@@ -16,6 +16,7 @@ const Recover = () => {
   const context = useContext(MyContext)
   const api = new LoginApi()
   const { uuid } = useParams<{ uuid: string }>()
+  console.log('uuid:', uuid)
 
   const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
   const [data, setData] = useState<IState>({
