@@ -2,6 +2,7 @@ import { useEffect, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import Header from '../layout/Header'
 import Purchase from './purchase/Purchase'
+import Account from './account/Account'
 import { MyContext } from '../../storage'
 import GlobalApi from '../../api/GlobalApi'
 
@@ -38,7 +39,7 @@ const Admin = () => {
           <Purchase />
         </TabPane>
         <TabPane tab='Account management' key='2'>
-          Account management
+          <Account />
         </TabPane>
         <TabPane tab='Course management' key='3'>
           Course management

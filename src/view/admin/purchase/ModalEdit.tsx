@@ -122,7 +122,7 @@ const ModalEdit = (props: IProps) => {
           disabled={
             !data.purchase_number ||
             !data.company ||
-            !data.course_access.length ||
+            !data.course_access?.length || //TOCHECK 要把?拿掉
             !data.quata ||
             !data.duration_start ||
             !data.duration_end

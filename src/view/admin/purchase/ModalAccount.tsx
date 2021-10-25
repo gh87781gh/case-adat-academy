@@ -47,6 +47,8 @@ const ModalAccount = (props: IProps) => {
       })
   }
 
+  // TODO are u sure popup
+
   return (
     <Modal
       className='ad-modal-edit'
@@ -107,8 +109,7 @@ const ModalAccount = (props: IProps) => {
           <div className='ad-form-group'>
             <label>Quota</label>
             <div className='ad-form-group-value'>
-              {props.purchaseDetail.purchase_accounts?.length} used/{' '}
-              {props.purchaseDetail.quata}
+              {props.purchaseDetail.usage} used/ {props.purchaseDetail.quata}
             </div>
           </div>
         </Col>
