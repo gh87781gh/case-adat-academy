@@ -1,99 +1,157 @@
-import { useState } from 'react'
+import { useState, useEffect, useContext } from 'react'
+import { MyContext } from '../../../storage'
+import PurchaseApi from '../../../api/PurchaseApi'
 import ModalEdit from './ModalEdit'
 import ModalDetail from './ModalDetail'
 import ModalAccount from './ModalAccount'
 import { IconSearch } from '../../../utility/icon'
+import moment from 'moment'
 import { Row, Col, Button, Input, Select, Table, Breadcrumb } from 'antd'
 const { Option } = Select
 
 interface IState {
-  purchase_number: string
   company: string
-  quata: number
-  duration_start: string
-  duration_end: string
-  remarks: string
+  status: string
+  keyword: string
 }
 
 const Purchase = () => {
+  const api = new PurchaseApi()
+  const context = useContext(MyContext)
+
+  const [modalEditMode, setModalEditMode] = useState('CREATE')
+  const [isModalEditShow, setIsModalEditShow] = useState(false)
+  const [isModalDetailShow, setIsModalDetailShow] = useState(false)
+  const [isModalAccountShow, setIsModalAccountShow] = useState(false)
+
   const [list, setList] = useState([])
-  const [data, setData] = useState<IState>({
-    purchase_number: '',
-    company: '',
-    quata: 0,
-    duration_start: '',
-    duration_end: '',
-    remarks: ''
-  })
+  const [record, setRecord] = useState('')
   const columns = [
     {
       title: 'Purchase number',
-      dataIndex: 'number',
-      key: 'number',
-      render: (text: any) => <a>{text}</a>
+      dataIndex: 'purchase_number',
+      key: 'purchase_number'
     },
     {
       title: 'Company',
-      dataIndex: 'Company',
-      key: 'Company'
+      dataIndex: 'company',
+      key: 'company'
     },
     {
       title: 'Course access',
-      dataIndex: 'access',
-      key: 'access'
+      dataIndex: 'course_access',
+      key: 'course_access'
     },
     {
       title: 'Quota',
-      dataIndex: 'Quota',
-      key: 'Quota'
+      dataIndex: 'quata',
+      key: 'quata',
+      render: (text: string, record: any) => (
+        <>
+          {record.usage} used/ {text}
+        </>
+      )
     },
     {
       title: 'Duration',
-      dataIndex: 'Duration',
-      key: 'Duration'
+      dataIndex: 'duration',
+      key: 'duration',
+      width: 270,
+      render: (text: string, record: any) => (
+        <>
+          {moment(record.duration_start).format('YYYY/MM/DD')}-
+          {moment(record.duration_end).format('YYYY/MM/DD')}
+        </>
+      )
     },
     {
       title: 'Status',
       dataIndex: 'Status',
       key: 'Status'
+      // TOCHECK
     },
     {
       title: 'Actions',
-      key: 'Actions',
-      dataIndex: 'Actions'
-      // render: (tags: any) => (
-      //   <>
-      //     {tags.map((tag) => {
-      //       let color = tag.length > 5 ? 'geekblue' : 'green'
-      //       if (tag === 'loser') {
-      //         color = 'volcano'
-      //       }
-      //       return (
-      //         <Tag color={color} key={tag}>
-      //           {tag.toUpperCase()}
-      //         </Tag>
-      //       )
-      //     })}
-      //   </>
-      // )
+      key: 'action',
+      dataIndex: 'action',
+      width: 220,
+      render: (text: any, record: any) => (
+        <div className='ad-btn-group'>
+          <Button
+            key='more'
+            size='small'
+            onClick={() => {
+              setPurchaseId(record.id)
+              setIsModalDetailShow(true)
+            }}
+          >
+            More
+          </Button>
+          <Button
+            key='view'
+            size='small'
+            // onClick={props.onCancel}
+          >
+            View account
+          </Button>
+        </div>
+      )
     }
-    // {
-    //   title: 'Action',
-    //   key: 'action'
-    //   // render: (text, record) => (
-    //   //   <Space size='middle'>
-    //   //     <a>Invite {record.name}</a>
-    //   //     <a>Delete</a>
-    //   //   </Space>
-    //   // )
-    // }
   ]
+  const getList = () => {
+    // TOCHECK 送搜尋條件
+    context.setIsLoading(true)
+    api
+      .getPurchases()
+      .then((res: any) => {
+        setList(res)
+      })
+      .catch()
+      .finally(() => {
+        context.setIsLoading(false)
+      })
+  }
+  useEffect(() => {
+    getList()
+  }, [])
 
-  const [modalEditMode, setModalEditMode] = useState('CREATE')
-  const [isModalEditShow, setIsModalEditShow] = useState(false)
-  const [isModalDetailShow, setIsModalDetailShow] = useState(false)
-  const [isModalAccountShow, setIsModalAccountShow] = useState(true)
+  const [purchaseDetail, setPurchaseDetail] = useState({})
+  const [purchaseId, setPurchaseId] = useState<string>('')
+  const getPurchaseDetail = () => {
+    context.setIsLoading(true)
+    api
+      .getPurchaseDetail(purchaseId)
+      .then((res: any) => setPurchaseDetail(res))
+      .catch()
+      .finally(() => {
+        context.setIsLoading(false)
+      })
+  }
+  useEffect(() => {
+    if (isModalDetailShow) getPurchaseDetail()
+  }, [isModalDetailShow])
 
+  const [data, setData] = useState<IState>({
+    company: '',
+    status: '',
+    keyword: ''
+  })
+  const onSelect = (key: string, value: any) => {
+    setData({ ...data, [key]: value })
+  }
+  const onChange = (key: string, e: any) => {
+    const value = e.target.value
+    if (value) {
+      switch (key) {
+        case 'keyword':
+          // if (value && ValidateStr('isSymbol', value)) return false
+          break
+      }
+    }
+    setData({ ...data, [key]: value })
+  }
+
+  const [step, setStep] = useState(0)
   const renderPurchase = () => (
     <>
       <h1 className='ad-article-title'>
@@ -113,13 +171,15 @@ const Purchase = () => {
         <Row gutter={20}>
           <Col span={8}>
             <div className='ad-form-group ad-form-group-horizontal'>
-              <label className='required'>Company</label>
+              <label>Company</label>
               <Select
-                // value={data.industry}
+                value={data.company}
                 placeholder='Please select'
-                // onChange={(val) => onSelect('industry', val)}
+                onChange={(val) => onSelect('company', val)}
               >
-                <Option value={'test'}>test</Option>
+                <Option value={'company_a'}>Company A</Option>
+                <Option value={'company_b'}>Company B</Option>
+                {/* TODO list */}
                 {/* {optionIndustry.map((item: any) => (
                   <Option value={item.value} key={item.value}>
                     {item.name}
@@ -130,13 +190,15 @@ const Purchase = () => {
           </Col>
           <Col span={8}>
             <div className='ad-form-group ad-form-group-horizontal'>
-              <label className='required'>Company</label>
+              <label>Status</label>
               <Select
-                // value={data.industry}
+                value={data.status}
                 placeholder='Please select'
-                // onChange={(val) => onSelect('industry', val)}
+                onChange={(val) => onSelect('status', val)}
               >
-                <Option value={'test'}>test</Option>
+                <Option value={'active'}>Active</Option>
+                <Option value={'expired'}>Expired</Option>
+                {/* TODO */}
                 {/* {optionIndustry.map((item: any) => (
                   <Option value={item.value} key={item.value}>
                     {item.name}
@@ -147,27 +209,14 @@ const Purchase = () => {
           </Col>
           <Col span={8}>
             <Input
-              placeholder='Search course content'
+              placeholder='Search purchase number'
               prefix={<IconSearch />}
+              onChange={(e) => onChange('keyword', e)}
             />
           </Col>
         </Row>
       </div>
       <Table columns={columns} dataSource={list} />
-      <ModalEdit
-        mode={modalEditMode}
-        isShow={isModalEditShow}
-        onCancel={() => setIsModalEditShow(false)}
-      />
-      <ModalDetail
-        isShow={isModalDetailShow}
-        data={{ test: 1 }}
-        onCancel={() => setIsModalDetailShow(false)}
-        showCreateModal={() => {
-          setModalEditMode('UPDATE')
-          setIsModalEditShow(true)
-        }}
-      />
     </>
   )
   const renderAccount = () => (
@@ -208,21 +257,42 @@ const Purchase = () => {
         </Row>
       </div>
       <Table columns={columns} dataSource={list} />
-      <ModalAccount
-        isShow={isModalAccountShow}
-        onCancel={() => setIsModalAccountShow(false)}
-      />
     </>
   )
 
   return (
     <>
-      <Breadcrumb separator='>'>
-        <Breadcrumb.Item>Purchase management</Breadcrumb.Item>
-        <Breadcrumb.Item>Account</Breadcrumb.Item>
-      </Breadcrumb>
-      {/* {renderPurchase()} */}
-      {renderAccount()}
+      {step === 1 ? (
+        <Breadcrumb separator='>'>
+          <Breadcrumb.Item onClick={() => setStep(1)}>
+            Purchase management
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>Account</Breadcrumb.Item>
+        </Breadcrumb>
+      ) : null}
+      {step === 0 ? renderPurchase() : renderAccount()}
+      <ModalEdit
+        mode={modalEditMode}
+        isShow={isModalEditShow}
+        onCancel={() => setIsModalEditShow(false)}
+        getList={() => getList()}
+        getPurchaseDetail={() => getPurchaseDetail()}
+        purchaseDetail={purchaseDetail}
+      />
+      <ModalDetail
+        isShow={isModalDetailShow}
+        onCancel={() => setIsModalDetailShow(false)}
+        showEditModal={() => {
+          setModalEditMode('UPDATE')
+          setIsModalEditShow(true)
+        }}
+        purchaseDetail={purchaseDetail}
+        getList={() => getList()}
+      />
+      <ModalAccount
+        isShow={isModalAccountShow}
+        onCancel={() => setIsModalAccountShow(false)}
+      />
     </>
   )
 }

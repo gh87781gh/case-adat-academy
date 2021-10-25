@@ -20,14 +20,3 @@ export function ValidateStr(type: string, value: string) {
       return false
   }
 }
-
-export const Validation = {
-  input_placeholder: 'Clear hint for the input',
-  input_name_max: 50,
-  input_email_max: 200,
-  errMsg_email_format_wrong: 'The Email format is not correct.',
-  input_password_max: 16,
-  input_password_min: 8,
-  errMsg_password_not_match: 'Passwords do not match.',
-  errMsg_password_tooShort: 'Password is too short' //TOCHECK
-}

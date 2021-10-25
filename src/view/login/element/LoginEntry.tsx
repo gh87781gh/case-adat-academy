@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { MyContext, BrowserStorage } from '../../../storage'
 import LoginApi from '../../../api/LoginApi'
 import FormGroupMsg from '../../../utility/component/FormGroupMsg'
-import { ValidateStr, Validation } from '../../../utility/validate'
+import { ValidateStr } from '../../../utility/validate'
 import { Button, Input, Checkbox } from 'antd'
 
 interface IState {
@@ -95,32 +95,29 @@ const LoginEntry = () => {
         <div className='ad-form-group'>
           <label>User ID or Email</label>
           <Input
-            placeholder={Validation.input_placeholder}
-            maxLength={Validation.input_email_max}
+            placeholder='Clear hint for the input'
+            maxLength={200}
             value={data.account}
             onChange={(e) => onChange('account', e)}
           />
           <FormGroupMsg
             isShow={isEmail === false}
             type='error'
-            msg={Validation.errMsg_email_format_wrong}
+            msg='The Email format is not correct.'
           />
         </div>
         <div className='ad-form-group'>
           <label>Password</label>
           <Input.Password
-            placeholder={Validation.input_placeholder}
-            maxLength={Validation.input_password_max}
+            placeholder='Clear hint for the input'
+            maxLength={16}
             value={data.password}
             onChange={(e) => onChange('password', e)}
           />
           <FormGroupMsg
-            isShow={
-              data.password.length > 0 &&
-              data.password.length < Validation.input_password_min
-            }
+            isShow={data.password.length > 0 && data.password.length < 8}
             type='error'
-            msg={Validation.errMsg_password_tooShort}
+            msg='Password is too short'
           />
         </div>
       </div>
@@ -135,7 +132,7 @@ const LoginEntry = () => {
           disabled={
             !data.account ||
             !data.password ||
-            data.password.length < Validation.input_password_min ||
+            data.password.length < 8 ||
             isEmail === false
           }
           type='primary'

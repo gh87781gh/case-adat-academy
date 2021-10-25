@@ -36,12 +36,8 @@ export class ApiEngine {
     )
     this.instance.interceptors.response.use(
       (res: any) => {
-        if (res.data.code === 'SUCCESS')
-          notification.success({
-            message: '',
-            description: resMsg.success
-          })
-        return res.data
+        // TODO 研究為什麼 return res.data.data 時，data這個變數會被污染
+        return res
       },
       (err: any) => {
         if (err.response && url !== '/auth/login') {
@@ -67,7 +63,7 @@ export class RestAPI extends ApiEngine {
       this.instance
         .request(config)
         .then((res: any) => {
-          resolve(res?.data)
+          resolve(res.data.data)
         })
         .catch((err: any) => {
           reject(err)

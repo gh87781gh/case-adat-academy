@@ -70,7 +70,7 @@ const ModalAccount = (props: IProps) => {
           <div className='ad-form-group'>
             <label className='required'>Please input the account’s email</label>
             <Input
-            // placeholder={Validation.input_placeholder}
+            // placeholder='Clear hint for the input'
             // maxLength={Validation.input_email_max}
             // value={data.user_id}
             // onChange={(e) => onChange('user_id', e)}

@@ -2,7 +2,7 @@ import { useState, useContext } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { MyContext } from '../../../storage'
 import FormGroupMsg from '../../../utility/component/FormGroupMsg'
-import { ValidateStr, Validation } from '../../../utility/validate'
+import { ValidateStr } from '../../../utility/validate'
 import LoginApi from '../../../api/LoginApi'
 import { Button, Input } from 'antd'
 
@@ -65,15 +65,15 @@ const Recover = () => {
         <div className='ad-form-group'>
           <label>User ID or Email</label>
           <Input
-            placeholder={Validation.input_placeholder}
-            maxLength={Validation.input_email_max}
+            placeholder='Clear hint for the input'
+            maxLength={200}
             value={data.username}
             onChange={(e) => onChange('username', e)}
           />
           <FormGroupMsg
             isShow={isEmail === false}
             type='error'
-            msg={Validation.errMsg_email_format_wrong}
+            msg='The Email format is not correct.'
           />
         </div>
         <Button type='link' onClick={() => history.push('/login/contact')}>

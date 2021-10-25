@@ -2,7 +2,7 @@ import { useState, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { MyContext } from '../../../storage'
 import FormGroupMsg from '../../../utility/component/FormGroupMsg'
-import { ValidateStr, Validation } from '../../../utility/validate'
+import { ValidateStr } from '../../../utility/validate'
 import LoginApi from '../../../api/LoginApi'
 import { Button, Input } from 'antd'
 
@@ -81,8 +81,8 @@ const Contact = () => {
         <div className='ad-form-group'>
           <label className='required'>Full name</label>
           <Input
-            placeholder={Validation.input_placeholder}
-            maxLength={Validation.input_name_max}
+            placeholder='Clear hint for the input'
+            maxLength={50}
             value={data.name}
             onChange={(e) => onChange('name', e)}
           />
@@ -91,14 +91,14 @@ const Contact = () => {
           <label className='required'>Your valid email</label>
           <Input
             value={data.email}
-            maxLength={Validation.input_email_max}
-            placeholder={Validation.input_placeholder}
+            maxLength={200}
+            placeholder='Clear hint for the input'
             onChange={(e) => onChange('email', e)}
           />
           <FormGroupMsg
             isShow={isEmail === false}
             type='error'
-            msg={Validation.errMsg_email_format_wrong}
+            msg='The Email format is not correct.'
           />
           <FormGroupMsg
             isShow={isEmail !== false}
@@ -108,8 +108,8 @@ const Contact = () => {
         <div className='ad-form-group'>
           <label>User ID</label>
           <Input
-            placeholder={Validation.input_placeholder}
-            maxLength={Validation.input_email_max}
+            placeholder='Clear hint for the input'
+            maxLength={200}
             value={data.account}
             onChange={(e) => onChange('account', e)}
           />

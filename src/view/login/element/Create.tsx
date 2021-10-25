@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { MyContext } from '../../../storage'
-import { Validation, ValidateStr } from '../../../utility/validate'
+import { ValidateStr } from '../../../utility/validate'
 import FormGroupMsg from '../../../utility/component/FormGroupMsg'
 import LoginApi from '../../../api/LoginApi'
 import { Row, Col, Button, Input, Checkbox, Select } from 'antd'
@@ -123,8 +123,8 @@ const Create = () => {
         <div className='ad-form-group'>
           <label className='required'>User ID</label>
           <Input
-            placeholder={Validation.input_placeholder}
-            maxLength={Validation.input_email_max}
+            placeholder='Clear hint for the input'
+            maxLength={200}
             value={data.user_id}
             onChange={(e) => onChange('user_id', e)}
           />
@@ -136,25 +136,22 @@ const Create = () => {
         <div className='ad-form-group'>
           <label className='required'>Password</label>
           <Input.Password
-            placeholder={Validation.input_placeholder}
-            maxLength={Validation.input_password_max}
+            placeholder='Clear hint for the input'
+            maxLength={16}
             value={data.password}
             onChange={(e) => onChange('password', e)}
           />
           <FormGroupMsg
-            isShow={
-              data.password.length > 0 &&
-              data.password.length < Validation.input_password_min
-            }
+            isShow={data.password.length > 0 && data.password.length < 8}
             type='error'
-            msg={Validation.errMsg_password_tooShort}
+            msg='Password is too short'
           />
         </div>
         <div className='ad-form-group'>
           <label className='required'>Password again</label>
           <Input.Password
-            placeholder={Validation.input_placeholder}
-            maxLength={Validation.input_password_max}
+            placeholder='Clear hint for the input'
+            maxLength={16}
             value={data.passwordAgain}
             onChange={(e) => onChange('passwordAgain', e)}
           />
@@ -165,21 +162,21 @@ const Create = () => {
                 : false
             }
             type='error'
-            msg={Validation.errMsg_password_not_match}
+            msg='Passwords do not match.'
           />
         </div>
         <div className='ad-form-group'>
           <label className='required'>Email</label>
           <Input
             value={data.email}
-            maxLength={Validation.input_email_max}
-            placeholder={Validation.input_placeholder}
+            maxLength={200}
+            placeholder='Clear hint for the input'
             onChange={(e) => onChange('email', e)}
           />
           <FormGroupMsg
             isShow={isEmail === false}
             type='error'
-            msg={Validation.errMsg_email_format_wrong}
+            msg='The Email format is not correct.'
           />
         </div>
       </div>
@@ -190,7 +187,7 @@ const Create = () => {
             !data.password ||
             !data.passwordAgain ||
             !data.email ||
-            // data.password.length < Validation.input_password_min || TODO
+            // data.password.length < 8 || TODO
             data.password !== data.passwordAgain ||
             isEmail !== true
           }
@@ -247,7 +244,7 @@ const Create = () => {
             <div className='ad-form-group'>
               <label className='required'>Profession</label>
               <Input
-                placeholder={Validation.input_placeholder}
+                placeholder='Clear hint for the input'
                 maxLength={50}
                 value={data.profession}
                 onChange={(e) => onChange('profession', e)}
@@ -280,7 +277,7 @@ const Create = () => {
               <label>Current Company</label>
               <Input
                 value={data.current_company}
-                placeholder={Validation.input_placeholder}
+                placeholder='Clear hint for the input'
                 onChange={(e) => onChange('current_company', e)}
               />
             </div>

@@ -3,93 +3,52 @@ import { Table, Modal } from 'antd'
 
 interface IProps {
   isShow: boolean
-  recordNumber: string
   onCancel: () => void
 }
 
 const ModalRecord = (props: IProps) => {
   useEffect(() => {
+    // TODO api
     setList([])
   }, [])
 
   const [list, setList] = useState([])
   const columns = [
     {
-      title: 'Purchase number',
-      dataIndex: 'number',
-      key: 'number',
-      render: (text: any) => <span>{text}</span>
+      title: 'Type',
+      dataIndex: 'type',
+      key: 'type'
     },
     {
-      title: 'Company',
-      dataIndex: 'Company',
-      key: 'Company'
+      title: 'Time',
+      dataIndex: 'time',
+      key: 'time'
     },
     {
-      title: 'Course access',
-      dataIndex: 'access',
-      key: 'access'
+      title: 'Editor',
+      dataIndex: 'editor',
+      key: 'editor'
     },
     {
-      title: 'Quota',
-      dataIndex: 'Quota',
-      key: 'Quota'
-    },
-    {
-      title: 'Duration',
-      dataIndex: 'Duration',
-      key: 'Duration'
-    },
-    {
-      title: 'Status',
-      dataIndex: 'Status',
-      key: 'Status'
-    },
-    {
-      title: 'Actions',
-      key: 'Actions',
-      dataIndex: 'Actions'
-      // render: (tags: any) => (
-      //   <>
-      //     {tags.map((tag) => {
-      //       let color = tag.length > 5 ? 'geekblue' : 'green'
-      //       if (tag === 'loser') {
-      //         color = 'volcano'
-      //       }
-      //       return (
-      //         <Tag color={color} key={tag}>
-      //           {tag.toUpperCase()}
-      //         </Tag>
-      //       )
-      //     })}
-      //   </>
-      // )
+      title: 'Remarks',
+      dataIndex: 'remarks',
+      key: 'remarks'
     }
-    // {
-    //   title: 'Action',
-    //   key: 'action'
-    //   // render: (text, record) => (
-    //   //   <Space size='middle'>
-    //   //     <a>Invite {record.name}</a>
-    //   //     <a>Delete</a>
-    //   //   </Space>
-    //   // )
-    // }
   ]
 
   return (
     <Modal
+      zIndex={1001}
       className='ad-modal-info'
       title={
         <>
           Records
           <div className='ad-modal-title-sub'>
             <div className='ad-form-group ad-form-group-horizontal'>
-              <label> purchase number</label>
-              <div className='ad-form-group-value'>testyuiop</div>
+              <label>purchase number</label>
+              <div className='ad-form-group-value'>props.purchase_number</div>
             </div>
           </div>
-          {/* {props.recordNumber} */}
         </>
       }
       visible={props.isShow}
