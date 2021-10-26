@@ -3,6 +3,8 @@ import { MyContext } from '../../../storage'
 import AccountApi from '../../../api/AccountApi'
 import { IconSearch } from '../../../utility/icon'
 import ModalCreate from './ModalCreate'
+import ModalEdit from './ModalEdit'
+import ModalDetail from './ModalDetail'
 import ModalRecord from './ModalRecord'
 import { Row, Col, Button, Input, Select, Table } from 'antd'
 const { Option } = Select
@@ -19,6 +21,8 @@ const Account = () => {
 
   const [isModalCreateShow, setIsModalCreateShow] = useState<boolean>(false)
   const [isModalRecordShow, setIsModalRecordShow] = useState<boolean>(false)
+  const [isModalDetailShow, setIsModalDetailShow] = useState<boolean>(false)
+  const [isModalEditShow, setIsModalEditShow] = useState<boolean>(true)
 
   const [data, setData] = useState<IState>({
     purchase_number: '',
@@ -75,8 +79,8 @@ const Account = () => {
             key='more'
             size='small'
             onClick={() => {
-              // setPurchaseId(record.id)
-              // setIsModalDetailShow(true)
+              setAccountDetail(record)
+              setIsModalDetailShow(true)
             }}
           >
             More
@@ -177,10 +181,26 @@ const Account = () => {
       <ModalCreate
         isShow={isModalCreateShow}
         onCancel={() => setIsModalCreateShow(false)}
+        getAccounts={() => getList()}
+      />
+      <ModalDetail
+        isShow={isModalDetailShow}
+        onCancel={() => setIsModalDetailShow(false)}
+        accountDetail={accountDetail}
+        getAccountList={() => getList()}
+        showEditModal={() => {
+          setIsModalEditShow(true)
+        }}
       />
       <ModalRecord
         isShow={isModalRecordShow}
         onCancel={() => setIsModalRecordShow(false)}
+        accountDetail={accountDetail}
+      />
+      <ModalEdit
+        isShow={isModalEditShow}
+        onCancel={() => setIsModalEditShow(false)}
+        getAccounts={() => getList()}
         accountDetail={accountDetail}
       />
     </>

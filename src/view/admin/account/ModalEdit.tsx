@@ -11,13 +11,14 @@ interface IProps {
   isShow: boolean
   onCancel: () => void
   getAccounts: () => void
+  accountDetail: any
 }
 interface IState {
   purchase_id: string
   email: string
 }
 
-const ModalCreate = (props: IProps) => {
+const ModalEdit = (props: IProps) => {
   const api = new AccountApi()
   const context = useContext(MyContext)
 
@@ -47,12 +48,15 @@ const ModalCreate = (props: IProps) => {
   const [purchaseDetail, setPurchaseDetail] = useState<any>(null)
   useEffect(() => {
     if (props.isShow) {
-      setData({ ...initData })
-      setPurchaseDetail(null)
       context.setIsLoading(true)
       api
         .getUserPurchases()
         .then((res: any) => {
+          // TODO到這裡
+          // const purchase_id = props.accountDetail
+          // setData({ purchase_id:props.accountDetail.purchaseList })
+          // setPurchaseDetail(null)
+
           setPurchaseList(res)
         })
         .catch()
@@ -86,8 +90,9 @@ const ModalCreate = (props: IProps) => {
 
   return (
     <Modal
+      zIndex={1001}
       className='ad-modal-edit'
-      title='Create account'
+      title='Edit account'
       visible={props.isShow}
       onCancel={props.onCancel}
       width={1100}
@@ -197,7 +202,41 @@ const ModalCreate = (props: IProps) => {
           </Col>
         ) : null}
       </Row>
+      <Row gutter={20}>
+        <Col span={8}>
+          <div className='ad-form-group'>
+            <label>User ID</label>
+            <div className='ad-form-group-value'>
+              {props.accountDetail.user_id}
+            </div>
+          </div>
+        </Col>
+        <Col span={8}>
+          <div className='ad-form-group'>
+            <label className='required'>Current email</label>
+            <Input
+              value={data.email}
+              maxLength={200}
+              placeholder='Clear hint for the input'
+              onChange={(e) => onChange('email', e)}
+            />
+            <FormGroupMsg
+              isShow={isEmail === false}
+              type='error'
+              msg='The Email format is not correct.'
+            />
+          </div>
+        </Col>
+        <Col span={8}>
+          <div className='ad-form-group'>
+            <label>Current status</label>
+            <div className='ad-form-group-value'>
+              {props.accountDetail.status}
+            </div>
+          </div>
+        </Col>
+      </Row>
     </Modal>
   )
 }
-export default ModalCreate
+export default ModalEdit
