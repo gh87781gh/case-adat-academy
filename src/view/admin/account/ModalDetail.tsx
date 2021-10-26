@@ -1,39 +1,41 @@
-import { useState, useContext } from 'react'
-import moment from 'moment'
+import { useState, useContext, useEffect } from 'react'
 import { MyContext } from '../../../storage'
 import AccountApi from '../../../api/AccountApi'
-import ModalRecord from './ModalRecord'
+import ModalEdit from './ModalEdit'
 import { Row, Col, Button, Modal } from 'antd'
 
 interface IProps {
   isShow: boolean
   onCancel: () => void
-  accountDetail: any
+  accountId: string
   getAccountList: () => void
-  showEditModal: () => void
+  showModalRecord: (account_id: string) => void
 }
 
 const ModalDetail = (props: IProps) => {
   const api = new AccountApi()
   const context = useContext(MyContext)
 
-  const [isModalRecordShow, setIsModalRecordShow] = useState(false)
-  const [isModalConfirmShow, setIsModalConfirmShow] = useState(false)
-
-  const disable = () => {
+  const [accountDetail, setAccountDetail] = useState<any>({})
+  const getAccountDetail = () => {
     context.setIsLoading(true)
     api
-      .deleteAccount(props.accountDetail.id)
-      .then(() => {
-        props.getAccountList()
-        props.onCancel()
-      })
+      .getAccountDetail(props.accountId)
+      .then((res: any) => setAccountDetail(res))
       .catch()
       .finally(() => {
         context.setIsLoading(false)
       })
   }
+  useEffect(() => {
+    if (props.isShow) {
+      setAccountDetail({})
+      getAccountDetail()
+    }
+  }, [props.isShow])
 
+  const [isModalEditShow, setIsModalEditShow] = useState<boolean>(false)
+  const [isModalConfirmShow, setIsModalConfirmShow] = useState<boolean>(false)
   const renderConfirmModal = () => (
     <Modal
       title='Are you sure?'
@@ -45,7 +47,7 @@ const ModalDetail = (props: IProps) => {
           type='primary'
           onClick={() => {
             setIsModalConfirmShow(false)
-            disable()
+            switchStatus(false)
           }}
         >
           Yes. Disable it.
@@ -56,13 +58,26 @@ const ModalDetail = (props: IProps) => {
       ]}
       width={720}
     >
-      “{props.accountDetail.user_id}” is now under the purchase number “
-      {props.accountDetail.purchase_number}”. Are you sure you want to disable
-      the account’s course access?
+      “{accountDetail.user_id}” is now under the purchase number “
+      {accountDetail.purchase_number}”. Are you sure you want to disable the
+      account’s course access?
     </Modal>
   )
 
-  const data = props.accountDetail
+  const switchStatus = (enable: boolean) => {
+    context.setIsLoading(true)
+    api
+      .switchAccountStatus(accountDetail.id, enable)
+      .then(() => {
+        props.getAccountList()
+        getAccountDetail()
+      })
+      .catch()
+      .finally(() => {
+        context.setIsLoading(false)
+      })
+  }
+
   return (
     <>
       <Modal
@@ -71,26 +86,30 @@ const ModalDetail = (props: IProps) => {
           <>
             Account details
             <div className='ad-btn-group ad-float-right'>
-              <Button key='Edit' type='primary' onClick={props.showEditModal}>
+              <Button
+                key='Edit'
+                type='primary'
+                onClick={() => setIsModalEditShow(true)}
+              >
                 Edit
               </Button>
               <Button
                 key='View'
-                onClick={() => {
-                  setIsModalRecordShow(true)
-                }}
+                onClick={() => props.showModalRecord(accountDetail.id)}
               >
                 View records
               </Button>
               <Button
                 key='Disable'
                 onClick={() =>
-                  props.accountDetail.purchase_number
-                    ? setIsModalConfirmShow(true)
-                    : disable()
+                  accountDetail.enable
+                    ? accountDetail.purchase_number
+                      ? setIsModalConfirmShow(true)
+                      : switchStatus(false)
+                    : switchStatus(true)
                 }
               >
-                Disable
+                {accountDetail.enable ? 'Disable' : 'Enable'}
               </Button>
             </div>
           </>
@@ -104,10 +123,10 @@ const ModalDetail = (props: IProps) => {
           <Col span={12}>
             <div className='ad-form-group ad-form-group-horizontal'>
               <label>Purchase number</label>
-              {data.purchase_number ? (
+              {accountDetail.purchases?.length > 0 ? (
                 <>
                   <div className='ad-form-group-value'>
-                    {data.purchase_number}
+                    {accountDetail.purchases[0]?.purchase_number}
                   </div>
                   <Button type='link'>open purchase</Button>
                 </>
@@ -119,24 +138,33 @@ const ModalDetail = (props: IProps) => {
           <Col span={6}>
             <div className='ad-form-group'>
               <label>Use ID</label>
-              <div className='ad-form-group-value'>{data.user_id}</div>
+              <div className='ad-form-group-value'>{accountDetail.user_id}</div>
             </div>
           </Col>
           <Col span={6}>
             <div className='ad-form-group'>
               <label>Current email</label>
-              <div className='ad-form-group-value'>{data.email}</div>
+              <div className='ad-form-group-value'>{accountDetail.email}</div>
             </div>
           </Col>
           <Col span={6}>
             <div className='ad-form-group'>
               <label>Current status</label>
-              <div className='ad-form-group-value'>{data.status}</div>
+              <div className='ad-form-group-value'>
+                {accountDetail.enable ? 'Enabled' : 'Disabled'}
+              </div>
             </div>
           </Col>
         </Row>
       </Modal>
       {renderConfirmModal()}
+      <ModalEdit
+        isShow={isModalEditShow}
+        onCancel={() => setIsModalEditShow(false)}
+        getAccounts={props.getAccountList}
+        getAccountDetail={() => getAccountDetail()}
+        accountDetail={accountDetail}
+      />
     </>
   )
 }

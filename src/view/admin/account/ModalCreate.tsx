@@ -28,6 +28,9 @@ const ModalCreate = (props: IProps) => {
   }
   const [data, setData] = useState<IState>({ ...initData })
   const onSelect = (key: string, value: any) => {
+    if (key === 'purchase_id') {
+      setPurchaseDetail(purchaseList.find((item: any) => item.id === value))
+    }
     setData({ ...data, [key]: value })
   }
   const onChange = (key: string, e: any) => {
@@ -61,17 +64,11 @@ const ModalCreate = (props: IProps) => {
         })
     }
   }, [props.isShow])
-  useEffect(() => {
-    if (data.purchase_id)
-      setPurchaseDetail(
-        purchaseList.find((item: any) => item.id === data.purchase_id)
-      )
-  }, [data.purchase_id])
 
-  const addAccount = () => {
+  const createAccount = () => {
     context.setIsLoading(true)
     api
-      .addAccount(data)
+      .createAccount(data)
       .then(() => {
         props.getAccounts()
         props.onCancel()
@@ -96,7 +93,7 @@ const ModalCreate = (props: IProps) => {
           key='Create'
           type='primary'
           disabled={!data.email || isEmail !== true}
-          onClick={() => addAccount()}
+          onClick={() => createAccount()}
         >
           Create
         </Button>,

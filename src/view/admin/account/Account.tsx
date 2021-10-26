@@ -3,7 +3,6 @@ import { MyContext } from '../../../storage'
 import AccountApi from '../../../api/AccountApi'
 import { IconSearch } from '../../../utility/icon'
 import ModalCreate from './ModalCreate'
-import ModalEdit from './ModalEdit'
 import ModalDetail from './ModalDetail'
 import ModalRecord from './ModalRecord'
 import { Row, Col, Button, Input, Select, Table } from 'antd'
@@ -22,7 +21,6 @@ const Account = () => {
   const [isModalCreateShow, setIsModalCreateShow] = useState<boolean>(false)
   const [isModalRecordShow, setIsModalRecordShow] = useState<boolean>(false)
   const [isModalDetailShow, setIsModalDetailShow] = useState<boolean>(false)
-  const [isModalEditShow, setIsModalEditShow] = useState<boolean>(true)
 
   const [data, setData] = useState<IState>({
     purchase_number: '',
@@ -47,6 +45,7 @@ const Account = () => {
 
   const [list, setList] = useState([])
   const [accountDetail, setAccountDetail] = useState<any>({})
+  const [accountId, setAccountId] = useState<string>('')
   const columns = [
     {
       title: 'User ID',
@@ -65,8 +64,9 @@ const Account = () => {
     },
     {
       title: 'Current status',
-      dataIndex: 'status',
-      key: 'status'
+      dataIndex: 'enable',
+      key: 'enable',
+      render: (text: any) => <>{text ? 'Enabled' : 'Disabled'}</>
     },
     {
       title: 'Actions',
@@ -79,7 +79,7 @@ const Account = () => {
             key='more'
             size='small'
             onClick={() => {
-              setAccountDetail(record)
+              setAccountId(record.id)
               setIsModalDetailShow(true)
             }}
           >
@@ -100,7 +100,6 @@ const Account = () => {
     }
   ]
   const getList = () => {
-    // TOCHECK 帶搜尋參數
     context.setIsLoading(true)
     api
       .getAccounts()
@@ -186,21 +185,16 @@ const Account = () => {
       <ModalDetail
         isShow={isModalDetailShow}
         onCancel={() => setIsModalDetailShow(false)}
-        accountDetail={accountDetail}
+        accountId={accountId}
         getAccountList={() => getList()}
-        showEditModal={() => {
-          setIsModalEditShow(true)
+        showModalRecord={(account_id: string) => {
+          setAccountDetail(list.find((item: any) => item.id === account_id))
+          setIsModalRecordShow(true)
         }}
       />
       <ModalRecord
         isShow={isModalRecordShow}
         onCancel={() => setIsModalRecordShow(false)}
-        accountDetail={accountDetail}
-      />
-      <ModalEdit
-        isShow={isModalEditShow}
-        onCancel={() => setIsModalEditShow(false)}
-        getAccounts={() => getList()}
         accountDetail={accountDetail}
       />
     </>

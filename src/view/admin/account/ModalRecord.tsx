@@ -22,8 +22,8 @@ const ModalRecord = (props: IProps) => {
     },
     {
       title: 'Time',
-      dataIndex: 'time',
-      key: 'time'
+      dataIndex: 'created_at',
+      key: 'created_at'
     },
     {
       title: 'User ID',
@@ -33,12 +33,13 @@ const ModalRecord = (props: IProps) => {
     {
       title: 'Purchase number',
       dataIndex: 'purchase_number',
-      key: 'purchase_number'
+      key: 'purchase_number',
+      render: (text: any) => <>{text || '-'}</>
     },
     {
       title: 'Editor',
-      dataIndex: 'editor',
-      key: 'editor'
+      dataIndex: 'log_from',
+      key: 'log_from'
     },
     {
       title: 'Remarks',

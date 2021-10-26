@@ -8,7 +8,7 @@ import { Row, Col, Button, Modal } from 'antd'
 interface IProps {
   isShow: boolean
   onCancel: () => void
-  showEditModal: () => void
+  showModalEdit: () => void
   getPurchaseList: () => void
   purchaseDetail: any
 }
@@ -64,7 +64,7 @@ const ModalDetail = (props: IProps) => {
           <>
             Purchase details
             <div className='ad-btn-group ad-float-right'>
-              <Button key='Edit' type='primary' onClick={props.showEditModal}>
+              <Button key='Edit' type='primary' onClick={props.showModalEdit}>
                 Edit
               </Button>
               <Button

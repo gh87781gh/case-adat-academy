@@ -362,7 +362,7 @@ const Purchase = () => {
       <ModalDetail
         isShow={isModalDetailShow}
         onCancel={() => setIsModalDetailShow(false)}
-        showEditModal={() => {
+        showModalEdit={() => {
           setModalEditMode('UPDATE')
           setIsModalEditShow(true)
         }}
