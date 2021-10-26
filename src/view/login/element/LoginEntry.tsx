@@ -1,10 +1,12 @@
 import { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { MyContext, BrowserStorage } from '../../../storage'
+import GlobalApi from '../../../api/GlobalApi'
 import LoginApi from '../../../api/LoginApi'
 import FormGroupMsg from '../../../utility/component/FormGroupMsg'
 import { ValidateStr } from '../../../utility/validate'
 import { Button, Input, Checkbox } from 'antd'
+import LayoutTemplate from '../../LayoutTemplate'
 
 interface IState {
   account: string
@@ -13,6 +15,7 @@ interface IState {
 
 const LoginEntry = () => {
   const context = useContext(MyContext)
+  const apiGlobal = new GlobalApi()
   const api = new LoginApi()
   const browserStorage = new BrowserStorage()
   const history = useHistory()
@@ -52,23 +55,41 @@ const LoginEntry = () => {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const login = () => {
-    context.setIsLoading(true)
-
     isKeep
       ? browserStorage.setStorage('LOGIN_USERNAME', data.account)
       : browserStorage.removeStorage('LOGIN_USERNAME')
 
+    context.setIsLoading(true)
     api
       .login(data)
       .then((res: any) => {
-        history.push('/admin')
-        // TODO 判斷為 admin 或 user & 其他條件的導向
-        // setLoginErr('')
-        // setStep(1)
+        validateLogin()
       })
       .catch((err: any) => {
         setLoginErr(err || '')
       })
+      .finally(() => {
+        context.setIsLoading(false)
+      })
+  }
+  // TODO
+  // TODO
+  // TODO
+  // TODO
+  // TODO
+  // 要改拿到 LayoutTemplate
+  const validateLogin = () => {
+    context.setIsLoading(true)
+    apiGlobal
+      .getAuth()
+      .then((res: any) => {
+        console.log('res:', res)
+        context.setAuth(res)
+        history.push('/index')
+        // TODO 判斷為 admin 或 user & 其他條件的導向
+        // setLoginErr('')
+      })
+      .catch()
       .finally(() => {
         context.setIsLoading(false)
       })

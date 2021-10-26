@@ -1,36 +1,11 @@
-import { useEffect, useContext } from 'react'
-import { useHistory } from 'react-router-dom'
 import Header from '../layout/Header'
 import Purchase from './purchase/Purchase'
 import Account from './account/Account'
-import { MyContext } from '../../storage'
-import GlobalApi from '../../api/GlobalApi'
 
 import { Tabs } from 'antd'
 const { TabPane } = Tabs
 
 const Admin = () => {
-  const context = useContext(MyContext)
-  const api = new GlobalApi()
-  const history = useHistory()
-
-  useEffect(() => {
-    context.setIsLoading(true)
-    api
-      .getAuth()
-      .then((res: any) => {
-        if (!res.is_admin) history.goBack()
-        context.setAuth({ ...context.auth, user_id: res.user_id })
-      })
-      .catch(() => {
-        // TODO 驗證身份失敗提示？
-        history.push('/login')
-      })
-      .finally(() => {
-        context.setIsLoading(false)
-      })
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
   return (
     <>
       <Header />

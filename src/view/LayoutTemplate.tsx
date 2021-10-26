@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom'
 import Login from './login/Login'
 import Admin from './admin/Admin'
+import User from './user/User'
 
 import { Spin } from 'antd'
 import { MyContext } from '../storage'
@@ -27,6 +28,11 @@ const LayoutTemplate = () => {
           <HashRouter>
             <Switch>
               <Route path='/login' render={componentPage.bind(this, Login)} />
+              <Route
+                exact={true}
+                path='/index'
+                render={componentPage.bind(this, User)}
+              />
               <Route
                 exact={true}
                 path='/admin'

@@ -5,9 +5,6 @@ import { IconSearch, IconArrowDown } from '../../utility/icon'
 import { Input, Button, Menu, Dropdown } from 'antd'
 import { MyContext } from '../../storage'
 
-// interface IProps {}
-// interface IState {}
-
 const Header = () => {
   const context = useContext(MyContext)
   const history = useHistory()
@@ -21,14 +18,16 @@ const Header = () => {
     return (
       <Menu className='ad-header-profile-menu'>
         <Menu.Item className='ad-header-profile-menu-text' key='user' disabled>
-          {/* TODO name */}
           {context.auth.user_id} <br />
-          <span>{context.auth.user_id}</span>
+          <span>user ID</span>
         </Menu.Item>
         <Menu.Item key='learning profile'>learning profile</Menu.Item>
         <Menu.Item key='course management'>course management</Menu.Item>
         <Menu.Item key='change password'>change password</Menu.Item>
         <Menu.Item key='-'>---------------</Menu.Item>
+        {context.auth.is_admin ? (
+          <Menu.Item key='admin'>Admin</Menu.Item>
+        ) : null}
         <Menu.Item key='log out' onClick={logout}>
           log out
         </Menu.Item>
