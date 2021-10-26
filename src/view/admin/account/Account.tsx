@@ -113,7 +113,7 @@ const Account = () => {
   }
   useEffect(() => {
     getList()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>

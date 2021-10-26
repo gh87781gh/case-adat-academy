@@ -73,10 +73,10 @@ const ModalEdit = (props: IProps) => {
           context.setIsLoading(false)
         })
     }
-  }, [props.isShow])
+  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (data.email) setIsEmail(ValidateStr('isEmail', data.email))
-  }, [data.email])
+  }, [data.email]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const editAccount = () => {
     context.setIsLoading(true)

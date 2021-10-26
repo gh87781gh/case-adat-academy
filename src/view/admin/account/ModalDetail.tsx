@@ -32,7 +32,7 @@ const ModalDetail = (props: IProps) => {
       setAccountDetail({})
       getAccountDetail()
     }
-  }, [props.isShow])
+  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [isModalEditShow, setIsModalEditShow] = useState<boolean>(false)
   const [isModalConfirmShow, setIsModalConfirmShow] = useState<boolean>(false)
@@ -126,7 +126,7 @@ const ModalDetail = (props: IProps) => {
               {accountDetail.purchases?.length > 0 ? (
                 <>
                   <div className='ad-form-group-value'>
-                    {accountDetail.purchases[0]?.purchase_number}
+                    {accountDetail.purchases[0].purchase_number}
                   </div>
                   <Button type='link'>open purchase</Button>
                 </>

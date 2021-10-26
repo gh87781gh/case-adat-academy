@@ -63,7 +63,7 @@ const ModalCreate = (props: IProps) => {
           context.setIsLoading(false)
         })
     }
-  }, [props.isShow])
+  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const createAccount = () => {
     context.setIsLoading(true)

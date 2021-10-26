@@ -61,7 +61,7 @@ const ModalRecord = (props: IProps) => {
   }
   useEffect(() => {
     if (props.isShow) getList()
-  }, [props.isShow])
+  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Modal
