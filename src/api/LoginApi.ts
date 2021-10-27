@@ -1,17 +1,14 @@
 import { RestAPI } from './engine/axiosRunner'
 import { notification } from 'antd'
-import { BrowserStorage } from '../storage'
 
 export default class LoginApi {
   restAPI: any = new RestAPI()
-  browserStorage = new BrowserStorage()
 
   login = (data: any) => {
     return new Promise((resolve, reject) => {
       this.restAPI
         .request('post', '/auth/login', data)
         .then((res: any) => {
-          this.browserStorage.setStorage('AUTH', res.token)
           resolve(res)
         })
         .catch((err: any) => {

@@ -1,7 +1,10 @@
 .ad-spin-global {
   min-height: 100vh;
 }
-.ant-spin-nested-loading,
-.ant-spin-container {
+#root > .ant-spin-nested-loading {
   height: 100vh;
+
+  & > .ant-spin-container {
+    height: 100%;
+  }
 }

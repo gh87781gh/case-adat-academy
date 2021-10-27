@@ -1,18 +1,39 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
+import GlobalApi from '../../api/GlobalApi'
 import { LogoADAT } from '../../utility/icon'
 import { IconSearch, IconArrowDown } from '../../utility/icon'
 import { Input, Button, Menu, Dropdown } from 'antd'
-import { MyContext } from '../../storage'
+import { MyContext, BrowserStorage } from '../../storage'
 
 const Header = () => {
   const context = useContext(MyContext)
+  const browserStorage = new BrowserStorage()
+  const api = new GlobalApi()
   const history = useHistory()
 
   const logout = () => {
-    // TODO api?
+    browserStorage.removeStorage('AUTH')
     history.push('/login')
   }
+
+  useEffect(() => {
+    console.log(browserStorage.getStorage('AUTH'))
+    if (browserStorage.getStorage('AUTH')) {
+      context.setIsLoading(true)
+      api
+        .getAuth()
+        .then((res: any) => {
+          context.setAuth(res)
+        })
+        .catch()
+        .finally(() => {
+          context.setIsLoading(false)
+        })
+    } else {
+      history.push('/login')
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const menu = () => {
     return (
@@ -26,7 +47,9 @@ const Header = () => {
         <Menu.Item key='change password'>change password</Menu.Item>
         <Menu.Item key='-'>---------------</Menu.Item>
         {context.auth.is_admin ? (
-          <Menu.Item key='admin'>Admin</Menu.Item>
+          <Menu.Item key='admin' onClick={() => history.push('/admin')}>
+            Admin
+          </Menu.Item>
         ) : null}
         <Menu.Item key='log out' onClick={logout}>
           log out
@@ -40,7 +63,10 @@ const Header = () => {
       <div className='ad-container ad-header-container'>
         {/* TODO switch logo */}
         {/* <div className='ad-header-container-logo'> */}
-        <div className='ad-header-container-logo-primary'>
+        <div
+          className='ad-header-container-logo-primary'
+          onClick={() => history.push('/index')}
+        >
           <LogoADAT />
         </div>
         <ul className='ad-header-tabHead'>
@@ -52,11 +78,7 @@ const Header = () => {
           <Button type='primary' icon={<IconSearch />} />
         </div>
         <Dropdown overlay={menu()} trigger={['click']}>
-          <div
-            className='ad-header-btn'
-            // onClick={(e) => e.preventDefault()} TODO
-          >
-            {/* TODO name */}
+          <div className='ad-header-btn'>
             {context.auth.user_id}
             <IconArrowDown />
           </div>

@@ -1,12 +1,10 @@
 import { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { MyContext, BrowserStorage } from '../../../storage'
-import GlobalApi from '../../../api/GlobalApi'
 import LoginApi from '../../../api/LoginApi'
 import FormGroupMsg from '../../../utility/component/FormGroupMsg'
 import { ValidateStr } from '../../../utility/validate'
 import { Button, Input, Checkbox } from 'antd'
-import LayoutTemplate from '../../LayoutTemplate'
 
 interface IState {
   account: string
@@ -15,7 +13,6 @@ interface IState {
 
 const LoginEntry = () => {
   const context = useContext(MyContext)
-  const apiGlobal = new GlobalApi()
   const api = new LoginApi()
   const browserStorage = new BrowserStorage()
   const history = useHistory()
@@ -47,6 +44,8 @@ const LoginEntry = () => {
 
   const [isKeep, setIsKeep] = useState<boolean>(false)
   useEffect(() => {
+    browserStorage.removeStorage('AUTH')
+
     const keepUsername = browserStorage.getStorage('LOGIN_USERNAME')
     if (keepUsername) {
       setIsKeep(true)
@@ -63,33 +62,12 @@ const LoginEntry = () => {
     api
       .login(data)
       .then((res: any) => {
-        validateLogin()
+        browserStorage.setStorage('AUTH', res.token)
+        history.push('Index')
       })
       .catch((err: any) => {
         setLoginErr(err || '')
       })
-      .finally(() => {
-        context.setIsLoading(false)
-      })
-  }
-  // TODO
-  // TODO
-  // TODO
-  // TODO
-  // TODO
-  // 要改拿到 LayoutTemplate
-  const validateLogin = () => {
-    context.setIsLoading(true)
-    apiGlobal
-      .getAuth()
-      .then((res: any) => {
-        console.log('res:', res)
-        context.setAuth(res)
-        history.push('/index')
-        // TODO 判斷為 admin 或 user & 其他條件的導向
-        // setLoginErr('')
-      })
-      .catch()
       .finally(() => {
         context.setIsLoading(false)
       })
