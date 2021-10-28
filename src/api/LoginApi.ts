@@ -1,5 +1,5 @@
 import { RestAPI } from './engine/axiosRunner'
-import { notification } from 'antd'
+import { message } from 'antd'
 
 export default class LoginApi {
   restAPI: any = new RestAPI()
@@ -21,12 +21,20 @@ export default class LoginApi {
       this.restAPI
         .request('post', '/auth/check', data)
         .then((res: any) => {
-          if (res.is_exist)
-            notification.error({
-              message: 'The User ID or Email is exist.',
-              description: ''
-            })
+          if (res.is_exist) message.error('The User ID or Email is exist.')
           resolve(res.is_exist)
+        })
+        .catch(() => {
+          reject(false)
+        })
+    })
+  }
+  getSignUpOptions = () => {
+    return new Promise((resolve, reject) => {
+      this.restAPI
+        .request('get', '/auth/signup', {})
+        .then((res: any) => {
+          resolve(res)
         })
         .catch(() => {
           reject(false)

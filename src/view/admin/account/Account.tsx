@@ -117,7 +117,7 @@ const Account = () => {
 
   return (
     <>
-      <h1 className='ad-article-title'>
+      <h1 className='ad-layout-article-title'>
         Account management
         <Button
           className='ad-float-right'
@@ -127,7 +127,7 @@ const Account = () => {
           Create account
         </Button>
       </h1>
-      <div className='ad-article-toolBar'>
+      <div className='ad-layout-article-toolBar'>
         <Row gutter={20}>
           <Col span={8}>
             <div className='ad-form-group ad-form-group-horizontal'>

@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import GlobalApi from '../../api/GlobalApi'
 import { LogoADAT } from '../../utility/icon'
 import { IconSearch, IconArrowDown } from '../../utility/icon'
@@ -11,6 +11,7 @@ const Header = () => {
   const browserStorage = new BrowserStorage()
   const api = new GlobalApi()
   const history = useHistory()
+  const location = useLocation()
 
   const logout = () => {
     browserStorage.removeStorage('AUTH')
@@ -18,7 +19,6 @@ const Header = () => {
   }
 
   useEffect(() => {
-    console.log(browserStorage.getStorage('AUTH'))
     if (browserStorage.getStorage('AUTH')) {
       context.setIsLoading(true)
       api
@@ -60,18 +60,29 @@ const Header = () => {
 
   return (
     <header className='ad-header'>
-      <div className='ad-container ad-header-container'>
+      <div className='ad-layout-container ad-header-container'>
         {/* TODO switch logo */}
         {/* <div className='ad-header-container-logo'> */}
-        <div
-          className='ad-header-container-logo-primary'
-          onClick={() => history.push('/index')}
-        >
+        <div className='ad-header-container-logo-primary'>
           <LogoADAT />
         </div>
         <ul className='ad-header-tabHead'>
-          <li className='ad-header-btn ad-header-btn-active'>Course</li>
-          <li className='ad-header-btn'>Help center</li>
+          <li
+            className={`ad-header-btn ${
+              location.pathname === '/index' ? 'active' : ''
+            }`}
+            onClick={() => history.push('/index')}
+          >
+            Course
+          </li>
+          <li
+            className={`ad-header-btn ${
+              location.pathname === '/help' ? 'active' : ''
+            }`}
+            onClick={() => history.push('/help')}
+          >
+            Help center
+          </li>
         </ul>
         <div className='ad-header-searchBar'>
           <Input placeholder='Search course content' />

@@ -3,6 +3,7 @@ import { MyContext } from '../../../storage'
 import PurchaseApi from '../../../api/PurchaseApi'
 import ModalEdit from './ModalEdit'
 import ModalDetail from './ModalDetail'
+import ModalRecord from './ModalRecord'
 import ModalAccount from './ModalAccount'
 import { IconSearch } from '../../../utility/icon'
 import moment from 'moment'
@@ -19,9 +20,9 @@ const Purchase = () => {
   const api = new PurchaseApi()
   const context = useContext(MyContext)
 
-  const [modalEditMode, setModalEditMode] = useState('CREATE')
   const [isModalEditShow, setIsModalEditShow] = useState(false)
   const [isModalDetailShow, setIsModalDetailShow] = useState(false)
+  const [isModalRecordShow, setIsModalRecordShow] = useState(false)
   const [isModalAccountShow, setIsModalAccountShow] = useState(false)
 
   const [data, setData] = useState<IState>({
@@ -57,9 +58,9 @@ const Purchase = () => {
         context.setIsLoading(false)
       })
   }
-  useEffect(() => {
-    if (purchaseId) getPurchaseDetail()
-  }, [purchaseId]) // eslint-disable-line react-hooks/exhaustive-deps
+  // useEffect(() => {
+  //   if (purchaseId) getPurchaseDetail()
+  // }, [purchaseId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [purchaseList, setPurchaseList] = useState([])
   const [accountList, setAccountList] = useState([])
@@ -88,9 +89,6 @@ const Purchase = () => {
         context.setIsLoading(false)
       })
   }
-  useEffect(() => {
-    getPurchaseList()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [step, setStep] = useState(0)
   const renderPurchase = () => {
@@ -134,9 +132,8 @@ const Purchase = () => {
       },
       {
         title: 'Status',
-        dataIndex: 'Status',
-        key: 'Status'
-        // TOCHECK
+        dataIndex: 'status',
+        key: 'status'
       },
       {
         title: 'Actions',
@@ -171,20 +168,19 @@ const Purchase = () => {
     ]
     return (
       <>
-        <h1 className='ad-article-title'>
+        <h1 className='ad-layout-article-title'>
           Purchase management
           <Button
             className='ad-float-right'
             type='primary'
             onClick={() => {
-              setModalEditMode('CREATE')
               setIsModalEditShow(true)
             }}
           >
             Create purchase
           </Button>
         </h1>
-        <div className='ad-article-toolBar'>
+        <div className='ad-layout-article-toolBar'>
           <Row gutter={20}>
             <Col span={8}>
               <div className='ad-form-group ad-form-group-horizontal'>
@@ -292,7 +288,7 @@ const Purchase = () => {
     ]
     return (
       <>
-        <h1 className='ad-article-title'>
+        <h1 className='ad-layout-article-title'>
           Account
           <Button
             className='ad-float-right'
@@ -304,7 +300,7 @@ const Purchase = () => {
             Create account
           </Button>
         </h1>
-        <div className='ad-article-toolBar'>
+        <div className='ad-layout-article-toolBar'>
           <Row gutter={20}>
             <Col span={8}>
               <div className='ad-form-group ad-form-group-horizontal'>
@@ -318,15 +314,16 @@ const Purchase = () => {
               <div className='ad-form-group ad-form-group-horizontal'>
                 <label>Quota</label>
                 <div className='ad-form-group-value'>
-                  {purchaseDetail.purchase_accounts?.length} used/{' '}
-                  {purchaseDetail.quata}
+                  {purchaseDetail.usage} used/ {purchaseDetail.quata}
                 </div>
               </div>
             </Col>
             <Col span={6}>
               <div className='ad-form-group ad-form-group-horizontal'>
                 <label>Status</label>
-                <div className='ad-form-group-value'>{/* TODO */}</div>
+                <div className='ad-form-group-value'>
+                  {purchaseDetail.status}
+                </div>
               </div>
             </Col>
           </Row>
@@ -337,7 +334,10 @@ const Purchase = () => {
   }
   useEffect(() => {
     if (step === 0) getPurchaseList()
-    if (step === 1) getAccountList()
+    if (step === 1) {
+      getAccountList()
+      getPurchaseDetail()
+    }
   }, [step]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -351,23 +351,23 @@ const Purchase = () => {
         </Breadcrumb>
       ) : null}
       {step === 0 ? renderPurchase() : renderAccount()}
-      <ModalEdit
-        mode={modalEditMode}
-        isShow={isModalEditShow}
-        onCancel={() => setIsModalEditShow(false)}
-        getPurchaseList={() => getPurchaseList()}
-        getPurchaseDetail={() => getPurchaseDetail()}
-        purchaseDetail={purchaseDetail}
-      />
       <ModalDetail
         isShow={isModalDetailShow}
         onCancel={() => setIsModalDetailShow(false)}
-        showModalEdit={() => {
-          setModalEditMode('UPDATE')
-          setIsModalEditShow(true)
-        }}
-        purchaseDetail={purchaseDetail}
+        purchaseId={purchaseId}
         getPurchaseList={() => getPurchaseList()}
+        showModalRecord={() => setIsModalRecordShow(true)}
+      />
+      <ModalEdit
+        mode='CREATE'
+        isShow={isModalEditShow}
+        onCancel={() => setIsModalEditShow(false)}
+        getPurchaseList={() => getPurchaseList()}
+      />
+      <ModalRecord
+        isShow={isModalRecordShow}
+        onCancel={() => setIsModalRecordShow(false)}
+        purchaseDetail={purchaseDetail}
       />
       <ModalAccount
         isShow={isModalAccountShow}

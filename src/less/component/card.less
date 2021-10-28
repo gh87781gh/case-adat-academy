@@ -1,0 +1,46 @@
+.ad-card-group {
+  .ulReset();
+}
+.ad-card {
+  padding-top: 56px;
+  padding-bottom: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &:not(:last-child) {
+    border-bottom: 1px dashed #000;
+  }
+}
+.ad-card-img {
+  .size(90px,90px);
+  img {
+    .size(100%,100%);
+  }
+}
+.ad-card-content {
+  margin-right: 73px;
+  margin-left: 73px;
+  h2 {
+    color: @color-primary;
+    margin-bottom: 4px;
+  }
+  p {
+    color: @color-gray03;
+    margin-bottom: unset;
+  }
+}
+.ad-card-action {
+  .ant-btn {
+    min-width: 216px;
+    margin-bottom: 12px;
+  }
+  small {
+    display: block;
+    text-align: right;
+    color: @color-gray03;
+    span {
+      color: @color-primary;
+    }
+  }
+}

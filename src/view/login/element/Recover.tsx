@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react'
-import { useHistory, useParams } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { MyContext } from '../../../storage'
 import FormGroupMsg from '../../../utility/component/FormGroupMsg'
 import { ValidateStr } from '../../../utility/validate'
@@ -15,8 +15,8 @@ const Recover = () => {
   const history = useHistory()
   const context = useContext(MyContext)
   const api = new LoginApi()
-  const { uuid } = useParams<{ uuid: string }>()
-  console.log('uuid:', uuid)
+  // const { uuid } = useParams<{ uuid: string }>()
+  // console.log('uuid:', uuid)
 
   const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
   const [data, setData] = useState<IState>({

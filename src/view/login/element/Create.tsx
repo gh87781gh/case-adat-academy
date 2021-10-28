@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { MyContext } from '../../../storage'
 import { ValidateStr } from '../../../utility/validate'
@@ -23,6 +23,25 @@ const Create = () => {
   const context = useContext(MyContext)
   const api = new LoginApi()
   const history = useHistory()
+
+  const [industries, setIndustries] = useState<any>([])
+  const [experience_levels, setExperience_levels] = useState<any>([])
+  const [experiences, setExperiences] = useState<any>([])
+  useEffect(() => {
+    context.setIsLoading(true)
+
+    api
+      .getSignUpOptions()
+      .then((res: any) => {
+        setIndustries(res.industries)
+        setExperience_levels(res.experience_levels)
+        setExperiences(res.experiences)
+      })
+      .catch()
+      .finally(() => {
+        context.setIsLoading(false)
+      })
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
   const [data, setData] = useState<IState>({
@@ -64,10 +83,10 @@ const Create = () => {
     setData({ ...data, [key]: value })
   }
   const onChecks = (checkedValues: any) => {
-    if (checkedValues.includes('NOT_SURE')) {
-      checkedValues.length >= 2 && checkedValues.indexOf('NOT_SURE') === 0
+    if (checkedValues.includes(3)) {
+      checkedValues.length >= 2 && checkedValues.indexOf(3) === 0
         ? checkedValues.shift()
-        : (checkedValues = ['NOT_SURE'])
+        : (checkedValues = [3])
     }
     setData({ ...data, experience: checkedValues })
   }
@@ -91,7 +110,10 @@ const Create = () => {
   const create = () => {
     context.setIsLoading(true)
 
-    const checkData = { ...data }
+    const experienceStrAry = data.experience.map((item: any) => {
+      return experiences[item]
+    })
+    const checkData = { ...data, experience: experienceStrAry }
     delete checkData.passwordAgain
 
     api
@@ -105,7 +127,7 @@ const Create = () => {
       })
   }
 
-  const [step, setStep] = useState<number>(0)
+  const [step, setStep] = useState<number>(1)
   const renderStep1 = () => (
     <>
       <div className='ad-login-content-header'>
@@ -228,15 +250,11 @@ const Create = () => {
                 placeholder='Please select'
                 onChange={(val) => onSelect('industry', val)}
               >
-                <Option value={'industry-1'}>industry-1</Option>
-                <Option value={'industry-2'}>industry-2</Option>
-                <Option value={'industry-3'}>industry-3</Option>
-                {/* TODO */}
-                {/* {optionIndustry.map((item: any) => (
-                  <Option value={item.value} key={item.value}>
-                    {item.name}
+                {industries.map((item: string) => (
+                  <Option value={item} key={item}>
+                    {item}
                   </Option>
-                ))} */}
+                ))}
               </Select>
             </div>
           </Col>
@@ -260,15 +278,11 @@ const Create = () => {
                 value={data.experience_level}
                 onChange={(val) => onSelect('experience_level', val)}
               >
-                <Option value={'level-1'}>level-1</Option>
-                <Option value={'level-2'}>level-2</Option>
-                <Option value={'level-3'}>level-3</Option>
-                {/* TODO */}
-                {/* {optionLevel.map((item: any) => (
-                  <Option value={item.value} key={item.value}>
-                    {item.name}
+                {experience_levels.map((item: string) => (
+                  <Option value={item} key={item}>
+                    {item}
                   </Option>
-                ))} */}
+                ))}
               </Select>
             </div>
           </Col>
@@ -284,7 +298,7 @@ const Create = () => {
           </Col>
         </Row>
         <div className='ad-form-group'>
-          <label className='required ad-clear-fix'>
+          <label className='required ad-clearfix'>
             What is your experience regarding to AIR?
             <em className='ad-float-right'>multiple choices</em>
           </label>
@@ -294,7 +308,14 @@ const Create = () => {
             onChange={onChecks}
           >
             <Row gutter={[10, 10]}>
-              <Col span={12}>
+              {experiences.map((item: string, index: number) => (
+                <Col span={12} key={item}>
+                  <Checkbox className='ad-checkbox-btn' value={index}>
+                    {item}
+                  </Checkbox>
+                </Col>
+              ))}
+              {/* <Col span={12}>
                 <Checkbox className='ad-checkbox-btn' value='SOP_EDITING'>
                   SOP editing
                 </Checkbox>
@@ -316,7 +337,7 @@ const Create = () => {
                 <Checkbox className='ad-checkbox-btn' value='NOT_SURE'>
                   Not sure
                 </Checkbox>
-              </Col>
+              </Col> */}
             </Row>
           </Checkbox.Group>
         </div>

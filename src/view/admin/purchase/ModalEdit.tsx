@@ -21,14 +21,14 @@ interface IProps {
   isShow: boolean
   onCancel: () => void
   getPurchaseList: () => void
-  getPurchaseDetail: () => void
-  purchaseDetail: any
+  getPurchaseDetail?: () => void //only UPDATE
+  purchaseDetail?: any //only UPDATE
 }
 interface IState {
   purchase_number: string
   status: string
   company: string
-  course_access: string[] | any //TODO api有這欄位後 any要拿掉
+  course_access: string[] | any //TOCHECK api有這欄位後 any要拿掉
   quata: number
   duration_start: any
   duration_end: any
@@ -91,7 +91,9 @@ const ModalEdit = (props: IProps) => {
     api
       .editPurchase(props.mode, data)
       .then(() => {
-        if (props.mode === 'UPDATE') props.getPurchaseDetail()
+        if (props.mode === 'UPDATE' && props.getPurchaseDetail)
+          props.getPurchaseDetail()
+
         props.getPurchaseList()
         props.onCancel()
       })
@@ -122,7 +124,7 @@ const ModalEdit = (props: IProps) => {
           disabled={
             !data.purchase_number ||
             !data.company ||
-            !data.course_access?.length || //TOCHECK 要把?拿掉
+            !data.course_access || //TOCHECK 後端目前沒這個欄位
             !data.quata ||
             !data.duration_start ||
             !data.duration_end
@@ -218,11 +220,7 @@ const ModalEdit = (props: IProps) => {
             <label className='required'>Quota</label>
             <InputNumber
               value={data.quata}
-              min={
-                props.mode === 'UPDATE'
-                  ? props.purchaseDetail.purchase_accounts.length
-                  : 0
-              }
+              min={props.mode === 'UPDATE' ? props.purchaseDetail.usage : 0}
               max={100}
               onChange={(val) => onCount('quata', val)}
             />

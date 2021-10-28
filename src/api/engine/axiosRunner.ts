@@ -1,6 +1,8 @@
 import { StaticService, BrowserStorage } from '../../storage'
 import axios from 'axios'
-import { notification } from 'antd'
+import { message } from 'antd'
+import { createHashHistory } from 'history'
+const history = createHashHistory()
 
 export class ApiEngine {
   browserStorage = new BrowserStorage()
@@ -40,15 +42,12 @@ export class ApiEngine {
       },
       (err: any) => {
         if (err.response.status === 404) {
-          notification.error({
-            message: '',
-            description: '404 Not Found'
-          })
+          message.error('404 Not Found')
+        } else if (err.response.status === 401) {
+          message.error('Unauthorized')
+          history.push('/login')
         } else if (err.response && url !== '/auth/login') {
-          notification.error({
-            message: '',
-            description: err.response.data.message
-          })
+          message.error(err.response.data.message)
         }
         return Promise.reject(err.response.data)
       }

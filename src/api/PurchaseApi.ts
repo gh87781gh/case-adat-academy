@@ -35,8 +35,6 @@ export default class PurchaseApi {
       this.restAPI
         .request('get', `/purchase/${id}/accounts`, {})
         .then((res: any) => {
-          // TODO
-          // res.forEach((item: any, index: number) => (item.key = index))
           resolve(res)
         })
         .catch(() => {
@@ -45,18 +43,13 @@ export default class PurchaseApi {
     })
   }
   editPurchase = (mode: string, data: any) => {
-    // TOCHECK 待確認 format
-    // duration_start: moment(dates[0]).toISOString(),
-    // duration_end: moment(dates[1]).toISOString()
-    // TOCHECK api少這欄
-    // course_access:data.course_access,
-
     const postData =
       mode === 'CREATE'
         ? {
             purchase_number: data.purchase_number,
             company: data.company,
             quata: data.quata,
+            course_access: data.course_access.join(','), //TOCHECK
             duration_start: moment(data.duration_start).format('YYYY/MM/DD'),
             duration_end: moment(data.duration_end).format('YYYY/MM/DD')
           }
@@ -64,6 +57,7 @@ export default class PurchaseApi {
         ? {
             company: data.company,
             quata: data.quata,
+            course_access: data.course_access.join(','), //TOCHECK
             duration_start: moment(data.duration_start).format('YYYY/MM/DD'),
             duration_end: moment(data.duration_end).format('YYYY/MM/DD'),
             remark: data.remark || ''

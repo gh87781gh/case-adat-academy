@@ -4,11 +4,12 @@ import { Table, Modal } from 'antd'
 interface IProps {
   isShow: boolean
   onCancel: () => void
+  purchaseDetail: any
 }
 
 const ModalRecord = (props: IProps) => {
   useEffect(() => {
-    // TODO api
+    // TOCHECK 等待後端api
     setList([])
   }, [])
 
@@ -31,8 +32,8 @@ const ModalRecord = (props: IProps) => {
     },
     {
       title: 'Remarks',
-      dataIndex: 'remarks',
-      key: 'remarks'
+      dataIndex: 'remark',
+      key: 'remark'
     }
   ]
 
@@ -46,7 +47,9 @@ const ModalRecord = (props: IProps) => {
           <div className='ad-modal-title-sub'>
             <div className='ad-form-group ad-form-group-horizontal'>
               <label>purchase number</label>
-              <div className='ad-form-group-value'>props.purchase_number</div>
+              <div className='ad-form-group-value'>
+                {props.purchaseDetail.purchase_number}
+              </div>
             </div>
           </div>
         </>

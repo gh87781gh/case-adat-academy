@@ -63,7 +63,7 @@ const LoginEntry = () => {
       .login(data)
       .then((res: any) => {
         browserStorage.setStorage('AUTH', res.token)
-        history.push('Index')
+        history.push('/index')
       })
       .catch((err: any) => {
         setLoginErr(err || '')

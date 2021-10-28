@@ -1,0 +1,25 @@
+.ad-layout-container {
+  max-width: @layout-container-max-width;
+  margin-left: auto;
+  margin-right: auto;
+
+  @media (max-width: @layout-container-max-width + 15px) {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+.ad-layout-article {
+  padding-top: @header-height;
+}
+.ad-layout-article-title {
+  .clearFix();
+  font-size: 30px;
+  font-weight: 700;
+}
+.ad-layout-article-toolBar {
+  margin-bottom: @layout-section-gutter;
+  .ad-form-group > label {
+    .typo-b();
+  }
+}
