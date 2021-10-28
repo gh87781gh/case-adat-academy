@@ -1,5 +1,4 @@
-import { useState, useContext } from 'react'
-import moment from 'moment'
+import { useState, useContext, useEffect } from 'react'
 import { MyContext } from '../../../storage'
 import PurchaseApi from '../../../api/PurchaseApi'
 import FormGroupMsg from '../../../utility/component/FormGroupMsg'
@@ -15,7 +14,7 @@ interface IState {
   email: string
 }
 
-const ModalAccount = (props: IProps) => {
+const ModalCreate_PA = (props: IProps) => {
   const api = new PurchaseApi()
   const context = useContext(MyContext)
 
@@ -35,11 +34,15 @@ const ModalAccount = (props: IProps) => {
     }
     setData({ ...data, [key]: value })
   }
+  useEffect(() => {
+    setData({ email: '' })
+    setIsEmail(undefined)
+  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const addAccount = () => {
+  const editAccount = () => {
     context.setIsLoading(true)
     api
-      .addPurchaseAccount(props.purchaseDetail.id, data)
+      .editPurchaseAccount(props.purchaseDetail.id, data)
       .then(() => {})
       .catch()
       .finally(() => {
@@ -47,7 +50,30 @@ const ModalAccount = (props: IProps) => {
       })
   }
 
-  // TODO are u sure popup
+  const [isModalConfirmShow, setIsModalConfirmShow] = useState(false)
+  const renderConfirmModal = () => (
+    <Modal
+      title='Are you sure?'
+      visible={isModalConfirmShow}
+      onCancel={() => setIsModalConfirmShow(false)}
+      footer={[
+        <Button
+          key='Create'
+          type='primary'
+          // onClick={() => deletePurchase()}
+        >
+          Yes. Move it.
+        </Button>,
+        <Button key='Cancel' onClick={props.onCancel}>
+          No
+        </Button>
+      ]}
+      width={720}
+    >
+      “Leoo123@winbond.com” is in user ID “Leoo123”. Are you sure you want to
+      move the account to “winbond123”?
+    </Modal>
+  )
 
   return (
     <Modal
@@ -61,7 +87,7 @@ const ModalAccount = (props: IProps) => {
           key='Create'
           type='primary'
           disabled={!data.email || isEmail !== true}
-          onClick={() => addAccount()}
+          onClick={() => editAccount()}
         >
           Create
         </Button>,
@@ -101,6 +127,7 @@ const ModalAccount = (props: IProps) => {
           <div className='ad-form-group'>
             <label>Course access</label>
             <div className='ad-form-group-value'>
+              {/* TOCHECK */}
               {props.purchaseDetail.course_access}
             </div>
           </div>
@@ -117,8 +144,8 @@ const ModalAccount = (props: IProps) => {
           <div className='ad-form-group'>
             <label>Duration</label>
             <div className='ad-form-group-value'>
-              {moment(props.purchaseDetail.duration_start).format('YYYY/MM/DD')}{' '}
-              - {moment(props.purchaseDetail.duration_end).format('YYYY/MM/DD')}
+              {props.purchaseDetail.duration_start} -{' '}
+              {props.purchaseDetail.duration_end}
             </div>
           </div>
         </Col>
@@ -142,4 +169,4 @@ const ModalAccount = (props: IProps) => {
     </Modal>
   )
 }
-export default ModalAccount
+export default ModalCreate_PA

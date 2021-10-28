@@ -3,10 +3,10 @@ import moment from 'moment'
 
 export default class AccountApi {
   restAPI: any = new RestAPI()
-  getUserPurchases = () => {
+  getAccounts = () => {
     return new Promise((resolve, reject) => {
       this.restAPI
-        .request('get', '/user/purchase', {})
+        .request('get', '/account', {})
         .then((res: any) => {
           res.forEach((item: any, index: number) => (item.key = index))
           resolve(res)
@@ -16,10 +16,10 @@ export default class AccountApi {
         })
     })
   }
-  getAccounts = () => {
+  getAccountPurchases = () => {
     return new Promise((resolve, reject) => {
       this.restAPI
-        .request('get', '/user', {})
+        .request('get', '/account/purchase', {})
         .then((res: any) => {
           res.forEach((item: any, index: number) => (item.key = index))
           resolve(res)
@@ -32,7 +32,7 @@ export default class AccountApi {
   createAccount = (data: any) => {
     return new Promise((resolve, reject) => {
       this.restAPI
-        .request('post', '/user/purchase', data)
+        .request('post', '/account/purchase', data)
         .then(() => {
           resolve(true)
         })
@@ -42,10 +42,10 @@ export default class AccountApi {
     })
   }
   editAccount = (id: string, data: any) => {
-    // TOCHECK user_id 應改為 purchase_id
+    // TOCHECK purchase_id 應改為 account_id？
     return new Promise((resolve, reject) => {
       this.restAPI
-        .request('post', `/user/${id}`, data)
+        .request('post', `/account/${id}`, data)
         .then(() => {
           resolve(true)
         })
@@ -57,7 +57,7 @@ export default class AccountApi {
   getAccountDetail = (id: string) => {
     return new Promise((resolve, reject) => {
       this.restAPI
-        .request('get', `/user/${id}`, {})
+        .request('get', `/account/${id}`, {})
         .then((res: any) => {
           resolve(res)
         })
@@ -69,7 +69,7 @@ export default class AccountApi {
   getAccountRecord = (id: string) => {
     return new Promise((resolve, reject) => {
       this.restAPI
-        .request('get', `/user/${id}/record`, {})
+        .request('get', `/account/${id}/record`, {})
         .then((res: any) => {
           res.forEach((item: any, index: number) => {
             item.created_at = moment(item.created_at).format('YYYY/MM/DD')
@@ -85,7 +85,7 @@ export default class AccountApi {
   switchAccountStatus = (id: string, enable: boolean) => {
     return new Promise((resolve, reject) => {
       this.restAPI
-        .request('post', `/user/${id}/enable`, { enable })
+        .request('post', `/account/${id}/enable`, { enable })
         .then(() => {
           resolve(true)
         })

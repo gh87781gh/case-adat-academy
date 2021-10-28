@@ -38,8 +38,8 @@ const LayoutTemplate = () => {
                 render={() => componentPage(User, true)}
               />
               <Route
-                exact={true}
-                path='/admin'
+                // exact={true}
+                path='/admin/:tab?/:id?'
                 render={() => componentPage(Admin, true)}
               />
               <Redirect to='/login' />

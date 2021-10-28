@@ -54,7 +54,7 @@ const ModalCreate = (props: IProps) => {
       setPurchaseDetail(null)
       context.setIsLoading(true)
       api
-        .getUserPurchases()
+        .getAccountPurchases()
         .then((res: any) => {
           setPurchaseList(res)
         })

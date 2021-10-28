@@ -30,12 +30,12 @@ interface IState {
   company: string
   course_access: string[] | any //TOCHECK api有這欄位後 any要拿掉
   quata: number
-  duration_start: any
-  duration_end: any
+  duration_start: string
+  duration_end: string
   remark: string
 }
 
-const ModalEdit = (props: IProps) => {
+const ModalCreate = (props: IProps) => {
   const context = useContext(MyContext)
   const api = new PurchaseApi()
 
@@ -45,18 +45,21 @@ const ModalEdit = (props: IProps) => {
     company: '',
     course_access: [],
     quata: 0,
-    duration_start: null,
-    duration_end: null,
+    duration_start: '',
+    duration_end: '',
     remark: ''
   }
   const [data, setData] = useState<IState>({
     ...initData
   })
   useEffect(() => {
-    if (props.isShow)
+    if (props.isShow) {
       setData(
         props.mode === 'CREATE' ? { ...initData } : { ...props.purchaseDetail }
       )
+    } else {
+      setData({ ...initData })
+    }
   }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const onSelect = (key: string, value: any) => {
@@ -76,12 +79,12 @@ const ModalEdit = (props: IProps) => {
   const onCount = (key: string, value: number) => {
     setData({ ...data, [key]: value })
   }
-  const onPick = (dates: any[] | null) => {
-    if (dates)
+  const onPick = (dates: any, dateStrings: any) => {
+    if (dateStrings)
       setData({
         ...data,
-        duration_start: dates[0],
-        duration_end: dates[1]
+        duration_start: dateStrings[0],
+        duration_end: dateStrings[1]
       })
   }
   const disabledDate = (current: any) => current < moment().endOf('day')
@@ -185,7 +188,10 @@ const ModalEdit = (props: IProps) => {
           <div className='ad-form-group'>
             <label className='required'>Duration</label>
             <RangePicker
-              value={[data.duration_start, data.duration_end]}
+              value={[
+                data.duration_start ? moment(data.duration_start) : null,
+                data.duration_end ? moment(data.duration_end) : null
+              ]}
               onChange={onPick}
               format='YYYY/MM/DD'
               disabledDate={disabledDate}
@@ -242,4 +248,4 @@ const ModalEdit = (props: IProps) => {
     </Modal>
   )
 }
-export default ModalEdit
+export default ModalCreate

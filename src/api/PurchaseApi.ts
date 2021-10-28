@@ -21,8 +21,8 @@ export default class PurchaseApi {
       this.restAPI
         .request('get', `/purchase/${id}`, {})
         .then((res: any) => {
-          res.duration_start = moment(res.duration_start)
-          res.duration_end = moment(res.duration_end)
+          res.duration_start = moment(res.duration_start).format('YYYY/MM/DD')
+          res.duration_end = moment(res.duration_end).format('YYYY/MM/DD')
           resolve(res)
         })
         .catch(() => {
@@ -35,6 +35,7 @@ export default class PurchaseApi {
       this.restAPI
         .request('get', `/purchase/${id}/accounts`, {})
         .then((res: any) => {
+          res.forEach((item: any, index: number) => (item.key = index))
           resolve(res)
         })
         .catch(() => {
@@ -49,17 +50,17 @@ export default class PurchaseApi {
             purchase_number: data.purchase_number,
             company: data.company,
             quata: data.quata,
-            course_access: data.course_access.join(','), //TOCHECK
-            duration_start: moment(data.duration_start).format('YYYY/MM/DD'),
-            duration_end: moment(data.duration_end).format('YYYY/MM/DD')
+            // course_access: data.course_access.join(','), //TOCHECK
+            duration_start: data.duration_start,
+            duration_end: data.duration_end
           }
         : mode === 'UPDATE'
         ? {
             company: data.company,
             quata: data.quata,
-            course_access: data.course_access.join(','), //TOCHECK
-            duration_start: moment(data.duration_start).format('YYYY/MM/DD'),
-            duration_end: moment(data.duration_end).format('YYYY/MM/DD'),
+            // course_access: data.course_access.join(','), //TOCHECK
+            duration_start: data.duration_start,
+            duration_end: data.duration_end,
             remark: data.remark || ''
           }
         : null
@@ -91,7 +92,7 @@ export default class PurchaseApi {
         })
     })
   }
-  addPurchaseAccount = (id: string, data: any) => {
+  editPurchaseAccount = (id: string, data: any) => {
     return new Promise((resolve, reject) => {
       this.restAPI
         .request('post', `/purchase/${id}/accounts`, data)

@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { MyContext } from '../../../storage'
 import AccountApi from '../../../api/AccountApi'
 import ModalEdit from './ModalEdit'
@@ -123,12 +124,15 @@ const ModalDetail = (props: IProps) => {
           <Col span={12}>
             <div className='ad-form-group ad-form-group-horizontal'>
               <label>Purchase number</label>
+              {/* TOCHECK length? */}
               {accountDetail.purchases?.length > 0 ? (
                 <>
                   <div className='ad-form-group-value'>
                     {accountDetail.purchases[0].purchase_number}
                   </div>
-                  <Button type='link'>open purchase</Button>
+                  <Link to={`/admin/${accountDetail.id}`} target='_blank'>
+                    <Button type='link'>open purchase</Button>
+                  </Link>
                 </>
               ) : null}
             </div>

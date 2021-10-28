@@ -14,7 +14,7 @@ interface IState {
   keyword: string
 }
 
-const Account = () => {
+const Index = () => {
   const context = useContext(MyContext)
   const api = new AccountApi()
 
@@ -46,6 +46,23 @@ const Account = () => {
   const [list, setList] = useState([])
   const [accountDetail, setAccountDetail] = useState<any>({})
   const [accountId, setAccountId] = useState<string>('')
+
+  const getList = () => {
+    context.setIsLoading(true)
+    api
+      .getAccounts()
+      .then((res: any) => {
+        setList(res)
+      })
+      .catch()
+      .finally(() => {
+        context.setIsLoading(false)
+      })
+  }
+  useEffect(() => {
+    getList()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   const columns = [
     {
       title: 'User ID',
@@ -99,22 +116,6 @@ const Account = () => {
       )
     }
   ]
-  const getList = () => {
-    context.setIsLoading(true)
-    api
-      .getAccounts()
-      .then((res: any) => {
-        setList(res)
-      })
-      .catch()
-      .finally(() => {
-        context.setIsLoading(false)
-      })
-  }
-  useEffect(() => {
-    getList()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
   return (
     <>
       <h1 className='ad-layout-article-title'>
@@ -139,7 +140,7 @@ const Account = () => {
               >
                 <Option value={'purchase_number_a'}>purchase_number A</Option>
                 <Option value={'purchase_number_b'}>purchase_number B</Option>
-                {/* TODO */}
+                {/* TOCHECK */}
                 {/* {optionIndustry.map((item: any) => (
                   <Option value={item.value} key={item.value}>
                     {item.name}
@@ -158,7 +159,7 @@ const Account = () => {
               >
                 <Option value={'active'}>Active</Option>
                 <Option value={'expired'}>Expired</Option>
-                {/* TODO */}
+                {/* TOCHECK */}
                 {/* {optionIndustry.map((item: any) => (
                   <Option value={item.value} key={item.value}>
                     {item.name}
@@ -200,4 +201,4 @@ const Account = () => {
     </>
   )
 }
-export default Account
+export default Index

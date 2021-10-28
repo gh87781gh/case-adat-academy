@@ -1,8 +1,8 @@
 import { useState, useContext, useEffect } from 'react'
-import moment from 'moment'
 import { MyContext } from '../../../storage'
 import PurchaseApi from '../../../api/PurchaseApi'
-import ModalEdit from './ModalEdit'
+import ModalCreate from './ModalCreate'
+import ModalRecord from './ModalRecord'
 import { Row, Col, Button, Modal } from 'antd'
 
 interface IProps {
@@ -10,7 +10,6 @@ interface IProps {
   onCancel: () => void
   getPurchaseList: () => void
   purchaseId: string
-  showModalRecord: () => void
 }
 
 const ModalDetail = (props: IProps) => {
@@ -18,6 +17,7 @@ const ModalDetail = (props: IProps) => {
   const context = useContext(MyContext)
 
   const [isModalEditShow, setIsModalEditShow] = useState(false)
+  const [isModalRecordShow, setIsModalRecordShow] = useState(false)
   const [isModalConfirmShow, setIsModalConfirmShow] = useState(false)
 
   const [purchaseDetail, setPurchaseDetail] = useState<any>({})
@@ -84,7 +84,7 @@ const ModalDetail = (props: IProps) => {
               >
                 Edit
               </Button>
-              <Button key='View' onClick={props.showModalRecord}>
+              <Button key='View' onClick={() => setIsModalRecordShow(true)}>
                 View records
               </Button>
               <Button key='Delete' onClick={() => setIsModalConfirmShow(true)}>
@@ -125,8 +125,7 @@ const ModalDetail = (props: IProps) => {
             <div className='ad-form-group'>
               <label>Duration</label>
               <div className='ad-form-group-value'>
-                {moment(purchaseDetail.duration_start).format('YYYY/MM/DD')} -{' '}
-                {moment(purchaseDetail.duration_end).format('YYYY/MM/DD')}
+                {purchaseDetail.duration_start} - {purchaseDetail.duration_end}
               </div>
             </div>
           </Col>
@@ -149,12 +148,17 @@ const ModalDetail = (props: IProps) => {
           </Col>
         </Row>
       </Modal>
-      <ModalEdit
+      <ModalCreate
         mode='UPDATE'
         isShow={isModalEditShow}
         onCancel={() => setIsModalEditShow(false)}
         getPurchaseList={() => props.getPurchaseList()}
         getPurchaseDetail={() => getPurchaseDetail()}
+        purchaseDetail={purchaseDetail}
+      />
+      <ModalRecord
+        isShow={isModalRecordShow}
+        onCancel={() => setIsModalRecordShow(false)}
         purchaseDetail={purchaseDetail}
       />
       {renderConfirmModal()}
