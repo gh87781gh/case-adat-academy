@@ -59,8 +59,8 @@ const PurchaseAccount = (props: IProps) => {
     },
     {
       title: 'Current purchase number',
-      dataIndex: 'current_perchase_number',
-      key: 'current_perchase_number'
+      dataIndex: 'current_purchase_number',
+      key: 'current_purchase_number'
     },
     {
       title: 'Current status',

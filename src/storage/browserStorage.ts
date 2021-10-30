@@ -2,13 +2,13 @@
 export default class BrowserStorage {
   // LOGIN_USERNAME
   setStorage(key: string, val: any) {
-    sessionStorage.setItem(key, val)
+    localStorage.setItem(key, val)
   }
   getStorage(key: string) {
-    return sessionStorage.getItem(key)
+    return localStorage.getItem(key)
   }
   removeStorage(key: string) {
-    sessionStorage.removeItem(key)
+    localStorage.removeItem(key)
   }
 
   // getToken() {

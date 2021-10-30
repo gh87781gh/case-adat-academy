@@ -127,14 +127,18 @@ const ModalCreate = (props: IProps) => {
           disabled={
             !data.purchase_number ||
             !data.company ||
-            !data.course_access || //TOCHECK 後端目前沒這個欄位
+            !data.course_access ||
             !data.quata ||
             !data.duration_start ||
             !data.duration_end
           }
           onClick={() => submit()}
         >
-          Create
+          {props.mode === 'CREATE'
+            ? 'Create'
+            : props.mode === 'UPDATE'
+            ? 'Save'
+            : ''}
         </Button>,
         <Button key='Cancel' onClick={props.onCancel}>
           Cancel
