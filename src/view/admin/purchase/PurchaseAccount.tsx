@@ -2,6 +2,8 @@ import { useState, useEffect, useContext } from 'react'
 import { MyContext } from '../../../storage'
 import PurchaseApi from '../../../api/PurchaseApi'
 import ModalCreate_PA from './ModalCreate_PA'
+import ModalDetail from '../account/ModalDetail'
+import ModalRecord from '../account/ModalRecord'
 import { Row, Col, Button, Table, Breadcrumb } from 'antd'
 
 interface IProps {
@@ -15,9 +17,14 @@ const PurchaseAccount = (props: IProps) => {
   const context = useContext(MyContext)
 
   const [isModalEditShow, setIsModalEditShow] = useState(false)
+  const [isModalDetailShow, setIsModalDetailShow] = useState<boolean>(false)
+  const [isModalRecordShow, setIsModalRecordShow] = useState<boolean>(false)
 
   const [purchaseDetail, setPurchaseDetail] = useState<any>({})
   const [accountList, setAccountList] = useState<any>([])
+  const [accountId, setAccountId] = useState<string>('')
+  const [userId, setUserId] = useState<string>('')
+
   // const [accountDetail, setAccountDetail] = useState<any>({})
   const getPurchaseDetail = () => {
     context.setIsLoading(true)
@@ -29,7 +36,7 @@ const PurchaseAccount = (props: IProps) => {
         context.setIsLoading(false)
       })
   }
-  const getAccountList = () => {
+  const getList = () => {
     context.setIsLoading(true)
     api
       .getPurchaseAccount(props.purchaseId)
@@ -43,7 +50,7 @@ const PurchaseAccount = (props: IProps) => {
   }
   useEffect(() => {
     getPurchaseDetail()
-    getAccountList()
+    getList()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const columns = [
@@ -78,8 +85,9 @@ const PurchaseAccount = (props: IProps) => {
             key='more'
             size='small'
             onClick={() => {
-              // setAccountDetail(record)
-              setIsModalEditShow(true)
+              setUserId(record.user_id)
+              setAccountId(record.id)
+              setIsModalDetailShow(true)
             }}
           >
             More
@@ -88,7 +96,9 @@ const PurchaseAccount = (props: IProps) => {
             key='view'
             size='small'
             onClick={() => {
-              // setStep(1)
+              setUserId(record.user_id)
+              setAccountId(record.id)
+              setIsModalRecordShow(true)
             }}
           >
             View Record
@@ -148,6 +158,19 @@ const PurchaseAccount = (props: IProps) => {
         isShow={isModalEditShow}
         onCancel={() => setIsModalEditShow(false)}
         purchaseDetail={purchaseDetail}
+      />
+      <ModalDetail
+        isShow={isModalDetailShow}
+        onCancel={() => setIsModalDetailShow(false)}
+        accountId={accountId}
+        getAccountList={() => getList()}
+        showModalRecord={() => setIsModalRecordShow(true)}
+      />
+      <ModalRecord
+        isShow={isModalRecordShow}
+        onCancel={() => setIsModalRecordShow(false)}
+        accountId={accountId}
+        userId={userId}
       />
     </>
   )

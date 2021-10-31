@@ -47,7 +47,10 @@ const Header = () => {
         <Menu.Item key='change password'>change password</Menu.Item>
         <Menu.Item key='-'>---------------</Menu.Item>
         {context.auth.is_admin ? (
-          <Menu.Item key='admin' onClick={() => history.push('/admin')}>
+          <Menu.Item
+            key='admin'
+            onClick={() => history.push('/admin/purchase')}
+          >
             Admin
           </Menu.Item>
         ) : null}

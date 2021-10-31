@@ -1,0 +1,31 @@
+.ad-sideBar {
+  .ulReset();
+  min-width: 280px;
+  padding: 114px 32px;
+  background-color: #f0f0f0;
+
+  li {
+    display: block;
+    padding: 5px 10px 5px 20px;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: rgba(17, 17, 17, 0.5);
+    position: relative;
+    cursor: pointer;
+
+    &.active {
+      color: @color-black;
+      &::before {
+        content: '';
+        display: block;
+        width: 3px;
+        height: 100%;
+        background-color: @color-black;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+  }
+}

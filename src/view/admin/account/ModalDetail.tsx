@@ -132,7 +132,11 @@ const ModalDetail = (props: IProps) => {
                   <div className='ad-form-group-value'>
                     {accountDetail.purchases[0].purchase_number}
                   </div>
-                  <Link to={`/admin/${accountDetail.id}`} target='_blank'>
+                  <Link
+                    style={{ marginLeft: '1rem' }}
+                    to={`/admin/purchase/${accountDetail.id}`}
+                    target='_blank'
+                  >
                     <Button type='link'>open purchase</Button>
                   </Link>
                 </>

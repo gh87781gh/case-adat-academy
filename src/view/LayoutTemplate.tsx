@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom'
 import Login from './login/Login'
-import Admin from './admin/Admin'
+import Purchase from './admin/purchase/Index'
+import Account from './admin/account/Index'
 import User from './user/User'
 import { Spin } from 'antd'
 import { MyContext, BrowserStorage } from '../storage'
@@ -38,10 +39,20 @@ const LayoutTemplate = () => {
                 render={() => componentPage(User, true)}
               />
               <Route
+                exact={true}
+                path='/admin/purchase/:id?'
+                render={() => componentPage(Purchase, false)}
+              />
+              <Route
+                exact={true}
+                path='/admin/account'
+                render={() => componentPage(Account, true)}
+              />
+              {/* <Route
                 // exact={true}
                 path='/admin/:tab?/:id?'
                 render={() => componentPage(Admin, true)}
-              />
+              /> */}
               <Redirect to='/login' />
             </Switch>
           </HashRouter>
