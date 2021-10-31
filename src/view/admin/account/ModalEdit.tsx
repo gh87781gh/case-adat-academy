@@ -147,9 +147,7 @@ const ModalEdit = (props: IProps) => {
           <div className='ad-form-group'>
             <label>Status</label>
             <div className='ad-form-group-value'>
-              {purchaseDetail
-                ? `${purchaseDetail.enable ? 'Enabled' : 'Disable'}`
-                : '-'}
+              {purchaseDetail ? `${purchaseDetail.status}` : '-'}
             </div>
           </div>
         </Col>
@@ -217,7 +215,7 @@ const ModalEdit = (props: IProps) => {
           <div className='ad-form-group'>
             <label>Current status</label>
             <div className='ad-form-group-value'>
-              {props.accountDetail.enable ? 'Enabled' : 'Disabled'}
+              {props.accountDetail.status}
             </div>
           </div>
         </Col>

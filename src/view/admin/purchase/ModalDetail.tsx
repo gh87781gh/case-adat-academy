@@ -134,7 +134,6 @@ const ModalDetail = (props: IProps) => {
               <label>Course access</label>
               <div className='ad-form-group-value'>
                 {purchaseDetail.course_access}
-                {/* TOCHECK array.map render */}
               </div>
             </div>
           </Col>

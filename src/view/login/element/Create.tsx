@@ -30,6 +30,7 @@ const Create = () => {
   useEffect(() => {
     context.setIsLoading(true)
 
+    // TODO 要跟換成打 option 的 api
     api
       .getSignUpOptions()
       .then((res: any) => {

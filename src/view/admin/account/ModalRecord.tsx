@@ -6,7 +6,8 @@ import { Table, Modal } from 'antd'
 interface IProps {
   isShow: boolean
   onCancel: () => void
-  accountDetail: any
+  accountId: string
+  userId: string
 }
 
 const ModalRecord = (props: IProps) => {
@@ -14,6 +15,23 @@ const ModalRecord = (props: IProps) => {
   const api = new AccountApi()
 
   const [list, setList] = useState([])
+
+  const getList = () => {
+    context.setIsLoading(true)
+    api
+      .getAccountRecord(props.accountId)
+      .then((res: any) => {
+        setList(res)
+      })
+      .catch()
+      .finally(() => {
+        context.setIsLoading(false)
+      })
+  }
+  useEffect(() => {
+    if (props.isShow) getList()
+  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
+
   const columns = [
     {
       title: 'Type',
@@ -38,8 +56,8 @@ const ModalRecord = (props: IProps) => {
     },
     {
       title: 'Editor',
-      dataIndex: 'log_from',
-      key: 'log_from'
+      dataIndex: 'editor',
+      key: 'editor'
     },
     {
       title: 'Remarks',
@@ -47,22 +65,6 @@ const ModalRecord = (props: IProps) => {
       key: 'remark'
     }
   ]
-  const getList = () => {
-    context.setIsLoading(true)
-    api
-      .getAccountRecord(props.accountDetail.id)
-      .then((res: any) => {
-        setList(res)
-      })
-      .catch()
-      .finally(() => {
-        context.setIsLoading(false)
-      })
-  }
-  useEffect(() => {
-    if (props.isShow) getList()
-  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
-
   return (
     <Modal
       zIndex={1001}
@@ -73,9 +75,7 @@ const ModalRecord = (props: IProps) => {
           <div className='ad-modal-title-sub'>
             <div className='ad-form-group ad-form-group-horizontal'>
               <label>User ID</label>
-              <div className='ad-form-group-value'>
-                {props.accountDetail.user_id}
-              </div>
+              <div className='ad-form-group-value'>{props.userId || '-'}</div>
             </div>
           </div>
         </>

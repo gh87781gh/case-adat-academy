@@ -30,7 +30,6 @@ const ModalDetail = (props: IProps) => {
   }
   useEffect(() => {
     if (props.isShow) {
-      setAccountDetail({})
       getAccountDetail()
     }
   }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -59,12 +58,12 @@ const ModalDetail = (props: IProps) => {
       ]}
       width={720}
     >
-      “{accountDetail.user_id}” is now under the purchase number “
-      {accountDetail.purchase_number}”. Are you sure you want to disable the
-      account’s course access?
+      {accountDetail.purchases?.length > 0
+        ? `“${accountDetail.user_id}” is now under the purchase number “${accountDetail.purchases[0].purchase_number}”. Are you sure you want to
+      disable the account’s course access?`
+        : null}
     </Modal>
   )
-
   const switchStatus = (enable: boolean) => {
     context.setIsLoading(true)
     api
@@ -77,6 +76,15 @@ const ModalDetail = (props: IProps) => {
       .finally(() => {
         context.setIsLoading(false)
       })
+  }
+  const handleStatusChange = () => {
+    if (accountDetail.status === 'Enabled') {
+      accountDetail.purchases.length > 0 && accountDetail.user_id
+        ? setIsModalConfirmShow(true)
+        : switchStatus(false)
+    } else if (accountDetail.status === 'Disabled') {
+      switchStatus(true)
+    }
   }
 
   return (
@@ -100,17 +108,12 @@ const ModalDetail = (props: IProps) => {
               >
                 View records
               </Button>
-              <Button
-                key='Disable'
-                onClick={() =>
-                  accountDetail.enable
-                    ? accountDetail.purchase_number
-                      ? setIsModalConfirmShow(true)
-                      : switchStatus(false)
-                    : switchStatus(true)
-                }
-              >
-                {accountDetail.enable ? 'Disable' : 'Enable'}
+              <Button key='Switch' onClick={() => handleStatusChange()}>
+                {accountDetail.status === 'Enabled'
+                  ? 'Disable'
+                  : accountDetail.status === 'Disabled'
+                  ? 'Enable'
+                  : ''}
               </Button>
             </div>
           </>
@@ -124,7 +127,6 @@ const ModalDetail = (props: IProps) => {
           <Col span={12}>
             <div className='ad-form-group ad-form-group-horizontal'>
               <label>Purchase number</label>
-              {/* TOCHECK length? */}
               {accountDetail.purchases?.length > 0 ? (
                 <>
                   <div className='ad-form-group-value'>
@@ -134,7 +136,9 @@ const ModalDetail = (props: IProps) => {
                     <Button type='link'>open purchase</Button>
                   </Link>
                 </>
-              ) : null}
+              ) : (
+                '-'
+              )}
             </div>
           </Col>
         </Row>
@@ -154,9 +158,7 @@ const ModalDetail = (props: IProps) => {
           <Col span={6}>
             <div className='ad-form-group'>
               <label>Current status</label>
-              <div className='ad-form-group-value'>
-                {accountDetail.enable ? 'Enabled' : 'Disabled'}
-              </div>
+              <div className='ad-form-group-value'>{accountDetail.status}</div>
             </div>
           </Col>
         </Row>

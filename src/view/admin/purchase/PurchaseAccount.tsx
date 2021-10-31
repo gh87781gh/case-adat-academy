@@ -49,18 +49,18 @@ const PurchaseAccount = (props: IProps) => {
   const columns = [
     {
       title: 'User ID',
-      dataIndex: 'current_user_id',
-      key: 'current_user_id'
+      dataIndex: 'user_id',
+      key: 'user_id'
     },
     {
       title: 'Current email',
-      dataIndex: 'current_email',
-      key: 'current_email'
+      dataIndex: 'email',
+      key: 'email'
     },
     {
       title: 'Current purchase number',
-      dataIndex: 'current_purchase_number',
-      key: 'current_purchase_number'
+      dataIndex: 'purchase_number',
+      key: 'purchase_number'
     },
     {
       title: 'Current status',

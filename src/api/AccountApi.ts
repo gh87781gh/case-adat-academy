@@ -69,10 +69,9 @@ export default class AccountApi {
   getAccountRecord = (id: string) => {
     return new Promise((resolve, reject) => {
       this.restAPI
-        .request('get', `/account/${id}/record`, {})
+        .request('get', `/account/${id}/records`, {})
         .then((res: any) => {
           res.forEach((item: any, index: number) => {
-            item.created_at = moment(item.created_at).format('YYYY/MM/DD')
             item.key = index
           })
           resolve(res)

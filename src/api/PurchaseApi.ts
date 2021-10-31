@@ -21,8 +21,18 @@ export default class PurchaseApi {
       this.restAPI
         .request('get', `/purchase/${id}`, {})
         .then((res: any) => {
-          res.duration_start = moment(res.duration_start).format('YYYY/MM/DD')
-          res.duration_end = moment(res.duration_end).format('YYYY/MM/DD')
+          resolve(res)
+        })
+        .catch(() => {
+          reject(false)
+        })
+    })
+  }
+  getPurchaseRecord = (id: string) => {
+    return new Promise((resolve, reject) => {
+      this.restAPI
+        .request('get', `/purchase/${id}/records`, {})
+        .then((res: any) => {
           resolve(res)
         })
         .catch(() => {

@@ -46,6 +46,7 @@ const Index = () => {
   const [list, setList] = useState([])
   const [accountDetail, setAccountDetail] = useState<any>({})
   const [accountId, setAccountId] = useState<string>('')
+  const [userId, setUserId] = useState<string>('')
 
   const getList = () => {
     context.setIsLoading(true)
@@ -81,9 +82,8 @@ const Index = () => {
     },
     {
       title: 'Current status',
-      dataIndex: 'enable',
-      key: 'enable',
-      render: (text: any) => <>{text ? 'Enabled' : 'Disabled'}</>
+      dataIndex: 'status',
+      key: 'status'
     },
     {
       title: 'Actions',
@@ -106,7 +106,8 @@ const Index = () => {
             key='view'
             size='small'
             onClick={() => {
-              setAccountDetail(record)
+              setUserId(record.user_id)
+              setAccountId(record.id)
               setIsModalRecordShow(true)
             }}
           >
@@ -196,7 +197,8 @@ const Index = () => {
       <ModalRecord
         isShow={isModalRecordShow}
         onCancel={() => setIsModalRecordShow(false)}
-        accountDetail={accountDetail}
+        accountId={accountId}
+        userId={userId}
       />
     </>
   )
