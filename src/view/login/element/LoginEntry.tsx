@@ -63,6 +63,7 @@ const LoginEntry = () => {
       .login(data)
       .then((res: any) => {
         browserStorage.setStorage('AUTH', res.token)
+        context.getAuth()
         history.push('/index')
       })
       .catch((err: any) => {

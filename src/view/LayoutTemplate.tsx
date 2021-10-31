@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom'
+import GlobalApi from '../api/GlobalApi'
 import Login from './login/Login'
 import Purchase from './admin/purchase/Index'
 import Account from './admin/account/Index'
@@ -9,8 +10,25 @@ import { MyContext, BrowserStorage } from '../storage'
 
 const LayoutTemplate = () => {
   const browserStorage = new BrowserStorage()
+  const api = new GlobalApi()
+
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [auth, setAuth] = useState<any>({})
+  const getAuth = () => {
+    setIsLoading(true)
+    api
+      .getAuth()
+      .then((res: any) => {
+        setAuth(res)
+      })
+      .catch()
+      .finally(() => {
+        setIsLoading(false)
+      })
+  }
+  useEffect(() => {
+    if (browserStorage.getStorage('AUTH')) getAuth()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const componentPage = (Component: any, isAuth: boolean, props?: any) => {
     return isAuth && !browserStorage.getStorage('AUTH') ? (
@@ -26,13 +44,16 @@ const LayoutTemplate = () => {
         value={{
           setIsLoading,
           auth,
-          setAuth
+          getAuth
         }}
       >
         <Spin className='ad-spin-global' spinning={isLoading} size='large'>
           <HashRouter>
             <Switch>
-              <Route path='/login' render={() => componentPage(Login, false)} />
+              <Route
+                path='/login'
+                render={() => componentPage(Login, false, () => getAuth())}
+              />
               <Route
                 exact={true}
                 path='/index'

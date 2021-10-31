@@ -5,11 +5,11 @@ import React from 'react'
 interface IContext {
   auth: any
   setIsLoading: any
-  setAuth: any
+  getAuth: any
 }
 const MyContext = React.createContext<IContext>({
   auth: {},
   setIsLoading: (spinning: boolean) => {},
-  setAuth: (data: any) => {}
+  getAuth: () => {}
 })
 export default MyContext

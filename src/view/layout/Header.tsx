@@ -1,6 +1,5 @@
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
-import GlobalApi from '../../api/GlobalApi'
 import { LogoADAT } from '../../utility/icon'
 import { IconSearch, IconArrowDown } from '../../utility/icon'
 import { Input, Button, Menu, Dropdown } from 'antd'
@@ -9,7 +8,6 @@ import { MyContext, BrowserStorage } from '../../storage'
 const Header = () => {
   const context = useContext(MyContext)
   const browserStorage = new BrowserStorage()
-  const api = new GlobalApi()
   const history = useHistory()
   const location = useLocation()
 
@@ -17,23 +15,6 @@ const Header = () => {
     browserStorage.removeStorage('AUTH')
     history.push('/login')
   }
-
-  useEffect(() => {
-    if (browserStorage.getStorage('AUTH')) {
-      context.setIsLoading(true)
-      api
-        .getAuth()
-        .then((res: any) => {
-          context.setAuth(res)
-        })
-        .catch()
-        .finally(() => {
-          context.setIsLoading(false)
-        })
-    } else {
-      history.push('/login')
-    }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const menu = () => {
     return (
