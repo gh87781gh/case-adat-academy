@@ -42,7 +42,6 @@ export default class AccountApi {
     })
   }
   editAccount = (id: string, data: any) => {
-    // TOCHECK purchase_id 應改為 account_id？
     return new Promise((resolve, reject) => {
       this.restAPI
         .request('post', `/account/${id}`, data)

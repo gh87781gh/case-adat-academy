@@ -31,6 +31,7 @@ const LayoutTemplate = () => {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const componentPage = (Component: any, isAuth: boolean, props?: any) => {
+    // TODO admin跟user的區別
     return isAuth && !browserStorage.getStorage('AUTH') ? (
       <Redirect to='/login' />
     ) : (
@@ -51,8 +52,9 @@ const LayoutTemplate = () => {
           <HashRouter>
             <Switch>
               <Route
+                exact={true}
                 path='/login'
-                render={() => componentPage(Login, false, () => getAuth())}
+                render={() => componentPage(Login, false)}
               />
               <Route
                 exact={true}
@@ -69,11 +71,6 @@ const LayoutTemplate = () => {
                 path='/admin/account'
                 render={() => componentPage(Account, true)}
               />
-              {/* <Route
-                // exact={true}
-                path='/admin/:tab?/:id?'
-                render={() => componentPage(Admin, true)}
-              /> */}
               <Redirect to='/login' />
             </Switch>
           </HashRouter>
