@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import { MyContext } from '../../../storage'
 import PurchaseApi from '../../../api/PurchaseApi'
-import ModalCreate_PA from './ModalCreate_PA'
+import ModalCreate from '../account/ModalCreate'
 import ModalDetail from '../account/ModalDetail'
 import ModalRecord from '../account/ModalRecord'
 import { Row, Col, Button, Table, Breadcrumb } from 'antd'
@@ -16,7 +16,7 @@ const PurchaseAccount = (props: IProps) => {
   const api = new PurchaseApi()
   const context = useContext(MyContext)
 
-  const [isModalEditShow, setIsModalEditShow] = useState(false)
+  const [isModalCreateShow, setIsModalCreateShow] = useState(false)
   const [isModalDetailShow, setIsModalDetailShow] = useState<boolean>(false)
   const [isModalRecordShow, setIsModalRecordShow] = useState<boolean>(false)
 
@@ -25,7 +25,6 @@ const PurchaseAccount = (props: IProps) => {
   const [accountId, setAccountId] = useState<string>('')
   const [userId, setUserId] = useState<string>('')
 
-  // const [accountDetail, setAccountDetail] = useState<any>({})
   const getPurchaseDetail = () => {
     context.setIsLoading(true)
     api
@@ -121,7 +120,7 @@ const PurchaseAccount = (props: IProps) => {
           className='ad-float-right'
           type='primary'
           onClick={() => {
-            setIsModalEditShow(true)
+            setIsModalCreateShow(true)
           }}
         >
           Create account
@@ -154,9 +153,10 @@ const PurchaseAccount = (props: IProps) => {
         </Row>
       </div>
       <Table columns={columns} dataSource={accountList} />
-      <ModalCreate_PA
-        isShow={isModalEditShow}
-        onCancel={() => setIsModalEditShow(false)}
+      <ModalCreate
+        isShow={isModalCreateShow}
+        onCancel={() => setIsModalCreateShow(false)}
+        getList={() => getList()}
         purchaseDetail={purchaseDetail}
       />
       <ModalDetail

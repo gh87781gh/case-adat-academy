@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react'
-import moment from 'moment'
 import { MyContext } from '../../../storage'
 import AccountApi from '../../../api/AccountApi'
+import PurchaseApi from '../../../api/PurchaseApi'
 import FormGroupMsg from '../../../utility/component/FormGroupMsg'
 import { ValidateStr } from '../../../utility/validate'
 import { Row, Col, Button, Input, Select, Modal } from 'antd'
@@ -10,7 +10,8 @@ const { Option } = Select
 interface IProps {
   isShow: boolean
   onCancel: () => void
-  getAccounts: () => void
+  getList: () => void
+  purchaseDetail?: any
 }
 interface IState {
   purchase_id: string
@@ -19,6 +20,7 @@ interface IState {
 
 const ModalCreate = (props: IProps) => {
   const api = new AccountApi()
+  const api_purchase = new PurchaseApi()
   const context = useContext(MyContext)
 
   const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
@@ -27,12 +29,6 @@ const ModalCreate = (props: IProps) => {
     email: ''
   }
   const [data, setData] = useState<IState>({ ...initData })
-  const onSelect = (key: string, value: any) => {
-    if (key === 'purchase_id') {
-      setPurchaseDetail(purchaseList.find((item: any) => item.id === value))
-    }
-    setData({ ...data, [key]: value })
-  }
   const onChange = (key: string, e: any) => {
     const value = e.target.value
     if (value) {
@@ -45,41 +41,92 @@ const ModalCreate = (props: IProps) => {
     }
     setData({ ...data, [key]: value })
   }
+  const onSelect = (key: string, value: any) => {
+    if (key === 'purchase_id') {
+      setPurchaseDetail(purchaseList.find((item: any) => item.id === value))
+    }
+    setData({ ...data, [key]: value })
+  }
 
   const [purchaseList, setPurchaseList] = useState<any>([])
   const [purchaseDetail, setPurchaseDetail] = useState<any>(null)
   useEffect(() => {
     if (props.isShow) {
-      setData({ ...initData })
-      setPurchaseDetail(null)
-      context.setIsLoading(true)
+      setIsEmail(undefined)
+
+      if (props.purchaseDetail) {
+        setPurchaseDetail(props.purchaseDetail)
+        setData({ purchase_id: props.purchaseDetail.id, email: '' })
+      } else {
+        setData({ ...initData })
+        setPurchaseDetail(null)
+        context.setIsLoading(true)
+        api
+          .getAccountPurchases()
+          .then((res: any) => {
+            setPurchaseList(res)
+          })
+          .catch()
+          .finally(() => {
+            context.setIsLoading(false)
+          })
+      }
+    }
+  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const createAccount = () => {
+    context.setIsLoading(true)
+
+    if (props.purchaseDetail) {
+      api_purchase
+        .createPurchaseAccount(props.purchaseDetail.id, { email: data.email })
+        .then(() => {
+          props.getList()
+          props.onCancel()
+        })
+        .catch()
+        .finally(() => {
+          context.setIsLoading(false)
+        })
+    } else {
       api
-        .getAccountPurchases()
-        .then((res: any) => {
-          setPurchaseList(res)
+        .createAccount(data)
+        .then(() => {
+          props.getList()
+          props.onCancel()
         })
         .catch()
         .finally(() => {
           context.setIsLoading(false)
         })
     }
-  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  const createAccount = () => {
-    context.setIsLoading(true)
-    api
-      .createAccount(data)
-      .then(() => {
-        props.getAccounts()
-        props.onCancel()
-      })
-      .catch()
-      .finally(() => {
-        context.setIsLoading(false)
-      })
   }
 
   // TODO are u sure popup
+  const [isModalConfirmShow, setIsModalConfirmShow] = useState(false)
+  const renderConfirmModal = () => (
+    <Modal
+      title='Are you sure?'
+      visible={isModalConfirmShow}
+      onCancel={() => setIsModalConfirmShow(false)}
+      footer={[
+        <Button
+          key='Create'
+          type='primary'
+          // onClick={() => deletePurchase()}
+        >
+          Yes. Move it.
+        </Button>,
+        <Button key='Cancel' onClick={props.onCancel}>
+          No
+        </Button>
+      ]}
+      width={720}
+    >
+      “Leoo123@winbond.com” is in user ID “Leoo123”. Are you sure you want to
+      move the account to “winbond123”?
+    </Modal>
+  )
 
   return (
     <Modal
@@ -106,18 +153,23 @@ const ModalCreate = (props: IProps) => {
         <Col span={12}>
           <div className='ad-form-group'>
             <label className='required'>Purchase number</label>
-            <Select
-              value={data.purchase_id}
-              placeholder='Please select'
-              onChange={(val) => onSelect('purchase_id', val)}
-            >
-              {/* TODO */}
-              {purchaseList.map((item: any, index: number) => (
-                <Option value={item.id} key={item.id}>
-                  {item.purchase_number}
-                </Option>
-              ))}
-            </Select>
+            {props.purchaseDetail ? (
+              <div className='ad-form-group-value'>
+                {props.purchaseDetail.purchase_number}
+              </div>
+            ) : (
+              <Select
+                value={data.purchase_id}
+                placeholder='Please select'
+                onChange={(val) => onSelect('purchase_id', val)}
+              >
+                {purchaseList.map((item: any, index: number) => (
+                  <Option value={item.id} key={item.id}>
+                    {item.purchase_number}
+                  </Option>
+                ))}
+              </Select>
+            )}
           </div>
         </Col>
       </Row>
@@ -144,7 +196,6 @@ const ModalCreate = (props: IProps) => {
           <div className='ad-form-group'>
             <label>Course access</label>
             <div className='ad-form-group-value'>
-              {/* TODO  map*/}
               {purchaseDetail ? `${purchaseDetail.course_access}` : '-'}
             </div>
           </div>
@@ -164,11 +215,7 @@ const ModalCreate = (props: IProps) => {
             <label>Duration</label>
             <div className='ad-form-group-value'>
               {purchaseDetail
-                ? `${moment(purchaseDetail.duration_start).format(
-                    'YYYY/MM/DD'
-                  )}-${moment(purchaseDetail.duration_end).format(
-                    'YYYY/MM/DD'
-                  )}`
+                ? `${purchaseDetail.duration_start}-${purchaseDetail.duration_end}`
                 : '-'}
             </div>
           </div>

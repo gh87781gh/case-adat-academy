@@ -102,7 +102,7 @@ export default class PurchaseApi {
         })
     })
   }
-  editPurchaseAccount = (id: string, data: any) => {
+  createPurchaseAccount = (id: string, data: any) => {
     return new Promise((resolve, reject) => {
       this.restAPI
         .request('post', `/purchase/${id}/accounts`, data)

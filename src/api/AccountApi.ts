@@ -1,5 +1,4 @@
 import { RestAPI } from './engine/axiosRunner'
-import moment from 'moment'
 
 export default class AccountApi {
   restAPI: any = new RestAPI()

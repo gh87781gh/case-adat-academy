@@ -193,7 +193,7 @@ const Index = () => {
           <ModalCreate
             isShow={isModalCreateShow}
             onCancel={() => setIsModalCreateShow(false)}
-            getAccounts={() => getList()}
+            getList={() => getList()}
           />
           <ModalDetail
             isShow={isModalDetailShow}

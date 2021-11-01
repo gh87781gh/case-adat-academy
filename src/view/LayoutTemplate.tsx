@@ -7,6 +7,7 @@ import Account from './admin/account/Index'
 import User from './user/User'
 import { Spin } from 'antd'
 import { MyContext, BrowserStorage } from '../storage'
+import { version } from '../../package.json'
 
 const LayoutTemplate = () => {
   const browserStorage = new BrowserStorage()
@@ -30,9 +31,10 @@ const LayoutTemplate = () => {
     if (browserStorage.getStorage('AUTH')) getAuth()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const componentPage = (Component: any, isAuth: boolean, props?: any) => {
-    // TODO admin跟user的區別
-    return isAuth && !browserStorage.getStorage('AUTH') ? (
+  const componentPage = (Component: any, authType: string, props?: any) => {
+    const token = browserStorage.getStorage('AUTH')
+    return (authType !== 'LOGIN' && !token) ||
+      (authType === 'ADMIN' && token && !auth) ? (
       <Redirect to='/login' />
     ) : (
       <Component {...props} />
@@ -54,22 +56,22 @@ const LayoutTemplate = () => {
               <Route
                 exact={true}
                 path='/login'
-                render={() => componentPage(Login, false)}
+                render={() => componentPage(Login, 'LOGIN')}
               />
               <Route
                 exact={true}
                 path='/index'
-                render={() => componentPage(User, true)}
+                render={() => componentPage(User, 'USER')}
               />
               <Route
                 exact={true}
                 path='/admin/purchase/:id?'
-                render={() => componentPage(Purchase, false)}
+                render={() => componentPage(Purchase, 'ADMIN')}
               />
               <Route
                 exact={true}
                 path='/admin/account'
-                render={() => componentPage(Account, true)}
+                render={() => componentPage(Account, 'ADMIN')}
               />
               <Redirect to='/login' />
             </Switch>
