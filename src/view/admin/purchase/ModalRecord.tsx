@@ -19,10 +19,7 @@ const ModalRecord = (props: IProps) => {
     api
       .getPurchaseRecord(props.purchaseDetail.id)
       .then((res: any) => setList(res))
-      .catch()
-      .finally(() => {
-        context.setIsLoading(false)
-      })
+      .finally(() => context.setIsLoading(false))
   }
   useEffect(() => {
     if (props.isShow && props.purchaseDetail.id) getPurchaseRecord()

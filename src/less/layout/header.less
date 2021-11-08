@@ -6,7 +6,7 @@
   background-color: @color-white;
   position: relative;
 
-  box-shadow: 0px 1px 0px 0px @color-gray02; //TODO
+  box-shadow: 0px 1px 0px 0px @color-gray02;
 
   &::before {
     .size(100%, 6px);
@@ -97,15 +97,15 @@
   min-width: 246px;
   border-radius: unset;
 }
-.ad-header-profile-menu-text {
-  padding-top: unset;
-  padding-bottom: unset;
-}
 .ad-header-profile-menu .ant-dropdown-menu-item-disabled,
 .ad-header-profile-menu .ant-dropdown-menu-title-content {
   color: @color-white;
 }
-.ad-header-profile-menu-text .ant-dropdown-menu-title-content span {
+.ad-header-profile-menu-text {
+  padding-top: unset;
+  padding-bottom: unset;
+}
+.ad-header-profile-menu-decs {
   color: @color-primary-light01;
 }
 .ad-header-profile-menu .ant-dropdown-menu-item:hover {
@@ -116,4 +116,7 @@
   background-color: unset;
   font-weight: unset;
   cursor: auto;
+}
+.ad-header-profile-menu-bd {
+  border-bottom: 1px dashed @color-primary-light01;
 }

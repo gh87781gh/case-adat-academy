@@ -66,10 +66,7 @@ const ModalCreate = (props: IProps) => {
           .then((res: any) => {
             setPurchaseList(res)
           })
-          .catch()
-          .finally(() => {
-            context.setIsLoading(false)
-          })
+          .finally(() => context.setIsLoading(false))
       }
     }
   }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -84,10 +81,7 @@ const ModalCreate = (props: IProps) => {
           props.getList()
           props.onCancel()
         })
-        .catch()
-        .finally(() => {
-          context.setIsLoading(false)
-        })
+        .finally(() => context.setIsLoading(false))
     } else {
       api
         .createAccount(data)
@@ -95,10 +89,7 @@ const ModalCreate = (props: IProps) => {
           props.getList()
           props.onCancel()
         })
-        .catch()
-        .finally(() => {
-          context.setIsLoading(false)
-        })
+        .finally(() => context.setIsLoading(false))
     }
   }
 

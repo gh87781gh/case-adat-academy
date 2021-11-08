@@ -46,7 +46,6 @@ const Index = () => {
   }
 
   const [list, setList] = useState([])
-  const [accountDetail, setAccountDetail] = useState<any>({})
   const [accountId, setAccountId] = useState<string>('')
   const [userId, setUserId] = useState<string>('')
 
@@ -54,13 +53,8 @@ const Index = () => {
     context.setIsLoading(true)
     api
       .getAccounts()
-      .then((res: any) => {
-        setList(res)
-      })
-      .catch()
-      .finally(() => {
-        context.setIsLoading(false)
-      })
+      .then((res: any) => setList(res))
+      .finally(() => context.setIsLoading(false))
   }
   useEffect(() => {
     getList()

@@ -29,40 +29,13 @@ export default class AccountApi {
     })
   }
   createAccount = (data: any) => {
-    return new Promise((resolve, reject) => {
-      this.restAPI
-        .request('post', '/account/purchase', data)
-        .then(() => {
-          resolve(true)
-        })
-        .catch(() => {
-          reject(false)
-        })
-    })
+    return this.restAPI.request('post', '/account/purchase', data)
   }
   editAccount = (id: string, data: any) => {
-    return new Promise((resolve, reject) => {
-      this.restAPI
-        .request('post', `/account/${id}`, data)
-        .then(() => {
-          resolve(true)
-        })
-        .catch(() => {
-          reject(false)
-        })
-    })
+    return this.restAPI.request('post', `/account/${id}`, data)
   }
   getAccountDetail = (id: string) => {
-    return new Promise((resolve, reject) => {
-      this.restAPI
-        .request('get', `/account/${id}`, {})
-        .then((res: any) => {
-          resolve(res)
-        })
-        .catch(() => {
-          reject(false)
-        })
-    })
+    return this.restAPI.request('get', `/account/${id}`, {})
   }
   getAccountRecord = (id: string) => {
     return new Promise((resolve, reject) => {
@@ -80,15 +53,6 @@ export default class AccountApi {
     })
   }
   switchAccountStatus = (id: string, enable: boolean) => {
-    return new Promise((resolve, reject) => {
-      this.restAPI
-        .request('post', `/account/${id}/enable`, { enable })
-        .then(() => {
-          resolve(true)
-        })
-        .catch(() => {
-          reject(false)
-        })
-    })
+    return this.restAPI.request('post', `/account/${id}/enable`, { enable })
   }
 }

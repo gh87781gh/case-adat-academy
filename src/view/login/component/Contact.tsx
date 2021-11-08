@@ -54,16 +54,15 @@ const Contact = () => {
   }
 
   const contact = () => {
+    // TOCHECK 這支未完成
     context.setIsLoading(true)
-
     api
       .contact(data)
       .then(() => {
         setStep(1)
       })
-      .catch()
       .finally(() => {
-        setStep(1) //TODO
+        setStep(1)
         context.setIsLoading(false)
       })
   }

@@ -100,10 +100,7 @@ const ModalCreate = (props: IProps) => {
         props.getPurchaseList()
         props.onCancel()
       })
-      .catch()
-      .finally(() => {
-        context.setIsLoading(false)
-      })
+      .finally(() => context.setIsLoading(false))
   }
 
   return (

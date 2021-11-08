@@ -4,6 +4,7 @@ import { LogoADAT } from '../../utility/icon'
 import { IconSearch, IconArrowDown } from '../../utility/icon'
 import { Input, Button, Menu, Dropdown } from 'antd'
 import { MyContext, BrowserStorage } from '../../storage'
+import { version } from '../../../package.json'
 
 const Header = () => {
   const context = useContext(MyContext)
@@ -21,12 +22,13 @@ const Header = () => {
       <Menu className='ad-header-profile-menu'>
         <Menu.Item className='ad-header-profile-menu-text' key='user' disabled>
           {context.auth.user_id} <br />
-          <span>user ID</span>
+          <span className='ad-header-profile-menu-decs'>user ID</span>
         </Menu.Item>
         <Menu.Item key='learning profile'>learning profile</Menu.Item>
         <Menu.Item key='course management'>course management</Menu.Item>
-        <Menu.Item key='change password'>change password</Menu.Item>
-        <Menu.Item key='-'>---------------</Menu.Item>
+        <Menu.Item className='ad-header-profile-menu-bd' key='change password'>
+          change password
+        </Menu.Item>
         {context.auth.is_admin ? (
           <Menu.Item
             key='admin'
@@ -35,8 +37,15 @@ const Header = () => {
             Admin
           </Menu.Item>
         ) : null}
-        <Menu.Item key='log out' onClick={logout}>
+        <Menu.Item
+          className='ad-header-profile-menu-bd'
+          key='log out'
+          onClick={logout}
+        >
           log out
+        </Menu.Item>
+        <Menu.Item key='version' disabled>
+          <span className='ad-header-profile-menu-decs'>v{version}</span>
         </Menu.Item>
       </Menu>
     )

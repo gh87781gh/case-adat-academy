@@ -23,10 +23,7 @@ const ModalDetail = (props: IProps) => {
     api
       .getAccountDetail(props.accountId)
       .then((res: any) => setAccountDetail(res))
-      .catch()
-      .finally(() => {
-        context.setIsLoading(false)
-      })
+      .finally(() => context.setIsLoading(false))
   }
   useEffect(() => {
     if (props.isShow) {
@@ -72,10 +69,7 @@ const ModalDetail = (props: IProps) => {
         props.getAccountList()
         getAccountDetail()
       })
-      .catch()
-      .finally(() => {
-        context.setIsLoading(false)
-      })
+      .finally(() => context.setIsLoading(false))
   }
   const handleStatusChange = () => {
     if (accountDetail.status === 'Enabled') {

@@ -1,82 +1,42 @@
 import { RestAPI } from './engine/axiosRunner'
-import { message } from 'antd'
 
 export default class LoginApi {
   restAPI: any = new RestAPI()
 
   login = (data: any) => {
-    return new Promise((resolve, reject) => {
-      this.restAPI
-        .request('post', '/auth/login', data)
-        .then((res: any) => {
-          resolve(res)
-        })
-        .catch((err: any) => {
-          reject(err.message)
-        })
-    })
+    return this.restAPI.request('post', '/auth/login', data)
   }
   checkAccount = (data: any) => {
-    return new Promise((resolve, reject) => {
-      this.restAPI
-        .request('post', '/auth/check', data)
-        .then((res: any) => {
-          if (res.is_exist) message.error('The User ID or Email is exist.')
-          resolve(res.is_exist)
-        })
-        .catch(() => {
-          reject(false)
-        })
-    })
+    const toCheck = {
+      user_id: data.user_id,
+      email: data.email
+    }
+    return this.restAPI.request('post', '/auth/check', toCheck)
   }
   getSignUpOptions = () => {
-    return new Promise((resolve, reject) => {
-      this.restAPI
-        .request('get', '/auth/signup', {})
-        .then((res: any) => {
-          resolve(res)
-        })
-        .catch(() => {
-          reject(false)
-        })
-    })
+    // TOCHECK 這支要廢掉，換從option拿
+    return this.restAPI.request('get', '/auth/signup', {})
   }
-  create = (data: any) => {
-    data.is_login = false //true -> 順便登入,並返回token
-    data.experience = data.experience.join(',')
-    return new Promise((resolve, reject) => {
-      this.restAPI
-        .request('post', '/auth/signup', data)
-        .then((res: any) => {
-          resolve(res)
-        })
-        .catch(() => {
-          reject(false)
-        })
-    })
+  create = (data: any, experienceStrAry: string[]) => {
+    const sendData = {
+      user_id: data.user_id,
+      password: data.password,
+      email: data.email,
+      industry: data.industry,
+      profession: data.profession,
+      current_company: data.current_company,
+      experience_level: data.experience_level,
+      experience: experienceStrAry,
+      is_login: false // true -> 順便登入,並返回token
+    }
+    return this.restAPI.request('post', '/auth/signup', sendData)
   }
   recoverPassword = (data: any) => {
-    return new Promise((resolve, reject) => {
-      this.restAPI
-        .request('post', '/auth/pwd_recover', data)
-        .then((res: any) => {
-          resolve(res)
-        })
-        .catch(() => {
-          reject(false)
-        })
-    })
+    // TOCHECK 這支未完成
+    return this.restAPI.request('post', '/auth/pwd_recover', data)
   }
   contact = (data: any) => {
-    return new Promise((resolve, reject) => {
-      this.restAPI
-        .request('post', '/contact', data)
-        .then((res: any) => {
-          resolve(res)
-        })
-        .catch(() => {
-          reject(false)
-        })
-    })
+    // TOCHECK 這支未完成
+    return this.restAPI.request('post', '/contact', data)
   }
 }

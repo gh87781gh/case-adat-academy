@@ -20,13 +20,8 @@ const ModalRecord = (props: IProps) => {
     context.setIsLoading(true)
     api
       .getAccountRecord(props.accountId)
-      .then((res: any) => {
-        setList(res)
-      })
-      .catch()
-      .finally(() => {
-        context.setIsLoading(false)
-      })
+      .then((res: any) => setList(res))
+      .finally(() => context.setIsLoading(false))
   }
   useEffect(() => {
     if (props.isShow) getList()

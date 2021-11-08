@@ -4,13 +4,14 @@ import { MyContext } from '../../../storage'
 import { ValidateStr } from '../../../utility/validate'
 import FormGroupMsg from '../../../utility/component/FormGroupMsg'
 import LoginApi from '../../../api/LoginApi'
-import { Row, Col, Button, Input, Checkbox, Select } from 'antd'
+import msg from 'api/engine/msg'
+import { Row, Col, Button, Input, Checkbox, Select, message } from 'antd'
 const { Option } = Select
 
 interface IState {
   user_id: string
   password: string
-  passwordAgain?: string
+  passwordAgain: string
   email: string
   industry: string
   profession: string
@@ -29,8 +30,7 @@ const Create = () => {
   const [experiences, setExperiences] = useState<any>([])
   useEffect(() => {
     context.setIsLoading(true)
-
-    // TODO 要跟換成打 option 的 api
+    // TOCHECK 要跟換成打 option 的 api
     api
       .getSignUpOptions()
       .then((res: any) => {
@@ -38,10 +38,7 @@ const Create = () => {
         setExperience_levels(res.experience_levels)
         setExperiences(res.experiences)
       })
-      .catch()
-      .finally(() => {
-        context.setIsLoading(false)
-      })
+      .finally(() => context.setIsLoading(false))
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
@@ -93,20 +90,12 @@ const Create = () => {
   }
   const checkAccount = () => {
     context.setIsLoading(true)
-
-    const toCheck = {
-      user_id: data.user_id,
-      email: data.email
-    }
     api
-      .checkAccount(toCheck)
-      .then((is_exist: any) => {
-        if (!is_exist) setStep(1)
-      })
-      .catch()
-      .finally(() => {
-        context.setIsLoading(false)
-      })
+      .checkAccount(data)
+      .then((res: any) =>
+        res.is_exist ? message.error(msg.checkAccount) : setStep(1)
+      )
+      .finally(() => context.setIsLoading(false))
   }
   const create = () => {
     context.setIsLoading(true)
@@ -114,21 +103,14 @@ const Create = () => {
     const experienceStrAry = data.experience.map((item: any) => {
       return experiences[item]
     })
-    const checkData = { ...data, experience: experienceStrAry }
-    delete checkData.passwordAgain
 
     api
-      .create(checkData)
-      .then(() => {
-        setStep(2)
-      })
-      .catch()
-      .finally(() => {
-        context.setIsLoading(false)
-      })
+      .create(data, experienceStrAry)
+      .then(() => setStep(2))
+      .finally(() => context.setIsLoading(false))
   }
 
-  const [step, setStep] = useState<number>(1)
+  const [step, setStep] = useState<number>(0)
   const renderStep1 = () => (
     <>
       <div className='ad-login-content-header'>
@@ -208,9 +190,9 @@ const Create = () => {
           disabled={
             !data.user_id ||
             !data.password ||
+            data.password.length < 8 ||
             !data.passwordAgain ||
             !data.email ||
-            // data.password.length < 8 || TODO
             data.password !== data.passwordAgain ||
             isEmail !== true
           }
@@ -316,29 +298,6 @@ const Create = () => {
                   </Checkbox>
                 </Col>
               ))}
-              {/* <Col span={12}>
-                <Checkbox className='ad-checkbox-btn' value='SOP_EDITING'>
-                  SOP editing
-                </Checkbox>
-              </Col>
-              <Col span={12}>
-                <Checkbox
-                  className='ad-checkbox-btn'
-                  value='PROCEDURE_OPERATION'
-                >
-                  Procedure operation
-                </Checkbox>
-              </Col>
-              <Col span={12}>
-                <Checkbox className='ad-checkbox-btn' value='AI_TRAINING'>
-                  AI training
-                </Checkbox>
-              </Col>
-              <Col span={12}>
-                <Checkbox className='ad-checkbox-btn' value='NOT_SURE'>
-                  Not sure
-                </Checkbox>
-              </Col> */}
             </Row>
           </Checkbox.Group>
         </div>
@@ -359,7 +318,7 @@ const Create = () => {
           Next
         </Button>
         <p className='ad-color-gray'>
-          by creatiing...you agree with the terms & policy
+          by creating...you agree with the terms & policy
         </p>
       </div>
     </>

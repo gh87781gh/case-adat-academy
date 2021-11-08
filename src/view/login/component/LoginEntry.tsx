@@ -66,12 +66,8 @@ const LoginEntry = () => {
         context.getAuth()
         history.push('/index')
       })
-      .catch((err: any) => {
-        setLoginErr(err || '')
-      })
-      .finally(() => {
-        context.setIsLoading(false)
-      })
+      .catch((err: any) => setLoginErr(err || ''))
+      .finally(() => context.setIsLoading(false))
   }
 
   const [step, setStep] = useState<number>(0)

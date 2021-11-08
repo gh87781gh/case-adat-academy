@@ -1,5 +1,4 @@
 import { RestAPI } from './engine/axiosRunner'
-import moment from 'moment'
 
 export default class PurchaseApi {
   restAPI: any = new RestAPI()
@@ -17,28 +16,10 @@ export default class PurchaseApi {
     })
   }
   getPurchaseDetail = (id: string) => {
-    return new Promise((resolve, reject) => {
-      this.restAPI
-        .request('get', `/purchase/${id}`, {})
-        .then((res: any) => {
-          resolve(res)
-        })
-        .catch(() => {
-          reject(false)
-        })
-    })
+    return this.restAPI.request('get', `/purchase/${id}`, {})
   }
   getPurchaseRecord = (id: string) => {
-    return new Promise((resolve, reject) => {
-      this.restAPI
-        .request('get', `/purchase/${id}/records`, {})
-        .then((res: any) => {
-          resolve(res)
-        })
-        .catch(() => {
-          reject(false)
-        })
-    })
+    return this.restAPI.request('get', `/purchase/${id}/records`, {})
   }
   getPurchaseAccount = (id: string) => {
     return new Promise((resolve, reject) => {
@@ -75,43 +56,16 @@ export default class PurchaseApi {
           }
         : null
 
-    return new Promise((resolve, reject) => {
-      this.restAPI
-        .request(
-          'post',
-          `/purchase${mode === 'UPDATE' ? `/${data.id}` : ''}`,
-          postData
-        )
-        .then(() => {
-          resolve(true)
-        })
-        .catch(() => {
-          reject(false)
-        })
-    })
+    return this.restAPI.request(
+      'post',
+      `/purchase${mode === 'UPDATE' ? `/${data.id}` : ''}`,
+      postData
+    )
   }
   deletePurchase = (id: string) => {
-    return new Promise((resolve, reject) => {
-      this.restAPI
-        .request('delete', `/purchase/${id}`, {})
-        .then(() => {
-          resolve(true)
-        })
-        .catch(() => {
-          reject(false)
-        })
-    })
+    return this.restAPI.request('delete', `/purchase/${id}`, {})
   }
   createPurchaseAccount = (id: string, data: any) => {
-    return new Promise((resolve, reject) => {
-      this.restAPI
-        .request('post', `/purchase/${id}/accounts`, data)
-        .then((res: any) => {
-          resolve(res)
-        })
-        .catch(() => {
-          reject(false)
-        })
-    })
+    return this.restAPI.request('post', `/purchase/${id}/accounts`, data)
   }
 }

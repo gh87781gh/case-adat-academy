@@ -30,22 +30,14 @@ const PurchaseAccount = (props: IProps) => {
     api
       .getPurchaseDetail(props.purchaseId)
       .then((res: any) => setPurchaseDetail(res))
-      .catch()
-      .finally(() => {
-        context.setIsLoading(false)
-      })
+      .finally(() => context.setIsLoading(false))
   }
   const getList = () => {
     context.setIsLoading(true)
     api
       .getPurchaseAccount(props.purchaseId)
-      .then((res: any) => {
-        setAccountList(res)
-      })
-      .catch()
-      .finally(() => {
-        context.setIsLoading(false)
-      })
+      .then((res: any) => setAccountList(res))
+      .finally(() => context.setIsLoading(false))
   }
   useEffect(() => {
     getPurchaseDetail()

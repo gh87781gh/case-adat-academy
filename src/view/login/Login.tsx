@@ -1,10 +1,10 @@
 import { Row, Col, Button } from 'antd'
 import { Switch, Route, Redirect, useHistory } from 'react-router-dom'
-import LoginEntry from './element/LoginEntry'
-import Create from './element/Create'
-import Contact from './element/Contact'
-import Recover from './element/Recover'
-import TermsPrivacy from './element/TermsPrivacy'
+import LoginEntry from './component/LoginEntry'
+import Create from './component/Create'
+import Contact from './component/Contact'
+import Recover from './component/Recover'
+import TermsPrivacy from './component/TermsPrivacy'
 
 const Login = () => {
   const history = useHistory()

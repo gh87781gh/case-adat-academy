@@ -68,10 +68,7 @@ const ModalEdit = (props: IProps) => {
         .then((res: any) => {
           setPurchaseList(res)
         })
-        .catch()
-        .finally(() => {
-          context.setIsLoading(false)
-        })
+        .finally(() => context.setIsLoading(false))
     }
   }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
@@ -86,10 +83,7 @@ const ModalEdit = (props: IProps) => {
         props.onCancel()
         props.getAccountDetail()
       })
-      .catch()
-      .finally(() => {
-        context.setIsLoading(false)
-      })
+      .finally(() => context.setIsLoading(false))
   }
 
   // TODO are u sure popup

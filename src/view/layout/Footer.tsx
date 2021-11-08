@@ -1,11 +1,11 @@
-import { LogoADAT } from '../../utility/icon'
+// import { LogoADAT } from '../../utility/icon'
 // import {
 //   IconSearch,
 //   IconArrowDown,
 //   IconWeb,
 //   IconLinkedin,
 // } from '../utility/svg/icon'
-import { Input, Button, Menu, Dropdown, Row, Col } from 'antd'
+import { Button, Row, Col } from 'antd'
 
 // interface IProps {}
 // interface IState {}

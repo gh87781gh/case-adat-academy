@@ -26,10 +26,7 @@ const ModalDetail = (props: IProps) => {
     api
       .getPurchaseDetail(props.purchaseId)
       .then((res: any) => setPurchaseDetail(res))
-      .catch()
-      .finally(() => {
-        context.setIsLoading(false)
-      })
+      .finally(() => context.setIsLoading(false))
   }
   useEffect(() => {
     if (props.isShow && props.purchaseId) getPurchaseDetail()
@@ -41,7 +38,7 @@ const ModalDetail = (props: IProps) => {
       visible={isModalConfirmShow}
       onCancel={() => setIsModalConfirmShow(false)}
       footer={[
-        <Button key='Create' type='primary' onClick={() => deletePurchase()}>
+        <Button key='Create' type='primary' onClick={deletePurchase}>
           Yes. Delete it.
         </Button>,
         <Button key='Cancel' onClick={props.onCancel}>
@@ -62,7 +59,6 @@ const ModalDetail = (props: IProps) => {
         props.getPurchaseList()
         props.onCancel()
       })
-      .catch()
       .finally(() => {
         setIsModalConfirmShow(false)
         context.setIsLoading(false)

@@ -39,17 +39,15 @@ const Recover = () => {
     setData({ ...data, [key]: value })
   }
   const recoverPassword = () => {
+    // TOCHECK 這支未完成
     context.setIsLoading(true)
     api
       .recoverPassword(data)
-      .then((res: any) => {
+      .then(() => {
         setStep(1)
       })
       .catch()
-      .finally(() => {
-        setStep(1) //TODO
-        context.setIsLoading(false)
-      })
+      .finally(() => context.setIsLoading(false))
   }
 
   const [step, setStep] = useState<number>(0)

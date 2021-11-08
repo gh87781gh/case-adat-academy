@@ -69,7 +69,11 @@ export class RestAPI extends ApiEngine {
           resolve(res.data.data)
         })
         .catch((err: any) => {
-          reject(err)
+          if (url === '/auth/login') {
+            reject(err.message)
+          } else {
+            reject(false)
+          }
         })
     })
   }

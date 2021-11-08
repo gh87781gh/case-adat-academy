@@ -7,7 +7,6 @@ import Account from './admin/account/Index'
 import User from './user/User'
 import { Spin } from 'antd'
 import { MyContext, BrowserStorage } from '../storage'
-import { version } from '../../package.json'
 
 const LayoutTemplate = () => {
   const browserStorage = new BrowserStorage()
@@ -19,13 +18,8 @@ const LayoutTemplate = () => {
     setIsLoading(true)
     api
       .getAuth()
-      .then((res: any) => {
-        setAuth(res)
-      })
-      .catch()
-      .finally(() => {
-        setIsLoading(false)
-      })
+      .then((res: any) => setAuth(res))
+      .finally(() => setIsLoading(false))
   }
   useEffect(() => {
     if (browserStorage.getStorage('AUTH')) getAuth()
@@ -54,7 +48,7 @@ const LayoutTemplate = () => {
           <HashRouter>
             <Switch>
               <Route
-                exact={true}
+                // exact={true}
                 path='/login'
                 render={() => componentPage(Login, 'LOGIN')}
               />

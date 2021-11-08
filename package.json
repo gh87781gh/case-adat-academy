@@ -26,7 +26,6 @@
   },
   "scripts": {
     "start": "sh -ac '. ./.env.local; craco start'",
-    "start:dev": "sh -ac '. ./.env.development ; craco start'",
     "build:dev": "sh -ac '. ./.env.development ; craco build'",
     "build": "craco build",
     "test": "craco test",

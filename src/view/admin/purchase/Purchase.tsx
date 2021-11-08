@@ -52,17 +52,12 @@ const Purchase = (props: IProps) => {
     context.setIsLoading(true)
     api
       .getPurchases()
-      .then((res: any) => {
-        setPurchaseList(res)
-      })
-      .catch()
-      .finally(() => {
-        context.setIsLoading(false)
-      })
+      .then((res: any) => setPurchaseList(res))
+      .finally(() => context.setIsLoading(false))
   }
   useEffect(() => {
     getPurchaseList()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const columns = [
     {
