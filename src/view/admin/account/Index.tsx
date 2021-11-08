@@ -1,8 +1,9 @@
 import { useState, useEffect, useContext } from 'react'
-import { MyContext } from '../../../storage'
-import AccountApi from '../../../api/AccountApi'
-import { IconSearch } from '../../../utility/icon'
-import Header from '../../layout/Header'
+import { MyContext } from 'storage'
+import GlobalApi from 'api/GlobalApi'
+import AccountApi from 'api/AccountApi'
+import { IconSearch } from 'utility/icon'
+import Header from 'view/layout/Header'
 import AdminSideBar from '../AdminSideBar'
 import ModalCreate from './ModalCreate'
 import ModalDetail from './ModalDetail'
@@ -18,48 +19,17 @@ interface IState {
 
 const Index = () => {
   const context = useContext(MyContext)
+  const api_global = new GlobalApi()
   const api = new AccountApi()
 
-  const [isModalCreateShow, setIsModalCreateShow] = useState<boolean>(false)
-  const [isModalRecordShow, setIsModalRecordShow] = useState<boolean>(false)
-  const [isModalDetailShow, setIsModalDetailShow] = useState<boolean>(false)
-
+  const [purchaseNumberOption, setPurchaseNumberOption] = useState<any>([])
+  const [statusOption, setStatusOption] = useState<any>([])
   const [data, setData] = useState<IState>({
     purchase_number: '',
     status: '',
     keyword: ''
   })
-  const onSelect = (key: string, value: any) => {
-    setData({ ...data, [key]: value })
-  }
-  const onChange = (key: string, e: any) => {
-    const value = e.target.value
-    if (value) {
-      switch (key) {
-        // TODO
-        case 'keyword':
-          // if (value && ValidateStr('isSymbol', value)) return false
-          break
-      }
-    }
-    setData({ ...data, [key]: value })
-  }
-
   const [list, setList] = useState([])
-  const [accountId, setAccountId] = useState<string>('')
-  const [userId, setUserId] = useState<string>('')
-
-  const getList = () => {
-    context.setIsLoading(true)
-    api
-      .getAccounts()
-      .then((res: any) => setList(res))
-      .finally(() => context.setIsLoading(false))
-  }
-  useEffect(() => {
-    getList()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
   const columns = [
     {
       title: 'User ID',
@@ -114,6 +84,49 @@ const Index = () => {
       )
     }
   ]
+  const [accountId, setAccountId] = useState<string>('')
+  const [userId, setUserId] = useState<string>('')
+  const onSelect = (key: string, value: any) => {
+    setData({ ...data, [key]: value })
+  }
+  const onChange = (key: string, e: any) => {
+    const value = e.target.value
+    if (value) {
+      switch (key) {
+        // TODO
+        case 'keyword':
+          // if (value && ValidateStr('isSymbol', value)) return false
+          break
+      }
+    }
+    setData({ ...data, [key]: value })
+  }
+  const getList = () => {
+    context.setIsLoading(true)
+    api
+      .getAccounts()
+      .then((res: any) => setList(res))
+      .finally(() => context.setIsLoading(false))
+  }
+  useEffect(() => {
+    api_global
+      .getOptions([
+        'account_management_purchase_number',
+        'account_management_status'
+      ])
+      .then((res: any) => {
+        setPurchaseNumberOption(res[0])
+        setStatusOption(res[1])
+      })
+      .finally(() => context.setIsLoading(false))
+
+    getList()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const [isModalCreateShow, setIsModalCreateShow] = useState<boolean>(false)
+  const [isModalRecordShow, setIsModalRecordShow] = useState<boolean>(false)
+  const [isModalDetailShow, setIsModalDetailShow] = useState<boolean>(false)
+
   return (
     <>
       <Header />
@@ -134,43 +147,35 @@ const Index = () => {
             <Row gutter={20}>
               <Col span={8}>
                 <div className='ad-form-group ad-form-group-horizontal'>
-                  <label>Current purchase number</label>
+                  <label style={{ minWidth: '200px' }}>
+                    Current purchase number
+                  </label>
                   <Select
                     value={data.purchase_number}
                     placeholder='Please select'
                     onChange={(val) => onSelect('purchase_number', val)}
                   >
-                    <Option value={'purchase_number_a'}>
-                      purchase_number A
-                    </Option>
-                    <Option value={'purchase_number_b'}>
-                      purchase_number B
-                    </Option>
-                    {/* TOCHECK */}
-                    {/* {optionIndustry.map((item: any) => (
-                  <Option value={item.value} key={item.value}>
-                    {item.name}
-                  </Option>
-                ))} */}
+                    {purchaseNumberOption.map((item: string) => (
+                      <Option value={item} key={item}>
+                        {item}
+                      </Option>
+                    ))}
                   </Select>
                 </div>
               </Col>
               <Col span={8}>
                 <div className='ad-form-group ad-form-group-horizontal'>
-                  <label>Current status</label>
+                  <label style={{ minWidth: '120px' }}>Current status</label>
                   <Select
                     value={data.status}
                     placeholder='Please select'
                     onChange={(val) => onSelect('status', val)}
                   >
-                    <Option value={'active'}>Active</Option>
-                    <Option value={'expired'}>Expired</Option>
-                    {/* TOCHECK */}
-                    {/* {optionIndustry.map((item: any) => (
-                  <Option value={item.value} key={item.value}>
-                    {item.name}
-                  </Option>
-                ))} */}
+                    {statusOption.map((item: string) => (
+                      <Option value={item} key={item}>
+                        {item}
+                      </Option>
+                    ))}
                   </Select>
                 </div>
               </Col>

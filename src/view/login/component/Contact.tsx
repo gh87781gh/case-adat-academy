@@ -1,9 +1,9 @@
 import { useState, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
-import { MyContext } from '../../../storage'
-import FormGroupMsg from '../../../utility/component/FormGroupMsg'
-import { ValidateStr } from '../../../utility/validate'
-import LoginApi from '../../../api/LoginApi'
+import { MyContext } from 'storage'
+import LoginApi from 'api/LoginApi'
+import FormGroupMsg from 'utility/component/FormGroupMsg'
+import { ValidateStr } from 'utility/validate'
 import { Button, Input } from 'antd'
 
 const { TextArea } = Input
@@ -11,21 +11,21 @@ const { TextArea } = Input
 interface IState {
   name: string
   email: string
-  account: string
-  desc: string
+  user_id: string
+  description: string
 }
 
 const Contact = () => {
-  const history = useHistory()
   const context = useContext(MyContext)
   const api = new LoginApi()
+  const history = useHistory()
 
   const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
   const [data, setData] = useState<IState>({
     name: '',
     email: '',
-    account: '',
-    desc: 'Can’t log in'
+    user_id: '',
+    description: 'Can’t log in'
   })
   const onChange = (key: string, e: any) => {
     const value = e.target.value
@@ -52,9 +52,7 @@ const Contact = () => {
     }
     setData({ ...data, [key]: value })
   }
-
   const contact = () => {
-    // TOCHECK 這支未完成
     context.setIsLoading(true)
     api
       .contact(data)
@@ -109,8 +107,8 @@ const Contact = () => {
           <Input
             placeholder='Clear hint for the input'
             maxLength={200}
-            value={data.account}
-            onChange={(e) => onChange('account', e)}
+            value={data.user_id}
+            onChange={(e) => onChange('user_id', e)}
           />
           <FormGroupMsg
             isShow={true}
@@ -121,8 +119,8 @@ const Contact = () => {
           <label>Descriptions</label>
           <TextArea
             rows={4}
-            value={data.desc}
-            onChange={(e) => onChange('desc', e)}
+            value={data.description}
+            onChange={(e) => onChange('description', e)}
           />
         </div>
       </div>

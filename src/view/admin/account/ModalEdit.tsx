@@ -1,9 +1,9 @@
 import { useState, useContext, useEffect } from 'react'
 import moment from 'moment'
-import { MyContext } from '../../../storage'
-import AccountApi from '../../../api/AccountApi'
-import FormGroupMsg from '../../../utility/component/FormGroupMsg'
-import { ValidateStr } from '../../../utility/validate'
+import { MyContext } from 'storage'
+import AccountApi from 'api/AccountApi'
+import FormGroupMsg from 'utility/component/FormGroupMsg'
+import { ValidateStr } from 'utility/validate'
 import { Row, Col, Button, Input, Select, Modal } from 'antd'
 const { Option } = Select
 const { TextArea } = Input
@@ -49,6 +49,9 @@ const ModalEdit = (props: IProps) => {
     }
     setData({ ...data, [key]: value })
   }
+  useEffect(() => {
+    if (data.email) setIsEmail(ValidateStr('isEmail', data.email))
+  }, [data.email]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [purchaseList, setPurchaseList] = useState<any>([])
   const [purchaseDetail, setPurchaseDetail] = useState<any>(null)
@@ -58,7 +61,7 @@ const ModalEdit = (props: IProps) => {
       setPurchaseDetail(purchaseDetail)
       setData({
         ...initData,
-        purchase_id: purchaseDetail?.id || '',
+        purchase_id: purchaseDetail?.id ?? '',
         email: props.accountDetail.email
       })
 
@@ -71,9 +74,6 @@ const ModalEdit = (props: IProps) => {
         .finally(() => context.setIsLoading(false))
     }
   }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    if (data.email) setIsEmail(ValidateStr('isEmail', data.email))
-  }, [data.email]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const editAccount = () => {
     context.setIsLoading(true)
@@ -86,7 +86,7 @@ const ModalEdit = (props: IProps) => {
       .finally(() => context.setIsLoading(false))
   }
 
-  // TODO are u sure popup
+  // TOCHECK are u sure popup
 
   return (
     <Modal

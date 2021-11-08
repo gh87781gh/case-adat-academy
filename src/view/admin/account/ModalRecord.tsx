@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
-import { MyContext } from '../../../storage'
-import AccountApi from '../../../api/AccountApi'
+import { MyContext } from 'storage'
+import AccountApi from 'api/AccountApi'
 import { Table, Modal } from 'antd'
 
 interface IProps {
@@ -14,8 +14,7 @@ const ModalRecord = (props: IProps) => {
   const context = useContext(MyContext)
   const api = new AccountApi()
 
-  const [list, setList] = useState([])
-
+  const [list, setList] = useState<any>([])
   const getList = () => {
     context.setIsLoading(true)
     api
@@ -47,7 +46,7 @@ const ModalRecord = (props: IProps) => {
       title: 'Purchase number',
       dataIndex: 'purchase_number',
       key: 'purchase_number',
-      render: (text: any) => <>{text || '-'}</>
+      render: (text: any) => <>{text ?? '-'}</>
     },
     {
       title: 'Editor',
@@ -70,7 +69,7 @@ const ModalRecord = (props: IProps) => {
           <div className='ad-modal-title-sub'>
             <div className='ad-form-group ad-form-group-horizontal'>
               <label>User ID</label>
-              <div className='ad-form-group-value'>{props.userId || '-'}</div>
+              <div className='ad-form-group-value'>{props.userId ?? '-'}</div>
             </div>
           </div>
         </>

@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
-import { MyContext } from '../../../storage'
-import PurchaseApi from '../../../api/PurchaseApi'
+import { MyContext } from 'storage'
+import PurchaseApi from 'api/PurchaseApi'
 import { Table, Modal } from 'antd'
 
 interface IProps {
@@ -10,21 +10,10 @@ interface IProps {
 }
 
 const ModalRecord = (props: IProps) => {
-  const api = new PurchaseApi()
   const context = useContext(MyContext)
+  const api = new PurchaseApi()
 
   const [list, setList] = useState([])
-  const getPurchaseRecord = () => {
-    context.setIsLoading(true)
-    api
-      .getPurchaseRecord(props.purchaseDetail.id)
-      .then((res: any) => setList(res))
-      .finally(() => context.setIsLoading(false))
-  }
-  useEffect(() => {
-    if (props.isShow && props.purchaseDetail.id) getPurchaseRecord()
-  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
-
   const columns = [
     {
       title: 'Type',
@@ -47,6 +36,17 @@ const ModalRecord = (props: IProps) => {
       key: 'remark'
     }
   ]
+  const getPurchaseRecord = () => {
+    context.setIsLoading(true)
+    api
+      .getPurchaseRecord(props.purchaseDetail.id)
+      .then((res: any) => setList(res))
+      .finally(() => context.setIsLoading(false))
+  }
+  useEffect(() => {
+    if (props.isShow && props.purchaseDetail.id) getPurchaseRecord()
+  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <Modal
       zIndex={1001}

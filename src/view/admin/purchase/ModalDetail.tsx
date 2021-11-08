@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from 'react'
-import { MyContext } from '../../../storage'
-import PurchaseApi from '../../../api/PurchaseApi'
+import { MyContext } from 'storage'
+import PurchaseApi from 'api/PurchaseApi'
 import ModalCreate from './ModalCreate'
 import ModalRecord from './ModalRecord'
 import { Row, Col, Button, Modal } from 'antd'
@@ -15,10 +15,6 @@ interface IProps {
 const ModalDetail = (props: IProps) => {
   const api = new PurchaseApi()
   const context = useContext(MyContext)
-
-  const [isModalEditShow, setIsModalEditShow] = useState(false)
-  const [isModalRecordShow, setIsModalRecordShow] = useState(false)
-  const [isModalConfirmShow, setIsModalConfirmShow] = useState(false)
 
   const [purchaseDetail, setPurchaseDetail] = useState<any>({})
   const getPurchaseDetail = () => {
@@ -41,7 +37,7 @@ const ModalDetail = (props: IProps) => {
         <Button key='Create' type='primary' onClick={deletePurchase}>
           Yes. Delete it.
         </Button>,
-        <Button key='Cancel' onClick={props.onCancel}>
+        <Button key='Cancel' onClick={() => setIsModalConfirmShow(false)}>
           No
         </Button>
       ]}
@@ -64,6 +60,10 @@ const ModalDetail = (props: IProps) => {
         context.setIsLoading(false)
       })
   }
+
+  const [isModalEditShow, setIsModalEditShow] = useState<boolean>(false)
+  const [isModalRecordShow, setIsModalRecordShow] = useState<boolean>(false)
+  const [isModalConfirmShow, setIsModalConfirmShow] = useState<boolean>(false)
 
   return (
     <>

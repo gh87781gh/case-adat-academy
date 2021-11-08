@@ -1,4 +1,5 @@
 import { RestAPI } from './engine/axiosRunner'
+import { formatDate } from 'utility/format'
 
 export default class AccountApi {
   restAPI: any = new RestAPI()
@@ -20,7 +21,11 @@ export default class AccountApi {
       this.restAPI
         .request('get', '/account/purchase', {})
         .then((res: any) => {
-          res.forEach((item: any, index: number) => (item.key = index))
+          res.forEach((item: any, index: number) => {
+            item.duration_start = formatDate(item.duration_start)
+            item.duration_end = formatDate(item.duration_end)
+            item.key = index
+          })
           resolve(res)
         })
         .catch(() => {
@@ -43,6 +48,7 @@ export default class AccountApi {
         .request('get', `/account/${id}/records`, {})
         .then((res: any) => {
           res.forEach((item: any, index: number) => {
+            item.created_at = formatDate(item.created_at)
             item.key = index
           })
           resolve(res)

@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { MyContext } from '../../../storage'
-import AccountApi from '../../../api/AccountApi'
+import { MyContext } from 'storage'
+import AccountApi from 'api/AccountApi'
 import ModalEdit from './ModalEdit'
 import { Row, Col, Button, Modal } from 'antd'
 
@@ -14,8 +14,8 @@ interface IProps {
 }
 
 const ModalDetail = (props: IProps) => {
-  const api = new AccountApi()
   const context = useContext(MyContext)
+  const api = new AccountApi()
 
   const [accountDetail, setAccountDetail] = useState<any>({})
   const getAccountDetail = () => {
@@ -61,6 +61,15 @@ const ModalDetail = (props: IProps) => {
         : null}
     </Modal>
   )
+  const handleStatusChange = () => {
+    if (accountDetail.status === 'Enabled') {
+      accountDetail.purchases.length > 0 && accountDetail.user_id
+        ? setIsModalConfirmShow(true)
+        : switchStatus(false)
+    } else if (accountDetail.status === 'Disabled') {
+      switchStatus(true)
+    }
+  }
   const switchStatus = (enable: boolean) => {
     context.setIsLoading(true)
     api
@@ -70,15 +79,6 @@ const ModalDetail = (props: IProps) => {
         getAccountDetail()
       })
       .finally(() => context.setIsLoading(false))
-  }
-  const handleStatusChange = () => {
-    if (accountDetail.status === 'Enabled') {
-      accountDetail.purchases.length > 0 && accountDetail.user_id
-        ? setIsModalConfirmShow(true)
-        : switchStatus(false)
-    } else if (accountDetail.status === 'Disabled') {
-      switchStatus(true)
-    }
   }
 
   return (

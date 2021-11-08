@@ -1,9 +1,9 @@
 import { useState, useContext, useEffect } from 'react'
-import { MyContext } from '../../../storage'
-import AccountApi from '../../../api/AccountApi'
-import PurchaseApi from '../../../api/PurchaseApi'
-import FormGroupMsg from '../../../utility/component/FormGroupMsg'
-import { ValidateStr } from '../../../utility/validate'
+import { MyContext } from 'storage'
+import AccountApi from 'api/AccountApi'
+import PurchaseApi from 'api/PurchaseApi'
+import FormGroupMsg from 'utility/component/FormGroupMsg'
+import { ValidateStr } from 'utility/validate'
 import { Row, Col, Button, Input, Select, Modal } from 'antd'
 const { Option } = Select
 
@@ -19,9 +19,9 @@ interface IState {
 }
 
 const ModalCreate = (props: IProps) => {
+  const context = useContext(MyContext)
   const api = new AccountApi()
   const api_purchase = new PurchaseApi()
-  const context = useContext(MyContext)
 
   const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
   const initData = {
@@ -63,9 +63,7 @@ const ModalCreate = (props: IProps) => {
         context.setIsLoading(true)
         api
           .getAccountPurchases()
-          .then((res: any) => {
-            setPurchaseList(res)
-          })
+          .then((res: any) => setPurchaseList(res))
           .finally(() => context.setIsLoading(false))
       }
     }
@@ -93,31 +91,31 @@ const ModalCreate = (props: IProps) => {
     }
   }
 
-  // TODO are u sure popup
-  const [isModalConfirmShow, setIsModalConfirmShow] = useState(false)
-  const renderConfirmModal = () => (
-    <Modal
-      title='Are you sure?'
-      visible={isModalConfirmShow}
-      onCancel={() => setIsModalConfirmShow(false)}
-      footer={[
-        <Button
-          key='Create'
-          type='primary'
-          // onClick={() => deletePurchase()}
-        >
-          Yes. Move it.
-        </Button>,
-        <Button key='Cancel' onClick={props.onCancel}>
-          No
-        </Button>
-      ]}
-      width={720}
-    >
-      “Leoo123@winbond.com” is in user ID “Leoo123”. Are you sure you want to
-      move the account to “winbond123”?
-    </Modal>
-  )
+  // TOCHECK are u sure popup
+  // const [isModalConfirmShow, setIsModalConfirmShow] = useState<boolean>(false)
+  // const renderConfirmModal = () => (
+  //   <Modal
+  //     title='Are you sure?'
+  //     visible={isModalConfirmShow}
+  //     onCancel={() => setIsModalConfirmShow(false)}
+  //     footer={[
+  //       <Button
+  //         key='Create'
+  //         type='primary'
+  //         // onClick={() => deletePurchase()}
+  //       >
+  //         Yes. Move it.
+  //       </Button>,
+  //       <Button key='Cancel' onClick={props.onCancel}>
+  //         No
+  //       </Button>
+  //     ]}
+  //     width={720}
+  //   >
+  //     “Leoo123@winbond.com” is in user ID “Leoo123”. Are you sure you want to
+  //     move the account to “winbond123”?
+  //   </Modal>
+  // )
 
   return (
     <Modal

@@ -1,4 +1,5 @@
 import { RestAPI } from './engine/axiosRunner'
+import { formatDate } from 'utility/format'
 
 export default class PurchaseApi {
   restAPI: any = new RestAPI()
@@ -7,7 +8,11 @@ export default class PurchaseApi {
       this.restAPI
         .request('get', '/purchase', {})
         .then((res: any) => {
-          res.forEach((item: any, index: number) => (item.key = index))
+          res.forEach((item: any, index: number) => {
+            item.duration_start = formatDate(item.duration_start)
+            item.duration_end = formatDate(item.duration_end)
+            item.key = index
+          })
           resolve(res)
         })
         .catch(() => {
@@ -16,10 +21,34 @@ export default class PurchaseApi {
     })
   }
   getPurchaseDetail = (id: string) => {
-    return this.restAPI.request('get', `/purchase/${id}`, {})
+    return new Promise((resolve, reject) => {
+      this.restAPI
+        .request('get', `/purchase/${id}`, {})
+        .then((res: any) => {
+          res.duration_start = formatDate(res.duration_start)
+          res.duration_end = formatDate(res.duration_end)
+          resolve(res)
+        })
+        .catch(() => {
+          reject(false)
+        })
+    })
   }
   getPurchaseRecord = (id: string) => {
-    return this.restAPI.request('get', `/purchase/${id}/records`, {})
+    return new Promise((resolve, reject) => {
+      this.restAPI
+        .request('get', `/purchase/${id}/records`, {})
+        .then((res: any) => {
+          res.forEach((item: any, index: number) => {
+            item.created_at = formatDate(item.created_at)
+            item.key = index
+          })
+          resolve(res)
+        })
+        .catch(() => {
+          reject(false)
+        })
+    })
   }
   getPurchaseAccount = (id: string) => {
     return new Promise((resolve, reject) => {
@@ -42,17 +71,17 @@ export default class PurchaseApi {
             company: data.company,
             quata: data.quata,
             // course_access: data.course_access.join(','), //TOCHECK
-            duration_start: data.duration_start,
-            duration_end: data.duration_end
+            duration_start: formatDate(data.duration_start),
+            duration_end: formatDate(data.duration_end)
           }
         : mode === 'UPDATE'
         ? {
             company: data.company,
             quata: data.quata,
             // course_access: data.course_access.join(','), //TOCHECK
-            duration_start: data.duration_start,
-            duration_end: data.duration_end,
-            remark: data.remark || ''
+            duration_start: formatDate(data.duration_start),
+            duration_end: formatDate(data.duration_end),
+            remark: data.remark ?? ''
           }
         : null
 

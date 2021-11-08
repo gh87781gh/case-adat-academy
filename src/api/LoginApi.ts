@@ -36,7 +36,6 @@ export default class LoginApi {
     return this.restAPI.request('post', '/auth/pwd_recover', data)
   }
   contact = (data: any) => {
-    // TOCHECK 這支未完成
     return this.restAPI.request('post', '/contact', data)
   }
 }

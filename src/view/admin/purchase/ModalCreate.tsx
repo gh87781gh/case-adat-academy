@@ -1,7 +1,9 @@
 import { useState, useEffect, useContext } from 'react'
 import moment from 'moment'
-import { MyContext } from '../../../storage'
-import PurchaseApi from '../../../api/PurchaseApi'
+import { MyContext } from 'storage'
+import GlobalApi from 'api/GlobalApi'
+import PurchaseApi from 'api/PurchaseApi'
+import { ValidateStr } from 'utility/validate'
 import {
   DatePicker,
   Row,
@@ -21,14 +23,14 @@ interface IProps {
   isShow: boolean
   onCancel: () => void
   getPurchaseList: () => void
-  getPurchaseDetail?: () => void //only UPDATE
-  purchaseDetail?: any //only UPDATE
+  getPurchaseDetail?: () => void // only UPDATE
+  purchaseDetail?: any // only UPDATE
 }
 interface IState {
   purchase_number: string
   status: string
   company: string
-  course_access: string[] | any //TOCHECK api有這欄位後 any要拿掉
+  course_access: string[]
   quata: number
   duration_start: string
   duration_end: string
@@ -38,7 +40,9 @@ interface IState {
 const ModalCreate = (props: IProps) => {
   const context = useContext(MyContext)
   const api = new PurchaseApi()
+  const api_global = new GlobalApi()
 
+  const [companyOption, setCompanyOption] = useState<any>([])
   const initData = {
     purchase_number: '',
     status: '',
@@ -52,28 +56,19 @@ const ModalCreate = (props: IProps) => {
   const [data, setData] = useState<IState>({
     ...initData
   })
-  useEffect(() => {
-    if (props.isShow) {
-      setData(
-        props.mode === 'CREATE' ? { ...initData } : { ...props.purchaseDetail }
-      )
-    } else {
-      setData({ ...initData })
-    }
-  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
-
   const onSelect = (key: string, value: any) => {
     setData({ ...data, [key]: value })
   }
   const onChange = (key: string, e: any) => {
     const value = e.target.value
-    // if (value) {
-    //   switch (key) {
-    //     case 'keyword':
-    //       // if (value && ValidateStr('isSymbol', value)) return false
-    //       break
-    //   }
-    // }
+    if (value) {
+      switch (key) {
+        case 'purchase_number':
+        case 'remark':
+          if (value && ValidateStr('isSymbol', value)) return false
+          break
+      }
+    }
     setData({ ...data, [key]: value })
   }
   const onCount = (key: string, value: number) => {
@@ -87,7 +82,25 @@ const ModalCreate = (props: IProps) => {
         duration_end: dateStrings[1]
       })
   }
-  const disabledDate = (current: any) => current < moment().endOf('day')
+  const disabledDate = (current: any) => {
+    return current < moment().endOf('day')
+  }
+  useEffect(() => {
+    if (props.isShow) {
+      api_global
+        .getOptions(['purchase_management_company'])
+        .then((res: any) => {
+          setCompanyOption(res[0])
+        })
+        .finally(() => context.setIsLoading(false))
+
+      setData(
+        props.mode === 'CREATE' ? { ...initData } : { ...props.purchaseDetail }
+      )
+    } else {
+      setData({ ...initData })
+    }
+  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const submit = () => {
     context.setIsLoading(true)
@@ -124,7 +137,7 @@ const ModalCreate = (props: IProps) => {
           disabled={
             !data.purchase_number ||
             !data.company ||
-            !data.course_access ||
+            data.course_access.length === 0 ||
             !data.quata ||
             !data.duration_start ||
             !data.duration_end
@@ -174,14 +187,11 @@ const ModalCreate = (props: IProps) => {
               placeholder='Please select'
               onChange={(val) => onSelect('company', val)}
             >
-              <Option value={'company_a'}>Company A</Option>
-              <Option value={'company_b'}>Company B</Option>
-              {/* TODO */}
-              {/* {optionIndustry.map((item: any) => (
-                  <Option value={item.value} key={item.value}>
-                    {item.name}
-                  </Option>
-                ))} */}
+              {companyOption.map((item: string) => (
+                <Option value={item} key={item}>
+                  {item}
+                </Option>
+              ))}
             </Select>
           </div>
         </Col>

@@ -1,10 +1,10 @@
 import { useState, useEffect, useContext } from 'react'
-import { MyContext } from '../../../storage'
-import PurchaseApi from '../../../api/PurchaseApi'
+import { MyContext } from 'storage'
+import GlobalApi from 'api/GlobalApi'
+import PurchaseApi from 'api/PurchaseApi'
 import ModalCreate from './ModalCreate'
 import ModalDetail from './ModalDetail'
-import { IconSearch } from '../../../utility/icon'
-import moment from 'moment'
+import { IconSearch } from 'utility/icon'
 import { Row, Col, Button, Input, Select, Table } from 'antd'
 const { Option } = Select
 
@@ -20,45 +20,18 @@ interface IState {
 }
 
 const Purchase = (props: IProps) => {
-  const api = new PurchaseApi()
   const context = useContext(MyContext)
+  const api_global = new GlobalApi()
+  const api = new PurchaseApi()
 
-  const [isModalEditShow, setIsModalEditShow] = useState(false)
-  const [isModalDetailShow, setIsModalDetailShow] = useState(false)
+  const [companyOption, setCompanyOption] = useState<any>([])
+  const [statusOption, setStatusOption] = useState<any>([])
   const [data, setData] = useState<IState>({
     company: '',
     status: '',
     keyword: ''
   })
-  const onSelect = (key: string, value: any) => {
-    setData({ ...data, [key]: value })
-  }
-  const onChange = (key: string, e: any) => {
-    const value = e.target.value
-    if (value) {
-      switch (key) {
-        // TODO
-        case 'keyword':
-          // if (value && ValidateStr('isSymbol', value)) return false
-          break
-      }
-    }
-    setData({ ...data, [key]: value })
-  }
-
   const [purchaseList, setPurchaseList] = useState([])
-  const getPurchaseList = () => {
-    // TOCHECK 送搜尋條件
-    context.setIsLoading(true)
-    api
-      .getPurchases()
-      .then((res: any) => setPurchaseList(res))
-      .finally(() => context.setIsLoading(false))
-  }
-  useEffect(() => {
-    getPurchaseList()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
   const columns = [
     {
       title: 'Purchase number',
@@ -92,8 +65,7 @@ const Purchase = (props: IProps) => {
       width: 270,
       render: (text: string, record: any) => (
         <>
-          {moment(record.duration_start).format('YYYY/MM/DD')}-
-          {moment(record.duration_end).format('YYYY/MM/DD')}
+          {record.duration_start}-{record.duration_end}
         </>
       )
     },
@@ -133,6 +105,44 @@ const Purchase = (props: IProps) => {
       )
     }
   ]
+  const onSelect = (key: string, value: any) => {
+    setData({ ...data, [key]: value })
+  }
+  const onChange = (key: string, e: any) => {
+    const value = e.target.value
+    if (value) {
+      switch (key) {
+        // TODO
+        case 'keyword':
+          // if (value && ValidateStr('isSymbol', value)) return false
+          break
+      }
+    }
+    setData({ ...data, [key]: value })
+  }
+  const getPurchaseList = () => {
+    // TOCHECK 送搜尋條件
+    context.setIsLoading(true)
+    api
+      .getPurchases()
+      .then((res: any) => setPurchaseList(res))
+      .finally(() => context.setIsLoading(false))
+  }
+  useEffect(() => {
+    api_global
+      .getOptions(['purchase_management_company', 'purchase_management_status'])
+      .then((res: any) => {
+        setCompanyOption(res[0])
+        setStatusOption(res[1])
+      })
+      .finally(() => context.setIsLoading(false))
+
+    getPurchaseList()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const [isModalEditShow, setIsModalEditShow] = useState(false)
+  const [isModalDetailShow, setIsModalDetailShow] = useState(false)
+
   return (
     <>
       <h1 className='ad-layout-article-title'>
@@ -157,14 +167,11 @@ const Purchase = (props: IProps) => {
                 placeholder='Please select'
                 onChange={(val) => onSelect('company', val)}
               >
-                <Option value={'company_a'}>Company A</Option>
-                <Option value={'company_b'}>Company B</Option>
-                {/* TOCHECK */}
-                {/* {optionIndustry.map((item: any) => (
-                <Option value={item.value} key={item.value}>
-                  {item.name}
-                </Option>
-              ))} */}
+                {companyOption.map((item: string) => (
+                  <Option value={item} key={item}>
+                    {item}
+                  </Option>
+                ))}
               </Select>
             </div>
           </Col>
@@ -176,14 +183,11 @@ const Purchase = (props: IProps) => {
                 placeholder='Please select'
                 onChange={(val) => onSelect('status', val)}
               >
-                <Option value={'active'}>Active</Option>
-                <Option value={'expired'}>Expired</Option>
-                {/* TOCHECK */}
-                {/* {optionIndustry.map((item: any) => (
-                <Option value={item.value} key={item.value}>
-                  {item.name}
-                </Option>
-              ))} */}
+                {statusOption.map((item: string) => (
+                  <Option value={item} key={item}>
+                    {item}
+                  </Option>
+                ))}
               </Select>
             </div>
           </Col>

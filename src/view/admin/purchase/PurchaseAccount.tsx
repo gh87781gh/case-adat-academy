@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
-import { MyContext } from '../../../storage'
-import PurchaseApi from '../../../api/PurchaseApi'
+import { MyContext } from 'storage'
+import PurchaseApi from 'api/PurchaseApi'
 import ModalCreate from '../account/ModalCreate'
 import ModalDetail from '../account/ModalDetail'
 import ModalRecord from '../account/ModalRecord'
@@ -13,37 +13,13 @@ interface IProps {
 }
 
 const PurchaseAccount = (props: IProps) => {
-  const api = new PurchaseApi()
   const context = useContext(MyContext)
-
-  const [isModalCreateShow, setIsModalCreateShow] = useState(false)
-  const [isModalDetailShow, setIsModalDetailShow] = useState<boolean>(false)
-  const [isModalRecordShow, setIsModalRecordShow] = useState<boolean>(false)
+  const api = new PurchaseApi()
 
   const [purchaseDetail, setPurchaseDetail] = useState<any>({})
   const [accountList, setAccountList] = useState<any>([])
   const [accountId, setAccountId] = useState<string>('')
   const [userId, setUserId] = useState<string>('')
-
-  const getPurchaseDetail = () => {
-    context.setIsLoading(true)
-    api
-      .getPurchaseDetail(props.purchaseId)
-      .then((res: any) => setPurchaseDetail(res))
-      .finally(() => context.setIsLoading(false))
-  }
-  const getList = () => {
-    context.setIsLoading(true)
-    api
-      .getPurchaseAccount(props.purchaseId)
-      .then((res: any) => setAccountList(res))
-      .finally(() => context.setIsLoading(false))
-  }
-  useEffect(() => {
-    getPurchaseDetail()
-    getList()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
   const columns = [
     {
       title: 'User ID',
@@ -98,6 +74,29 @@ const PurchaseAccount = (props: IProps) => {
       )
     }
   ]
+  const getList = () => {
+    context.setIsLoading(true)
+    api
+      .getPurchaseAccount(props.purchaseId)
+      .then((res: any) => setAccountList(res))
+      .finally(() => context.setIsLoading(false))
+  }
+  const getPurchaseDetail = () => {
+    context.setIsLoading(true)
+    api
+      .getPurchaseDetail(props.purchaseId)
+      .then((res: any) => setPurchaseDetail(res))
+      .finally(() => context.setIsLoading(false))
+  }
+  useEffect(() => {
+    getPurchaseDetail()
+    getList()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const [isModalCreateShow, setIsModalCreateShow] = useState<boolean>(false)
+  const [isModalDetailShow, setIsModalDetailShow] = useState<boolean>(false)
+  const [isModalRecordShow, setIsModalRecordShow] = useState<boolean>(false)
+
   return (
     <>
       <Breadcrumb separator='>'>

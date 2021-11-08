@@ -1,9 +1,10 @@
 import { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import { MyContext } from '../../../storage'
-import { ValidateStr } from '../../../utility/validate'
-import FormGroupMsg from '../../../utility/component/FormGroupMsg'
-import LoginApi from '../../../api/LoginApi'
+import { MyContext } from 'storage'
+import GlobalApi from 'api/GlobalApi'
+import LoginApi from 'api/LoginApi'
+import { ValidateStr } from 'utility/validate'
+import FormGroupMsg from 'utility/component/FormGroupMsg'
 import msg from 'api/engine/msg'
 import { Row, Col, Button, Input, Checkbox, Select, message } from 'antd'
 const { Option } = Select
@@ -22,21 +23,23 @@ interface IState {
 
 const Create = () => {
   const context = useContext(MyContext)
+  const api_global = new GlobalApi()
   const api = new LoginApi()
   const history = useHistory()
 
-  const [industries, setIndustries] = useState<any>([])
-  const [experience_levels, setExperience_levels] = useState<any>([])
-  const [experiences, setExperiences] = useState<any>([])
+  const [industryOption, setIndustryOption] = useState<string[]>([])
+  const [experienceLevelOption, setExperienceLevelOption] = useState<string[]>(
+    []
+  )
+  const [experienceOption, setExperienceOption] = useState<string[]>([])
   useEffect(() => {
     context.setIsLoading(true)
-    // TOCHECK 要跟換成打 option 的 api
-    api
-      .getSignUpOptions()
+    api_global
+      .getOptions(['industries', 'experience_levels', 'experiences'])
       .then((res: any) => {
-        setIndustries(res.industries)
-        setExperience_levels(res.experience_levels)
-        setExperiences(res.experiences)
+        setIndustryOption(res[0])
+        setExperienceLevelOption(res[1])
+        setExperienceOption(res[2])
       })
       .finally(() => context.setIsLoading(false))
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
@@ -101,7 +104,7 @@ const Create = () => {
     context.setIsLoading(true)
 
     const experienceStrAry = data.experience.map((item: any) => {
-      return experiences[item]
+      return experienceOption[item]
     })
 
     api
@@ -222,7 +225,7 @@ const Create = () => {
       <div className='ad-login-content-body'>
         <p>
           Help us recommend learning path for you by providing your work
-          experiences
+          experienceOption
         </p>
         <Row gutter={20}>
           <Col span={12}>
@@ -233,7 +236,7 @@ const Create = () => {
                 placeholder='Please select'
                 onChange={(val) => onSelect('industry', val)}
               >
-                {industries.map((item: string) => (
+                {industryOption.map((item: string) => (
                   <Option value={item} key={item}>
                     {item}
                   </Option>
@@ -261,7 +264,7 @@ const Create = () => {
                 value={data.experience_level}
                 onChange={(val) => onSelect('experience_level', val)}
               >
-                {experience_levels.map((item: string) => (
+                {experienceLevelOption.map((item: string) => (
                   <Option value={item} key={item}>
                     {item}
                   </Option>
@@ -291,7 +294,7 @@ const Create = () => {
             onChange={onChecks}
           >
             <Row gutter={[10, 10]}>
-              {experiences.map((item: string, index: number) => (
+              {experienceOption.map((item: string, index: number) => (
                 <Col span={12} key={item}>
                   <Checkbox className='ad-checkbox-btn' value={index}>
                     {item}
