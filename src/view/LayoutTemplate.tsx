@@ -4,6 +4,7 @@ import GlobalApi from '../api/GlobalApi'
 import Login from './login/Login'
 import Purchase from './admin/purchase/Index'
 import Account from './admin/account/Index'
+import Admin from './admin/admin/Index'
 import User from './user/User'
 import { Spin } from 'antd'
 import { MyContext, BrowserStorage } from '../storage'
@@ -66,6 +67,11 @@ const LayoutTemplate = () => {
                 exact={true}
                 path='/admin/account'
                 render={() => componentPage(Account, 'ADMIN')}
+              />
+              <Route
+                exact={true}
+                path='/admin/admin'
+                render={() => componentPage(Admin, 'ADMIN')}
               />
               <Redirect to='/login' />
             </Switch>
