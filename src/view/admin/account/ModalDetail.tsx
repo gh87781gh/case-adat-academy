@@ -22,7 +22,7 @@ const ModalDetail = (props: IProps) => {
     context.setIsLoading(true)
     api
       .getAccountDetail(props.accountId)
-      .then((res: any) => setAccountDetail(res))
+      .then((res: any) => setAccountDetail(res.data))
       .finally(() => context.setIsLoading(false))
   }
   useEffect(() => {

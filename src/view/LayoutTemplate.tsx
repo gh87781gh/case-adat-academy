@@ -18,7 +18,7 @@ const LayoutTemplate = () => {
     setIsLoading(true)
     api
       .getAuth()
-      .then((res: any) => setAuth(res))
+      .then((res: any) => setAuth(res.data))
       .finally(() => setIsLoading(false))
   }
   useEffect(() => {

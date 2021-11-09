@@ -3,12 +3,17 @@ import { formatDate } from 'utility/format'
 
 export default class PurchaseApi {
   restAPI: any = new RestAPI()
-  getPurchases = () => {
+  getPurchases = (data: any) => {
+    const query: any = []
+    Object.keys(data).forEach((key: string) => {
+      if (data[key]) query.push(`${key}=${data[key]}`)
+    })
+
     return new Promise((resolve, reject) => {
       this.restAPI
-        .request('get', '/purchase', {})
+        .request('get', `/purchase?${query.join('&')}`, {})
         .then((res: any) => {
-          res.forEach((item: any, index: number) => {
+          res.data.forEach((item: any, index: number) => {
             item.duration_start = formatDate(item.duration_start)
             item.duration_end = formatDate(item.duration_end)
             item.key = index
@@ -25,8 +30,8 @@ export default class PurchaseApi {
       this.restAPI
         .request('get', `/purchase/${id}`, {})
         .then((res: any) => {
-          res.duration_start = formatDate(res.duration_start)
-          res.duration_end = formatDate(res.duration_end)
+          res.data.duration_start = formatDate(res.data.duration_start)
+          res.data.duration_end = formatDate(res.data.duration_end)
           resolve(res)
         })
         .catch(() => {
@@ -34,12 +39,16 @@ export default class PurchaseApi {
         })
     })
   }
-  getPurchaseRecord = (id: string) => {
+  getPurchaseRecord = (id: string, page: number) => {
     return new Promise((resolve, reject) => {
       this.restAPI
-        .request('get', `/purchase/${id}/records`, {})
+        .request(
+          'get',
+          `/purchase/${id}/records?${page ? `page=${page}` : ''}`,
+          {}
+        )
         .then((res: any) => {
-          res.forEach((item: any, index: number) => {
+          res.data.forEach((item: any, index: number) => {
             item.created_at = formatDate(item.created_at)
             item.key = index
           })
@@ -50,12 +59,16 @@ export default class PurchaseApi {
         })
     })
   }
-  getPurchaseAccount = (id: string) => {
+  getPurchaseAccount = (id: string, page: number) => {
     return new Promise((resolve, reject) => {
       this.restAPI
-        .request('get', `/purchase/${id}/accounts`, {})
+        .request(
+          'get',
+          `/purchase/${id}/accounts?${page ? `page=${page}` : ''}`,
+          {}
+        )
         .then((res: any) => {
-          res.forEach((item: any, index: number) => (item.key = index))
+          res.data.forEach((item: any, index: number) => (item.key = index))
           resolve(res)
         })
         .catch(() => {

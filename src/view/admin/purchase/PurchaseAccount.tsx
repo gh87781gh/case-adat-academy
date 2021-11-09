@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
-import { MyContext } from 'storage'
+import { MyContext, StaticService } from 'storage'
 import PurchaseApi from 'api/PurchaseApi'
 import ModalCreate from '../account/ModalCreate'
 import ModalDetail from '../account/ModalDetail'
@@ -17,7 +17,9 @@ const PurchaseAccount = (props: IProps) => {
   const api = new PurchaseApi()
 
   const [purchaseDetail, setPurchaseDetail] = useState<any>({})
-  const [accountList, setAccountList] = useState<any>([])
+  const [list, setList] = useState<any>([])
+  const [total, setTotal] = useState(0)
+  const [page, setPage] = useState(1)
   const [accountId, setAccountId] = useState<string>('')
   const [userId, setUserId] = useState<string>('')
   const columns = [
@@ -74,24 +76,23 @@ const PurchaseAccount = (props: IProps) => {
       )
     }
   ]
-  const getList = () => {
+  const getList = async () => {
     context.setIsLoading(true)
-    api
-      .getPurchaseAccount(props.purchaseId)
-      .then((res: any) => setAccountList(res))
-      .finally(() => context.setIsLoading(false))
-  }
-  const getPurchaseDetail = () => {
-    context.setIsLoading(true)
-    api
+    await api
       .getPurchaseDetail(props.purchaseId)
-      .then((res: any) => setPurchaseDetail(res))
+      .then((res: any) => setPurchaseDetail(res.data))
+      .finally(() => context.setIsLoading(false))
+    await api
+      .getPurchaseAccount(props.purchaseId, page)
+      .then((res: any) => {
+        setList(res.data)
+        setTotal(res.total)
+      })
       .finally(() => context.setIsLoading(false))
   }
   useEffect(() => {
-    getPurchaseDetail()
     getList()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [page]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [isModalCreateShow, setIsModalCreateShow] = useState<boolean>(false)
   const [isModalDetailShow, setIsModalDetailShow] = useState<boolean>(false)
@@ -143,7 +144,16 @@ const PurchaseAccount = (props: IProps) => {
           </Col>
         </Row>
       </div>
-      <Table columns={columns} dataSource={accountList} />
+      <Table
+        columns={columns}
+        dataSource={list}
+        pagination={{
+          pageSize: StaticService.tablePageSize,
+          current: page,
+          total,
+          onChange: (page: number) => setPage(page)
+        }}
+      />
       <ModalCreate
         isShow={isModalCreateShow}
         onCancel={() => setIsModalCreateShow(false)}

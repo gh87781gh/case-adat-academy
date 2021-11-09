@@ -1,7 +1,8 @@
-import { useState, useEffect, useContext } from 'react'
-import { MyContext } from 'storage'
+import { useState, useEffect, useContext, useRef } from 'react'
+import { MyContext, StaticService } from 'storage'
 import GlobalApi from 'api/GlobalApi'
 import AccountApi from 'api/AccountApi'
+import { ValidateStr } from 'utility/validate'
 import { IconSearch } from 'utility/icon'
 import Header from 'view/layout/Header'
 import AdminSideBar from '../AdminSideBar'
@@ -14,7 +15,7 @@ const { Option } = Select
 interface IState {
   purchase_number: string
   status: string
-  keyword: string
+  search: string
 }
 
 const Index = () => {
@@ -24,12 +25,42 @@ const Index = () => {
 
   const [purchaseNumberOption, setPurchaseNumberOption] = useState<any>([])
   const [statusOption, setStatusOption] = useState<any>([])
+  useEffect(() => {
+    api_global
+      .getOptions([
+        'account_management_purchase_number',
+        'account_management_status'
+      ])
+      .then((res: any) => {
+        setPurchaseNumberOption(res.data[0])
+        setStatusOption(res.data[1])
+      })
+      .finally(() => context.setIsLoading(false))
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   const [data, setData] = useState<IState>({
     purchase_number: '',
     status: '',
-    keyword: ''
+    search: ''
   })
+  const onSelect = (key: string, value: any) => {
+    setData({ ...data, [key]: value })
+  }
+  const onChange = (key: string, e: any) => {
+    const value = e.target.value
+    if (value) {
+      switch (key) {
+        case 'search':
+          if (value && ValidateStr('isSymbol', value)) return false
+          break
+      }
+    }
+    setData({ ...data, [key]: value })
+  }
+
   const [list, setList] = useState([])
+  const [total, setTotal] = useState(0)
+  const [page, setPage] = useState(1)
   const columns = [
     {
       title: 'User ID',
@@ -86,42 +117,28 @@ const Index = () => {
   ]
   const [accountId, setAccountId] = useState<string>('')
   const [userId, setUserId] = useState<string>('')
-  const onSelect = (key: string, value: any) => {
-    setData({ ...data, [key]: value })
-  }
-  const onChange = (key: string, e: any) => {
-    const value = e.target.value
-    if (value) {
-      switch (key) {
-        // TODO
-        case 'keyword':
-          // if (value && ValidateStr('isSymbol', value)) return false
-          break
-      }
-    }
-    setData({ ...data, [key]: value })
-  }
   const getList = () => {
     context.setIsLoading(true)
     api
-      .getAccounts()
-      .then((res: any) => setList(res))
-      .finally(() => context.setIsLoading(false))
-  }
-  useEffect(() => {
-    api_global
-      .getOptions([
-        'account_management_purchase_number',
-        'account_management_status'
-      ])
+      .getAccounts({ ...data, page })
       .then((res: any) => {
-        setPurchaseNumberOption(res[0])
-        setStatusOption(res[1])
+        setList(res.data)
+        setTotal(res.total)
       })
       .finally(() => context.setIsLoading(false))
+  }
 
+  const isInitMount = useRef(true)
+  useEffect(() => {
+    if (isInitMount.current) {
+      isInitMount.current = false
+    } else {
+      if (!data.search) getList()
+    }
+  }, [data.search]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
     getList()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [page, data.purchase_number, data.status]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [isModalCreateShow, setIsModalCreateShow] = useState<boolean>(false)
   const [isModalRecordShow, setIsModalRecordShow] = useState<boolean>(false)
@@ -181,14 +198,26 @@ const Index = () => {
               </Col>
               <Col span={8}>
                 <Input
+                  value={data.search}
                   placeholder='Search User ID or Current email'
-                  prefix={<IconSearch />}
-                  onChange={(e) => onChange('keyword', e)}
+                  prefix={<IconSearch onClick={() => getList()} />}
+                  onPressEnter={() => getList()}
+                  onChange={(e) => onChange('search', e)}
+                  allowClear={true}
                 />
               </Col>
             </Row>
           </div>
-          <Table columns={columns} dataSource={list} />
+          <Table
+            columns={columns}
+            dataSource={list}
+            pagination={{
+              pageSize: StaticService.tablePageSize,
+              current: page,
+              total,
+              onChange: (page: number) => setPage(page)
+            }}
+          />
           <ModalCreate
             isShow={isModalCreateShow}
             onCancel={() => setIsModalCreateShow(false)}

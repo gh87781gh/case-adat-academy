@@ -1,7 +1,8 @@
-import { useState, useEffect, useContext } from 'react'
-import { MyContext } from 'storage'
+import { useState, useEffect, useContext, useRef } from 'react'
+import { MyContext, StaticService } from 'storage'
 import GlobalApi from 'api/GlobalApi'
 import PurchaseApi from 'api/PurchaseApi'
+import { ValidateStr } from 'utility/validate'
 import ModalCreate from './ModalCreate'
 import ModalDetail from './ModalDetail'
 import { IconSearch } from 'utility/icon'
@@ -16,7 +17,7 @@ interface IProps {
 interface IState {
   company: string
   status: string
-  keyword: string
+  search: string
 }
 
 const Purchase = (props: IProps) => {
@@ -26,12 +27,39 @@ const Purchase = (props: IProps) => {
 
   const [companyOption, setCompanyOption] = useState<any>([])
   const [statusOption, setStatusOption] = useState<any>([])
+  useEffect(() => {
+    api_global
+      .getOptions(['purchase_management_company', 'purchase_management_status'])
+      .then((res: any) => {
+        setCompanyOption(res.data[0])
+        setStatusOption(res.data[1])
+      })
+      .finally(() => context.setIsLoading(false))
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   const [data, setData] = useState<IState>({
     company: '',
     status: '',
-    keyword: ''
+    search: ''
   })
-  const [purchaseList, setPurchaseList] = useState([])
+  const onSelect = (key: string, value: any) => {
+    setData({ ...data, [key]: value })
+  }
+  const onChange = (key: string, e: any) => {
+    const value = e.target.value
+    if (value) {
+      switch (key) {
+        case 'search':
+          if (value && ValidateStr('isSymbol', value)) return false
+          break
+      }
+    }
+    setData({ ...data, [key]: value })
+  }
+
+  const [list, setList] = useState<any>([])
+  const [total, setTotal] = useState(0)
+  const [page, setPage] = useState(1)
   const columns = [
     {
       title: 'Purchase number',
@@ -105,40 +133,28 @@ const Purchase = (props: IProps) => {
       )
     }
   ]
-  const onSelect = (key: string, value: any) => {
-    setData({ ...data, [key]: value })
-  }
-  const onChange = (key: string, e: any) => {
-    const value = e.target.value
-    if (value) {
-      switch (key) {
-        // TODO
-        case 'keyword':
-          // if (value && ValidateStr('isSymbol', value)) return false
-          break
-      }
-    }
-    setData({ ...data, [key]: value })
-  }
-  const getPurchaseList = () => {
-    // TOCHECK 送搜尋條件
+  const getList = () => {
     context.setIsLoading(true)
     api
-      .getPurchases()
-      .then((res: any) => setPurchaseList(res))
-      .finally(() => context.setIsLoading(false))
-  }
-  useEffect(() => {
-    api_global
-      .getOptions(['purchase_management_company', 'purchase_management_status'])
+      .getPurchases({ ...data, page })
       .then((res: any) => {
-        setCompanyOption(res[0])
-        setStatusOption(res[1])
+        setList(res.data)
+        setTotal(res.total)
       })
       .finally(() => context.setIsLoading(false))
+  }
 
-    getPurchaseList()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  const isInitMount = useRef(true)
+  useEffect(() => {
+    if (isInitMount.current) {
+      isInitMount.current = false
+    } else {
+      if (!data.search) getList()
+    }
+  }, [data.search]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    getList()
+  }, [page, data.company, data.status]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [isModalEditShow, setIsModalEditShow] = useState(false)
   const [isModalDetailShow, setIsModalDetailShow] = useState(false)
@@ -166,6 +182,7 @@ const Purchase = (props: IProps) => {
                 value={data.company}
                 placeholder='Please select'
                 onChange={(val) => onSelect('company', val)}
+                allowClear={true}
               >
                 {companyOption.map((item: string) => (
                   <Option value={item} key={item}>
@@ -182,6 +199,7 @@ const Purchase = (props: IProps) => {
                 value={data.status}
                 placeholder='Please select'
                 onChange={(val) => onSelect('status', val)}
+                allowClear={true}
               >
                 {statusOption.map((item: string) => (
                   <Option value={item} key={item}>
@@ -193,25 +211,37 @@ const Purchase = (props: IProps) => {
           </Col>
           <Col span={8}>
             <Input
+              value={data.search}
               placeholder='Search purchase number'
-              prefix={<IconSearch />}
-              onChange={(e) => onChange('keyword', e)}
+              prefix={<IconSearch onClick={() => getList()} />}
+              onPressEnter={() => getList()}
+              onChange={(e) => onChange('search', e)}
+              allowClear={true}
             />
           </Col>
         </Row>
       </div>
-      <Table columns={columns} dataSource={purchaseList} />
+      <Table
+        columns={columns}
+        dataSource={list}
+        pagination={{
+          pageSize: StaticService.tablePageSize,
+          current: page,
+          total,
+          onChange: (page: number) => setPage(page)
+        }}
+      />
       <ModalDetail
         isShow={isModalDetailShow}
         onCancel={() => setIsModalDetailShow(false)}
         purchaseId={props.purchaseId}
-        getPurchaseList={() => getPurchaseList()}
+        getPurchaseList={() => getList()}
       />
       <ModalCreate
         mode='CREATE'
         isShow={isModalEditShow}
         onCancel={() => setIsModalEditShow(false)}
-        getPurchaseList={() => getPurchaseList()}
+        getPurchaseList={() => getList()}
       />
     </>
   )

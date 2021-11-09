@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
-import { MyContext } from 'storage'
+import { MyContext, StaticService } from 'storage'
 import PurchaseApi from 'api/PurchaseApi'
 import { Table, Modal } from 'antd'
 
@@ -14,6 +14,8 @@ const ModalRecord = (props: IProps) => {
   const api = new PurchaseApi()
 
   const [list, setList] = useState([])
+  const [total, setTotal] = useState(0)
+  const [page, setPage] = useState(1)
   const columns = [
     {
       title: 'Type',
@@ -39,13 +41,16 @@ const ModalRecord = (props: IProps) => {
   const getPurchaseRecord = () => {
     context.setIsLoading(true)
     api
-      .getPurchaseRecord(props.purchaseDetail.id)
-      .then((res: any) => setList(res))
+      .getPurchaseRecord(props.purchaseDetail.id, page)
+      .then((res: any) => {
+        setList(res.data)
+        setTotal(res.total)
+      })
       .finally(() => context.setIsLoading(false))
   }
   useEffect(() => {
     if (props.isShow && props.purchaseDetail.id) getPurchaseRecord()
-  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [props.isShow, page]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Modal
@@ -69,7 +74,16 @@ const ModalRecord = (props: IProps) => {
       width={1100}
       footer={null}
     >
-      <Table columns={columns} dataSource={list} />
+      <Table
+        columns={columns}
+        dataSource={list}
+        pagination={{
+          pageSize: StaticService.tablePageSize,
+          current: page,
+          total,
+          onChange: (page: number) => setPage(page)
+        }}
+      />
     </Modal>
   )
 }

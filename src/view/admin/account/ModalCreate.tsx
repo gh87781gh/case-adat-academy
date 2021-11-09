@@ -63,7 +63,7 @@ const ModalCreate = (props: IProps) => {
         context.setIsLoading(true)
         api
           .getAccountPurchases()
-          .then((res: any) => setPurchaseList(res))
+          .then((res: any) => setPurchaseList(res.data))
           .finally(() => context.setIsLoading(false))
       }
     }

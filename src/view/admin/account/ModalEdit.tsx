@@ -69,7 +69,7 @@ const ModalEdit = (props: IProps) => {
       api
         .getAccountPurchases()
         .then((res: any) => {
-          setPurchaseList(res)
+          setPurchaseList(res.data)
         })
         .finally(() => context.setIsLoading(false))
     }
