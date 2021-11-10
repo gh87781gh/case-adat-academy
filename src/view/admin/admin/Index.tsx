@@ -1,7 +1,8 @@
-import { useState, useEffect, useContext } from 'react'
-import { MyContext } from 'storage'
+import { useState, useEffect, useContext, useRef } from 'react'
+import { MyContext, StaticService } from 'storage'
 import GlobalApi from 'api/GlobalApi'
 import AdminApi from 'api/AdminApi'
+import { ValidateStr } from 'utility/validate'
 import { IconSearch } from 'utility/icon'
 import Header from 'view/layout/Header'
 import AdminSideBar from '../AdminSideBar'
@@ -20,11 +21,38 @@ const Index = () => {
   const api = new AdminApi()
 
   const [roleOption, setRoleOption] = useState<any>([])
+  useEffect(() => {
+    api_global
+      .getOptions(['admin_roles'])
+      .then((res: any) => {
+        setRoleOption(res.data[0])
+      })
+      .finally(() => context.setIsLoading(false))
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   const [data, setData] = useState<IState>({
     role: '',
     search: ''
   })
+  const onSelect = (key: string, value: any) => {
+    setData({ ...data, [key]: value })
+  }
+  const onChange = (key: string, e: any) => {
+    const value = e.target.value
+    if (value) {
+      switch (key) {
+        case 'search':
+          if (value && ValidateStr('isSymbol', value)) return false
+          break
+      }
+    }
+    setData({ ...data, [key]: value })
+  }
+
   const [list, setList] = useState([])
+  const [total, setTotal] = useState(0)
+  const [page, setPage] = useState(1)
+  const [adminId, setAdminId] = useState('')
   const columns = [
     {
       title: 'User ID',
@@ -62,39 +90,28 @@ const Index = () => {
       )
     }
   ]
-  const [adminId, setAdminId] = useState<string>('')
-  const onSelect = (key: string, value: any) => {
-    setData({ ...data, [key]: value })
-  }
-  const onChange = (key: string, e: any) => {
-    const value = e.target.value
-    if (value) {
-      switch (key) {
-        // TODO
-        case 'keyword':
-          // if (value && ValidateStr('isSymbol', value)) return false
-          break
-      }
-    }
-    setData({ ...data, [key]: value })
-  }
   const getList = () => {
     context.setIsLoading(true)
     api
-      .getAdmins()
-      .then((res: any) => setList(res))
-      .finally(() => context.setIsLoading(false))
-  }
-  useEffect(() => {
-    api_global
-      .getOptions(['admin_roles'])
+      .getAdmins(data)
       .then((res: any) => {
-        setRoleOption(res[0])
+        setList(res.data)
+        setTotal(res.total)
       })
       .finally(() => context.setIsLoading(false))
+  }
 
+  const isInitMount = useRef(true)
+  useEffect(() => {
+    if (isInitMount.current) {
+      isInitMount.current = false
+    } else {
+      if (!data.search) getList()
+    }
+  }, [data.search]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
     getList()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [page, data.role]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [isModalCreateShow, setIsModalCreateShow] = useState<boolean>(false)
 
@@ -109,7 +126,10 @@ const Index = () => {
             <Button
               className='ad-float-right'
               type='primary'
-              onClick={() => setIsModalCreateShow(true)}
+              onClick={() => {
+                setAdminId('')
+                setIsModalCreateShow(true)
+              }}
             >
               Create admin
             </Button>
@@ -123,6 +143,7 @@ const Index = () => {
                     value={data.role}
                     placeholder='Please select'
                     onChange={(val) => onSelect('role', val)}
+                    allowClear={true}
                   >
                     {roleOption.map((item: string) => (
                       <Option value={item} key={item}>
@@ -134,14 +155,26 @@ const Index = () => {
               </Col>
               <Col span={8} offset={10}>
                 <Input
+                  value={data.search}
                   placeholder='Search User ID'
-                  prefix={<IconSearch />}
-                  onChange={(e) => onChange('keyword', e)}
+                  prefix={<IconSearch onClick={() => getList()} />}
+                  onPressEnter={() => getList()}
+                  onChange={(e) => onChange('search', e)}
+                  allowClear={true}
                 />
               </Col>
             </Row>
           </div>
-          <Table columns={columns} dataSource={list} />
+          <Table
+            columns={columns}
+            dataSource={list}
+            pagination={{
+              pageSize: StaticService.tablePageSize,
+              current: page,
+              total,
+              onChange: (page: number) => setPage(page)
+            }}
+          />
           <ModalCreate
             isShow={isModalCreateShow}
             onCancel={() => setIsModalCreateShow(false)}

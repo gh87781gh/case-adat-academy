@@ -25,7 +25,6 @@ const ModalCreate = (props: IProps) => {
   const api_global = new GlobalApi()
   const api = new AdminApi()
 
-  const [roleOption, setRoleOption] = useState<any>([])
   const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
   const initData = {
     user_id: '',
@@ -34,77 +33,74 @@ const ModalCreate = (props: IProps) => {
     role: ''
   }
   const [data, setData] = useState<IState>({ ...initData })
+  const onSelect = (key: string, value: any) => {
+    setData({ ...data, [key]: value })
+  }
   const onChange = (key: string, e: any) => {
     const value = e.target.value
     if (value) {
       switch (key) {
         case 'email':
-          if (value && !ValidateStr('isEmail', value)) return false
-          setIsEmail(ValidateStr('isEmail', value))
+          if (value && !ValidateStr('isUserName', value)) return false
           break
       }
     }
     setData({ ...data, [key]: value })
   }
-  const onSelect = (key: string, value: any) => {
-    setData({ ...data, [key]: value })
-  }
+  useEffect(() => {
+    data.email
+      ? setIsEmail(ValidateStr('isEmail', data.email))
+      : setIsEmail(undefined)
+  }, [data.email]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const [purchaseList, setPurchaseList] = useState<any>([])
-  const [purchaseDetail, setPurchaseDetail] = useState<any>(null)
-
+  const [roleOption, setRoleOption] = useState<any>([])
   useEffect(() => {
     if (props.isShow) {
       setIsEmail(undefined)
       api_global
         .getOptions(['admin_roles'])
         .then((res: any) => {
-          setRoleOption(res[0])
+          setRoleOption(res.data[0])
         })
         .finally(() => context.setIsLoading(false))
 
-      // if (props.adminId) {
-      //   setPurchaseDetail(props.purchaseDetail)
-      //   setData({ purchase_id: props.purchaseDetail.id, email: '' })
-      // } else {
-      //   setData({ ...initData })
-      //   setPurchaseDetail(null)
-      //   context.setIsLoading(true)
-      //   api
-      //     .getAccountPurchases()
-      //     .then((res: any) => setPurchaseList(res))
-      //     .finally(() => context.setIsLoading(false))
-      // }
+      if (props.adminId) {
+        api
+          .getAdminDetail(props.adminId)
+          .then((res: any) => setData(res.data))
+          .finally(() => context.setIsLoading(false))
+      } else {
+        setData({ ...initData })
+      }
     }
   }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const createAdmin = () => {
+  const submit = () => {
     context.setIsLoading(true)
 
-    // TODO
-    // if (props.adminId) {
-    //   api
-    //     .createPurchaseAccount(props.purchaseDetail.id, { email: data.email })
-    //     .then(() => {
-    //       props.getList()
-    //       props.onCancel()
-    //     })
-    //     .finally(() => context.setIsLoading(false))
-    // } else {
-    //   api
-    //     .createAdmin(data)
-    //     .then(() => {
-    //       props.getList()
-    //       props.onCancel()
-    //     })
-    //     .finally(() => context.setIsLoading(false))
-    // }
+    if (props.adminId) {
+      api
+        .editAdmin(props.adminId, data)
+        .then(() => {
+          props.getList()
+          props.onCancel()
+        })
+        .finally(() => context.setIsLoading(false))
+    } else {
+      api
+        .createAdmin(data)
+        .then(() => {
+          props.getList()
+          props.onCancel()
+        })
+        .finally(() => context.setIsLoading(false))
+    }
   }
 
   return (
     <Modal
       className='ad-modal-edit'
-      title={props.adminId ? 'Create admin' : 'Edit admin'}
+      title={props.adminId ? 'Edit admin' : 'Create admin'}
       visible={props.isShow}
       onCancel={props.onCancel}
       width={1100}
@@ -113,9 +109,13 @@ const ModalCreate = (props: IProps) => {
           key='Create'
           type='primary'
           disabled={
-            !data.role || !data.user_id || !data.email || isEmail !== true
+            !data.role ||
+            !data.user_id ||
+            !data.email ||
+            (data.password?.length > 0 && data.password?.length < 8) ||
+            isEmail !== true
           }
-          onClick={() => createAdmin()}
+          onClick={() => submit()}
         >
           Create
         </Button>,
@@ -178,7 +178,7 @@ const ModalCreate = (props: IProps) => {
               onChange={(e) => onChange('password', e)}
             />
             <FormGroupMsg
-              isShow={data.password.length > 0 && data.password.length < 8}
+              isShow={data.password?.length > 0 && data.password?.length < 8}
               type='error'
               msg='Password is too short'
             />

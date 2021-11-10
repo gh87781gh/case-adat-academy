@@ -50,7 +50,9 @@ const ModalEdit = (props: IProps) => {
     setData({ ...data, [key]: value })
   }
   useEffect(() => {
-    if (data.email) setIsEmail(ValidateStr('isEmail', data.email))
+    data.email
+      ? setIsEmail(ValidateStr('isEmail', data.email))
+      : setIsEmail(undefined)
   }, [data.email]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [purchaseList, setPurchaseList] = useState<any>([])
