@@ -171,6 +171,7 @@ const Index = () => {
                     value={data.purchase_number}
                     placeholder='Please select'
                     onChange={(val) => onSelect('purchase_number', val)}
+                    allowClear={true}
                   >
                     {purchaseNumberOption.map((item: string) => (
                       <Option value={item} key={item}>
@@ -187,6 +188,7 @@ const Index = () => {
                     value={data.status}
                     placeholder='Please select'
                     onChange={(val) => onSelect('status', val)}
+                    allowClear={true}
                   >
                     {statusOption.map((item: string) => (
                       <Option value={item} key={item}>
