@@ -1,0 +1,31 @@
+@upload-bgc: #efefef;
+
+.ad-upload-logo {
+  background-color: @upload-bgc;
+  height: 200px;
+  border: 1px solid #000;
+  position: relative;
+  margin-bottom: 1rem;
+
+  .ad-upload-logo-watermark {
+    display: block;
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    text-align: center;
+    em {
+      font-style: normal;
+      font-size: 1rem;
+      display: block;
+      margin-top: 0.5rem;
+    }
+  }
+
+  &.circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+  }
+}

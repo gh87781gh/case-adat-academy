@@ -1,18 +1,16 @@
 import { useState, useEffect, useContext } from 'react'
 import { MyContext, StaticService } from 'storage'
 import PurchaseApi from 'api/admin/PurchaseApi'
-import ModalCreate from '../account/ModalCreate'
-import ModalDetail from '../account/ModalDetail'
-import ModalRecord from '../account/ModalRecord'
+// import ModalCreate from '../account/ModalCreate'
+// import ModalDetail from '../account/ModalDetail'
+// import ModalRecord from '../account/ModalRecord'
 import { Row, Col, Button, Table, Breadcrumb } from 'antd'
 
 interface IProps {
   prev: () => void
-  purchaseId: string
-  setPurchaseId: (id: string) => void
 }
 
-const PurchaseAccount = (props: IProps) => {
+const LearningPath = (props: IProps) => {
   const context = useContext(MyContext)
   const api = new PurchaseApi()
 
@@ -77,18 +75,18 @@ const PurchaseAccount = (props: IProps) => {
     }
   ]
   const getList = async () => {
-    context.setIsLoading(true)
-    await api
-      .getPurchaseDetail(props.purchaseId)
-      .then((res: any) => setPurchaseDetail(res.data))
-      .finally(() => context.setIsLoading(false))
-    await api
-      .getPurchaseAccount(props.purchaseId, page)
-      .then((res: any) => {
-        setList(res.data)
-        setTotal(res.total)
-      })
-      .finally(() => context.setIsLoading(false))
+    // context.setIsLoading(true)
+    // await api
+    //   .getPurchaseDetail(props.purchaseId)
+    //   .then((res: any) => setPurchaseDetail(res.data))
+    //   .finally(() => context.setIsLoading(false))
+    // await api
+    //   .getPurchaseAccount(props.purchaseId, page)
+    //   .then((res: any) => {
+    //     setList(res.data)
+    //     setTotal(res.total)
+    //   })
+    //   .finally(() => context.setIsLoading(false))
   }
   useEffect(() => {
     getList()
@@ -154,7 +152,7 @@ const PurchaseAccount = (props: IProps) => {
           onChange: (page: number) => setPage(page)
         }}
       />
-      <ModalCreate
+      {/* <ModalCreate
         isShow={isModalCreateShow}
         onCancel={() => setIsModalCreateShow(false)}
         getList={() => getList()}
@@ -172,8 +170,8 @@ const PurchaseAccount = (props: IProps) => {
         onCancel={() => setIsModalRecordShow(false)}
         accountId={accountId}
         userId={userId}
-      />
+      /> */}
     </>
   )
 }
-export default PurchaseAccount
+export default LearningPath

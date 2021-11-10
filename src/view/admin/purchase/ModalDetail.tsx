@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from 'react'
 import { MyContext } from 'storage'
-import PurchaseApi from 'api/PurchaseApi'
+import PurchaseApi from 'api/admin/PurchaseApi'
 import ModalCreate from './ModalCreate'
 import ModalRecord from './ModalRecord'
 import { Row, Col, Button, Modal } from 'antd'

@@ -1,4 +1,4 @@
-import { RestAPI } from './engine/axiosRunner'
+import { RestAPI } from '../engine/axiosRunner'
 
 export default class AdminApi {
   restAPI: any = new RestAPI()

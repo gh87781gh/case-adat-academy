@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react'
 import moment from 'moment'
 import { MyContext } from 'storage'
 import GlobalApi from 'api/GlobalApi'
-import PurchaseApi from 'api/PurchaseApi'
+import PurchaseApi from 'api/admin/PurchaseApi'
 import { ValidateStr } from 'utility/validate'
 import {
   DatePicker,

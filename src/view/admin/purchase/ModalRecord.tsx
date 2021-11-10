@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import { MyContext, StaticService } from 'storage'
-import PurchaseApi from 'api/PurchaseApi'
+import PurchaseApi from 'api/admin/PurchaseApi'
 import { Table, Modal } from 'antd'
 
 interface IProps {

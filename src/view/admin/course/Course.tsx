@@ -1,44 +1,36 @@
 import { useState, useEffect, useContext, useRef } from 'react'
 import { MyContext, StaticService } from 'storage'
 import GlobalApi from 'api/GlobalApi'
-import PurchaseApi from 'api/admin/PurchaseApi'
+import CourseApi from 'api/admin/CourseApi'
 import { ValidateStr } from 'utility/validate'
 import ModalCreate from './ModalCreate'
-import ModalDetail from './ModalDetail'
+// import ModalDetail from './ModalDetail'
 import { IconSearch } from 'utility/icon'
 import { Row, Col, Button, Input, Select, Table } from 'antd'
 const { Option } = Select
 
 interface IProps {
-  next: () => void
-  purchaseId: string
-  setPurchaseId: (id: string) => void
+  next: (step: number) => void
 }
 interface IState {
-  company: string
   status: string
   search: string
 }
 
-const Purchase = (props: IProps) => {
+const Course = (props: IProps) => {
   const context = useContext(MyContext)
   const api_global = new GlobalApi()
-  const api = new PurchaseApi()
+  const api = new CourseApi()
 
-  const [companyOption, setCompanyOption] = useState<any>([])
   const [statusOption, setStatusOption] = useState<any>([])
   useEffect(() => {
     api_global
-      .getOptions(['purchase_management_company', 'purchase_management_status'])
-      .then((res: any) => {
-        setCompanyOption(res.data[0])
-        setStatusOption(res.data[1])
-      })
+      .getOptions(['course_status'])
+      .then((res: any) => setStatusOption(res.data[0]))
       .finally(() => context.setIsLoading(false))
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [data, setData] = useState<IState>({
-    company: '',
     status: '',
     search: ''
   })
@@ -62,40 +54,24 @@ const Purchase = (props: IProps) => {
   const [page, setPage] = useState(1)
   const columns = [
     {
-      title: 'Purchase number',
-      dataIndex: 'purchase_number',
-      key: 'purchase_number'
+      title: 'Course name',
+      dataIndex: 'name',
+      key: 'name'
     },
     {
-      title: 'Company',
-      dataIndex: 'company',
-      key: 'company'
+      title: 'Last updated time',
+      dataIndex: 'last_update_time',
+      key: 'last_update_time'
     },
     {
-      title: 'Course access',
-      dataIndex: 'course_access',
-      key: 'course_access'
+      title: 'Editor',
+      dataIndex: 'editor',
+      key: 'editor'
     },
     {
-      title: 'Quota',
-      dataIndex: 'quata',
-      key: 'quata',
-      render: (text: string, record: any) => (
-        <>
-          {record.usage} used/ {text}
-        </>
-      )
-    },
-    {
-      title: 'Duration',
-      dataIndex: 'duration',
-      key: 'duration',
-      width: 270,
-      render: (text: string, record: any) => (
-        <>
-          {record.duration_start}-{record.duration_end}
-        </>
-      )
+      title: 'Course description',
+      dataIndex: 'description',
+      key: 'description'
     },
     {
       title: 'Status',
@@ -106,28 +82,39 @@ const Purchase = (props: IProps) => {
       title: 'Actions',
       key: 'action',
       dataIndex: 'action',
-      width: 220,
+      width: 370,
       render: (text: any, record: any) => (
         <div className='ad-btn-group'>
           <Button
-            key='more'
+            key='switch'
             size='small'
             onClick={() => {
-              props.setPurchaseId(record.id)
-              setIsModalDetailShow(true)
+              // props.setPurchaseId(record.id)
+              // setIsModalDetailShow(true)
             }}
           >
-            More
+            Activate
           </Button>
           <Button
-            key='view'
+            key='edit'
             size='small'
             onClick={() => {
-              props.setPurchaseId(record.id)
-              props.next()
+              // props.setPurchaseId(record.id)
+              // setIsModalDetailShow(true)
+              props.next(1)
             }}
           >
-            View Account
+            Edit
+          </Button>
+          <Button
+            key='editinfo'
+            size='small'
+            onClick={() => {
+              // props.setPurchaseId(record.id)
+              // props.next()
+            }}
+          >
+            Edit course information
           </Button>
         </div>
       )
@@ -136,7 +123,7 @@ const Purchase = (props: IProps) => {
   const getList = () => {
     context.setIsLoading(true)
     api
-      .getPurchases({ ...data, page })
+      .getCourses({ ...data, page })
       .then((res: any) => {
         setList(res.data)
         setTotal(res.total)
@@ -154,47 +141,26 @@ const Purchase = (props: IProps) => {
   }, [data.search]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     getList()
-  }, [page, data.company, data.status]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [page, data.status]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const [isModalEditShow, setIsModalEditShow] = useState(false)
-  const [isModalDetailShow, setIsModalDetailShow] = useState(false)
+  const [isModalCreateShow, setIsModalCreateShow] = useState(true)
 
   return (
     <>
       <h1 className='ad-layout-article-title'>
-        Purchase management
-        <Button
-          className='ad-float-right'
-          type='primary'
-          onClick={() => {
-            setIsModalEditShow(true)
-          }}
-        >
-          Create purchase
-        </Button>
+        Course management
+        <div className='ad-float-right ad-btn-group'>
+          <Button type='primary' onClick={() => setIsModalCreateShow(true)}>
+            Create course
+          </Button>
+          <Button onClick={() => props.next(2)}>Edit learning path</Button>
+        </div>
       </h1>
       <div className='ad-layout-article-toolBar'>
         <Row gutter={20}>
-          <Col span={8}>
+          <Col span={6}>
             <div className='ad-form-group ad-form-group-horizontal'>
-              <label>Company</label>
-              <Select
-                value={data.company}
-                placeholder='Please select'
-                onChange={(val) => onSelect('company', val)}
-                allowClear={true}
-              >
-                {companyOption.map((item: string) => (
-                  <Option value={item} key={item}>
-                    {item}
-                  </Option>
-                ))}
-              </Select>
-            </div>
-          </Col>
-          <Col span={8}>
-            <div className='ad-form-group ad-form-group-horizontal'>
-              <label>Status</label>
+              <label style={{ minWidth: '50px' }}>Status</label>
               <Select
                 value={data.status}
                 placeholder='Please select'
@@ -209,10 +175,10 @@ const Purchase = (props: IProps) => {
               </Select>
             </div>
           </Col>
-          <Col span={8}>
+          <Col span={8} offset={10}>
             <Input
               value={data.search}
-              placeholder='Search purchase number'
+              placeholder='Search course name'
               prefix={<IconSearch onClick={() => getList()} />}
               onPressEnter={() => getList()}
               onChange={(e) => onChange('search', e)}
@@ -231,19 +197,12 @@ const Purchase = (props: IProps) => {
           onChange: (page: number) => setPage(page)
         }}
       />
-      <ModalDetail
-        isShow={isModalDetailShow}
-        onCancel={() => setIsModalDetailShow(false)}
-        purchaseId={props.purchaseId}
-        getPurchaseList={() => getList()}
-      />
       <ModalCreate
-        mode='CREATE'
-        isShow={isModalEditShow}
-        onCancel={() => setIsModalEditShow(false)}
-        getPurchaseList={() => getList()}
+        isShow={isModalCreateShow}
+        onCancel={() => setIsModalCreateShow(false)}
+        getList={() => getList()}
       />
     </>
   )
 }
-export default Purchase
+export default Course

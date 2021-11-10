@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { MyContext } from 'storage'
-import AccountApi from 'api/AccountApi'
+import AccountApi from 'api/admin/AccountApi'
 import ModalEdit from './ModalEdit'
 import { Row, Col, Button, Modal } from 'antd'
 

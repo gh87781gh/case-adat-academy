@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext, useRef } from 'react'
 import { MyContext, StaticService } from 'storage'
 import GlobalApi from 'api/GlobalApi'
-import AdminApi from 'api/AdminApi'
+import AdminApi from 'api/admin/AdminApi'
 import { ValidateStr } from 'utility/validate'
 import { IconSearch } from 'utility/icon'
 import Header from 'view/layout/Header'

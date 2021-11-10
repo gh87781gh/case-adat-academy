@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react'
 import { MyContext } from 'storage'
 import GlobalApi from 'api/GlobalApi'
-import AdminApi from 'api/AdminApi'
+import AdminApi from 'api/admin/AdminApi'
 import FormGroupMsg from 'utility/component/FormGroupMsg'
 import { ValidateStr } from 'utility/validate'
 import { Row, Col, Button, Input, Select, Modal } from 'antd'
