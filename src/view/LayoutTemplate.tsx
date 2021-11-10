@@ -7,6 +7,7 @@ import Account from './admin/account/Index'
 import User from './user/User'
 import { Spin } from 'antd'
 import { MyContext, BrowserStorage } from '../storage'
+import { version } from '../../package.json'
 
 const LayoutTemplate = () => {
   const browserStorage = new BrowserStorage()
@@ -70,6 +71,7 @@ const LayoutTemplate = () => {
               <Redirect to='/login' />
             </Switch>
           </HashRouter>
+          <span className='ad-layout-version'>v{version}</span>
         </Spin>
       </MyContext.Provider>
     </>

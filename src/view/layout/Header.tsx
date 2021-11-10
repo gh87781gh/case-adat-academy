@@ -4,7 +4,6 @@ import { LogoADAT } from '../../utility/icon'
 import { IconSearch, IconArrowDown } from '../../utility/icon'
 import { Input, Button, Menu, Dropdown } from 'antd'
 import { MyContext, BrowserStorage } from '../../storage'
-import { version } from '../../../package.json'
 
 const Header = () => {
   const context = useContext(MyContext)
@@ -37,15 +36,8 @@ const Header = () => {
             Admin
           </Menu.Item>
         ) : null}
-        <Menu.Item
-          className='ad-header-profile-menu-bd'
-          key='log out'
-          onClick={logout}
-        >
+        <Menu.Item key='log out' onClick={logout}>
           log out
-        </Menu.Item>
-        <Menu.Item key='version' disabled>
-          <span className='ad-header-profile-menu-decs'>v{version}</span>
         </Menu.Item>
       </Menu>
     )
