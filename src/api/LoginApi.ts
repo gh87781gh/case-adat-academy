@@ -13,10 +13,6 @@ export default class LoginApi {
     }
     return this.restAPI.request('post', '/auth/check', toCheck)
   }
-  getSignUpOptions = () => {
-    // TOCHECK 這支要廢掉，換從option拿
-    return this.restAPI.request('get', '/auth/signup', {})
-  }
   create = (data: any, experienceStrAry: string[]) => {
     const sendData = {
       user_id: data.user_id,

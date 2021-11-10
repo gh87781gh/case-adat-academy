@@ -90,7 +90,7 @@ const ModalCreate = (props: IProps) => {
       api_global
         .getOptions(['purchase_management_company'])
         .then((res: any) => {
-          setCompanyOption(res[0])
+          setCompanyOption(res.data[0])
         })
         .finally(() => context.setIsLoading(false))
 

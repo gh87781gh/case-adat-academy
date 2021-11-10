@@ -8,6 +8,7 @@ import Admin from './admin/admin/Index'
 import User from './user/User'
 import { Spin } from 'antd'
 import { MyContext, BrowserStorage } from '../storage'
+import { version } from '../../package.json'
 
 const LayoutTemplate = () => {
   const browserStorage = new BrowserStorage()
@@ -19,7 +20,7 @@ const LayoutTemplate = () => {
     setIsLoading(true)
     api
       .getAuth()
-      .then((res: any) => setAuth(res))
+      .then((res: any) => setAuth(res.data))
       .finally(() => setIsLoading(false))
   }
   useEffect(() => {
@@ -76,6 +77,7 @@ const LayoutTemplate = () => {
               <Redirect to='/login' />
             </Switch>
           </HashRouter>
+          <span className='ad-layout-version'>v{version}</span>
         </Spin>
       </MyContext.Provider>
     </>

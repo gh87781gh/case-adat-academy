@@ -21,7 +21,7 @@ const ModalDetail = (props: IProps) => {
     context.setIsLoading(true)
     api
       .getPurchaseDetail(props.purchaseId)
-      .then((res: any) => setPurchaseDetail(res))
+      .then((res: any) => setPurchaseDetail(res.data))
       .finally(() => context.setIsLoading(false))
   }
   useEffect(() => {

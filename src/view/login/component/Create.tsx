@@ -37,9 +37,9 @@ const Create = () => {
     api_global
       .getOptions(['industries', 'experience_levels', 'experiences'])
       .then((res: any) => {
-        setIndustryOption(res[0])
-        setExperienceLevelOption(res[1])
-        setExperienceOption(res[2])
+        setIndustryOption(res.data[0])
+        setExperienceLevelOption(res.data[1])
+        setExperienceOption(res.data[2])
       })
       .finally(() => context.setIsLoading(false))
   }, []) // eslint-disable-line react-hooks/exhaustive-deps

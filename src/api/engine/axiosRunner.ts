@@ -66,7 +66,7 @@ export class RestAPI extends ApiEngine {
       this.instance
         .request(config)
         .then((res: any) => {
-          resolve(res.data.data)
+          resolve(res.data)
         })
         .catch((err: any) => {
           if (url === '/auth/login') {
