@@ -1,6 +1,5 @@
 import { useState, useContext, useEffect } from 'react'
-import { MyContext, StaticService } from 'storage'
-import GlobalApi from 'api/GlobalApi'
+import { MyContext } from 'storage'
 import CourseApi from 'api/admin/CourseApi'
 import { ValidateStr } from 'utility/validate'
 import UploadImg from 'utility/component/UploadImg'
@@ -10,7 +9,7 @@ const { TextArea } = Input
 interface IProps {
   isShow: boolean
   onCancel: () => void
-  getList: () => void
+  getList: (keepPage?: boolean) => void
   courseId?: string
 }
 interface IState {
@@ -54,7 +53,7 @@ const ModalCreate = (props: IProps) => {
       api
         .editCourse(props.courseId, data)
         .then(() => {
-          props.getList()
+          props.getList(true)
           props.onCancel()
         })
         .finally(() => context.setIsLoading(false))

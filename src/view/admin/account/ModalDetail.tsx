@@ -9,7 +9,7 @@ interface IProps {
   isShow: boolean
   onCancel: () => void
   accountId: string
-  getAccountList: () => void
+  getList: () => void
   showModalRecord: (account_id: string) => void
 }
 
@@ -75,7 +75,7 @@ const ModalDetail = (props: IProps) => {
     api
       .switchAccountStatus(accountDetail.id, enable)
       .then(() => {
-        props.getAccountList()
+        props.getList()
         getAccountDetail()
       })
       .finally(() => context.setIsLoading(false))
@@ -165,7 +165,6 @@ const ModalDetail = (props: IProps) => {
       <ModalEdit
         isShow={isModalEditShow}
         onCancel={() => setIsModalEditShow(false)}
-        getAccounts={props.getAccountList}
         getAccountDetail={() => getAccountDetail()}
         accountDetail={accountDetail}
       />

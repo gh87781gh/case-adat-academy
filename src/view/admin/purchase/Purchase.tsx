@@ -133,7 +133,10 @@ const Purchase = (props: IProps) => {
       )
     }
   ]
-  const getList = () => {
+  const getList = (toPage?: number) => {
+    const page = toPage ?? 1
+    setPage(page)
+
     context.setIsLoading(true)
     api
       .getPurchases({ ...data, page })
@@ -154,7 +157,7 @@ const Purchase = (props: IProps) => {
   }, [data.search]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     getList()
-  }, [page, data.company, data.status]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [data.company, data.status]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [isModalEditShow, setIsModalEditShow] = useState(false)
   const [isModalDetailShow, setIsModalDetailShow] = useState(false)
@@ -228,20 +231,20 @@ const Purchase = (props: IProps) => {
           pageSize: StaticService.tablePageSize,
           current: page,
           total,
-          onChange: (page: number) => setPage(page)
+          onChange: (page: number) => getList(page)
         }}
       />
       <ModalDetail
         isShow={isModalDetailShow}
         onCancel={() => setIsModalDetailShow(false)}
         purchaseId={props.purchaseId}
-        getPurchaseList={() => getList()}
+        getList={() => getList(page)}
       />
       <ModalCreate
         mode='CREATE'
         isShow={isModalEditShow}
         onCancel={() => setIsModalEditShow(false)}
-        getPurchaseList={() => getList()}
+        getList={() => getList()}
       />
     </>
   )

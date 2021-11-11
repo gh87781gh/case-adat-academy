@@ -10,7 +10,7 @@ const { Option } = Select
 interface IProps {
   isShow: boolean
   onCancel: () => void
-  getList: () => void
+  getList: (keepPage?: boolean) => void
   adminId?: string
 }
 interface IState {
@@ -89,7 +89,7 @@ const ModalCreate = (props: IProps) => {
       api
         .editAdmin(props.adminId, data)
         .then(() => {
-          props.getList()
+          props.getList(true)
           props.onCancel()
         })
         .finally(() => context.setIsLoading(false))

@@ -8,7 +8,7 @@ import { Row, Col, Button, Modal } from 'antd'
 interface IProps {
   isShow: boolean
   onCancel: () => void
-  getPurchaseList: () => void
+  getList: (keepPage?: boolean) => void
   purchaseId: string
 }
 
@@ -52,7 +52,7 @@ const ModalDetail = (props: IProps) => {
     api
       .deletePurchase(props.purchaseId)
       .then(() => {
-        props.getPurchaseList()
+        props.getList()
         props.onCancel()
       })
       .finally(() => {
@@ -147,7 +147,7 @@ const ModalDetail = (props: IProps) => {
         mode='UPDATE'
         isShow={isModalEditShow}
         onCancel={() => setIsModalEditShow(false)}
-        getPurchaseList={() => props.getPurchaseList()}
+        getList={() => props.getList()}
         getPurchaseDetail={() => getPurchaseDetail()}
         purchaseDetail={purchaseDetail}
       />

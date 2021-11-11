@@ -38,7 +38,10 @@ const ModalRecord = (props: IProps) => {
       key: 'remark'
     }
   ]
-  const getPurchaseRecord = () => {
+  const getList = (toPage?: number) => {
+    const page = toPage ?? 1
+    setPage(page)
+
     context.setIsLoading(true)
     api
       .getPurchaseRecord(props.purchaseDetail.id, page)
@@ -49,8 +52,8 @@ const ModalRecord = (props: IProps) => {
       .finally(() => context.setIsLoading(false))
   }
   useEffect(() => {
-    if (props.isShow && props.purchaseDetail.id) getPurchaseRecord()
-  }, [props.isShow, page]) // eslint-disable-line react-hooks/exhaustive-deps
+    if (props.isShow && props.purchaseDetail.id) getList()
+  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Modal
@@ -81,7 +84,7 @@ const ModalRecord = (props: IProps) => {
           pageSize: StaticService.tablePageSize,
           current: page,
           total,
-          onChange: (page: number) => setPage(page)
+          onChange: (page: number) => getList(page)
         }}
       />
     </Modal>

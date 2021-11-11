@@ -11,7 +11,6 @@ const { TextArea } = Input
 interface IProps {
   isShow: boolean
   onCancel: () => void
-  getAccounts: () => void
   getAccountDetail: () => void
   accountDetail: any
 }

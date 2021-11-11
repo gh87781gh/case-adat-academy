@@ -76,7 +76,10 @@ const PurchaseAccount = (props: IProps) => {
       )
     }
   ]
-  const getList = async () => {
+  const getList = async (toPage?: number) => {
+    const page = toPage ?? 1
+    setPage(page)
+
     context.setIsLoading(true)
     await api
       .getPurchaseDetail(props.purchaseId)
@@ -92,7 +95,7 @@ const PurchaseAccount = (props: IProps) => {
   }
   useEffect(() => {
     getList()
-  }, [page]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [isModalCreateShow, setIsModalCreateShow] = useState<boolean>(false)
   const [isModalDetailShow, setIsModalDetailShow] = useState<boolean>(false)
@@ -151,7 +154,7 @@ const PurchaseAccount = (props: IProps) => {
           pageSize: StaticService.tablePageSize,
           current: page,
           total,
-          onChange: (page: number) => setPage(page)
+          onChange: (page: number) => getList(page)
         }}
       />
       <ModalCreate
@@ -164,7 +167,7 @@ const PurchaseAccount = (props: IProps) => {
         isShow={isModalDetailShow}
         onCancel={() => setIsModalDetailShow(false)}
         accountId={accountId}
-        getAccountList={() => getList()}
+        getList={() => getList(page)}
         showModalRecord={() => setIsModalRecordShow(true)}
       />
       <ModalRecord

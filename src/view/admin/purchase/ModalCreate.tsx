@@ -22,7 +22,7 @@ interface IProps {
   mode: string // CREATE, UPDATE
   isShow: boolean
   onCancel: () => void
-  getPurchaseList: () => void
+  getList: () => void
   getPurchaseDetail?: () => void // only UPDATE
   purchaseDetail?: any // only UPDATE
 }
@@ -110,7 +110,7 @@ const ModalCreate = (props: IProps) => {
         if (props.mode === 'UPDATE' && props.getPurchaseDetail)
           props.getPurchaseDetail()
 
-        props.getPurchaseList()
+        props.getList()
         props.onCancel()
       })
       .finally(() => context.setIsLoading(false))

@@ -90,7 +90,10 @@ const Index = () => {
       )
     }
   ]
-  const getList = () => {
+  const getList = (toPage?: number) => {
+    const page = toPage ?? 1
+    setPage(page)
+
     context.setIsLoading(true)
     api
       .getAdmins(data)
@@ -111,7 +114,7 @@ const Index = () => {
   }, [data.search]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     getList()
-  }, [page, data.role]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [data.role]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [isModalCreateShow, setIsModalCreateShow] = useState<boolean>(false)
 
@@ -172,13 +175,15 @@ const Index = () => {
               pageSize: StaticService.tablePageSize,
               current: page,
               total,
-              onChange: (page: number) => setPage(page)
+              onChange: (page: number) => getList(page)
             }}
           />
           <ModalCreate
             isShow={isModalCreateShow}
             onCancel={() => setIsModalCreateShow(false)}
-            getList={() => getList()}
+            getList={(keepPage?: boolean) => {
+              keepPage ? getList(page) : getList()
+            }}
             adminId={adminId}
           />
         </article>

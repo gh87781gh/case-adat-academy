@@ -117,7 +117,10 @@ const Index = () => {
   ]
   const [accountId, setAccountId] = useState<string>('')
   const [userId, setUserId] = useState<string>('')
-  const getList = () => {
+  const getList = (toPage?: number) => {
+    const page = toPage ?? 1
+    setPage(page)
+
     context.setIsLoading(true)
     api
       .getAccounts({ ...data, page })
@@ -138,7 +141,7 @@ const Index = () => {
   }, [data.search]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     getList()
-  }, [page, data.purchase_number, data.status]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [data.purchase_number, data.status]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [isModalCreateShow, setIsModalCreateShow] = useState<boolean>(false)
   const [isModalRecordShow, setIsModalRecordShow] = useState<boolean>(false)
@@ -217,7 +220,7 @@ const Index = () => {
               pageSize: StaticService.tablePageSize,
               current: page,
               total,
-              onChange: (page: number) => setPage(page)
+              onChange: (page: number) => getList(page)
             }}
           />
           <ModalCreate
@@ -229,7 +232,7 @@ const Index = () => {
             isShow={isModalDetailShow}
             onCancel={() => setIsModalDetailShow(false)}
             accountId={accountId}
-            getAccountList={() => getList()}
+            getList={() => getList(page)}
             showModalRecord={() => setIsModalRecordShow(true)}
           />
           <ModalRecord

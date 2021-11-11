@@ -17,20 +17,6 @@ const ModalRecord = (props: IProps) => {
   const [list, setList] = useState<any>([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
-  const getList = () => {
-    context.setIsLoading(true)
-    api
-      .getAccountRecord(props.accountId, page)
-      .then((res: any) => {
-        setList(res.data)
-        setTotal(res.total)
-      })
-      .finally(() => context.setIsLoading(false))
-  }
-  useEffect(() => {
-    if (props.isShow) getList()
-  }, [props.isShow, page]) // eslint-disable-line react-hooks/exhaustive-deps
-
   const columns = [
     {
       title: 'Type',
@@ -64,6 +50,23 @@ const ModalRecord = (props: IProps) => {
       key: 'remark'
     }
   ]
+  const getList = (toPage?: number) => {
+    const page = toPage ?? 1
+    setPage(page)
+
+    context.setIsLoading(true)
+    api
+      .getAccountRecord(props.accountId, page)
+      .then((res: any) => {
+        setList(res.data)
+        setTotal(res.total)
+      })
+      .finally(() => context.setIsLoading(false))
+  }
+  useEffect(() => {
+    if (props.isShow) getList()
+  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <Modal
       zIndex={1001}
@@ -91,7 +94,7 @@ const ModalRecord = (props: IProps) => {
           pageSize: StaticService.tablePageSize,
           current: page,
           total,
-          onChange: (page: number) => setPage(page)
+          onChange: (page: number) => getList(page)
         }}
       />
     </Modal>

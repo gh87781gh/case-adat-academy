@@ -120,7 +120,10 @@ const Course = (props: IProps) => {
       )
     }
   ]
-  const getList = () => {
+  const getList = (toPage?: number) => {
+    const page = toPage ?? 1
+    setPage(page)
+
     context.setIsLoading(true)
     api
       .getCourses({ ...data, page })
@@ -148,7 +151,7 @@ const Course = (props: IProps) => {
   }, [data.search]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     getList()
-  }, [page, data.status]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [data.status]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [isModalCreateShow, setIsModalCreateShow] = useState(false)
 
@@ -201,13 +204,15 @@ const Course = (props: IProps) => {
           pageSize: StaticService.tablePageSize,
           current: page,
           total,
-          onChange: (page: number) => setPage(page)
+          onChange: (page: number) => getList(page)
         }}
       />
       <ModalCreate
         isShow={isModalCreateShow}
         onCancel={() => setIsModalCreateShow(false)}
-        getList={() => getList()}
+        getList={(keepPage?: boolean) => {
+          keepPage ? getList(page) : getList()
+        }}
         courseId={courseId}
       />
     </>
