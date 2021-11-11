@@ -1,31 +1,49 @@
 @upload-bgc: #efefef;
 
-.ad-upload-logo {
-  background-color: @upload-bgc;
-  height: 200px;
-  border: 1px solid #000;
-  position: relative;
-  margin-bottom: 1rem;
-
-  .ad-upload-logo-watermark {
+.ad-upload {
+  label {
     display: block;
-    position: absolute;
-    width: 100%;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    text-align: center;
-    em {
-      font-style: normal;
-      font-size: 1rem;
-      display: block;
-      margin-top: 0.5rem;
-    }
+    background-color: @upload-bgc;
+    position: relative;
+    margin-bottom: 1rem;
+    cursor: copy;
+    overflow: hidden;
   }
 
-  &.circle {
+  &.circle label {
     width: 150px;
     height: 150px;
     border-radius: 50%;
   }
+  &.rectangle label {
+    width: 340px;
+    height: 200px;
+  }
+
+  p {
+    font-size: 12px;
+    color: @color-gray04;
+    margin: unset;
+  }
+}
+.ad-upload-watermark {
+  display: block;
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  text-align: center;
+  color: @color-gray04;
+
+  em {
+    font-style: normal;
+    font-size: 1rem;
+    display: block;
+    margin-top: 0.5rem;
+  }
+}
+.ad-upload-uploaded {
+  width: 100%;
+  height: 100%;
 }

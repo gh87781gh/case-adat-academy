@@ -67,7 +67,14 @@ const ModalCreate = (props: IProps) => {
       if (props.adminId) {
         api
           .getAdminDetail(props.adminId)
-          .then((res: any) => setData(res.data))
+          .then((res: any) => {
+            const keys = Object.keys(data)
+            const newData: any = {}
+            for (const key of keys) {
+              newData[key] = res.data[key]
+            }
+            setData(newData)
+          })
           .finally(() => context.setIsLoading(false))
       } else {
         setData({ ...initData })

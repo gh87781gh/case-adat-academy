@@ -1,9 +1,9 @@
 import { useState, useContext, useEffect } from 'react'
-import { MyContext } from 'storage'
+import { MyContext, StaticService } from 'storage'
 import GlobalApi from 'api/GlobalApi'
 import CourseApi from 'api/admin/CourseApi'
-import { IconUploadPic } from 'utility/icon'
-import FormGroupMsg from 'utility/component/FormGroupMsg'
+import { ValidateStr } from 'utility/validate'
+import UploadImg from 'utility/component/UploadImg'
 import { Row, Col, Button, Input, Modal } from 'antd'
 const { TextArea } = Input
 
@@ -11,86 +11,87 @@ interface IProps {
   isShow: boolean
   onCancel: () => void
   getList: () => void
-  adminId?: string
+  courseId?: string
 }
 interface IState {
   name: string
   description: string
+  logo_image_id: string
+  background_image_id: string
 }
 
 const ModalCreate = (props: IProps) => {
   const context = useContext(MyContext)
-  const api_global = new GlobalApi()
   const api = new CourseApi()
 
-  const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
   const initData = {
     name: '',
-    description: ''
+    description: '',
+    logo_image_id: '',
+    background_image_id: ''
   }
   const [data, setData] = useState<IState>({ ...initData })
-  const onSelect = (key: string, value: any) => {
-    setData({ ...data, [key]: value })
-  }
   const onChange = (key: string, e: any) => {
     const value = e.target.value
     if (value) {
       switch (key) {
-        case 'email':
-          //   if (value && !ValidateStr('isUserName', value)) return false
+        case 'name':
+        case 'description':
+          if (value && ValidateStr('isSymbol', value)) return false
           break
       }
     }
     setData({ ...data, [key]: value })
   }
-
-  const [roleOption, setRoleOption] = useState<any>([])
-  useEffect(() => {
-    if (props.isShow) {
-      // setIsEmail(undefined)
-      // api_global
-      //   .getOptions(['admin_roles'])
-      //   .then((res: any) => {
-      //     setRoleOption(res.data[0])
-      //   })
-      //   .finally(() => context.setIsLoading(false))
-      // if (props.adminId) {
-      //   api
-      //     .getAdminDetail(props.adminId)
-      //     .then((res: any) => setData(res.data))
-      //     .finally(() => context.setIsLoading(false))
-      // } else {
-      //   setData({ ...initData })
-      // }
-    }
-  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
+  const onUpload = (key: string, value: string) => {
+    setData({ ...data, [key]: value })
+  }
 
   const submit = () => {
     context.setIsLoading(true)
 
-    // if (props.adminId) {
-    //   api
-    //     .editAdmin(props.adminId, data)
-    //     .then(() => {
-    //       props.getList()
-    //       props.onCancel()
-    //     })
-    //     .finally(() => context.setIsLoading(false))
-    // } else {
-    //   api
-    //     .createAdmin(data)
-    //     .then(() => {
-    //       props.getList()
-    //       props.onCancel()
-    //     })
-    //     .finally(() => context.setIsLoading(false))
-    // }
+    if (props.courseId) {
+      api
+        .editCourse(props.courseId, data)
+        .then(() => {
+          props.getList()
+          props.onCancel()
+        })
+        .finally(() => context.setIsLoading(false))
+    } else {
+      api
+        .createCourse(data)
+        .then(() => {
+          props.getList()
+          props.onCancel()
+        })
+        .finally(() => context.setIsLoading(false))
+    }
   }
+  useEffect(() => {
+    if (props.isShow) {
+      if (props.courseId) {
+        api
+          .getCourseDetail(props.courseId)
+          .then((res: any) => {
+            const keys = Object.keys(data)
+            const newData: any = {}
+            for (const key of keys) {
+              newData[key] = res.data[key]
+            }
+            setData(newData)
+          })
+          .finally(() => context.setIsLoading(false))
+      } else {
+        setData({ ...initData })
+      }
+    }
+  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Modal
       title={
-        props.adminId ? 'Edit course information' : 'Create course information'
+        props.courseId ? 'Edit course information' : 'Create course information'
       }
       visible={props.isShow}
       onCancel={props.onCancel}
@@ -99,16 +100,10 @@ const ModalCreate = (props: IProps) => {
         <Button
           key='Create'
           type='primary'
-          // disabled={
-          //   !data.role ||
-          //   !data.user_id ||
-          //   !data.email ||
-          //   (data.password?.length > 0 && data.password?.length < 8) ||
-          //   isEmail !== true
-          // }
+          disabled={!data.name || !data.description}
           onClick={() => submit()}
         >
-          Create
+          {props.courseId ? 'Save' : 'Create'}
         </Button>,
         <Button key='Cancel' onClick={props.onCancel}>
           Cancel
@@ -117,16 +112,13 @@ const ModalCreate = (props: IProps) => {
     >
       <Row gutter={20}>
         <Col span={6}>
-          <div className='ad-upload-logo circle'>
-            <span className='ad-upload-logo-watermark'>
-              <IconUploadPic />
-              <em>Upload logo</em>
-            </span>
-          </div>
-          <small>
-            Format should be.... <br />
-            Recommand size is...
-          </small>
+          <UploadImg
+            type='circle'
+            desc='Upload logo'
+            recommendSize='150px*150px'
+            imgId={data.logo_image_id}
+            setUploaded={(id: string) => onUpload('logo_image_id', id)}
+          />
         </Col>
         <Col span={9}>
           <div className='ad-form-group'>
@@ -152,13 +144,15 @@ const ModalCreate = (props: IProps) => {
           <div className='ad-form-group'>
             <label>Background image</label>
             <div className='ad-form-group-value'>
-              <div className='ad-upload-logo'>
-                <span className='ad-upload-logo-watermark'>
-                  <IconUploadPic />
-                  <em>Upload logo</em>
-                </span>
-              </div>
-              <small>Format should be.... Recommand size is...</small>
+              <UploadImg
+                type='rectangle'
+                desc='Upload logo'
+                recommendSize='340px*200px'
+                imgId={data.background_image_id}
+                setUploaded={(id: string) =>
+                  onUpload('background_image_id', id)
+                }
+              />
             </div>
           </div>
         </Col>

@@ -26,21 +26,7 @@ export default class AdminApi {
     return this.restAPI.request('post', '/admin', data)
   }
   getAdminDetail = (id: string) => {
-    return new Promise((resolve, reject) => {
-      this.restAPI
-        .request('get', `/admin/${id}`, {})
-        .then((res: any) => {
-          res.data = {
-            user_id: res.data.user_id,
-            email: res.data.email,
-            role: res.data.role
-          }
-          resolve(res)
-        })
-        .catch(() => {
-          reject(false)
-        })
-    })
+    return this.restAPI.request('get', `/admin/${id}`, {})
   }
   editAdmin = (id: string, data: any) => {
     return this.restAPI.request('post', `/admin/${id}`, data)

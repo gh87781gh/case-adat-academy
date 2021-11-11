@@ -52,6 +52,7 @@ const Course = (props: IProps) => {
   const [list, setList] = useState<any>([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
+  const [courseId, setCourseId] = useState('')
   const columns = [
     {
       title: 'Course name',
@@ -88,12 +89,11 @@ const Course = (props: IProps) => {
           <Button
             key='switch'
             size='small'
-            onClick={() => {
-              // props.setPurchaseId(record.id)
-              // setIsModalDetailShow(true)
-            }}
+            onClick={() =>
+              switchCourse(record.id, record.status === 'Active' ? false : true)
+            }
           >
-            Activate
+            {record.status === 'Active' ? 'Inactivate' : 'Activate'}
           </Button>
           <Button
             key='edit'
@@ -107,11 +107,11 @@ const Course = (props: IProps) => {
             Edit
           </Button>
           <Button
-            key='editinfo'
+            key='editCourse'
             size='small'
             onClick={() => {
-              // props.setPurchaseId(record.id)
-              // props.next()
+              setCourseId(record.id)
+              setIsModalCreateShow(true)
             }}
           >
             Edit course information
@@ -130,6 +130,13 @@ const Course = (props: IProps) => {
       })
       .finally(() => context.setIsLoading(false))
   }
+  const switchCourse = (id: string, enable: boolean) => {
+    context.setIsLoading(true)
+    api
+      .switchCourse(id, enable)
+      .then(() => getList())
+      .finally(() => context.setIsLoading(false))
+  }
 
   const isInitMount = useRef(true)
   useEffect(() => {
@@ -143,7 +150,7 @@ const Course = (props: IProps) => {
     getList()
   }, [page, data.status]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const [isModalCreateShow, setIsModalCreateShow] = useState(true)
+  const [isModalCreateShow, setIsModalCreateShow] = useState(false)
 
   return (
     <>
@@ -201,6 +208,7 @@ const Course = (props: IProps) => {
         isShow={isModalCreateShow}
         onCancel={() => setIsModalCreateShow(false)}
         getList={() => getList()}
+        courseId={courseId}
       />
     </>
   )
