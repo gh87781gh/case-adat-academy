@@ -116,11 +116,18 @@ const ModalCreate = (props: IProps) => {
           key='Create'
           type='primary'
           disabled={
-            !data.role ||
-            !data.user_id ||
-            !data.email ||
-            (data.password?.length > 0 && data.password?.length < 8) ||
-            isEmail !== true
+            props.adminId
+              ? !data.role ||
+                !data.user_id ||
+                !data.email ||
+                (data.password?.length > 0 && data.password?.length < 8) ||
+                isEmail !== true
+              : !data.role ||
+                !data.user_id ||
+                !data.email ||
+                !data.password ||
+                (data.password?.length > 0 && data.password?.length < 8) ||
+                isEmail !== true
           }
           onClick={() => submit()}
         >

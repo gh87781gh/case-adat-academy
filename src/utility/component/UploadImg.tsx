@@ -35,6 +35,7 @@ const UploadImg = (props: IProps) => {
       file.size <= StaticService.uploadImgMaxSize
         ? getBase64(file)
             .then((res: any) => {
+              // TOCHECK 新增父層元件的id
               setBase64(res)
             })
             .catch(() => {
@@ -73,7 +74,13 @@ const UploadImg = (props: IProps) => {
           <Button type='link' onClick={() => inputEl.current?.click()}>
             Replace
           </Button>
-          <Button type='link' onClick={() => props.setUploaded('')}>
+          <Button
+            type='link'
+            onClick={() => {
+              setBase64('')
+              props.setUploaded('')
+            }}
+          >
             Remove
           </Button>
         </div>
