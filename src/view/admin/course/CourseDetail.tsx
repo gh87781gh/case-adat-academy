@@ -3,6 +3,9 @@ import { MyContext, StaticService } from 'storage'
 import CourseApi from 'api/admin/CourseApi'
 import { IconMenu, IconArrowUp, IconMore, IconPlus } from 'utility/icon'
 import { Row, Col, Button, Table, Breadcrumb } from 'antd'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import Container from './Container'
 
 interface IProps {
   prev: () => void
@@ -10,19 +13,7 @@ interface IProps {
 }
 
 const CourseDetail = (props: IProps) => {
-  const context = useContext(MyContext)
-  const api = new CourseApi()
-
-  const [courseDetail, setPurchaseDetail] = useState<any>({})
-  // useEffect(() => {
-  //   api
-  //     .getCourseDetail(props.courseId)
-  //     .then((res: any) => {
-  //       setList(res.data)
-  //       setTotal(res.total)
-  //     })
-  //     .finally(() => context.setIsLoading(false))
-  // }, [page]) // eslint-disable-line react-hooks/exhaustive-deps
+  const [courseDetail, setCourseDetail] = useState<any>({})
 
   return (
     <>
@@ -30,7 +21,11 @@ const CourseDetail = (props: IProps) => {
         <Breadcrumb.Item onClick={props.prev}>
           Course management
         </Breadcrumb.Item>
-        <Breadcrumb.Item>{courseDetail.name}</Breadcrumb.Item>
+        <Breadcrumb.Item>
+          1234
+          {/* TODO */}
+          {courseDetail.name}
+        </Breadcrumb.Item>
       </Breadcrumb>
       <h1 className='ad-layout-article-title'>
         {courseDetail.name}
@@ -38,6 +33,11 @@ const CourseDetail = (props: IProps) => {
       </h1>
       <Row gutter={20}>
         <Col span={6}>
+          <DndProvider backend={HTML5Backend}>
+            <Container />
+          </DndProvider>
+        </Col>
+        {/* <Col span={6}>
           <div className='ad-course-menu'>
             <div className='ad-course-menu-item level-1'>
               <IconMenu className='ad-course-menu-item-btn grab' />
@@ -48,7 +48,7 @@ const CourseDetail = (props: IProps) => {
                 <IconMore className='ad-course-menu-item-btn more' />
               </div>
             </div>
-            <div className='ad-course-menu-item level-2'>
+            {/* <div className='ad-course-menu-item level-2'>
               <IconMenu className='ad-course-menu-item-btn grab' />
               <IconArrowUp className='ad-course-menu-item-arrowUp' />
               <h6>111</h6>
@@ -65,9 +65,9 @@ const CourseDetail = (props: IProps) => {
                 <IconPlus className='ad-course-menu-item-btn plus' />
                 <IconMore className='ad-course-menu-item-btn more' />
               </div>
-            </div>
+            </div> 
           </div>
-        </Col>
+        </Col> */}
         <Col span={18}></Col>
       </Row>
     </>

@@ -1,66 +1,63 @@
 @course-menu-item-height: 35px;
-.ad-course-menu-item {
-  border: 1px solid #747474;
-  height: @course-menu-item-height;
+@course-menu-item-btn-width: 20px;
+.ad-course-menu {
+  .item {
+    background-color: #fff;
+    border: 1px solid #747474;
+    height: @course-menu-item-height;
 
-  h6 {
-    font-size: 14px;
-    margin: unset;
-    display: inline-block;
-    vertical-align: middle;
-  }
-  &.level-1 {
-    h6 {
-      margin-left: 10px;
+    .item-btn {
+      display: inline-block;
+      vertical-align: middle;
+      width: @course-menu-item-btn-width;
+      height: @course-menu-item-btn-width;
+      border-radius: 50%;
+      border: 1px solid #000;
+      background-color: #fff;
+      position: relative;
+      svg {
+        .center();
+      }
+      &.grab {
+        cursor: grab;
+        transform: translateX(-50%);
+      }
+    }
+    .item-btn-arrow {
+      display: inline-block;
+      vertical-align: middle;
+      height: 100%;
+      padding-left: 20px;
+      padding-right: 20px;
+      position: relative;
+      svg {
+        .center();
+      }
+    }
+    .item-text {
+      display: inline-block;
+      vertical-align: middle;
+      height: 100%;
+      line-height: @course-menu-item-height;
+      font-size: 14px;
+    }
+    .item-extra {
+      vertical-align: middle;
+      float: right;
+      height: @course-menu-item-height;
+      display: flex;
+      align-items: center;
+      flex-wrap: nowrap;
+      .item-btn {
+        margin-right: 10px;
+      }
     }
   }
-  &.level-2 {
-    h6 {
-      margin-left: 40px;
+  .shadow.isDragging {
+    background-color: red;
+
+    .item {
+      visibility: hidden;
     }
-  }
-  &.level-3 {
-    h6 {
-      margin-left: 70px;
-    }
-  }
-}
-.ad-course-menu-item-btn {
-  display: inline-block;
-  vertical-align: middle;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: 1px solid #000;
-  background-color: #fff;
-  position: relative;
-  svg {
-    .center();
-  }
-  &.grab {
-    cursor: grab;
-    transform: translateX(-50%);
-  }
-}
-.ad-course-menu-item-arrowUp {
-  display: inline-block;
-  vertical-align: middle;
-  height: 100%;
-  padding-left: 20px;
-  padding-right: 20px;
-  position: relative;
-  svg {
-    .center();
-  }
-}
-.ad-course-menu-item-extra {
-  vertical-align: middle;
-  float: right;
-  height: @course-menu-item-height;
-  display: flex;
-  align-items: center;
-  flex-wrap: nowrap;
-  .ad-course-menu-item-btn {
-    margin-right: 10px;
   }
 }
