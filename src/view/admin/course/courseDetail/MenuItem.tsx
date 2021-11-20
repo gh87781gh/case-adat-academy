@@ -11,26 +11,33 @@ interface IProps {
   // index: number
   moveCard: (dragIndex: number, hoverIndex: number) => void
   startDragging: (item: any) => void
+  isDragging: boolean
   endDragging: () => void
   expandChildren: (
     clickId: string,
     isShowChildren: boolean,
     children: string[]
   ) => void
+  addChild: (level: string, id: string) => void
 }
 
 const MenuItem1 = (props: IProps) => {
   const ref = useRef<HTMLDivElement>(null)
 
-  const [{ handlerId }, drop] = useDrop({
+  const [{ handlerId, isCanDrop }, drop] = useDrop({
     accept: 'card',
     collect(monitor) {
       return {
-        handlerId: monitor.getHandlerId()
+        handlerId: monitor.getHandlerId(),
+        isCanDrop: monitor.canDrop()
       }
     },
     canDrop(item: any) {
-      return item.level === props.item.level
+      if (item.level === 'group') {
+        return item.level === props.item.level
+      } else {
+        return item.parentId === props.item.parentId
+      }
     },
     hover(item: any, monitor: DropTargetMonitor) {
       if (!monitor.canDrop()) {
@@ -92,7 +99,8 @@ const MenuItem1 = (props: IProps) => {
       return {
         id: props.item.id,
         index: props.item.index,
-        level: props.item.level
+        level: props.item.level,
+        parentId: props.item.parentId
       }
     },
     collect: (monitor: any) => ({
@@ -109,7 +117,8 @@ const MenuItem1 = (props: IProps) => {
       ref={preview}
       style={{
         display:
-          props.item.level !== 'group' && !props.item.isShow ? 'none' : 'flex'
+          props.item.level !== 'group' && !props.item.isShow ? 'none' : 'flex',
+        opacity: !props.isDragging ? 1 : isCanDrop ? 1 : 0.1
       }}
       className={
         isDragging
@@ -120,7 +129,7 @@ const MenuItem1 = (props: IProps) => {
       <div
         className='item-grab'
         ref={ref}
-        style={{ opacity: isDragging ? 0 : 1 }}
+        // style={{ opacity: isDragging ? 0 : 1 }}
         data-handler-id={handlerId}
       >
         <IconMenu />
@@ -140,7 +149,6 @@ const MenuItem1 = (props: IProps) => {
         }}
         onClick={() =>
           props.expandChildren(
-            // props.item.level,
             props.item.id,
             !props.item.isShowChildren,
             props.item.children
@@ -151,7 +159,12 @@ const MenuItem1 = (props: IProps) => {
       </div>
       <div className='item-text'>{props.item.text}</div>
       <div className='item-extra'>
-        <IconPlus />
+        <IconPlus
+          style={{
+            visibility: props.item.level === 'section' ? 'hidden' : 'visible'
+          }}
+          onClick={() => props.addChild(props.item.level, props.item.id)}
+        />
         <IconMore />
       </div>
     </div>

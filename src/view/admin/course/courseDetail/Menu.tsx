@@ -13,7 +13,7 @@ const Menu = (props: IProps) => {
 
   const moveCard = useCallback(
     (dragIndex: number, hoverIndex: number) => {
-      console.log(dragIndex, hoverIndex)
+      // console.warn('moveCard:',dragIndex, hoverIndex)
       setDropTargetItem(props.menu[hoverIndex])
       const dragCard = props.menu[dragIndex]
       props.setMenu(
@@ -29,14 +29,14 @@ const Menu = (props: IProps) => {
   )
 
   const startDragging = (item: any) => {
-    console.log('startDragging')
+    // console.warn('startDragging')
     setDraggingItem(item)
   }
 
   const endDragging = () => {
-    console.log('endDragging')
-    console.log('draggingItem:', draggingItem)
-    console.log('dropTargetItem:', dropTargetItem)
+    // console.warn('endDragging')
+    // console.warn('draggingItem:', draggingItem)
+    // console.warn('dropTargetItem:', dropTargetItem)
     const newMenu: any = []
     const dragChildren: any = []
     const dropChildren: any = []
@@ -82,16 +82,44 @@ const Menu = (props: IProps) => {
     props.setMenu(newMenu)
   }
 
+  const addChild = (level: string, id: string) => {
+    // console.log(level, id)
+    const childId = `${props.menu.length + 1}`
+    const item: any = {
+      level: level === 'group' ? 'chapter' : 'section',
+      id: childId,
+      text: `${level === 'group' ? 'chapter' : 'section'} name`,
+      parentId: id,
+      isShowChildren: true,
+      isShow: true,
+      children: []
+    }
+    const mewMenu = [...props.menu]
+    let insertIndex: number = 0
+    props.menu.forEach((item: any, index: number) => {
+      if (item.id === id) {
+        item.children.push(childId)
+        item.isShowChildren = true
+        insertIndex = index
+      } else if (item.parentId === id) {
+        insertIndex = index
+      }
+    })
+    mewMenu.splice(insertIndex + 1, 0, item)
+    props.setMenu(mewMenu)
+  }
+
   return (
     <>
       <div className='ad-course-menu'>
         {props.menu.map((item: any, index: number) => (
           <div
             key={item.id}
-            style={{
-              opacity:
-                !draggingItem || item.level === draggingItem.level ? 1 : 0.1
-            }}
+            style={
+              {
+                // opacity: draggingItem !== null ? 1 : 0.1
+              }
+            }
           >
             <MenuItem
               item={{ ...item, index }}
@@ -99,12 +127,14 @@ const Menu = (props: IProps) => {
                 moveCard(dragIndex, hoverIndex)
               }
               startDragging={(item: any) => startDragging(item)}
+              isDragging={draggingItem !== null}
               endDragging={() => endDragging()}
               expandChildren={(
                 clickId: string,
                 isShowChildren: boolean,
                 children: string[]
               ) => expandChildren(clickId, isShowChildren, children)}
+              addChild={(level: string, id: string) => addChild(level, id)}
             />
           </div>
         ))}
