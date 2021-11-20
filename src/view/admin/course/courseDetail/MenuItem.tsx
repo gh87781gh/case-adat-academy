@@ -5,13 +5,9 @@ import { IconMenu, IconArrowUp, IconMore, IconPlus } from 'utility/icon'
 
 interface IProps {
   item: any
-  // id: any
-  // level: string
-  // text: string
-  // index: number
   moveCard: (dragIndex: number, hoverIndex: number) => void
   startDragging: (item: any) => void
-  isDragging: boolean
+  isInDragging: boolean
   endDragging: () => void
   expandChildren: (
     clickId: string,
@@ -19,10 +15,13 @@ interface IProps {
     children: string[]
   ) => void
   addChild: (level: string, id: string) => void
+  rename: (index: number, e: any) => void
 }
 
 const MenuItem1 = (props: IProps) => {
   const ref = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [isShowDropdown, setIsShowDropdown] = useState<boolean>(false)
 
   const [{ handlerId, isCanDrop }, drop] = useDrop({
     accept: 'card',
@@ -118,20 +117,13 @@ const MenuItem1 = (props: IProps) => {
       style={{
         display:
           props.item.level !== 'group' && !props.item.isShow ? 'none' : 'flex',
-        opacity: !props.isDragging ? 1 : isCanDrop ? 1 : 0.1
+        opacity: !props.isInDragging ? 1 : isCanDrop ? 1 : 0.1
       }}
-      className={
-        isDragging
-          ? `isDragging item item-${props.item.level}`
-          : `item item-${props.item.level}`
-      }
+      className={`${isDragging ? 'isDragging' : ''} item item-${
+        props.item.level
+      }`}
     >
-      <div
-        className='item-grab'
-        ref={ref}
-        // style={{ opacity: isDragging ? 0 : 1 }}
-        data-handler-id={handlerId}
-      >
+      <div className='item-grab' ref={ref} data-handler-id={handlerId}>
         <IconMenu />
       </div>
       <div
@@ -142,10 +134,9 @@ const MenuItem1 = (props: IProps) => {
             props.item.children.length === 0
               ? 'hidden'
               : 'visible',
-          transform:
-            props.item.isShowChildren === true
-              ? 'rotate(180deg)'
-              : 'rotate(0deg)'
+          transform: props.item.isShowChildren
+            ? 'rotate(0deg)'
+            : 'rotate(180deg)'
         }}
         onClick={() =>
           props.expandChildren(
@@ -157,7 +148,16 @@ const MenuItem1 = (props: IProps) => {
       >
         <IconArrowUp />
       </div>
-      <div className='item-text'>{props.item.text}</div>
+      <div className='item-text'>
+        <input
+          ref={inputRef}
+          type='text'
+          defaultValue={props.item.text}
+          onBlur={(e) => props.rename(props.item.index, e)}
+
+          // onChange={(e) => props.rename(props.item.index, e)}
+        />
+      </div>
       <div className='item-extra'>
         <IconPlus
           style={{
@@ -165,7 +165,21 @@ const MenuItem1 = (props: IProps) => {
           }}
           onClick={() => props.addChild(props.item.level, props.item.id)}
         />
-        <IconMore />
+        <IconMore onClick={() => setIsShowDropdown(!isShowDropdown)} />
+        <div
+          className='item-extra-dropdown'
+          style={{ display: isShowDropdown ? 'block' : 'none' }}
+        >
+          <div
+            onClick={() => {
+              setIsShowDropdown(false)
+              inputRef.current?.focus()
+            }}
+          >
+            Rename
+          </div>
+          <div>Delete</div>
+        </div>
       </div>
     </div>
   )

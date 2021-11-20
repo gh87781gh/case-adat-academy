@@ -51,6 +51,7 @@
       display: flex;
       align-items: center;
       flex-wrap: nowrap;
+      position: relative;
       .anticon {
         margin-right: 10px;
         display: inline-block;
@@ -64,6 +65,22 @@
         cursor: pointer;
         svg {
           .center();
+        }
+      }
+      .item-extra-dropdown {
+        z-index: 2;
+        transition: @transition;
+        display: none;
+        width: 100px;
+        height: auto;
+        position: absolute;
+        top: 90%;
+        right: -90%;
+        background-color: #fff;
+        border: 1px solid #000;
+        & > div {
+          padding: 0.5rem;
+          cursor: pointer;
         }
       }
     }

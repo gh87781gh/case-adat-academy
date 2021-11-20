@@ -109,25 +109,25 @@ const Menu = (props: IProps) => {
     props.setMenu(mewMenu)
   }
 
+  const rename = (index: number, e: any) => {
+    console.log(index, e)
+    const newMenu = [...props.menu]
+    newMenu[index].text = e.target.value
+    props.setMenu(newMenu)
+  }
+
   return (
     <>
       <div className='ad-course-menu'>
         {props.menu.map((item: any, index: number) => (
-          <div
-            key={item.id}
-            style={
-              {
-                // opacity: draggingItem !== null ? 1 : 0.1
-              }
-            }
-          >
+          <div key={item.id}>
             <MenuItem
               item={{ ...item, index }}
               moveCard={(dragIndex: number, hoverIndex: number) =>
                 moveCard(dragIndex, hoverIndex)
               }
               startDragging={(item: any) => startDragging(item)}
-              isDragging={draggingItem !== null}
+              isInDragging={draggingItem !== null}
               endDragging={() => endDragging()}
               expandChildren={(
                 clickId: string,
@@ -135,6 +135,7 @@ const Menu = (props: IProps) => {
                 children: string[]
               ) => expandChildren(clickId, isShowChildren, children)}
               addChild={(level: string, id: string) => addChild(level, id)}
+              rename={(index: number, e: any) => rename(index, e)}
             />
           </div>
         ))}
