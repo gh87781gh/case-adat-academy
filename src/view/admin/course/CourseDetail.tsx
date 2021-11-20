@@ -5,7 +5,7 @@ import { IconMenu, IconArrowUp, IconMore, IconPlus } from 'utility/icon'
 import { Row, Col, Button, Table, Breadcrumb } from 'antd'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import Container from './Container'
+import Menu from './courseDetail/Menu'
 
 interface IProps {
   prev: () => void
@@ -14,6 +14,80 @@ interface IProps {
 
 const CourseDetail = (props: IProps) => {
   const [courseDetail, setCourseDetail] = useState<any>({})
+  const [menu, setMenu] = useState([
+    {
+      level: 'group',
+      id: '1-1',
+      text: '1-1',
+      parentId: '',
+      isShowChildren: null,
+      isShow: true,
+      children: []
+    },
+    {
+      level: 'group',
+      id: '1-2',
+      text: '1-2',
+      parentId: '',
+      isShowChildren: true,
+      isShow: true,
+      children: ['1-3', '1-6', '1-7', '1-8', '1-9']
+    },
+    {
+      level: 'chapter',
+      id: '1-3',
+      text: '1-3',
+      parentId: '1-2',
+      isShowChildren: true,
+      isShow: true,
+      children: ['1-6', '1-7', '1-8']
+    },
+    {
+      level: 'section',
+      id: '1-6',
+      text: '1-6',
+      parentId: '1-3',
+      isShowChildren: null,
+      isShow: true,
+      children: []
+    },
+    {
+      level: 'section',
+      id: '1-7',
+      text: '1-7',
+      parentId: '1-3',
+      isShowChildren: null,
+      isShow: true,
+      children: []
+    },
+    {
+      level: 'section',
+      id: '1-8',
+      text: '1-8',
+      parentId: '1-3',
+      isShowChildren: null,
+      isShow: true,
+      children: []
+    },
+    {
+      level: 'chapter',
+      id: '1-9',
+      text: '1-9',
+      parentId: '1-2',
+      isShowChildren: null,
+      isShow: true,
+      children: []
+    },
+    {
+      level: 'group',
+      id: '1-5',
+      text: '1-5',
+      parentId: '',
+      isShowChildren: null,
+      isShow: true,
+      children: []
+    }
+  ])
 
   return (
     <>
@@ -34,40 +108,9 @@ const CourseDetail = (props: IProps) => {
       <Row gutter={20}>
         <Col span={6}>
           <DndProvider backend={HTML5Backend}>
-            <Container />
+            <Menu menu={menu} setMenu={(menu: any) => setMenu(menu)} />
           </DndProvider>
         </Col>
-        {/* <Col span={6}>
-          <div className='ad-course-menu'>
-            <div className='ad-course-menu-item level-1'>
-              <IconMenu className='ad-course-menu-item-btn grab' />
-              <IconArrowUp className='ad-course-menu-item-arrowUp' />
-              <h6>111</h6>
-              <div className='ad-course-menu-item-extra'>
-                <IconPlus className='ad-course-menu-item-btn plus' />
-                <IconMore className='ad-course-menu-item-btn more' />
-              </div>
-            </div>
-            {/* <div className='ad-course-menu-item level-2'>
-              <IconMenu className='ad-course-menu-item-btn grab' />
-              <IconArrowUp className='ad-course-menu-item-arrowUp' />
-              <h6>111</h6>
-              <div className='ad-course-menu-item-extra'>
-                <IconPlus className='ad-course-menu-item-btn plus' />
-                <IconMore className='ad-course-menu-item-btn more' />
-              </div>
-            </div>
-            <div className='ad-course-menu-item level-3'>
-              <IconMenu className='ad-course-menu-item-btn grab' />
-              <IconArrowUp className='ad-course-menu-item-arrowUp' />
-              <h6>111</h6>
-              <div className='ad-course-menu-item-extra'>
-                <IconPlus className='ad-course-menu-item-btn plus' />
-                <IconMore className='ad-course-menu-item-btn more' />
-              </div>
-            </div> 
-          </div>
-        </Col> */}
         <Col span={18}></Col>
       </Row>
     </>

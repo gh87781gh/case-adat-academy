@@ -5,59 +5,85 @@
     background-color: #fff;
     border: 1px solid #747474;
     height: @course-menu-item-height;
+    display: flex;
+    flex-wrap: nowrap;
+    &.isDragging {
+      background-color: #ccc;
+      border: unset;
+      .item-grab,
+      .item-btn-arrow,
+      .item-text,
+      .item-extra {
+        opacity: 0;
+      }
+    }
 
-    .item-btn {
-      display: inline-block;
-      vertical-align: middle;
-      width: @course-menu-item-btn-width;
-      height: @course-menu-item-btn-width;
-      border-radius: 50%;
-      border: 1px solid #000;
-      background-color: #fff;
+    .item-grab {
+      width: @course-menu-item-height;
+      height: 100%;
       position: relative;
+      cursor: grab;
       svg {
         .center();
       }
-      &.grab {
-        cursor: grab;
-        transform: translateX(-50%);
-      }
     }
+
     .item-btn-arrow {
-      display: inline-block;
-      vertical-align: middle;
+      width: @course-menu-item-height;
       height: 100%;
       padding-left: 20px;
       padding-right: 20px;
       position: relative;
+      cursor: pointer;
       svg {
         .center();
       }
     }
     .item-text {
-      display: inline-block;
-      vertical-align: middle;
-      height: 100%;
+      width: 100%;
+      min-height: 100%;
       line-height: @course-menu-item-height;
       font-size: 14px;
     }
     .item-extra {
-      vertical-align: middle;
-      float: right;
+      min-width: 65px;
       height: @course-menu-item-height;
       display: flex;
       align-items: center;
       flex-wrap: nowrap;
-      .item-btn {
+      .anticon {
         margin-right: 10px;
+        display: inline-block;
+        vertical-align: middle;
+        width: @course-menu-item-btn-width;
+        height: @course-menu-item-btn-width;
+        border-radius: 50%;
+        border: 1px solid #000;
+        background-color: #fff;
+        position: relative;
+        cursor: pointer;
+        svg {
+          .center();
+        }
       }
     }
   }
-  .shadow.isDragging {
+  .item-group {
     background-color: red;
-
-    .item {
+  }
+  .item-chapter {
+    background-color: orange;
+    .item-text {
+      padding-left: 2rem;
+    }
+  }
+  .item-section {
+    background-color: pink;
+    .item-btn-arrow {
       visibility: hidden;
+    }
+    .item-text {
+      padding-left: 4rem;
     }
   }
 }
