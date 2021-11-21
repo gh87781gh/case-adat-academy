@@ -7,21 +7,23 @@ import { Row, Col, Button, Input, Select, Modal } from 'antd'
 interface IProps {
   item: any
   moveCard: (dragIndex: number, hoverIndex: number) => void
+  addChild?: (clickItem: any) => void
   startDragging: (item: any) => void
   isInDragging: boolean
-  endDragging: () => void
-  expandChildren: (
-    clickId: string,
-    isShowChildren: boolean,
-    children: string[]
-  ) => void
-  addChild: (clickItem: any) => void
-  rename: (index: number, value: string) => void
+  // endDragging: () => void
+  // expandChildren: (
+  //   clickId: string,
+  //   isShowChildren: boolean,
+  //   children: string[]
+  // ) => void
+  // addChild: (clickItem: any) => void
+  // rename: (index: number, value: string) => void
 }
 
 const MenuItem1 = (props: IProps) => {
   const ref = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const [isInDragging, setIsInDragging] = useState<boolean>(false)
   const [isShowDropdown, setIsShowDropdown] = useState<boolean>(false)
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [isModalConfirmShow, setIsModalConfirmShow] = useState<boolean>(false)
@@ -61,11 +63,14 @@ const MenuItem1 = (props: IProps) => {
       }
     },
     canDrop(item: any) {
-      if (item.level === 'group') {
-        return item.level === props.item.level
-      } else {
-        return item.parentId === props.item.parentId
-      }
+      console.log('item:', item, 'props.item:', props.item)
+      return item.level === props.item.level
+      // if(item.level === props.item.level)
+      // if (item.level === 'group') {
+      //   return item.level === props.item.level
+      // } else {
+      //   return item.parentId === props.item.parentId
+      // }
     },
     hover(item: any, monitor: DropTargetMonitor) {
       if (!monitor.canDrop()) {
@@ -77,6 +82,7 @@ const MenuItem1 = (props: IProps) => {
       }
       const dragIndex = item.index
       const hoverIndex = props.item.index
+      // console.log('dragIndex:', dragIndex, 'hoverIndex:', hoverIndex)
 
       // Don't replace items with themselves
       if (dragIndex === hoverIndex) {
@@ -124,18 +130,15 @@ const MenuItem1 = (props: IProps) => {
     type: 'card',
     item: () => {
       props.startDragging(props.item)
-      return {
-        id: props.item.id,
-        index: props.item.index,
-        level: props.item.level,
-        parentId: props.item.parentId
-      }
+      setIsInDragging(true)
+      return props.item
     },
     collect: (monitor: any) => ({
       isDragging: monitor.isDragging()
     }),
     end() {
-      props.endDragging()
+      setIsInDragging(false)
+      // props.endDragging()
     }
   })
   drag(drop(ref))
@@ -162,21 +165,18 @@ const MenuItem1 = (props: IProps) => {
           className='item-btn-arrow'
           style={{
             visibility:
-              props.item.isShowChildren === null ||
-              props.item.children.length === 0
-                ? 'hidden'
-                : 'visible',
+              props.item.isShowChildren === null ? 'hidden' : 'visible',
             transform: props.item.isShowChildren
               ? 'rotate(0deg)'
               : 'rotate(180deg)'
           }}
-          onClick={() =>
-            props.expandChildren(
-              props.item.id,
-              !props.item.isShowChildren,
-              props.item.children
-            )
-          }
+          // onClick={() =>
+          //   props.expandChildren(
+          //     props.item.id,
+          //     !props.item.isShowChildren,
+          //     props.item.children
+          //   )
+          // }
         >
           <IconArrowUp />
         </div>
@@ -188,11 +188,15 @@ const MenuItem1 = (props: IProps) => {
               defaultValue={props.item.text}
               onBlur={(e) => {
                 setIsEditing(false)
-                props.rename(props.item.index, e.target.value)
+                // props.rename(props.item.index, e.target.value)
               }}
             />
           ) : (
-            <>{props.item.text}</>
+            <>
+              {/* ({props.item.index}) ~  */}
+              {props.item.id}
+            </>
+            // <>{props.item.text}</>
           )}
         </div>
         <div className='item-extra'>
@@ -200,7 +204,7 @@ const MenuItem1 = (props: IProps) => {
             style={{
               visibility: props.item.level === 'section' ? 'hidden' : 'visible'
             }}
-            onClick={() => props.addChild(props.item)}
+            onClick={() => (props.addChild ? props.addChild(props.item) : null)}
           />
           <IconMore onClick={() => setIsShowDropdown(!isShowDropdown)} />
           <div
