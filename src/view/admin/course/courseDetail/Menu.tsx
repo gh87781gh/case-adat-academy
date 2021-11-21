@@ -37,6 +37,12 @@ const Menu = (props: IProps) => {
     // console.warn('endDragging')
     // console.warn('draggingItem:', draggingItem)
     // console.warn('dropTargetItem:', dropTargetItem)
+
+    if (draggingItem === null || dropTargetItem === null) {
+      setDraggingItem(null)
+      return
+    }
+
     const newMenu: any = []
     const dragChildren: any = []
     const dropChildren: any = []
@@ -82,37 +88,53 @@ const Menu = (props: IProps) => {
     props.setMenu(newMenu)
   }
 
-  const addChild = (level: string, id: string) => {
-    // console.log(level, id)
+  const addChild = (clickItem: any) => {
+    console.log('click clickItem:', clickItem)
     const childId = `${props.menu.length + 1}`
-    const item: any = {
-      level: level === 'group' ? 'chapter' : 'section',
+    const child: any = {
+      level: clickItem.level === 'group' ? 'chapter' : 'section',
       id: childId,
-      text: `${level === 'group' ? 'chapter' : 'section'} name`,
-      parentId: id,
+      text: `${clickItem.level === 'group' ? 'chapter' : 'section'} name`,
+      parentId: clickItem.id,
       isShowChildren: true,
       isShow: true,
       children: []
     }
     const mewMenu = [...props.menu]
     let insertIndex: number = 0
-    props.menu.forEach((item: any, index: number) => {
-      if (item.id === id) {
-        item.children.push(childId)
+    props.menu.forEach((item: any, index: number, ary: any) => {
+      // parent 加上 child
+      if (item.id === clickItem.id) {
         item.isShowChildren = true
+        item.children.push(childId)
+        if (item.parentId) {
+          // 如果再上層還有父元素，該父元素也要加上 child
+          for (const el of ary) {
+            if (el.id === item.parentId) {
+              el.children.push(childId)
+              break
+            }
+          }
+        }
+      }
+
+      // 找這一串家族的最後一個
+      // TODO 到這
+      if (clickItem.id === item.id) {
+        item.children.push(childId)
         insertIndex = index
-      } else if (item.parentId === id) {
+      } else if (item.parentId === clickItem.id) {
         insertIndex = index
       }
     })
-    mewMenu.splice(insertIndex + 1, 0, item)
+    mewMenu.splice(insertIndex + 1, 0, childId)
     props.setMenu(mewMenu)
   }
 
-  const rename = (index: number, e: any) => {
-    console.log(index, e)
+  const rename = (index: number, value: string) => {
+    console.log(index, value)
     const newMenu = [...props.menu]
-    newMenu[index].text = e.target.value
+    newMenu[index].text = value
     props.setMenu(newMenu)
   }
 
@@ -134,8 +156,8 @@ const Menu = (props: IProps) => {
                 isShowChildren: boolean,
                 children: string[]
               ) => expandChildren(clickId, isShowChildren, children)}
-              addChild={(level: string, id: string) => addChild(level, id)}
-              rename={(index: number, e: any) => rename(index, e)}
+              addChild={(clickItem: any) => addChild(clickItem)}
+              rename={(index: number, value: string) => rename(index, value)}
             />
           </div>
         ))}

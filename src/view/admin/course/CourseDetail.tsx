@@ -106,12 +106,12 @@ const CourseDetail = (props: IProps) => {
         <span className='ad-float-right'>{courseDetail.status}</span>
       </h1>
       <Row gutter={20}>
-        <Col span={6}>
+        <Col span={7}>
           <DndProvider backend={HTML5Backend}>
             <Menu menu={menu} setMenu={(menu: any) => setMenu(menu)} />
           </DndProvider>
         </Col>
-        <Col span={18}></Col>
+        <Col span={17}></Col>
       </Row>
     </>
   )

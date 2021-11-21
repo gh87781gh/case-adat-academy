@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react'
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd'
 import { XYCoord } from 'dnd-core'
 import { IconMenu, IconArrowUp, IconMore, IconPlus } from 'utility/icon'
+import { Row, Col, Button, Input, Select, Modal } from 'antd'
 
 interface IProps {
   item: any
@@ -14,14 +15,42 @@ interface IProps {
     isShowChildren: boolean,
     children: string[]
   ) => void
-  addChild: (level: string, id: string) => void
-  rename: (index: number, e: any) => void
+  addChild: (clickItem: any) => void
+  rename: (index: number, value: string) => void
 }
 
 const MenuItem1 = (props: IProps) => {
   const ref = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const [isShowDropdown, setIsShowDropdown] = useState<boolean>(false)
+  const [isEditing, setIsEditing] = useState<boolean>(false)
+  const [isModalConfirmShow, setIsModalConfirmShow] = useState<boolean>(false)
+  useEffect(() => {
+    if (isEditing) inputRef.current?.focus()
+  }, [isEditing]) // eslint-disable-line react-hooks/exhaustive-deps
+  const renderConfirmModal = () => (
+    <Modal
+      title='Are you sure?'
+      visible={isModalConfirmShow}
+      onCancel={() => setIsModalConfirmShow(false)}
+      footer={[
+        <Button
+          key='Create'
+          type='primary'
+          // onClick={() => deletePurchase()}
+        >
+          Yes. Delete it.
+        </Button>,
+        <Button key='Cancel' onClick={() => setIsModalConfirmShow(false)}>
+          No
+        </Button>
+      ]}
+      width={720}
+    >
+      There are sections in the folders. Are you sure you want to delete all the
+      content?
+    </Modal>
+  )
 
   const [{ handlerId, isCanDrop }, drop] = useDrop({
     accept: 'card',
@@ -112,76 +141,86 @@ const MenuItem1 = (props: IProps) => {
   drag(drop(ref))
 
   return (
-    <div
-      ref={preview}
-      style={{
-        display:
-          props.item.level !== 'group' && !props.item.isShow ? 'none' : 'flex',
-        opacity: !props.isInDragging ? 1 : isCanDrop ? 1 : 0.1
-      }}
-      className={`${isDragging ? 'isDragging' : ''} item item-${
-        props.item.level
-      }`}
-    >
-      <div className='item-grab' ref={ref} data-handler-id={handlerId}>
-        <IconMenu />
-      </div>
+    <>
       <div
-        className='item-btn-arrow'
+        ref={preview}
         style={{
-          visibility:
-            props.item.isShowChildren === null ||
-            props.item.children.length === 0
-              ? 'hidden'
-              : 'visible',
-          transform: props.item.isShowChildren
-            ? 'rotate(0deg)'
-            : 'rotate(180deg)'
+          display:
+            props.item.level !== 'group' && !props.item.isShow
+              ? 'none'
+              : 'flex',
+          opacity: !props.isInDragging ? 1 : isCanDrop ? 1 : 0.1
         }}
-        onClick={() =>
-          props.expandChildren(
-            props.item.id,
-            !props.item.isShowChildren,
-            props.item.children
-          )
-        }
+        className={`${isDragging ? 'isDragging' : ''} item item-${
+          props.item.level
+        }`}
       >
-        <IconArrowUp />
-      </div>
-      <div className='item-text'>
-        <input
-          ref={inputRef}
-          type='text'
-          defaultValue={props.item.text}
-          onBlur={(e) => props.rename(props.item.index, e)}
-
-          // onChange={(e) => props.rename(props.item.index, e)}
-        />
-      </div>
-      <div className='item-extra'>
-        <IconPlus
-          style={{
-            visibility: props.item.level === 'section' ? 'hidden' : 'visible'
-          }}
-          onClick={() => props.addChild(props.item.level, props.item.id)}
-        />
-        <IconMore onClick={() => setIsShowDropdown(!isShowDropdown)} />
+        <div className='item-grab' ref={ref} data-handler-id={handlerId}>
+          <IconMenu />
+        </div>
         <div
-          className='item-extra-dropdown'
-          style={{ display: isShowDropdown ? 'block' : 'none' }}
+          className='item-btn-arrow'
+          style={{
+            visibility:
+              props.item.isShowChildren === null ||
+              props.item.children.length === 0
+                ? 'hidden'
+                : 'visible',
+            transform: props.item.isShowChildren
+              ? 'rotate(0deg)'
+              : 'rotate(180deg)'
+          }}
+          onClick={() =>
+            props.expandChildren(
+              props.item.id,
+              !props.item.isShowChildren,
+              props.item.children
+            )
+          }
         >
-          <div
-            onClick={() => {
-              setIsShowDropdown(false)
-              inputRef.current?.focus()
+          <IconArrowUp />
+        </div>
+        <div className='item-text'>
+          {isEditing ? (
+            <input
+              ref={inputRef}
+              type='text'
+              defaultValue={props.item.text}
+              onBlur={(e) => {
+                setIsEditing(false)
+                props.rename(props.item.index, e.target.value)
+              }}
+            />
+          ) : (
+            <>{props.item.text}</>
+          )}
+        </div>
+        <div className='item-extra'>
+          <IconPlus
+            style={{
+              visibility: props.item.level === 'section' ? 'hidden' : 'visible'
             }}
+            onClick={() => props.addChild(props.item)}
+          />
+          <IconMore onClick={() => setIsShowDropdown(!isShowDropdown)} />
+          <div
+            className='item-extra-dropdown'
+            style={{ display: isShowDropdown ? 'block' : 'none' }}
           >
-            Rename
+            <div
+              onClick={() => {
+                setIsEditing(true)
+                setIsShowDropdown(false)
+              }}
+            >
+              Rename
+            </div>
+            <div>Delete</div>
           </div>
-          <div>Delete</div>
         </div>
       </div>
-    </div>
+      {renderConfirmModal()}
+    </>
   )
 }
 export default MenuItem1
