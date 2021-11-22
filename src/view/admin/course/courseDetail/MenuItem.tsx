@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from 'react'
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd'
 import { XYCoord } from 'dnd-core'
 import { IconMenu, IconArrowUp, IconMore, IconPlus } from 'utility/icon'
-import { Row, Col, Button, Input, Select, Modal } from 'antd'
+import { Menu, Dropdown } from 'antd'
 
 interface IProps {
   item: any
@@ -10,49 +10,20 @@ interface IProps {
   addChild?: (clickItem: any) => void
   startDragging: (item: any) => void
   isInDragging: boolean
-  // endDragging: () => void
-  // expandChildren: (
-  //   clickId: string,
-  //   isShowChildren: boolean,
-  //   children: string[]
-  // ) => void
-  // addChild: (clickItem: any) => void
-  // rename: (index: number, value: string) => void
+  endDragging: () => void
+  expandChildren: (item: any) => void
+  rename: (index: number, value: string) => void
+  handleDeleteItem: (item: any) => void
 }
 
 const MenuItem1 = (props: IProps) => {
   const ref = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
-  const [isInDragging, setIsInDragging] = useState<boolean>(false)
   const [isShowDropdown, setIsShowDropdown] = useState<boolean>(false)
   const [isEditing, setIsEditing] = useState<boolean>(false)
-  const [isModalConfirmShow, setIsModalConfirmShow] = useState<boolean>(false)
   useEffect(() => {
     if (isEditing) inputRef.current?.focus()
-  }, [isEditing]) // eslint-disable-line react-hooks/exhaustive-deps
-  const renderConfirmModal = () => (
-    <Modal
-      title='Are you sure?'
-      visible={isModalConfirmShow}
-      onCancel={() => setIsModalConfirmShow(false)}
-      footer={[
-        <Button
-          key='Create'
-          type='primary'
-          // onClick={() => deletePurchase()}
-        >
-          Yes. Delete it.
-        </Button>,
-        <Button key='Cancel' onClick={() => setIsModalConfirmShow(false)}>
-          No
-        </Button>
-      ]}
-      width={720}
-    >
-      There are sections in the folders. Are you sure you want to delete all the
-      content?
-    </Modal>
-  )
+  }, [isEditing])
 
   const [{ handlerId, isCanDrop }, drop] = useDrop({
     accept: 'card',
@@ -63,14 +34,24 @@ const MenuItem1 = (props: IProps) => {
       }
     },
     canDrop(item: any) {
-      console.log('item:', item, 'props.item:', props.item)
-      return item.level === props.item.level
-      // if(item.level === props.item.level)
-      // if (item.level === 'group') {
-      //   return item.level === props.item.level
-      // } else {
-      //   return item.parentId === props.item.parentId
-      // }
+      if (item.level === 'group') {
+        return item.level === props.item.level
+      } else {
+        const level = item.level
+        const id1 =
+          level === 'chapter'
+            ? item.id.split('-')[0]
+            : level === 'section'
+            ? `${item.id.split('-')[0]}-${item.id.split('-')[1]}`
+            : ''
+        const id2 =
+          level === 'chapter'
+            ? props.item.id.split('-')[0]
+            : level === 'section'
+            ? `${props.item.id.split('-')[0]}-${props.item.id.split('-')[1]}`
+            : ''
+        return item.level === props.item.level && id1 === id2
+      }
     },
     hover(item: any, monitor: DropTargetMonitor) {
       if (!monitor.canDrop()) {
@@ -130,18 +111,41 @@ const MenuItem1 = (props: IProps) => {
     type: 'card',
     item: () => {
       props.startDragging(props.item)
-      setIsInDragging(true)
       return props.item
     },
     collect: (monitor: any) => ({
       isDragging: monitor.isDragging()
     }),
     end() {
-      setIsInDragging(false)
-      // props.endDragging()
+      props.endDragging()
     }
   })
   drag(drop(ref))
+
+  const moreList = (
+    <Menu>
+      <Menu.Item key='rename'>
+        <div
+          onClick={() => {
+            setIsEditing(true)
+            setIsShowDropdown(false)
+          }}
+        >
+          Rename
+        </div>
+      </Menu.Item>
+      <Menu.Item key='delete'>
+        <div
+          onClick={() => {
+            props.handleDeleteItem(props.item)
+            setIsShowDropdown(false)
+          }}
+        >
+          Delete
+        </div>
+      </Menu.Item>
+    </Menu>
+  )
 
   return (
     <>
@@ -170,13 +174,7 @@ const MenuItem1 = (props: IProps) => {
               ? 'rotate(0deg)'
               : 'rotate(180deg)'
           }}
-          // onClick={() =>
-          //   props.expandChildren(
-          //     props.item.id,
-          //     !props.item.isShowChildren,
-          //     props.item.children
-          //   )
-          // }
+          onClick={() => props.expandChildren(props.item)}
         >
           <IconArrowUp />
         </div>
@@ -188,15 +186,11 @@ const MenuItem1 = (props: IProps) => {
               defaultValue={props.item.text}
               onBlur={(e) => {
                 setIsEditing(false)
-                // props.rename(props.item.index, e.target.value)
+                props.rename(props.item.index, e.target.value)
               }}
             />
           ) : (
-            <>
-              {/* ({props.item.index}) ~  */}
-              {props.item.id}
-            </>
-            // <>{props.item.text}</>
+            <>{props.item.id}</>
           )}
         </div>
         <div className='item-extra'>
@@ -206,24 +200,11 @@ const MenuItem1 = (props: IProps) => {
             }}
             onClick={() => (props.addChild ? props.addChild(props.item) : null)}
           />
-          <IconMore onClick={() => setIsShowDropdown(!isShowDropdown)} />
-          <div
-            className='item-extra-dropdown'
-            style={{ display: isShowDropdown ? 'block' : 'none' }}
-          >
-            <div
-              onClick={() => {
-                setIsEditing(true)
-                setIsShowDropdown(false)
-              }}
-            >
-              Rename
-            </div>
-            <div>Delete</div>
-          </div>
+          <Dropdown overlay={moreList} trigger={['click']}>
+            <IconMore />
+          </Dropdown>
         </div>
       </div>
-      {renderConfirmModal()}
     </>
   )
 }

@@ -1,6 +1,8 @@
-import { useCallback, useState, useRef } from 'react'
+import { useCallback, useState, useRef, useEffect } from 'react'
 import MenuItem from './MenuItem'
 import update from 'immutability-helper'
+import { Row, Col, Button, Input, Select, Modal } from 'antd'
+import { idText } from 'typescript'
 
 interface IProps {
   menu: any
@@ -11,10 +13,12 @@ interface IProps {
 const Menu = (props: IProps) => {
   const [draggingItem, setDraggingItem] = useState<any>(null)
   const [dropTargetItem, setDropTargetItem] = useState<any>(null)
+  const [deleteItemCache, setDeleteItemCache] = useState<any>(null)
+  const [isModalConfirmShow, setIsModalConfirmShow] = useState<boolean>(false)
 
   const moveCard = useCallback(
     (dragIndex: number, hoverIndex: number) => {
-      console.warn('moveCard:', dragIndex, hoverIndex)
+      // console.warn('moveCard:', dragIndex, hoverIndex)
       setDropTargetItem(props.menu[hoverIndex])
       const dragCard = props.menu[dragIndex]
       props.setMenu(
@@ -28,74 +32,147 @@ const Menu = (props: IProps) => {
     },
     [props.menu]
   )
-
   const startDragging = (item: any) => {
-    console.warn('startDragging')
+    // console.warn('startDragging')
     setDraggingItem(item)
   }
+  const endDragging = () => {
+    // console.warn('endDragging')
+    // console.warn('draggingItem:', draggingItem)
+    // console.warn('dropTargetItem:', dropTargetItem)
 
-  // TODO 到這
-  // const endDragging = () => {
-  //   // console.warn('endDragging')
-  //   // console.warn('draggingItem:', draggingItem)
-  //   // console.warn('dropTargetItem:', dropTargetItem)
+    // if level is 'section', there is no children need to be handle
+    // if translate is not working, no need to handle children
+    if (
+      draggingItem.level === 'section' ||
+      draggingItem === null ||
+      dropTargetItem === null
+    ) {
+      setDraggingItem(null)
+      return
+    }
 
-  //   if (draggingItem === null || dropTargetItem === null) {
-  //     setDraggingItem(null)
-  //     return
-  //   }
+    // after translate items succeed, filter children of drag item and drop item
+    const ary: any = []
+    const dragChildren: any = []
+    const dropChildren: any = []
+    const dragId: string = draggingItem.id
+    const dropId: string = dropTargetItem.id
 
-  //   const newMenu: any = []
-  //   const dragChildren: any = []
-  //   const dropChildren: any = []
-  //   for (const item of props.menu) {
-  //     const isDragChild = draggingItem.children.find(
-  //       (id: string) => id === item.id
-  //     )
-  //     const isDropChild = dropTargetItem.children.find(
-  //       (id: string) => id === item.id
-  //     )
-  //     isDragChild
-  //       ? dragChildren.push(item)
-  //       : isDropChild
-  //       ? dropChildren.push(item)
-  //       : newMenu.push(item)
-  //   }
-  //   const insertDragChildrenIndex = newMenu.findIndex(
-  //     (item: any) => item.id === draggingItem.id
-  //   )
-  //   newMenu.splice(insertDragChildrenIndex + 1, 0, ...dragChildren)
-  //   const insertDropChildrenIndex = newMenu.findIndex(
-  //     (item: any) => item.id === dropTargetItem.id
-  //   )
-  //   newMenu.splice(insertDropChildrenIndex + 1, 0, ...dropChildren)
+    for (const item of props.menu) {
+      const parentId: string =
+        draggingItem.level === 'group'
+          ? item.id.split('-')[0]
+          : `${item.id.split('-')[0]}-${item.id.split('-')[1]}`
+      if (item.level === draggingItem.level) {
+        ary.push(item)
+      } else {
+        if (parentId === dragId) {
+          dragChildren.push(item)
+        } else if (parentId === dropId) {
+          dropChildren.push(item)
+        } else {
+          ary.push(item)
+        }
+      }
+    }
 
-  //   props.setMenu(newMenu)
-  //   setDraggingItem(null)
-  // }
+    //  insert children of drag item and drop item into new menu
+    const insertDragChildrenIndex: number = ary.findIndex(
+      (item: any) => item.id === dragId
+    )
+    ary.splice(insertDragChildrenIndex + 1, 0, ...dragChildren)
+    const insertDropChildrenIndex: number = ary.findIndex(
+      (item: any) => item.id === dropId
+    )
+    ary.splice(insertDropChildrenIndex + 1, 0, ...dropChildren)
 
-  // const expandChildren = (
-  //   clickId: string,
-  //   isShowChildren: boolean,
-  //   children: string[]
-  // ) => {
-  //   const newMenu = [...props.menu]
-  //   for (const id of children) {
-  //     for (const item of newMenu) {
-  //       if (item.id === clickId) item.isShowChildren = isShowChildren
-  //       if (item.id === id) item.isShow = isShowChildren
-  //     }
-  //   }
+    props.setMenu(ary)
+    setDraggingItem(null)
+  }
+  const expandChildren = (item: any) => {
+    const ary = [...props.menu]
+    ary[item.index].isShowChildren = !ary[item.index].isShowChildren
+    for (const el of ary) {
+      const parentId: string =
+        item.level === 'group'
+          ? el.id.split('-')[0]
+          : `${el.id.split('-')[0]}-${el.id.split('-')[1]}`
 
-  //   props.setMenu(newMenu)
-  // }
+      if (
+        (item.level === 'group' && item.id === parentId) ||
+        (item.level === 'chapter' && el.id !== parentId && parentId === item.id)
+      )
+        el.isShow = !item.isShowChildren
+    }
+    props.setMenu(ary)
+  }
+  const rename = (index: number, value: string) => {
+    const newMenu = [...props.menu]
+    newMenu[index].text = value
+    props.setMenu(newMenu)
+  }
+  const handleDeleteItem = (item: any) => {
+    console.log('handleDeleteItem:', item)
+    switch (item.level) {
+      case 'group':
+      case 'chapter':
+        const isHasChildren = props.menu.find((el: any) => {
+          let checkPrefix: string =
+            item.level === 'group'
+              ? el.id.split('-')[0]
+              : `${el.id.split('-')[0]}-${el.id.split('-')[1]}`
+          return item.level === 'group'
+            ? checkPrefix === item.id && el.level === 'chapter'
+            : checkPrefix === item.id && el.level === 'section'
+        })
+        isHasChildren ? setDeleteItemCache(item) : deleteItem(item)
+        break
+      case 'section':
+        deleteItem(item)
+        break
+      default:
+    }
+  }
+  const deleteItem = (item: any) => {
+    const level: string = item.level
 
-  // const rename = (index: number, value: string) => {
-  //   console.log(index, value)
-  //   const newMenu = [...props.menu]
-  //   newMenu[index].text = value
-  //   props.setMenu(newMenu)
-  // }
+    // create new menu without deleted item
+    const ary: any = props.menu.filter((el: any) => {
+      const prefix: string =
+        level === 'group'
+          ? el.id.split('-')[0]
+          : level === 'chapter'
+          ? `${el.id.split('-')[0]}-${el.id.split('-')[1]}`
+          : el.id
+      if (prefix !== item.id) return el
+    })
+
+    // handle parent item's expanding arrow
+    if (level === 'chapter' || level === 'section') {
+      const parentId: string =
+        level === 'chapter'
+          ? item.id.split('-')[0]
+          : `${item.id.split('-')[0]}-${item.id.split('-')[1]}`
+      const isHasChildren = ary.find((el: any) => {
+        const prefix: string =
+          level === 'chapter'
+            ? el.id.split('-')[0]
+            : `${el.id.split('-')[0]}-${el.id.split('-')[1]}`
+        return el.level === level && prefix === parentId
+      })
+      if (!isHasChildren) {
+        const parentIndex = ary.findIndex((el: any) => el.id === parentId)
+        ary[parentIndex].isShowChildren = null
+      }
+    }
+
+    setDeleteItemCache(null)
+    props.setMenu(ary)
+  }
+  useEffect(() => {
+    if (deleteItemCache) setIsModalConfirmShow(true)
+  }, [deleteItemCache])
 
   return (
     <>
@@ -111,19 +188,39 @@ const Menu = (props: IProps) => {
                 addChild={(clickItem: any) => props.addChild(clickItem)}
                 startDragging={(item: any) => startDragging(item)}
                 isInDragging={draggingItem !== null}
-                // endDragging={() => endDragging()}
-                // expandChildren={(
-                //   clickId: string,
-                //   isShowChildren: boolean,
-                //   children: string[]
-                // ) => expandChildren(clickId, isShowChildren, children)}
-                // addChild={(clickItem: any) => addChild(clickItem)}
-                // rename={(index: number, value: string) => rename(index, value)}
+                endDragging={() => endDragging()}
+                expandChildren={(item: any) => expandChildren(item)}
+                rename={(index: number, value: string) => rename(index, value)}
+                handleDeleteItem={(item: any) => handleDeleteItem(item)}
               />
             </div>
           )
         })}
       </div>
+      <Modal
+        title='Are you sure?'
+        visible={isModalConfirmShow}
+        onCancel={() => setIsModalConfirmShow(false)}
+        footer={[
+          <Button
+            key='Create'
+            type='primary'
+            onClick={() => {
+              deleteItem(deleteItemCache)
+              setIsModalConfirmShow(false)
+            }}
+          >
+            Yes. Delete it.
+          </Button>,
+          <Button key='Cancel' onClick={() => setIsModalConfirmShow(false)}>
+            No
+          </Button>
+        ]}
+        width={720}
+      >
+        There are {deleteItemCache?.level === 'group' ? 'chapters' : 'secitons'}{' '}
+        in the folders. Are you sure you want to delete all the content?
+      </Modal>
     </>
   )
 }
