@@ -16,10 +16,9 @@ interface IProps {
   handleDeleteItem: (item: any) => void
 }
 
-const MenuItem1 = (props: IProps) => {
+const MenuItem = (props: IProps) => {
   const ref = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
-  const [isShowDropdown, setIsShowDropdown] = useState<boolean>(false)
   const [isEditing, setIsEditing] = useState<boolean>(false)
   useEffect(() => {
     if (isEditing) inputRef.current?.focus()
@@ -34,21 +33,21 @@ const MenuItem1 = (props: IProps) => {
       }
     },
     canDrop(item: any) {
-      if (item.level === 'group') {
+      if (item.level === 'A') {
         return item.level === props.item.level
       } else {
         const level = item.level
         const id1 =
-          level === 'chapter'
-            ? item.id.split('-')[0]
-            : level === 'section'
-            ? `${item.id.split('-')[0]}-${item.id.split('-')[1]}`
+          level === 'B'
+            ? item.key.split('-')[0]
+            : level === 'C'
+            ? `${item.key.split('-')[0]}-${item.key.split('-')[1]}`
             : ''
         const id2 =
-          level === 'chapter'
-            ? props.item.id.split('-')[0]
-            : level === 'section'
-            ? `${props.item.id.split('-')[0]}-${props.item.id.split('-')[1]}`
+          level === 'B'
+            ? props.item.key.split('-')[0]
+            : level === 'C'
+            ? `${props.item.key.split('-')[0]}-${props.item.key.split('-')[1]}`
             : ''
         return item.level === props.item.level && id1 === id2
       }
@@ -122,40 +121,23 @@ const MenuItem1 = (props: IProps) => {
   })
   drag(drop(ref))
 
-  const moreList = (
+  const renderMoreList = (
     <Menu>
       <Menu.Item key='rename'>
-        <div
-          onClick={() => {
-            setIsEditing(true)
-            setIsShowDropdown(false)
-          }}
-        >
-          Rename
-        </div>
+        <div onClick={() => setIsEditing(true)}>Rename</div>
       </Menu.Item>
       <Menu.Item key='delete'>
-        <div
-          onClick={() => {
-            props.handleDeleteItem(props.item)
-            setIsShowDropdown(false)
-          }}
-        >
-          Delete
-        </div>
+        <div onClick={() => props.handleDeleteItem(props.item)}>Delete</div>
       </Menu.Item>
     </Menu>
   )
-
   return (
     <>
       <div
         ref={preview}
         style={{
           display:
-            props.item.level !== 'group' && !props.item.isShow
-              ? 'none'
-              : 'flex',
+            props.item.level !== 'A' && !props.item.isShow ? 'none' : 'flex',
           opacity: !props.isInDragging ? 1 : isCanDrop ? 1 : 0.1
         }}
         className={`${isDragging ? 'isDragging' : ''} item item-${
@@ -190,17 +172,17 @@ const MenuItem1 = (props: IProps) => {
               }}
             />
           ) : (
-            <>{props.item.id}</>
+            <>{props.item.text}</>
           )}
         </div>
         <div className='item-extra'>
           <IconPlus
             style={{
-              visibility: props.item.level === 'section' ? 'hidden' : 'visible'
+              visibility: props.item.level === 'C' ? 'hidden' : 'visible'
             }}
             onClick={() => (props.addChild ? props.addChild(props.item) : null)}
           />
-          <Dropdown overlay={moreList} trigger={['click']}>
+          <Dropdown overlay={renderMoreList} trigger={['click']}>
             <IconMore />
           </Dropdown>
         </div>
@@ -208,4 +190,4 @@ const MenuItem1 = (props: IProps) => {
     </>
   )
 }
-export default MenuItem1
+export default MenuItem

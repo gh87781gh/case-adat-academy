@@ -2,8 +2,53 @@
 @course-menu-item-btn-width: 20px;
 .ad-course-menu-addGroup {
   height: @course-menu-item-height;
-  background-color: #ccc;
   cursor: pointer;
+  text-align: center;
+  position: relative;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  &::before {
+    display: none;
+    content: '';
+    height: 3px;
+    width: 100%;
+    background-color: @color-primary;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    z-index: -1;
+  }
+  span {
+    display: none;
+    border: 3px solid @color-primary;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    position: relative;
+    background-color: #fff;
+    em {
+      .center();
+      display: inline-block;
+      background-color: @color-primary;
+      &:first-child {
+        width: 18px;
+        height: 3px;
+      }
+      &:last-child {
+        width: 3px;
+        height: 18px;
+      }
+    }
+  }
+  &:hover {
+    &::before {
+      display: block;
+    }
+    span {
+      display: inline-block;
+    }
+  }
 }
 .ad-course-menu {
   .item {
@@ -82,16 +127,16 @@
       }
     }
   }
-  .item-group {
+  .item-A {
     background-color: red;
   }
-  .item-chapter {
+  .item-B {
     background-color: orange;
     .item-text {
       padding-left: 2rem;
     }
   }
-  .item-section {
+  .item-C {
     background-color: pink;
     .item-btn-arrow {
       visibility: hidden;
