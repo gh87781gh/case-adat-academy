@@ -4,12 +4,12 @@ import update from 'immutability-helper'
 import { Button, Modal } from 'antd'
 
 interface IProps {
-  type: string
+  type: string // COURSE_MENU , LEARNING_PATH
   menu: any
   courseMenu?: any
   selectedCourseMenu?: any
   setMenu: (menu: any) => void
-  addChild: (clickItem: any, course?: any) => void
+  addLevelACount: number
 }
 
 const Menu = (props: IProps) => {
@@ -195,9 +195,94 @@ const Menu = (props: IProps) => {
     setDeleteItemCache(null)
     props.setMenu(ary)
   }
+  const addChild = (clickItem?: any, course?: any) => {
+    const ary: any = [...props.menu]
+    let lastDownLevelChildId: string = ''
+    let insertIndex: number | null = null
+
+    switch (clickItem?.level) {
+      case 'A':
+        ary[clickItem.index].isShowChildren = true
+        for (let i = clickItem.index + 1; i < ary.length; i++) {
+          if (ary[i].key.split('-')[0] === clickItem.key) {
+            if (ary[i].level === 'B') lastDownLevelChildId = ary[i].key
+          } else {
+            insertIndex = i
+            break
+          }
+        }
+        const el =
+          props.type === 'COURSE_MENU'
+            ? {
+                level: 'B',
+                key: lastDownLevelChildId
+                  ? `${clickItem.key}-${
+                      Number(lastDownLevelChildId.split('-')[1]) + 1
+                    }`
+                  : `${clickItem.key}-1`,
+                text: 'chapter name',
+                isShowChildren: null,
+                isShow: true
+              }
+            : props.type === 'LEARNING_PATH'
+            ? {
+                level: 'B',
+                key: lastDownLevelChildId
+                  ? `${clickItem.key}-${
+                      Number(lastDownLevelChildId.split('-')[1]) + 1
+                    }`
+                  : `${clickItem.key}-1`,
+                id: course.id,
+                text: course.name,
+                isShowChildren: null,
+                isShow: true
+              }
+            : {}
+        ary.splice(insertIndex ?? ary.length, 0, el)
+        break
+      case 'B':
+        ary[clickItem.index].isShowChildren = true
+        for (let i = clickItem.index + 1; i < ary.length; i++) {
+          if (
+            `${ary[i].key.split('-')[0]}-${ary[i].key.split('-')[1]}` ===
+            clickItem.key
+          ) {
+            if (ary[i].level === 'C') lastDownLevelChildId = ary[i].key
+          } else {
+            insertIndex = i
+            break
+          }
+        }
+        ary.splice(insertIndex ?? ary.length, 0, {
+          level: 'C',
+          key: lastDownLevelChildId
+            ? `${clickItem.key}-${
+                Number(lastDownLevelChildId.split('-')[2]) + 1
+              }`
+            : `${clickItem.key}-1`,
+          text: 'chapter name',
+          isShowChildren: null,
+          isShow: true
+        })
+        break
+      default:
+        const itemsA = props.menu.filter((item: any) => item.level === 'A')
+        ary.push({
+          level: 'A',
+          key: `${itemsA.length + 1}`,
+          text: 'group name',
+          isShowChildren: null,
+          isShow: true
+        })
+    }
+    props.setMenu(ary)
+  }
   useEffect(() => {
     if (deleteItemCache) setIsModalConfirmShow(true)
   }, [deleteItemCache])
+  useEffect(() => {
+    if (props.addLevelACount !== 0) addChild()
+  }, [props.addLevelACount])
 
   return (
     <>
@@ -215,7 +300,7 @@ const Menu = (props: IProps) => {
                   moveCard(dragIndex, hoverIndex)
                 }
                 addChild={(clickItem: any, course?: any) =>
-                  props.addChild(clickItem, course)
+                  addChild(clickItem, course)
                 }
                 startDragging={(item: any) => startDragging(item)}
                 isInDragging={draggingItem !== null}

@@ -17,6 +17,7 @@ const CourseDetail = (props: IProps) => {
   const api = new CourseApi()
 
   const [courseDetail, setCourseDetail] = useState<any>({})
+  let [addLevelACount, setAddLevelACount] = useState<number>(0)
   const [menu, setMenu] = useState([
     {
       level: 'A',
@@ -48,71 +49,6 @@ const CourseDetail = (props: IProps) => {
     }
   ])
 
-  const addChild = (clickItem?: any) => {
-    const ary: any = [...menu]
-    let lastDownLevelChildId: string = ''
-    let insertIndex: number | null = null
-
-    switch (clickItem?.level) {
-      case 'A':
-        ary[clickItem.index].isShowChildren = true
-        for (let i = clickItem.index + 1; i < ary.length; i++) {
-          if (ary[i].key.split('-')[0] === clickItem.key) {
-            if (ary[i].level === 'B') lastDownLevelChildId = ary[i].key
-          } else {
-            insertIndex = i
-            break
-          }
-        }
-        ary.splice(insertIndex ?? ary.length, 0, {
-          level: 'B',
-          key: lastDownLevelChildId
-            ? `${clickItem.key}-${
-                Number(lastDownLevelChildId.split('-')[1]) + 1
-              }`
-            : `${clickItem.key}-1`,
-          text: 'chapter name',
-          isShowChildren: null,
-          isShow: true
-        })
-        break
-      case 'B':
-        ary[clickItem.index].isShowChildren = true
-        for (let i = clickItem.index + 1; i < ary.length; i++) {
-          if (
-            `${ary[i].key.split('-')[0]}-${ary[i].key.split('-')[1]}` ===
-            clickItem.key
-          ) {
-            if (ary[i].level === 'C') lastDownLevelChildId = ary[i].key
-          } else {
-            insertIndex = i
-            break
-          }
-        }
-        ary.splice(insertIndex ?? ary.length, 0, {
-          level: 'C',
-          key: lastDownLevelChildId
-            ? `${clickItem.key}-${
-                Number(lastDownLevelChildId.split('-')[2]) + 1
-              }`
-            : `${clickItem.key}-1`,
-          text: 'chapter name',
-          isShowChildren: null,
-          isShow: true
-        })
-        break
-      default:
-        const groups = menu.filter((item: any) => item.level === 'A')
-        ary.push({
-          level: 'A',
-          key: `${groups.length + 1}`,
-          text: 'group name',
-          isShowChildren: null,
-          isShow: true
-        })
-    }
-    setMenu(ary)
-  }
   const getMenu = () => {
     context.setIsLoading(true)
     api
@@ -150,10 +86,13 @@ const CourseDetail = (props: IProps) => {
               type='COURSE_MENU'
               menu={menu}
               setMenu={(menu: any) => setMenu(menu)}
-              addChild={(clickItem: any) => addChild(clickItem)}
+              addLevelACount={addLevelACount}
             />
           </DndProvider>
-          <div className='ad-course-menu-addGroup' onClick={() => addChild()}>
+          <div
+            className='ad-course-menu-addGroup'
+            onClick={() => setAddLevelACount(addLevelACount + 1)}
+          >
             <span>
               <em></em>
               <em></em>
