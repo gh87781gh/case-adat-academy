@@ -56,6 +56,26 @@ export default class CourseApi {
     })
   }
 
+  getLearnCourses = () => {
+    return new Promise((resolve, reject) => {
+      this.restAPI
+        .request('get', '/course', {})
+        .then((res: any) => {
+          const ary = res.data.map((item: any, index: number) => {
+            return {
+              key: index,
+              id: item.id,
+              name: item.name,
+              enable: item.enable
+            }
+          })
+          resolve(ary)
+        })
+        .catch(() => {
+          reject(false)
+        })
+    })
+  }
   getLearnGoals = () => {
     return new Promise((resolve, reject) => {
       this.restAPI

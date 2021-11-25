@@ -108,8 +108,7 @@ const CourseDetail = (props: IProps) => {
           key: `${groups.length + 1}`,
           text: 'group name',
           isShowChildren: null,
-          isShow: true,
-          children: []
+          isShow: true
         })
     }
     setMenu(ary)
@@ -148,6 +147,7 @@ const CourseDetail = (props: IProps) => {
         <Col span={7}>
           <DndProvider backend={HTML5Backend}>
             <Menu
+              type='COURSE_MENU'
               menu={menu}
               setMenu={(menu: any) => setMenu(menu)}
               addChild={(clickItem: any) => addChild(clickItem)}

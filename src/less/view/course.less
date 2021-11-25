@@ -7,6 +7,7 @@
   position: relative;
   margin-top: 5px;
   margin-bottom: 5px;
+  position: relative;
   &::before {
     display: none;
     content: '';
@@ -17,7 +18,6 @@
     top: 50%;
     transform: translateY(-50%);
     left: 0;
-    z-index: -1;
   }
   span {
     display: none;
@@ -67,6 +67,9 @@
         opacity: 0;
       }
     }
+    &.item-course {
+      background-color: #c8c8c833;
+    }
 
     .item-grab {
       min-width: @course-menu-item-height;
@@ -109,7 +112,7 @@
       display: flex;
       align-items: center;
       flex-wrap: nowrap;
-      position: relative;
+      justify-content: flex-end;
       .anticon {
         margin-right: 10px;
         display: inline-block;
@@ -128,16 +131,16 @@
     }
   }
   .item-A {
-    background-color: red;
+    // background-color: red;
   }
   .item-B {
-    background-color: orange;
+    // background-color: orange;
     .item-text {
       padding-left: 2rem;
     }
   }
   .item-C {
-    background-color: pink;
+    // background-color: pink;
     .item-btn-arrow {
       visibility: hidden;
     }

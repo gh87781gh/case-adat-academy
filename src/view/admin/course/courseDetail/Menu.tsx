@@ -4,9 +4,12 @@ import update from 'immutability-helper'
 import { Button, Modal } from 'antd'
 
 interface IProps {
+  type: string
   menu: any
+  courseMenu?: any
+  selectedCourseMenu?: any
   setMenu: (menu: any) => void
-  addChild: (clickItem: any) => void
+  addChild: (clickItem: any, course?: any) => void
 }
 
 const Menu = (props: IProps) => {
@@ -42,49 +45,73 @@ const Menu = (props: IProps) => {
 
     // if level is 'C', there is no children need to be handle
     // if translate is not working, no need to handle children
-    if (
-      draggingItem.level === 'C' ||
-      draggingItem === null ||
-      dropTargetItem === null
-    ) {
+    if (draggingItem === null || dropTargetItem === null) {
       setDraggingItem(null)
       return
     }
 
-    // after translate items succeed, filter children of drag item and drop item
-    const ary: any = []
-    const dragChildren: any = []
-    const dropChildren: any = []
-    const dragId: string = draggingItem.key
-    const dropId: string = dropTargetItem.key
+    let ary: any = []
 
-    for (const item of props.menu) {
-      const parentId: string =
-        draggingItem.level === 'A'
-          ? item.key.split('-')[0]
-          : `${item.key.split('-')[0]}-${item.key.split('-')[1]}`
-      if (item.level === draggingItem.level) {
-        ary.push(item)
-      } else {
-        if (parentId === dragId) {
-          dragChildren.push(item)
-        } else if (parentId === dropId) {
-          dropChildren.push(item)
-        } else {
+    // 調整 drag/drop 的 children
+    if (draggingItem.level === 'A' || draggingItem.level === 'B') {
+      // after translate items succeed, filter children of drag item and drop item
+      const dragChildren: any = []
+      const dropChildren: any = []
+      const dragKey: string = draggingItem.key
+      const dropKey: string = dropTargetItem.key
+      for (const item of props.menu) {
+        const parentId: string =
+          draggingItem.level === 'A'
+            ? item.key.split('-')[0]
+            : `${item.key.split('-')[0]}-${item.key.split('-')[1]}`
+        if (item.level === draggingItem.level) {
           ary.push(item)
+        } else {
+          if (parentId === dragKey) {
+            dragChildren.push(item)
+          } else if (parentId === dropKey) {
+            dropChildren.push(item)
+          } else {
+            ary.push(item)
+          }
         }
       }
+      //  insert children of drag item and drop item into new menu
+      const insertDragChildrenIndex: number = ary.findIndex(
+        (item: any) => item.key === dragKey
+      )
+      ary.splice(insertDragChildrenIndex + 1, 0, ...dragChildren)
+      const insertDropChildrenIndex: number = ary.findIndex(
+        (item: any) => item.key === dropKey
+      )
+      ary.splice(insertDropChildrenIndex + 1, 0, ...dropChildren)
+    } else {
+      ary = [...props.menu]
     }
 
-    //  insert children of drag item and drop item into new menu
-    const insertDragChildrenIndex: number = ary.findIndex(
-      (item: any) => item.key === dragId
-    )
-    ary.splice(insertDragChildrenIndex + 1, 0, ...dragChildren)
-    const insertDropChildrenIndex: number = ary.findIndex(
-      (item: any) => item.key === dropId
-    )
-    ary.splice(insertDropChildrenIndex + 1, 0, ...dropChildren)
+    let indexA: number = 0
+    let indexB: number = 0
+    let indexC: number = 0
+    ary.forEach((item: any, index: number) => {
+      switch (item.level) {
+        case 'A':
+          if (indexA !== 0) {
+            indexB = 0
+            indexC = 0
+          }
+          indexA++
+          item.key = `${indexA}`
+          break
+        case 'B':
+          indexB++
+          item.key = `${indexA}-${indexB}`
+          break
+        case 'C':
+          indexC++
+          item.key = `${indexA}-${indexB}-${indexC}`
+          break
+      }
+    })
 
     props.setMenu(ary)
     setDraggingItem(null)
@@ -179,11 +206,17 @@ const Menu = (props: IProps) => {
           return (
             <div key={item.key}>
               <MenuItem
+                type={props.type}
+                menu={props.menu}
+                courseMenu={props.courseMenu}
+                selectedCourseMenu={props.selectedCourseMenu}
                 item={{ ...item, index }}
                 moveCard={(dragIndex: number, hoverIndex: number) =>
                   moveCard(dragIndex, hoverIndex)
                 }
-                addChild={(clickItem: any) => props.addChild(clickItem)}
+                addChild={(clickItem: any, course?: any) =>
+                  props.addChild(clickItem, course)
+                }
                 startDragging={(item: any) => startDragging(item)}
                 isInDragging={draggingItem !== null}
                 endDragging={() => endDragging()}

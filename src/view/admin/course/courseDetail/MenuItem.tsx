@@ -1,13 +1,23 @@
 import { useRef, useState, useEffect } from 'react'
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd'
 import { XYCoord } from 'dnd-core'
-import { IconMenu, IconArrowUp, IconMore, IconPlus } from 'utility/icon'
+import {
+  IconMenu,
+  IconArrowUp,
+  IconPlus,
+  IconDelete,
+  IconDanger
+} from 'utility/icon'
 import { Menu, Dropdown } from 'antd'
 
 interface IProps {
+  type: string
+  menu: any
+  courseMenu?: any
+  selectedCourseMenu?: any
   item: any
   moveCard: (dragIndex: number, hoverIndex: number) => void
-  addChild?: (clickItem: any) => void
+  addChild: (clickItem: any, course?: any) => void
   startDragging: (item: any) => void
   isInDragging: boolean
   endDragging: () => void
@@ -20,6 +30,7 @@ const MenuItem = (props: IProps) => {
   const ref = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const [isEditing, setIsEditing] = useState<boolean>(false)
+
   useEffect(() => {
     if (isEditing) inputRef.current?.focus()
   }, [isEditing])
@@ -33,23 +44,23 @@ const MenuItem = (props: IProps) => {
       }
     },
     canDrop(item: any) {
-      if (item.level === 'A') {
-        return item.level === props.item.level
-      } else {
-        const level = item.level
-        const id1 =
-          level === 'B'
-            ? item.key.split('-')[0]
-            : level === 'C'
-            ? `${item.key.split('-')[0]}-${item.key.split('-')[1]}`
-            : ''
-        const id2 =
-          level === 'B'
-            ? props.item.key.split('-')[0]
-            : level === 'C'
-            ? `${props.item.key.split('-')[0]}-${props.item.key.split('-')[1]}`
-            : ''
-        return item.level === props.item.level && id1 === id2
+      //  item : dragging item
+      //  props.item : hover 當下位置的 item，有可能是 dragging item 本身
+      switch (item.level) {
+        case 'C':
+          return (
+            (props.menu[props.item.index - 1]?.level === 'B' ||
+              props.menu[props.item.index - 1]?.level === 'C') &&
+            props.menu[props.item.index]?.level !== 'A'
+          )
+        case 'B':
+          return (
+            props.menu[props.item.index - 1]?.level !== 'C' &&
+            props.item.index !== 0
+          )
+        default:
+          // case A
+          return item.level === props.item.level
       }
     },
     hover(item: any, monitor: DropTargetMonitor) {
@@ -110,6 +121,7 @@ const MenuItem = (props: IProps) => {
     type: 'card',
     item: () => {
       props.startDragging(props.item)
+
       return props.item
     },
     collect: (monitor: any) => ({
@@ -121,16 +133,58 @@ const MenuItem = (props: IProps) => {
   })
   drag(drop(ref))
 
-  const renderMoreList = (
-    <Menu>
-      <Menu.Item key='rename'>
-        <div onClick={() => setIsEditing(true)}>Rename</div>
-      </Menu.Item>
-      <Menu.Item key='delete'>
-        <div onClick={() => props.handleDeleteItem(props.item)}>Delete</div>
-      </Menu.Item>
-    </Menu>
+  const renderCourseList = () => {
+    return (
+      <Menu>
+        {props.courseMenu.map((course: any) => {
+          const isSelected: boolean = props.selectedCourseMenu.find(
+            (el: any) => el.id === course.id
+          )
+          return (
+            <Menu.Item
+              key={course.key}
+              disabled={isSelected}
+              onClick={() => props.addChild(props.item, course)}
+            >
+              <div>{course.name}</div>
+            </Menu.Item>
+          )
+        })}
+      </Menu>
+    )
+  }
+  const renderText = () => (
+    <>
+      {isEditing ? (
+        <input
+          ref={inputRef}
+          type='text'
+          defaultValue={props.item.text}
+          onBlur={(e) => {
+            setIsEditing(false)
+            props.rename(props.item.index, e.target.value)
+          }}
+        />
+      ) : (
+        <div
+          onClick={() => {
+            if (
+              props.type === 'COURSE_MENU' ||
+              (props.type === 'LEARNING_PATH' && props.item.level === 'A')
+            ) {
+              setIsEditing(true)
+            }
+          }}
+        >
+          {props.item.text}
+          {props.item.level === 'B' && props.item.enable === false ? (
+            <IconDanger />
+          ) : null}
+        </div>
+      )}
+    </>
   )
+
   return (
     <>
       <div
@@ -138,53 +192,57 @@ const MenuItem = (props: IProps) => {
         style={{
           display:
             props.item.level !== 'A' && !props.item.isShow ? 'none' : 'flex',
-          opacity: !props.isInDragging ? 1 : isCanDrop ? 1 : 0.1
+          opacity: !props.isInDragging ? 1 : 1
+          // opacity: !props.isInDragging ? 1 : isCanDrop ? 1 : 0.1
         }}
         className={`${isDragging ? 'isDragging' : ''} item item-${
           props.item.level
+        } ${
+          props.type === 'LEARNING_PATH' && props.item.level === 'B'
+            ? 'item-course'
+            : ''
         }`}
       >
         <div className='item-grab' ref={ref} data-handler-id={handlerId}>
           <IconMenu />
         </div>
-        <div
-          className='item-btn-arrow'
-          style={{
-            visibility:
-              props.item.isShowChildren === null ? 'hidden' : 'visible',
-            transform: props.item.isShowChildren
-              ? 'rotate(0deg)'
-              : 'rotate(180deg)'
-          }}
-          onClick={() => props.expandChildren(props.item)}
-        >
-          <IconArrowUp />
-        </div>
-        <div className='item-text'>
-          {isEditing ? (
-            <input
-              ref={inputRef}
-              type='text'
-              defaultValue={props.item.text}
-              onBlur={(e) => {
-                setIsEditing(false)
-                props.rename(props.item.index, e.target.value)
-              }}
-            />
-          ) : (
-            <>{props.item.text}</>
-          )}
-        </div>
-        <div className='item-extra'>
-          <IconPlus
+        {props.type === 'COURSE_MENU' ? (
+          <div
+            className='item-btn-arrow'
             style={{
-              visibility: props.item.level === 'C' ? 'hidden' : 'visible'
+              visibility:
+                props.item.isShowChildren === null ? 'hidden' : 'visible',
+              transform: props.item.isShowChildren
+                ? 'rotate(0deg)'
+                : 'rotate(180deg)'
             }}
-            onClick={() => (props.addChild ? props.addChild(props.item) : null)}
-          />
-          <Dropdown overlay={renderMoreList} trigger={['click']}>
-            <IconMore />
-          </Dropdown>
+            onClick={() => props.expandChildren(props.item)}
+          >
+            <IconArrowUp />
+          </div>
+        ) : null}
+        <div className='item-text'>{renderText()}</div>
+        <div className='item-extra'>
+          {props.type === 'COURSE_MENU' ? (
+            <IconPlus
+              style={{
+                visibility: props.item.level === 'C' ? 'hidden' : 'visible'
+              }}
+              onClick={() =>
+                props.addChild ? props.addChild(props.item) : null
+              }
+            />
+          ) : null}
+          {props.type === 'LEARNING_PATH' && props.item.level === 'A' ? (
+            <Dropdown
+              overlay={renderCourseList}
+              trigger={['click']}
+              placement='bottomRight'
+            >
+              <IconPlus />
+            </Dropdown>
+          ) : null}
+          <IconDelete onClick={() => props.handleDeleteItem(props.item)} />
         </div>
       </div>
     </>

@@ -3,6 +3,7 @@ import { MyContext } from 'storage'
 import CourseApi from 'api/admin/CourseApi'
 import { ValidateStr } from 'utility/validate'
 import UploadImg from 'utility/component/UploadImg'
+import FormGroupMsg from 'utility/component/FormGroupMsg'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import Menu from './courseDetail/Menu'
@@ -71,87 +72,77 @@ const ModalLearnPath = (props: IProps) => {
     // }
   }
 
+  const [courseMenu, setCourseMenu] = useState<any>([])
+  const [selectedCourseMenu, setSelectedCourseMenu] = useState<any>([])
   const [menu, setMenu] = useState<any>([])
-
-  // TODO 要處理 extra 功能
-  const addChild = (clickItem?: any) => {
+  const addChild = (clickItem?: any, course?: any) => {
     const ary: any = [...menu]
     let lastDownLevelChildId: string = ''
     let insertIndex: number | null = null
+    // TODO 刪除完要重順所有的 key，有搬動後也要，不然會有bug
 
     switch (clickItem?.level) {
-      case 'group':
-        ary[clickItem.index].isShowChildren = true
+      case 'A':
         for (let i = clickItem.index + 1; i < ary.length; i++) {
-          if (ary[i].id.split('-')[0] === clickItem.id) {
-            if (ary[i].level === 'chapter') lastDownLevelChildId = ary[i].id
+          if (ary[i].key.split('-')[0] === clickItem.key) {
+            if (ary[i].level === 'B') lastDownLevelChildId = ary[i].key
           } else {
             insertIndex = i
             break
           }
         }
         ary.splice(insertIndex ?? ary.length, 0, {
-          level: 'chapter',
-          id: lastDownLevelChildId
-            ? `${clickItem.id}-${
+          level: 'B',
+          key: lastDownLevelChildId
+            ? `${clickItem.key}-${
                 Number(lastDownLevelChildId.split('-')[1]) + 1
               }`
-            : `${clickItem.id}-1`,
-          text: 'chapter name',
-          isShowChildren: null,
-          isShow: true
-        })
-        break
-      case 'chapter':
-        ary[clickItem.index].isShowChildren = true
-        for (let i = clickItem.index + 1; i < ary.length; i++) {
-          if (
-            `${ary[i].id.split('-')[0]}-${ary[i].id.split('-')[1]}` ===
-            clickItem.id
-          ) {
-            if (ary[i].level === 'section') lastDownLevelChildId = ary[i].id
-          } else {
-            insertIndex = i
-            break
-          }
-        }
-        ary.splice(insertIndex ?? ary.length, 0, {
-          level: 'section',
-          id: lastDownLevelChildId
-            ? `${clickItem.id}-${
-                Number(lastDownLevelChildId.split('-')[2]) + 1
-              }`
-            : `${clickItem.id}-1`,
-          text: 'chapter name',
+            : `${clickItem.key}-1`,
+          id: course.id,
+          text: course.name,
           isShowChildren: null,
           isShow: true
         })
         break
       default:
-        const groups = menu.filter((item: any) => item.level === 'group')
+        const stages = menu.filter((item: any) => item.level === 'A')
         ary.push({
-          level: 'group',
-          id: `${groups.length + 1}`,
-          text: 'group name',
+          level: 'A',
+          key: `${stages.length + 1}`,
+          text: 'stage name',
           isShowChildren: null,
-          isShow: true,
-          children: []
+          isShow: true
         })
     }
     setMenu(ary)
   }
+  const getData = async () => {
+    context.setIsLoading(true)
+    await api
+      .getLearnGoalDetail(props.learningGoal)
+      .then((ary: any) => {
+        setMenu(ary)
+      })
+      .finally(() => context.setIsLoading(false))
+    await api
+      .getLearnCourses()
+      .then((ary: any) => {
+        setCourseMenu(ary)
+      })
+      .finally(() => context.setIsLoading(false))
+  }
   useEffect(() => {
-    if (props.isShow) {
-      if (props.learningGoal) {
-        api
-          .getLearnGoalDetail(props.learningGoal)
-          .then((ary: any) => {
-            setMenu(ary)
-          })
-          .finally(() => context.setIsLoading(false))
-      } else {
-        setMenu([])
-      }
+    const selectedCourses: any = []
+    for (const el of menu) {
+      if (el.level === 'B') selectedCourses.push(el)
+    }
+    setSelectedCourseMenu(selectedCourses)
+  }, [menu]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (props.isShow && props.learningGoal) {
+      getData()
+    } else {
+      setMenu([])
     }
   }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -175,23 +166,34 @@ const ModalLearnPath = (props: IProps) => {
         </Button>
       ]}
     >
-      <Row gutter={20}>
-        <Col span={12}>
-          <div className='ad-form-group ad-form-group-horizontal'>
-            <label>learning goal</label>
-            <div className='ad-form-group-value'>{props.learningGoal}</div>
-          </div>
-          {/* TODO */}
-          Course is in inactive status, so user won’t see it
-        </Col>
-      </Row>
+      <div className='ad-form-group ad-form-group-horizontal'>
+        <label>learning goal</label>
+        <div className='ad-form-group-value'>{props.learningGoal}</div>
+      </div>
+      <FormGroupMsg
+        isShow={true}
+        withIcon={true}
+        type='error'
+        msg='Course is in inactive status, so user won’t see it'
+      />
       <DndProvider backend={HTML5Backend}>
         <Menu
+          type='LEARNING_PATH'
           menu={menu}
+          courseMenu={courseMenu}
+          selectedCourseMenu={selectedCourseMenu}
           setMenu={(menu: any) => setMenu(menu)}
-          addChild={(clickItem: any) => addChild(clickItem)}
+          addChild={(clickItem: any, course?: any) =>
+            addChild(clickItem, course)
+          }
         />
       </DndProvider>
+      <div className='ad-course-menu-addGroup' onClick={() => addChild()}>
+        <span>
+          <em></em>
+          <em></em>
+        </span>
+      </div>
     </Modal>
   )
 }
