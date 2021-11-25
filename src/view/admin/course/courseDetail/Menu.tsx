@@ -89,10 +89,14 @@ const Menu = (props: IProps) => {
       ary = [...props.menu]
     }
 
+    props.setMenu(resortKeys(ary))
+    setDraggingItem(null)
+  }
+  const resortKeys = (array: any) => {
     let indexA: number = 0
     let indexB: number = 0
     let indexC: number = 0
-    ary.forEach((item: any, index: number) => {
+    array.forEach((item: any, index: number) => {
       switch (item.level) {
         case 'A':
           if (indexA !== 0) {
@@ -112,9 +116,7 @@ const Menu = (props: IProps) => {
           break
       }
     })
-
-    props.setMenu(ary)
-    setDraggingItem(null)
+    return array
   }
   const expandChildren = (item: any) => {
     const ary = [...props.menu]
@@ -193,7 +195,7 @@ const Menu = (props: IProps) => {
     }
 
     setDeleteItemCache(null)
-    props.setMenu(ary)
+    props.setMenu(resortKeys(ary))
   }
   const addChild = (clickItem?: any, course?: any) => {
     const ary: any = [...props.menu]
