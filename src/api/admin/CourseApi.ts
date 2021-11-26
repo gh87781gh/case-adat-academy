@@ -101,7 +101,7 @@ export default class CourseApi {
             ary.push({
               level: 'A',
               key: `${stageIndex}`,
-              text: stage.name,
+              name: stage.name,
               isShowChildren: stage.courses.length > 0 ? true : null,
               isShow: true
             })
@@ -109,7 +109,7 @@ export default class CourseApi {
               ary.push({
                 level: 'B',
                 key: `${stageIndex}-${courseIndex}`,
-                text: course.name,
+                name: course.name,
                 isShowChildren: null,
                 isShow: true,
                 id: course.id,
@@ -123,5 +123,28 @@ export default class CourseApi {
           reject(false)
         })
     })
+  }
+  uploadLearn = (name: string, data: any) => {
+    const ary: any = [...data]
+    for (const item of data) {
+      if (item.level === 'A') item.courses = []
+      if (item.level === 'B') {
+      }
+    }
+    ary.forEach((item: any, index: number, array: any) => {
+      if (item.level === 'A') item.courses = []
+      if (item.level === 'B') {
+        const parentIndex: number = array.findIndex(
+          (el: any) => el.key === item.key.split('-')[0]
+        )
+        array[parentIndex].courses.push({ id: item.id })
+      }
+    })
+    const sendData: any = []
+    for (const item of ary) {
+      if (item.level === 'A')
+        sendData.push({ name: item.name, courses: item.courses })
+    }
+    return this.restAPI.request('post', `/learn/${name}`, sendData)
   }
 }

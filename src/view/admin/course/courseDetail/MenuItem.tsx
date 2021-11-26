@@ -159,7 +159,7 @@ const MenuItem = (props: IProps) => {
         <input
           ref={inputRef}
           type='text'
-          defaultValue={props.item.text}
+          defaultValue={props.item.name}
           onBlur={(e) => {
             setIsEditing(false)
             props.rename(props.item.index, e.target.value)
@@ -176,9 +176,9 @@ const MenuItem = (props: IProps) => {
             }
           }}
         >
-          {props.item.text}
+          {props.item.name}{' '}
           {props.item.level === 'B' && props.item.enable === false ? (
-            <IconDanger />
+            <IconDanger className='ad-color-danger' />
           ) : null}
         </div>
       )}

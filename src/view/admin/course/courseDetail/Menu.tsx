@@ -137,7 +137,7 @@ const Menu = (props: IProps) => {
   }
   const rename = (index: number, value: string) => {
     const newMenu = [...props.menu]
-    newMenu[index].text = value
+    newMenu[index].name = value
     props.setMenu(newMenu)
   }
   const handleDeleteItem = (item: any) => {
@@ -213,7 +213,7 @@ const Menu = (props: IProps) => {
             break
           }
         }
-        const el =
+        const itemB =
           props.type === 'COURSE_MENU'
             ? {
                 level: 'B',
@@ -222,7 +222,7 @@ const Menu = (props: IProps) => {
                       Number(lastDownLevelChildId.split('-')[1]) + 1
                     }`
                   : `${clickItem.key}-1`,
-                text: 'chapter name',
+                name: 'chapter name',
                 isShowChildren: null,
                 isShow: true
               }
@@ -235,14 +235,15 @@ const Menu = (props: IProps) => {
                     }`
                   : `${clickItem.key}-1`,
                 id: course.id,
-                text: course.name,
+                name: course.name,
                 isShowChildren: null,
                 isShow: true
               }
             : {}
-        ary.splice(insertIndex ?? ary.length, 0, el)
+        ary.splice(insertIndex ?? ary.length, 0, itemB)
         break
       case 'B':
+        // only in props.type : COURSE_MENU
         ary[clickItem.index].isShowChildren = true
         for (let i = clickItem.index + 1; i < ary.length; i++) {
           if (
@@ -262,20 +263,32 @@ const Menu = (props: IProps) => {
                 Number(lastDownLevelChildId.split('-')[2]) + 1
               }`
             : `${clickItem.key}-1`,
-          text: 'chapter name',
+          name: 'section name',
           isShowChildren: null,
           isShow: true
         })
         break
       default:
         const itemsA = props.menu.filter((item: any) => item.level === 'A')
-        ary.push({
-          level: 'A',
-          key: `${itemsA.length + 1}`,
-          text: 'group name',
-          isShowChildren: null,
-          isShow: true
-        })
+        const itemA =
+          props.type === 'COURSE_MENU'
+            ? {
+                level: 'A',
+                key: `${itemsA.length + 1}`,
+                name: 'group name',
+                isShowChildren: null,
+                isShow: true
+              }
+            : props.type === 'LEARNING_PATH'
+            ? {
+                level: 'A',
+                key: `${itemsA.length + 1}`,
+                name: `Stage ${itemsA.length + 1}`,
+                isShowChildren: null,
+                isShow: true
+              }
+            : {}
+        ary.push(itemA)
     }
     props.setMenu(ary)
   }

@@ -5,7 +5,7 @@ import FormGroupMsg from 'utility/component/FormGroupMsg'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import Menu from './courseDetail/Menu'
-import { Button, Input, Modal } from 'antd'
+import { Button, Modal } from 'antd'
 
 interface IProps {
   isShow: boolean
@@ -21,8 +21,8 @@ const ModalLearnPath = (props: IProps) => {
 
   const [courseMenu, setCourseMenu] = useState<any>([])
   const [selectedCourseMenu, setSelectedCourseMenu] = useState<any>([])
-  let [addLevelACount, setAddLevelACount] = useState<number>(0)
   const [menu, setMenu] = useState<any>([])
+  let [addLevelACount, setAddLevelACount] = useState<number>(0)
   const getData = async () => {
     context.setIsLoading(true)
     await api
@@ -53,26 +53,12 @@ const ModalLearnPath = (props: IProps) => {
     }
   }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const submit = () => {
+  const upload = () => {
     context.setIsLoading(true)
-
-    // if (props.courseId) {
-    //   api
-    //     .editCourse(props.courseId, data)
-    //     .then(() => {
-    //       props.getList(true)
-    //       props.onCancel()
-    //     })
-    //     .finally(() => context.setIsLoading(false))
-    // } else {
-    //   api
-    //     .createCourse(data)
-    //     .then(() => {
-    //       props.getList()
-    //       props.onCancel()
-    //     })
-    //     .finally(() => context.setIsLoading(false))
-    // }
+    api
+      .uploadLearn(props.learningGoal, menu)
+      .then(() => props.onCancel())
+      .finally(() => context.setIsLoading(false))
   }
 
   return (
@@ -82,7 +68,7 @@ const ModalLearnPath = (props: IProps) => {
       onCancel={props.onCancel}
       width={1100}
       footer={[
-        <Button key='Upload' type='primary' onClick={() => submit()}>
+        <Button key='Upload' type='primary' onClick={() => upload()}>
           Upload
         </Button>,
         <Button key='Reset' onClick={props.onCancel}>

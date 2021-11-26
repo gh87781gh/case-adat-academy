@@ -22,28 +22,7 @@ const CourseDetail = (props: IProps) => {
     {
       level: 'A',
       key: '1',
-      text: 'group name1',
-      isShowChildren: true,
-      isShow: true
-    },
-    {
-      level: 'B',
-      key: '1-1',
-      text: 'chapter name1',
-      isShowChildren: null,
-      isShow: true
-    },
-    {
-      level: 'B',
-      key: '1-2',
-      text: 'chapter name2',
-      isShowChildren: true,
-      isShow: true
-    },
-    {
-      level: 'C',
-      key: '1-2-1',
-      text: 'section name1',
+      name: 'group name',
       isShowChildren: null,
       isShow: true
     }
