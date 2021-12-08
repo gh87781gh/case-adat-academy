@@ -1,6 +1,7 @@
 import { useState, useContext, useRef } from 'react'
 import { MyContext, StaticService } from 'storage'
 import { IconUploadPic } from 'utility/icon'
+import GlobalApi from 'api/GlobalApi'
 import { Button, Input, message } from 'antd'
 
 interface IProps {
@@ -14,6 +15,8 @@ interface IState {}
 
 const UploadImg = (props: IProps) => {
   const context = useContext(MyContext)
+  const api = new GlobalApi()
+
   const inputEl = useRef<HTMLInputElement>(null)
   const [base64, setBase64] = useState<string>('')
 
@@ -24,7 +27,6 @@ const UploadImg = (props: IProps) => {
         reader.readAsDataURL(file)
         reader.onload = () => {
           resolve(reader.result)
-          // TOCHECK 等api好後，處理上傳圖片轉成id這段func
         }
         reader.onerror = () => {
           reject(false)
@@ -32,16 +34,21 @@ const UploadImg = (props: IProps) => {
       })
     }
     for (const file of event.target.files) {
-      file.size <= StaticService.uploadImgMaxSize
-        ? getBase64(file)
-            .then((res: any) => {
-              // TOCHECK 新增父層元件的id
-              setBase64(res)
-            })
-            .catch(() => {
-              message.error('檔案上傳失敗')
-            })
-        : message.error('檔案大小不得超過 5 MB')
+      if (file.size <= StaticService.uploadImgMaxSize) {
+        getBase64(file)
+          .then((res: any) => setBase64(res))
+          .catch(() => message.error('檔案上傳失敗'))
+
+        context.setIsLoading(true)
+        api
+          .uploadImg('temp', file)
+          .then((res: any) => {
+            console.log(res)
+          })
+          .finally(() => context.setIsLoading(false))
+      } else {
+        message.error('檔案大小不得超過 5 MB')
+      }
     }
   }
 

@@ -84,7 +84,6 @@ const PurchaseAccount = (props: IProps) => {
     await api
       .getPurchaseDetail(props.purchaseId)
       .then((res: any) => setPurchaseDetail(res.data))
-      .finally(() => context.setIsLoading(false))
     await api
       .getPurchaseAccount(props.purchaseId, page)
       .then((res: any) => {

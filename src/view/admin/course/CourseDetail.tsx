@@ -17,29 +17,31 @@ const CourseDetail = (props: IProps) => {
   const api = new CourseApi()
 
   const [courseDetail, setCourseDetail] = useState<any>({})
-  let [addLevelACount, setAddLevelACount] = useState<number>(0)
+  let [addLevelACount, setAddLevelACount] = useState<number>(0) // for addChild in menu
+  const [currentSection, setCurrentSection] = useState<any>({})
   const [menu, setMenu] = useState([
-    {
-      level: 'A',
-      key: '1',
-      name: 'group name',
-      isShowChildren: null,
-      isShow: true
-    }
+    // {
+    //   level: 1,
+    //   key: '1',
+    //   name: 'group name',
+    //   isShowChildren: null,
+    //   isShow: true
+    // }
   ])
 
-  const getMenu = () => {
+  const getInitData = async () => {
     context.setIsLoading(true)
-    api
-      .getCourseMenu()
-      .then((res: any) => {
-        // setList(res.data)
-        // setTotal(res.total)
-      })
+    await api
+      .getCourseDetail(props.courseId)
+      .then((res: any) => setCourseDetail(res.data))
+    await api
+      .getCourseChapter(props.courseId)
+      .then((res: any) => setMenu(res))
       .finally(() => context.setIsLoading(false))
   }
+
   useEffect(() => {
-    getMenu()
+    getInitData()
   }, [])
 
   return (
@@ -48,14 +50,11 @@ const CourseDetail = (props: IProps) => {
         <Breadcrumb.Item onClick={props.prev}>
           Course management
         </Breadcrumb.Item>
-        <Breadcrumb.Item>
-          1234
-          {/* TODO */}
-          {courseDetail.name}
-        </Breadcrumb.Item>
+        <Breadcrumb.Item>{courseDetail.name}</Breadcrumb.Item>
       </Breadcrumb>
       <h1 className='ad-layout-article-title'>
         {courseDetail.name}
+        {/* TOCHECK */}
         <span className='ad-float-right'>{courseDetail.status}</span>
       </h1>
       <Row gutter={20}>

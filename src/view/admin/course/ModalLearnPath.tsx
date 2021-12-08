@@ -27,10 +27,7 @@ const ModalLearnPath = (props: IProps) => {
     context.setIsLoading(true)
     await api
       .getLearnGoalDetail(props.learningGoal)
-      .then((ary: any) => {
-        setMenu(ary)
-      })
-      .finally(() => context.setIsLoading(false))
+      .then((ary: any) => setMenu(ary))
     await api
       .getLearnCourses()
       .then((ary: any) => {
@@ -41,7 +38,7 @@ const ModalLearnPath = (props: IProps) => {
   useEffect(() => {
     const selectedCourses: any = []
     for (const el of menu) {
-      if (el.level === 'B') selectedCourses.push(el)
+      if (el.level === 2) selectedCourses.push(el)
     }
     setSelectedCourseMenu(selectedCourses)
   }, [menu]) // eslint-disable-line react-hooks/exhaustive-deps

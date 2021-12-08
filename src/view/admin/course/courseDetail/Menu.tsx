@@ -43,7 +43,7 @@ const Menu = (props: IProps) => {
     // console.warn('draggingItem:', draggingItem)
     // console.warn('dropTargetItem:', dropTargetItem)
 
-    // if level is 'C', there is no children need to be handle
+    // if level is 3, there is no children need to be handle
     // if translate is not working, no need to handle children
     if (draggingItem === null || dropTargetItem === null) {
       setDraggingItem(null)
@@ -53,7 +53,7 @@ const Menu = (props: IProps) => {
     let ary: any = []
 
     // 調整 drag/drop 的 children
-    if (draggingItem.level === 'A' || draggingItem.level === 'B') {
+    if (draggingItem.level === 1 || draggingItem.level === 2) {
       // after translate items succeed, filter children of drag item and drop item
       const dragChildren: any = []
       const dropChildren: any = []
@@ -61,7 +61,7 @@ const Menu = (props: IProps) => {
       const dropKey: string = dropTargetItem.key
       for (const item of props.menu) {
         const parentId: string =
-          draggingItem.level === 'A'
+          draggingItem.level === 1
             ? item.key.split('-')[0]
             : `${item.key.split('-')[0]}-${item.key.split('-')[1]}`
         if (item.level === draggingItem.level) {
@@ -98,7 +98,7 @@ const Menu = (props: IProps) => {
     let indexC: number = 0
     array.forEach((item: any, index: number) => {
       switch (item.level) {
-        case 'A':
+        case 1:
           if (indexA !== 0) {
             indexB = 0
             indexC = 0
@@ -106,11 +106,11 @@ const Menu = (props: IProps) => {
           indexA++
           item.key = `${indexA}`
           break
-        case 'B':
+        case 2:
           indexB++
           item.key = `${indexA}-${indexB}`
           break
-        case 'C':
+        case 3:
           indexC++
           item.key = `${indexA}-${indexB}-${indexC}`
           break
@@ -123,13 +123,13 @@ const Menu = (props: IProps) => {
     ary[item.index].isShowChildren = !ary[item.index].isShowChildren
     for (const el of ary) {
       const parentId: string =
-        item.level === 'A'
+        item.level === 1
           ? el.key.split('-')[0]
           : `${el.key.split('-')[0]}-${el.key.split('-')[1]}`
 
       if (
-        (item.level === 'A' && item.key === parentId) ||
-        (item.level === 'B' && el.key !== parentId && parentId === item.key)
+        (item.level === 1 && item.key === parentId) ||
+        (item.level === 2 && el.key !== parentId && parentId === item.key)
       )
         el.isShow = !item.isShowChildren
     }
@@ -142,48 +142,48 @@ const Menu = (props: IProps) => {
   }
   const handleDeleteItem = (item: any) => {
     switch (item.level) {
-      case 'A':
-      case 'B':
+      case 1:
+      case 2:
         const isHasChildren = props.menu.find((el: any) => {
           let checkPrefix: string =
-            item.level === 'A'
+            item.level === 1
               ? el.key.split('-')[0]
               : `${el.key.split('-')[0]}-${el.key.split('-')[1]}`
-          return item.level === 'A'
-            ? checkPrefix === item.key && el.level === 'B'
-            : checkPrefix === item.key && el.level === 'C'
+          return item.level === 1
+            ? checkPrefix === item.key && el.level === 2
+            : checkPrefix === item.key && el.level === 3
         })
         isHasChildren ? setDeleteItemCache(item) : deleteItem(item)
         break
-      case 'C':
+      case 3:
         deleteItem(item)
         break
       default:
     }
   }
   const deleteItem = (item: any) => {
-    const level: string = item.level
+    const level: number = item.level
 
     // create new menu without deleted item
     const ary: any = props.menu.filter((el: any) => {
       const prefix: string =
-        level === 'A'
+        level === 1
           ? el.key.split('-')[0]
-          : level === 'B'
+          : level === 2
           ? `${el.key.split('-')[0]}-${el.key.split('-')[1]}`
           : el.key
       if (prefix !== item.key) return el
     })
 
     // handle parent item's expanding arrow
-    if (level === 'B' || level === 'C') {
+    if (level === 2 || level === 3) {
       const parentId: string =
-        level === 'B'
+        level === 2
           ? item.key.split('-')[0]
           : `${item.key.split('-')[0]}-${item.key.split('-')[1]}`
       const isHasChildren = ary.find((el: any) => {
         const prefix: string =
-          level === 'B'
+          level === 2
             ? el.key.split('-')[0]
             : `${el.key.split('-')[0]}-${el.key.split('-')[1]}`
         return el.level === level && prefix === parentId
@@ -203,11 +203,12 @@ const Menu = (props: IProps) => {
     let insertIndex: number | null = null
 
     switch (clickItem?.level) {
-      case 'A':
+      case 1:
+        // add level 2
         ary[clickItem.index].isShowChildren = true
         for (let i = clickItem.index + 1; i < ary.length; i++) {
           if (ary[i].key.split('-')[0] === clickItem.key) {
-            if (ary[i].level === 'B') lastDownLevelChildId = ary[i].key
+            if (ary[i].level === 2) lastDownLevelChildId = ary[i].key
           } else {
             insertIndex = i
             break
@@ -216,7 +217,7 @@ const Menu = (props: IProps) => {
         const itemB =
           props.type === 'COURSE_MENU'
             ? {
-                level: 'B',
+                level: 2,
                 key: lastDownLevelChildId
                   ? `${clickItem.key}-${
                       Number(lastDownLevelChildId.split('-')[1]) + 1
@@ -228,7 +229,7 @@ const Menu = (props: IProps) => {
               }
             : props.type === 'LEARNING_PATH'
             ? {
-                level: 'B',
+                level: 2,
                 key: lastDownLevelChildId
                   ? `${clickItem.key}-${
                       Number(lastDownLevelChildId.split('-')[1]) + 1
@@ -242,7 +243,8 @@ const Menu = (props: IProps) => {
             : {}
         ary.splice(insertIndex ?? ary.length, 0, itemB)
         break
-      case 'B':
+      case 2:
+        // add level 3
         // only in props.type : COURSE_MENU
         ary[clickItem.index].isShowChildren = true
         for (let i = clickItem.index + 1; i < ary.length; i++) {
@@ -250,14 +252,14 @@ const Menu = (props: IProps) => {
             `${ary[i].key.split('-')[0]}-${ary[i].key.split('-')[1]}` ===
             clickItem.key
           ) {
-            if (ary[i].level === 'C') lastDownLevelChildId = ary[i].key
+            if (ary[i].level === 3) lastDownLevelChildId = ary[i].key
           } else {
             insertIndex = i
             break
           }
         }
         ary.splice(insertIndex ?? ary.length, 0, {
-          level: 'C',
+          level: 3,
           key: lastDownLevelChildId
             ? `${clickItem.key}-${
                 Number(lastDownLevelChildId.split('-')[2]) + 1
@@ -269,11 +271,12 @@ const Menu = (props: IProps) => {
         })
         break
       default:
-        const itemsA = props.menu.filter((item: any) => item.level === 'A')
+        // add level 1
+        const itemsA = props.menu.filter((item: any) => item.level === 1)
         const itemA =
           props.type === 'COURSE_MENU'
             ? {
-                level: 'A',
+                level: 1,
                 key: `${itemsA.length + 1}`,
                 name: 'group name',
                 isShowChildren: null,
@@ -281,7 +284,7 @@ const Menu = (props: IProps) => {
               }
             : props.type === 'LEARNING_PATH'
             ? {
-                level: 'A',
+                level: 1,
                 key: `${itemsA.length + 1}`,
                 name: `Stage ${itemsA.length + 1}`,
                 isShowChildren: null,
@@ -349,7 +352,7 @@ const Menu = (props: IProps) => {
         ]}
         width={720}
       >
-        There are {deleteItemCache?.level === 'A' ? 'chapters' : 'secitons'} in
+        There are {deleteItemCache?.level === 1 ? 'chapters' : 'secitons'} in
         the folders. Are you sure you want to delete all the content?
       </Modal>
     </>

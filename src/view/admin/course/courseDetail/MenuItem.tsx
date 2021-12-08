@@ -47,15 +47,15 @@ const MenuItem = (props: IProps) => {
       //  item : dragging item
       //  props.item : hover 當下位置的 item，有可能是 dragging item 本身
       switch (item.level) {
-        case 'C':
+        case 2:
           return (
-            (props.menu[props.item.index - 1]?.level === 'B' ||
-              props.menu[props.item.index - 1]?.level === 'C') &&
-            props.menu[props.item.index]?.level !== 'A'
+            (props.menu[props.item.index - 1]?.level === 2 ||
+              props.menu[props.item.index - 1]?.level === 2) &&
+            props.menu[props.item.index]?.level !== 1
           )
-        case 'B':
+        case 2:
           return (
-            props.menu[props.item.index - 1]?.level !== 'C' &&
+            props.menu[props.item.index - 1]?.level !== 2 &&
             props.item.index !== 0
           )
         default:
@@ -170,14 +170,14 @@ const MenuItem = (props: IProps) => {
           onClick={() => {
             if (
               props.type === 'COURSE_MENU' ||
-              (props.type === 'LEARNING_PATH' && props.item.level === 'A')
+              (props.type === 'LEARNING_PATH' && props.item.level === 1)
             ) {
               setIsEditing(true)
             }
           }}
         >
           {props.item.name}{' '}
-          {props.item.level === 'B' && props.item.enable === false ? (
+          {props.item.level === 2 && props.item.enable === false ? (
             <IconDanger className='ad-color-danger' />
           ) : null}
         </div>
@@ -191,14 +191,14 @@ const MenuItem = (props: IProps) => {
         ref={preview}
         style={{
           display:
-            props.item.level !== 'A' && !props.item.isShow ? 'none' : 'flex',
+            props.item.level !== 1 && !props.item.isShow ? 'none' : 'flex',
           opacity: !props.isInDragging ? 1 : 1
           // opacity: !props.isInDragging ? 1 : isCanDrop ? 1 : 0.1
         }}
         className={`${isDragging ? 'isDragging' : ''} item item-${
           props.item.level
         } ${
-          props.type === 'LEARNING_PATH' && props.item.level === 'B'
+          props.type === 'LEARNING_PATH' && props.item.level === 2
             ? 'item-course'
             : ''
         }`}
@@ -226,14 +226,14 @@ const MenuItem = (props: IProps) => {
           {props.type === 'COURSE_MENU' ? (
             <IconPlus
               style={{
-                visibility: props.item.level === 'C' ? 'hidden' : 'visible'
+                visibility: props.item.level === 3 ? 'hidden' : 'visible'
               }}
               onClick={() =>
                 props.addChild ? props.addChild(props.item) : null
               }
             />
           ) : null}
-          {props.type === 'LEARNING_PATH' && props.item.level === 'A' ? (
+          {props.type === 'LEARNING_PATH' && props.item.level === 1 ? (
             <Dropdown
               overlay={renderCourseList}
               trigger={['click']}

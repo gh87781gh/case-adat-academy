@@ -27,6 +27,52 @@ export default class CourseApi {
   getCourseDetail = (id: string) => {
     return this.restAPI.request('get', `/course/${id}`, {})
   }
+  getCourseChapter = (id: string) => {
+    return new Promise((resolve, reject) => {
+      this.restAPI
+        .request('get', `/course/${id}/chapter`, {})
+        .then((res: any) => {
+          let indexA: number = 0
+          let indexB: number = 0
+          let indexC: number = 0
+          res.data.forEach((item: any, index: number, ary: any) => {
+            const level = item.level
+            const nextLevel = ary[index + 1]?.level
+            const isShowChildren: boolean | null =
+              level < nextLevel ? true : null // 預設展開 child
+
+            switch (item.level) {
+              case 1:
+                if (indexA !== 0) {
+                  indexB = 0
+                  indexC = 0
+                }
+                indexA++
+                item.key = `${indexA}`
+                item.isShowChildren = isShowChildren
+                item.isShow = true
+                break
+              case 2:
+                indexB++
+                item.key = `${indexA}-${indexB}`
+                item.isShowChildren = true
+                item.isShow = true
+                break
+              case 3:
+                indexC++
+                item.key = `${indexA}-${indexB}-${indexC}`
+                item.isShowChildren = null
+                item.isShow = true
+                break
+            }
+          })
+          resolve(res.data)
+        })
+        .catch(() => {
+          reject(false)
+        })
+    })
+  }
   createCourse = (data: any) => {
     return this.restAPI.request('post', '/course', data)
   }
@@ -99,7 +145,7 @@ export default class CourseApi {
           const ary: any = []
           res.data.forEach((stage: any, stageIndex: number) => {
             ary.push({
-              level: 'A',
+              level: 1,
               key: `${stageIndex}`,
               name: stage.name,
               isShowChildren: stage.courses.length > 0 ? true : null,
@@ -127,12 +173,12 @@ export default class CourseApi {
   uploadLearn = (name: string, data: any) => {
     const ary: any = [...data]
     for (const item of data) {
-      if (item.level === 'A') item.courses = []
+      if (item.level === 1) item.courses = []
       if (item.level === 'B') {
       }
     }
     ary.forEach((item: any, index: number, array: any) => {
-      if (item.level === 'A') item.courses = []
+      if (item.level === 1) item.courses = []
       if (item.level === 'B') {
         const parentIndex: number = array.findIndex(
           (el: any) => el.key === item.key.split('-')[0]
@@ -142,7 +188,7 @@ export default class CourseApi {
     })
     const sendData: any = []
     for (const item of ary) {
-      if (item.level === 'A')
+      if (item.level === 1)
         sendData.push({ name: item.name, courses: item.courses })
     }
     return this.restAPI.request('post', `/learn/${name}`, sendData)

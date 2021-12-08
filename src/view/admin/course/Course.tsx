@@ -11,6 +11,7 @@ const { Option } = Select
 
 interface IProps {
   next: (step: number) => void
+  setCourseId: (courseId: string) => void
 }
 interface IState {
   status: string
@@ -99,8 +100,7 @@ const Course = (props: IProps) => {
             key='edit'
             size='small'
             onClick={() => {
-              // props.setPurchaseId(record.id)
-              // setIsModalDetailShow(true)
+              props.setCourseId(record.id)
               props.next(1)
             }}
           >

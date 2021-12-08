@@ -16,7 +16,10 @@ const Index = () => {
         <AdminSideBar />
         <article>
           {step === 0 ? (
-            <Course next={(step: number) => setStep(step)} />
+            <Course
+              next={(step: number) => setStep(step)}
+              setCourseId={(courseId: string) => setCourseId(courseId)}
+            />
           ) : step === 1 ? (
             <CourseDetail prev={() => setStep(0)} courseId={courseId} />
           ) : (

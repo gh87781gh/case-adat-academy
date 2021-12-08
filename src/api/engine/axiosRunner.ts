@@ -14,8 +14,8 @@ export class ApiEngine {
       process.env.REACT_APP_API_URL,
     timeout: 10000,
     headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json'
+      // 'Content-Type': 'application/json',
+      // Accept: 'application/json'
     }
   }
   setToken = () => {
@@ -59,6 +59,8 @@ export class RestAPI extends ApiEngine {
     this.setToken()
     this.setInterceptor(url)
     const config = this.config
+    config.headers['Content-Type'] = 'application/json'
+    config.headers.Accept = 'application/json'
     config.url = StaticService.apiUrl + url
     config.method = method
     config[method === 'get' ? 'params' : 'data'] = body
@@ -75,6 +77,26 @@ export class RestAPI extends ApiEngine {
             reject(false)
           }
         })
+    })
+  }
+}
+export class RestAPIUpload extends ApiEngine {
+  request = (method: string, url: string, body: any): Promise<any> => {
+    this.setToken()
+    this.setInterceptor(url)
+    const config = this.config
+    config.headers['Content-Type'] = 'multipart/form-data'
+    // config.headers.Accept = 'application/json'
+    config.url = StaticService.apiUrl + url
+    config.method = method
+    config[method === 'get' ? 'params' : 'data'] = body
+    return new Promise((resolve, reject) => {
+      this.instance
+        .request(config)
+        .then((res: any) => {
+          resolve(res.data)
+        })
+        .catch(() => reject(false))
     })
   }
 }
