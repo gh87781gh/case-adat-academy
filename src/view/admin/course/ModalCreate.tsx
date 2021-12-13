@@ -32,7 +32,6 @@ const ModalCreate = (props: IProps) => {
     background_image_id: ''
   }
   const [data, setData] = useState<IState>({ ...initData })
-  const [img, setImg] = useState<any>(null)
   const onChange = (key: string, e: any) => {
     const value = e.target.value
     if (value) {
@@ -116,10 +115,15 @@ const ModalCreate = (props: IProps) => {
           <UploadImg
             type='circle'
             desc='Upload logo'
-            recommendSize='150px*150px'
+            system='temp'
+            systemId=''
             imgId={data.logo_image_id}
-            setUploaded={(id: string) => onUpload('logo_image_id', id)}
+            setUploadId={(id: string) => onUpload('logo_image_id', id)}
           />
+          <p className='ad-upload-info'>
+            Format should be .png, .jpg, .jpeg
+            <br /> Recommend size 150px*150px (&lt; 5 MB)
+          </p>
         </Col>
         <Col span={9}>
           <div className='ad-form-group'>
@@ -148,12 +152,17 @@ const ModalCreate = (props: IProps) => {
               <UploadImg
                 type='rectangle'
                 desc='Upload logo'
-                recommendSize='340px*200px'
+                system='temp'
+                systemId=''
                 imgId={data.background_image_id}
-                setUploaded={(id: string) =>
+                setUploadId={(id: string) =>
                   onUpload('background_image_id', id)
                 }
               />
+              <p className='ad-upload-info'>
+                Format should be .png, .jpg, .jpeg
+                <br /> Recommend size 340px*200px (&lt; 5 MB)
+              </p>
             </div>
           </div>
         </Col>

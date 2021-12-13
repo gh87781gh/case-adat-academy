@@ -1,62 +1,45 @@
-import { useState, useContext, useRef } from 'react'
+import { useState, useContext, useRef, useEffect } from 'react'
 import { MyContext, StaticService } from 'storage'
 import { IconUploadPic } from 'utility/icon'
 import GlobalApi from 'api/GlobalApi'
-import { Button, Input, message } from 'antd'
+import { Button } from 'antd'
 
 interface IProps {
   type: string
   desc: string
-  recommendSize: string
+  system: string
+  systemId: string
   imgId: string
-  setUploaded: (base64: string) => void
+  setUploadId: (id: string) => void
 }
-interface IState {}
 
 const UploadImg = (props: IProps) => {
   const context = useContext(MyContext)
   const api = new GlobalApi()
-
   const inputEl = useRef<HTMLInputElement>(null)
-  const [base64, setBase64] = useState<string>('')
 
   const upload = (event: any) => {
-    const getBase64 = (file: any) => {
-      return new Promise((resolve: any, reject: any) => {
-        const reader = new FileReader()
-        reader.readAsDataURL(file)
-        reader.onload = () => {
-          resolve(reader.result)
-        }
-        reader.onerror = () => {
-          reject(false)
-        }
-      })
-    }
-    for (const file of event.target.files) {
-      if (file.size <= StaticService.uploadImgMaxSize) {
-        getBase64(file)
-          .then((res: any) => setBase64(res))
-          .catch(() => message.error('檔案上傳失敗'))
-
-        context.setIsLoading(true)
-        api
-          .uploadImg('temp', file)
-          .then((res: any) => {
-            console.log(res)
-          })
-          .finally(() => context.setIsLoading(false))
-      } else {
-        message.error('檔案大小不得超過 5 MB')
-      }
+    console.log('event.target.files[0]:', event.target.files[0])
+    if (event.target.files[0]) {
+      api
+        .uploadImg(event.target.files[0], props.system, props.systemId)
+        .then((res: any) => {
+          props.setUploadId(res.data.id)
+          event.target.value = ''
+        })
+        .finally(() => context.setIsLoading(false))
     }
   }
 
   return (
     <div className={`ad-upload ${props.type}`}>
       <label>
-        {base64 ? (
-          <img className='ad-upload-uploaded' src={base64} alt='' />
+        {props.imgId ? (
+          <img
+            className='ad-upload-uploaded'
+            src={`${StaticService.apiUrl}/archive/${props.imgId}`}
+            alt=''
+          />
         ) : (
           <span className='ad-upload-watermark'>
             <IconUploadPic />
@@ -72,22 +55,12 @@ const UploadImg = (props: IProps) => {
           onChange={upload}
         />
       </label>
-      <p>
-        Format should be .png, .jpg, .jpeg
-        <br /> Recommend size {props.recommendSize} (&lt; 5 MB)
-      </p>
-      {base64 ? (
+      {props.imgId ? (
         <div className='ad-btn-group'>
           <Button type='link' onClick={() => inputEl.current?.click()}>
             Replace
           </Button>
-          <Button
-            type='link'
-            onClick={() => {
-              setBase64('')
-              props.setUploaded('')
-            }}
-          >
+          <Button type='link' onClick={() => props.setUploadId('')}>
             Remove
           </Button>
         </div>

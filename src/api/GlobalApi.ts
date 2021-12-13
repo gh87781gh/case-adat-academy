@@ -10,16 +10,11 @@ export default class GlobalApi {
   getOptions = (keys: string[]) => {
     return this.restAPI.request('post', '/option', { type: keys })
   }
-  uploadImg = (system: string, file: any, system_id?: string) => {
-    var bodyFormData = new FormData()
-    bodyFormData.append('image', file)
-    const data: any = {
-      system,
-      // file: bodyFormData,
-      file,
-      system_id
-    }
-    console.log('data;', data)
-    return this.restAPIUpload.request('post', '/archive/image', data)
+  uploadImg = (file: any, system: string, system_id: string) => {
+    var formData = new FormData()
+    formData.append('file', file)
+    formData.append('system', system)
+    formData.append('system_id', system_id)
+    return this.restAPIUpload.request('post', '/archive/image', formData)
   }
 }

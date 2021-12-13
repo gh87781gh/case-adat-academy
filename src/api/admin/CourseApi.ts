@@ -63,8 +63,13 @@ export default class CourseApi {
                 item.key = `${indexA}-${indexB}-${indexC}`
                 item.isShowChildren = null
                 item.isShow = true
+                item.sections.forEach((el: any, i: number) => {
+                  el.key = `${i}`
+                })
                 break
             }
+
+            item.index = index
           })
           resolve(res.data)
         })

@@ -1,16 +1,12 @@
 import { useCallback, useState, useEffect } from 'react'
-import MenuItem from './MenuItem'
+import SectionItem from './SectionItem'
 import update from 'immutability-helper'
 import { Button, Modal } from 'antd'
 
 interface IProps {
-  type: string // COURSE_MENU , LEARNING_PATH
   menu: any
-  courseMenu?: any
-  selectedCourseMenu?: any
   setMenu: (menu: any) => void
   addLevelACount: number
-  handleCurrentSection?: (index: number) => void
 }
 
 const Menu = (props: IProps) => {
@@ -215,33 +211,17 @@ const Menu = (props: IProps) => {
             break
           }
         }
-        const itemB =
-          props.type === 'COURSE_MENU'
-            ? {
-                level: 2,
-                key: lastDownLevelChildId
-                  ? `${clickItem.key}-${
-                      Number(lastDownLevelChildId.split('-')[1]) + 1
-                    }`
-                  : `${clickItem.key}-1`,
-                name: 'chapter name',
-                isShowChildren: null,
-                isShow: true
-              }
-            : props.type === 'LEARNING_PATH'
-            ? {
-                level: 2,
-                key: lastDownLevelChildId
-                  ? `${clickItem.key}-${
-                      Number(lastDownLevelChildId.split('-')[1]) + 1
-                    }`
-                  : `${clickItem.key}-1`,
-                id: course.id,
-                name: course.name,
-                isShowChildren: null,
-                isShow: true
-              }
-            : {}
+        const itemB = {
+          level: 2,
+          key: lastDownLevelChildId
+            ? `${clickItem.key}-${
+                Number(lastDownLevelChildId.split('-')[1]) + 1
+              }`
+            : `${clickItem.key}-1`,
+          name: 'chapter name',
+          isShowChildren: null,
+          isShow: true
+        }
         ary.splice(insertIndex ?? ary.length, 0, itemB)
         break
       case 2:
@@ -274,24 +254,13 @@ const Menu = (props: IProps) => {
       default:
         // add level 1
         const itemsA = props.menu.filter((item: any) => item.level === 1)
-        const itemA =
-          props.type === 'COURSE_MENU'
-            ? {
-                level: 1,
-                key: `${itemsA.length + 1}`,
-                name: 'group name',
-                isShowChildren: null,
-                isShow: true
-              }
-            : props.type === 'LEARNING_PATH'
-            ? {
-                level: 1,
-                key: `${itemsA.length + 1}`,
-                name: `Stage ${itemsA.length + 1}`,
-                isShowChildren: null,
-                isShow: true
-              }
-            : {}
+        const itemA = {
+          level: 1,
+          key: `${itemsA.length + 1}`,
+          name: 'group name',
+          isShowChildren: null,
+          isShow: true
+        }
         ary.push(itemA)
     }
     props.setMenu(ary)
@@ -309,11 +278,8 @@ const Menu = (props: IProps) => {
         {props.menu.map((item: any, index: number) => {
           return (
             <div key={item.key}>
-              <MenuItem
-                type={props.type}
+              <SectionItem
                 menu={props.menu}
-                courseMenu={props.courseMenu}
-                selectedCourseMenu={props.selectedCourseMenu}
                 item={{ ...item, index }}
                 moveCard={(dragIndex: number, hoverIndex: number) =>
                   moveCard(dragIndex, hoverIndex)
@@ -327,11 +293,7 @@ const Menu = (props: IProps) => {
                 expandChildren={(item: any) => expandChildren(item)}
                 rename={(index: number, value: string) => rename(index, value)}
                 handleDeleteItem={(item: any) => handleDeleteItem(item)}
-                handleCurrentSection={(index: number) =>
-                  props.handleCurrentSection
-                    ? props.handleCurrentSection(index)
-                    : null
-                }
+                handleCurrentSection={(index: number) => {}}
               />
             </div>
           )

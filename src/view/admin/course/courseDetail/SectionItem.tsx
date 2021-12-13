@@ -12,10 +12,7 @@ import {
 import { Menu, Dropdown } from 'antd'
 
 interface IProps {
-  type: string
   menu: any
-  courseMenu?: any
-  selectedCourseMenu?: any
   item: any
   moveCard: (dragIndex: number, hoverIndex: number) => void
   addChild: (clickItem: any, course?: any) => void
@@ -28,7 +25,7 @@ interface IProps {
   handleCurrentSection: (index: number) => void
 }
 
-const MenuItem = (props: IProps) => {
+const SectionItem = (props: IProps) => {
   const ref = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const [isEditing, setIsEditing] = useState<boolean>(false)
@@ -135,80 +132,80 @@ const MenuItem = (props: IProps) => {
   })
   drag(drop(ref))
 
-  const renderCourseList = () => {
-    return (
-      <Menu>
-        {props.courseMenu.map((course: any) => {
-          const isSelected: boolean = props.selectedCourseMenu.find(
-            (el: any) => el.id === course.id
-          )
-          return (
-            <Menu.Item
-              key={course.key}
-              disabled={isSelected}
-              onClick={() => props.addChild(props.item, course)}
-            >
-              <div>{course.name}</div>
-            </Menu.Item>
-          )
-        })}
-      </Menu>
-    )
-  }
-  const renderText = () => (
-    <>
-      {isEditing ? (
-        <input
-          ref={inputRef}
-          type='text'
-          defaultValue={props.item.name}
-          onBlur={(e) => {
-            setIsEditing(false)
-            props.rename(props.item.index, e.target.value)
-          }}
-        />
-      ) : (
-        <div
-          onClick={() => {
-            if (
-              props.type === 'COURSE_MENU' ||
-              (props.type === 'LEARNING_PATH' && props.item.level === 1)
-            ) {
-              setIsEditing(true)
-            }
-          }}
-        >
-          {props.item.name}{' '}
-          {props.item.level === 2 && props.item.enable === false ? (
-            <IconDanger className='ad-color-danger' />
-          ) : null}
-        </div>
-      )}
-    </>
-  )
+  // const renderCourseList = () => {
+  //   return (
+  //     <Menu>
+  //       {props.courseMenu.map((course: any) => {
+  //         const isSelected: boolean = props.selectedCourseMenu.find(
+  //           (el: any) => el.id === course.id
+  //         )
+  //         return (
+  //           <Menu.Item
+  //             key={course.key}
+  //             disabled={isSelected}
+  //             onClick={() => props.addChild(props.item, course)}
+  //           >
+  //             <div>{course.name}</div>
+  //           </Menu.Item>
+  //         )
+  //       })}
+  //     </Menu>
+  //   )
+  // }
+  // const renderText = () => (
+  //   <>
+  //     {isEditing ? (
+  //       <input
+  //         ref={inputRef}
+  //         type='text'
+  //         defaultValue={props.item.name}
+  //         onBlur={(e) => {
+  //           setIsEditing(false)
+  //           props.rename(props.item.index, e.target.value)
+  //         }}
+  //       />
+  //     ) : (
+  //       <div
+  //         onClick={() => {
+  //           if (
+  //             props.type === 'COURSE_MENU' ||
+  //             (props.type === 'LEARNING_PATH' && props.item.level === 1)
+  //           ) {
+  //             setIsEditing(true)
+  //           }
+  //         }}
+  //       >
+  //         {props.item.name}{' '}
+  //         {props.item.level === 2 && props.item.enable === false ? (
+  //           <IconDanger className='ad-color-danger' />
+  //         ) : null}
+  //       </div>
+  //     )}
+  //   </>
+  // )
 
   return (
     <>
       <div
         ref={preview}
-        style={{
-          display:
-            props.item.level !== 1 && !props.item.isShow ? 'none' : 'flex',
-          opacity: !props.isInDragging ? 1 : 1
-          // opacity: !props.isInDragging ? 1 : isCanDrop ? 1 : 0.1
-        }}
-        className={`${isDragging ? 'isDragging' : ''} item item-${
-          props.item.level
-        } ${
-          props.type === 'LEARNING_PATH' && props.item.level === 2
-            ? 'item-course'
-            : ''
-        }`}
+        // style={{
+        //   display:
+        //     props.item.level !== 1 && !props.item.isShow ? 'none' : 'flex',
+        //   opacity: !props.isInDragging ? 1 : 1
+        //   // opacity: !props.isInDragging ? 1 : isCanDrop ? 1 : 0.1
+        // }}
+        // className={`${isDragging ? 'isDragging' : ''} item item-${
+        //   props.item.level
+        // } ${
+        //   props.type === 'LEARNING_PATH' && props.item.level === 2
+        //     ? 'item-course'
+        //     : ''
+        // }`}
       >
         <div className='item-grab' ref={ref} data-handler-id={handlerId}>
           <IconMenu />
         </div>
-        {props.type === 'COURSE_MENU' ? (
+        {/* {props.type === 'COURSE_MENU' ? (
           <div
             className='item-btn-arrow'
             style={{
@@ -222,17 +219,21 @@ const MenuItem = (props: IProps) => {
           >
             <IconArrowUp />
           </div>
-        ) : null}
-        <div className='item-text'>{renderText()}</div>
+        ) : null} */}
+        <div className='item-text'>
+          {props.item.key}
+          {props.item.index}
+          {/* {renderText()} */}
+        </div>
         <div className='item-extra'>
-          {props.type === 'COURSE_MENU' && props.item.level !== 3 ? (
+          {/* {props.type === 'COURSE_MENU' && props.item.level !== 3 ? (
             <IconPlus
               onClick={() =>
                 props.addChild ? props.addChild(props.item) : null
               }
             />
-          ) : null}
-          {props.type === 'LEARNING_PATH' && props.item.level === 1 ? (
+          ) : null} */}
+          {/* {props.type === 'LEARNING_PATH' && props.item.level === 1 ? (
             <Dropdown
               overlay={renderCourseList}
               trigger={['click']}
@@ -240,7 +241,7 @@ const MenuItem = (props: IProps) => {
             >
               <IconPlus />
             </Dropdown>
-          ) : null}
+          ) : null} */}
           <IconDelete onClick={() => props.handleDeleteItem(props.item)} />
           {props.item.level === 3 ? (
             <IconArrowRight
@@ -252,4 +253,4 @@ const MenuItem = (props: IProps) => {
     </>
   )
 }
-export default MenuItem
+export default SectionItem

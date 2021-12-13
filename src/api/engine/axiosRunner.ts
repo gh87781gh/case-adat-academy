@@ -8,10 +8,7 @@ export class ApiEngine {
   browserStorage = new BrowserStorage()
   instance: any = axios.create()
   config: any = {
-    baseURL:
-      // process.env.REACT_APP_CUSTOM_HOSTNAME === 'true'
-      //   ? window.location.origin:
-      process.env.REACT_APP_API_URL,
+    baseURL: StaticService.apiUrl,
     timeout: 10000,
     headers: {
       // 'Content-Type': 'application/json',
