@@ -4,12 +4,12 @@ import update from 'immutability-helper'
 import { Button, Modal } from 'antd'
 
 interface IProps {
-  menu: any
+  sections: any
   setMenu: (menu: any) => void
   addLevelACount: number
 }
 
-const Menu = (props: IProps) => {
+const Sections = (props: IProps) => {
   const [draggingItem, setDraggingItem] = useState<any>(null)
   const [dropTargetItem, setDropTargetItem] = useState<any>(null)
   const [deleteItemCache, setDeleteItemCache] = useState<any>(null)
@@ -18,10 +18,10 @@ const Menu = (props: IProps) => {
   const moveCard = useCallback(
     (dragIndex: number, hoverIndex: number) => {
       // console.warn('moveCard:', dragIndex, hoverIndex)
-      setDropTargetItem(props.menu[hoverIndex])
-      const dragCard = props.menu[dragIndex]
+      setDropTargetItem(props.sections[hoverIndex])
+      const dragCard = props.sections[dragIndex]
       props.setMenu(
-        update(props.menu, {
+        update(props.sections, {
           $splice: [
             [dragIndex, 1],
             [hoverIndex, 0, dragCard]
@@ -29,7 +29,7 @@ const Menu = (props: IProps) => {
         })
       )
     },
-    [props.menu]
+    [props.sections]
   )
   const startDragging = (item: any) => {
     // console.warn('startDragging')
@@ -56,7 +56,7 @@ const Menu = (props: IProps) => {
       const dropChildren: any = []
       const dragKey: string = draggingItem.key
       const dropKey: string = dropTargetItem.key
-      for (const item of props.menu) {
+      for (const item of props.sections) {
         const parentId: string =
           draggingItem.level === 1
             ? item.key.split('-')[0]
@@ -83,7 +83,7 @@ const Menu = (props: IProps) => {
       )
       ary.splice(insertDropChildrenIndex + 1, 0, ...dropChildren)
     } else {
-      ary = [...props.menu]
+      ary = [...props.sections]
     }
 
     props.setMenu(resortKeys(ary))
@@ -116,7 +116,7 @@ const Menu = (props: IProps) => {
     return array
   }
   const expandChildren = (item: any) => {
-    const ary = [...props.menu]
+    const ary = [...props.sections]
     ary[item.index].isShowChildren = !ary[item.index].isShowChildren
     for (const el of ary) {
       const parentId: string =
@@ -133,7 +133,7 @@ const Menu = (props: IProps) => {
     props.setMenu(ary)
   }
   const rename = (index: number, value: string) => {
-    const newMenu = [...props.menu]
+    const newMenu = [...props.sections]
     newMenu[index].name = value
     props.setMenu(newMenu)
   }
@@ -141,7 +141,7 @@ const Menu = (props: IProps) => {
     switch (item.level) {
       case 1:
       case 2:
-        const isHasChildren = props.menu.find((el: any) => {
+        const isHasChildren = props.sections.find((el: any) => {
           let checkPrefix: string =
             item.level === 1
               ? el.key.split('-')[0]
@@ -162,7 +162,7 @@ const Menu = (props: IProps) => {
     const level: number = item.level
 
     // create new menu without deleted item
-    const ary: any = props.menu.filter((el: any) => {
+    const ary: any = props.sections.filter((el: any) => {
       const prefix: string =
         level === 1
           ? el.key.split('-')[0]
@@ -195,7 +195,7 @@ const Menu = (props: IProps) => {
     props.setMenu(resortKeys(ary))
   }
   const addChild = (clickItem?: any, course?: any) => {
-    const ary: any = [...props.menu]
+    const ary: any = [...props.sections]
     let lastDownLevelChildId: string = ''
     let insertIndex: number | null = null
 
@@ -253,7 +253,7 @@ const Menu = (props: IProps) => {
         break
       default:
         // add level 1
-        const itemsA = props.menu.filter((item: any) => item.level === 1)
+        const itemsA = props.sections.filter((item: any) => item.level === 1)
         const itemA = {
           level: 1,
           key: `${itemsA.length + 1}`,
@@ -275,28 +275,32 @@ const Menu = (props: IProps) => {
   return (
     <>
       <div className='ad-course-menu'>
-        {props.menu.map((item: any, index: number) => {
-          return (
-            <div key={item.key}>
-              <SectionItem
-                menu={props.menu}
-                item={{ ...item, index }}
-                moveCard={(dragIndex: number, hoverIndex: number) =>
-                  moveCard(dragIndex, hoverIndex)
-                }
-                addChild={(clickItem: any, course?: any) =>
-                  addChild(clickItem, course)
-                }
-                startDragging={(item: any) => startDragging(item)}
-                isInDragging={draggingItem !== null}
-                endDragging={() => endDragging()}
-                expandChildren={(item: any) => expandChildren(item)}
-                rename={(index: number, value: string) => rename(index, value)}
-                handleDeleteItem={(item: any) => handleDeleteItem(item)}
-                handleCurrentSection={(index: number) => {}}
-              />
-            </div>
-          )
+        {props.sections.map((item: any, index: number) => {
+          if (item.type !== 'video') {
+            return (
+              <div key={item.key}>
+                <SectionItem
+                  menu={props.sections}
+                  item={{ ...item, index }}
+                  moveCard={(dragIndex: number, hoverIndex: number) =>
+                    moveCard(dragIndex, hoverIndex)
+                  }
+                  addChild={(clickItem: any, course?: any) =>
+                    addChild(clickItem, course)
+                  }
+                  startDragging={(item: any) => startDragging(item)}
+                  isInDragging={draggingItem !== null}
+                  endDragging={() => endDragging()}
+                  expandChildren={(item: any) => expandChildren(item)}
+                  rename={(index: number, value: string) =>
+                    rename(index, value)
+                  }
+                  handleDeleteItem={(item: any) => handleDeleteItem(item)}
+                  goToSection={(index: number) => {}}
+                />
+              </div>
+            )
+          }
         })}
       </div>
       <Modal
@@ -326,4 +330,4 @@ const Menu = (props: IProps) => {
     </>
   )
 }
-export default Menu
+export default Sections

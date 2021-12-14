@@ -22,7 +22,7 @@ interface IProps {
   expandChildren: (item: any) => void
   rename: (index: number, value: string) => void
   handleDeleteItem: (item: any) => void
-  handleCurrentSection: (index: number) => void
+  goToSection: (index: number) => void
 }
 
 const SectionItem = (props: IProps) => {
@@ -194,13 +194,7 @@ const SectionItem = (props: IProps) => {
         //   opacity: !props.isInDragging ? 1 : 1
         //   // opacity: !props.isInDragging ? 1 : isCanDrop ? 1 : 0.1
         // }}
-        // className={`${isDragging ? 'isDragging' : ''} item item-${
-        //   props.item.level
-        // } ${
-        //   props.type === 'LEARNING_PATH' && props.item.level === 2
-        //     ? 'item-course'
-        //     : ''
-        // }`}
+        className={`${isDragging ? 'isDragging' : ''} item`}
       >
         <div className='item-grab' ref={ref} data-handler-id={handlerId}>
           <IconMenu />
@@ -222,7 +216,8 @@ const SectionItem = (props: IProps) => {
         ) : null} */}
         <div className='item-text'>
           {props.item.key}
-          {props.item.index}
+          {/* {props.item.key} */}
+          {/* {props.item.index} */}
           {/* {renderText()} */}
         </div>
         <div className='item-extra'>
@@ -245,7 +240,7 @@ const SectionItem = (props: IProps) => {
           <IconDelete onClick={() => props.handleDeleteItem(props.item)} />
           {props.item.level === 3 ? (
             <IconArrowRight
-              onClick={() => props.handleCurrentSection(props.item.index)}
+              onClick={() => props.goToSection(props.item.index)}
             />
           ) : null}
         </div>

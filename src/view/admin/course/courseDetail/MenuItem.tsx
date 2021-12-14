@@ -25,7 +25,7 @@ interface IProps {
   expandChildren: (item: any) => void
   rename: (index: number, value: string) => void
   handleDeleteItem: (item: any) => void
-  handleCurrentSection: (index: number) => void
+  goToSection: (index: number) => void
 }
 
 const MenuItem = (props: IProps) => {
@@ -244,7 +244,7 @@ const MenuItem = (props: IProps) => {
           <IconDelete onClick={() => props.handleDeleteItem(props.item)} />
           {props.item.level === 3 ? (
             <IconArrowRight
-              onClick={() => props.handleCurrentSection(props.item.index)}
+              onClick={() => props.goToSection(props.item.index)}
             />
           ) : null}
         </div>

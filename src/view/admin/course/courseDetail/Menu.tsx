@@ -10,7 +10,7 @@ interface IProps {
   selectedCourseMenu?: any
   setMenu: (menu: any) => void
   addLevelACount: number
-  handleCurrentSection?: (index: number) => void
+  goToSection?: (index: number) => void
 }
 
 const Menu = (props: IProps) => {
@@ -327,10 +327,8 @@ const Menu = (props: IProps) => {
                 expandChildren={(item: any) => expandChildren(item)}
                 rename={(index: number, value: string) => rename(index, value)}
                 handleDeleteItem={(item: any) => handleDeleteItem(item)}
-                handleCurrentSection={(index: number) =>
-                  props.handleCurrentSection
-                    ? props.handleCurrentSection(index)
-                    : null
+                goToSection={(index: number) =>
+                  props.goToSection ? props.goToSection(index) : null
                 }
               />
             </div>
