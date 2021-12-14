@@ -18,8 +18,8 @@ const CourseDetail = (props: IProps) => {
   const context = useContext(MyContext)
   const api = new CourseApi()
 
+  // course detail and menu
   const [courseDetail, setCourseDetail] = useState<any>({})
-  let [addLevelACount, setAddLevelACount] = useState<number>(0) // for addChild in menu
   const [menu, setMenu] = useState<any>([
     // {
     //   level: 1,
@@ -59,9 +59,13 @@ const CourseDetail = (props: IProps) => {
     //   ]
     // }
   ])
+  let [addLevelACount, setAddLevelACount] = useState<number>(0)
+
+  // current section
   const [sections, setSections] = useState<any>([])
   const [sectionIndex, setSectionIndex] = useState<null | number>(null)
   const [sectionName, setSectionName] = useState<string>('')
+  let [addSectionCount, setAddSectionCount] = useState<number>(0)
   const goToSection = (menu: any, index: number) => {
     if (menu[index]) {
       const ary: any = [...menu]
@@ -80,7 +84,6 @@ const CourseDetail = (props: IProps) => {
     }
   }
   const setUploadVideoId = (id: string) => {
-    console.warn(id)
     const ary: any = [...sections]
     sections[0].archive_id = id
     setSections(ary)
@@ -115,7 +118,6 @@ const CourseDetail = (props: IProps) => {
       <h1 className='ad-layout-article-title'>
         {courseDetail.name}
         <span className='ad-float-right'>{courseDetail.status}status</span>
-        {/* TOCHECK */}
       </h1>
       <Row gutter={20}>
         <Col span={7}>
@@ -141,26 +143,38 @@ const CourseDetail = (props: IProps) => {
         <Col span={17}>
           <h2>{sectionName}</h2>
           {sectionIndex ? (
-            <UploadVideo
-              type='video'
-              desc='Upload section video'
-              system='course'
-              systemId={courseDetail.id}
-              imgId={sections[0]?.archive_id}
-              setUploadId={(id: string) => setUploadVideoId(id)}
-            />
+            <>
+              <UploadVideo
+                type='video'
+                desc='Upload section video'
+                system='course'
+                systemId={courseDetail.id}
+                imgId={sections[0]?.archive_id}
+                setUploadId={(id: string) => setUploadVideoId(id)}
+              />
+              <p className='ad-upload-info'>
+                Format should be .mp4 The file size limit is 300mb.
+                <br /> This section video is required, and will be fixed on the
+                top
+              </p>
+            </>
           ) : null}
-
-          {/* TODO */}
           <DndProvider backend={HTML5Backend}>
             <Sections
               sections={sections}
               setMenu={(menu: any) => setSections(menu)}
-              addLevelACount={addLevelACount}
+              addLevelACount={addSectionCount}
             />
           </DndProvider>
-
-          <hr />
+          <div
+            className='ad-course-menu-addGroup'
+            onClick={() => setAddSectionCount(addSectionCount + 1)}
+          >
+            <span>
+              <em></em>
+              <em></em>
+            </span>
+          </div>
         </Col>
       </Row>
     </>

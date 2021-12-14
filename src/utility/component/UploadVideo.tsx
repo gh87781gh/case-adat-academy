@@ -1,4 +1,4 @@
-import { useState, useContext, useRef, useEffect } from 'react'
+import { useContext, useRef } from 'react'
 import { MyContext, StaticService } from 'storage'
 import { IconUploadVideo } from 'utility/icon'
 import GlobalApi from 'api/GlobalApi'
@@ -19,7 +19,6 @@ const UploadVideo = (props: IProps) => {
   const api = new GlobalApi()
   const inputEl = useRef<HTMLInputElement>(null)
 
-  // TODO
   const playerRef = useRef<any>(null)
   const videoJsOptions: any = {
     // lookup the options in the docs for more options
@@ -49,7 +48,7 @@ const UploadVideo = (props: IProps) => {
   }
 
   const upload = (event: any) => {
-    console.log('event.target.files[0]:', event.target.files[0])
+    // console.log('event.target.files[0]:', event.target.files[0])
     if (event.target.files[0]) {
       context.setIsLoading(true)
       api
@@ -68,11 +67,6 @@ const UploadVideo = (props: IProps) => {
         {props.imgId ? (
           <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
         ) : (
-          // <img
-          //   className='ad-upload-uploaded'
-          //   src={`${StaticService.apiUrl}/archive/${props.imgId}`}
-          //   alt=''
-          // />
           <span className='ad-upload-watermark'>
             <IconUploadVideo />
             <em>{props.desc}</em>

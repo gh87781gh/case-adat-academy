@@ -1,4 +1,4 @@
-import { useState, useContext, useRef, useEffect } from 'react'
+import { useContext, useRef } from 'react'
 import { MyContext, StaticService } from 'storage'
 import { IconUploadPic } from 'utility/icon'
 import GlobalApi from 'api/GlobalApi'
@@ -19,7 +19,7 @@ const UploadImg = (props: IProps) => {
   const inputEl = useRef<HTMLInputElement>(null)
 
   const upload = (event: any) => {
-    console.log('event.target.files[0]:', event.target.files[0])
+    // console.log('event.target.files[0]:', event.target.files[0])
     if (event.target.files[0]) {
       context.setIsLoading(true)
       api
