@@ -22,7 +22,6 @@ interface IProps {
   expandChildren: (item: any) => void
   rename: (index: number, value: string) => void
   handleDeleteItem: (item: any) => void
-  goToSection: (index: number) => void
 }
 
 const SectionItem = (props: IProps) => {
@@ -45,22 +44,23 @@ const SectionItem = (props: IProps) => {
     canDrop(item: any) {
       //  item : dragging item
       //  props.item : hover 當下位置的 item，有可能是 dragging item 本身
-      switch (item.level) {
-        case 2:
-          return (
-            (props.menu[props.item.index - 1]?.level === 2 ||
-              props.menu[props.item.index - 1]?.level === 2) &&
-            props.menu[props.item.index]?.level !== 1
-          )
-        case 2:
-          return (
-            props.menu[props.item.index - 1]?.level !== 2 &&
-            props.item.index !== 0
-          )
-        default:
-          // case A
-          return item.level === props.item.level
-      }
+      return true
+      // switch (item.level) {
+      //   case 2:
+      //     return (
+      //       (props.menu[props.item.index - 1]?.level === 2 ||
+      //         props.menu[props.item.index - 1]?.level === 2) &&
+      //       props.menu[props.item.index]?.level !== 1
+      //     )
+      //   case 2:
+      //     return (
+      //       props.menu[props.item.index - 1]?.level !== 2 &&
+      //       props.item.index !== 0
+      //     )
+      //   default:
+      //     // case A
+      //     return item.level === props.item.level
+      // }
     },
     hover(item: any, monitor: DropTargetMonitor) {
       if (!monitor.canDrop()) {
@@ -199,6 +199,7 @@ const SectionItem = (props: IProps) => {
         <div className='item-grab' ref={ref} data-handler-id={handlerId}>
           <IconMenu />
         </div>
+        <div className='item-content'>{props.item.key}</div>
         {/* {props.type === 'COURSE_MENU' ? (
           <div
             className='item-btn-arrow'
@@ -214,21 +215,15 @@ const SectionItem = (props: IProps) => {
             <IconArrowUp />
           </div>
         ) : null} */}
-        <div className='item-text'>
-          {props.item.key}
-          {/* {props.item.key} */}
-          {/* {props.item.index} */}
-          {/* {renderText()} */}
-        </div>
-        <div className='item-extra'>
-          {/* {props.type === 'COURSE_MENU' && props.item.level !== 3 ? (
+        {/* <div className='item-extra'>
+          {props.type === 'COURSE_MENU' && props.item.level !== 3 ? (
             <IconPlus
               onClick={() =>
                 props.addChild ? props.addChild(props.item) : null
               }
             />
-          ) : null} */}
-          {/* {props.type === 'LEARNING_PATH' && props.item.level === 1 ? (
+          ) : null}
+          {props.type === 'LEARNING_PATH' && props.item.level === 1 ? (
             <Dropdown
               overlay={renderCourseList}
               trigger={['click']}
@@ -236,14 +231,9 @@ const SectionItem = (props: IProps) => {
             >
               <IconPlus />
             </Dropdown>
-          ) : null} */}
-          <IconDelete onClick={() => props.handleDeleteItem(props.item)} />
-          {props.item.level === 3 ? (
-            <IconArrowRight
-              onClick={() => props.goToSection(props.item.index)}
-            />
           ) : null}
-        </div>
+          <IconDelete onClick={() => props.handleDeleteItem(props.item)} />
+        </div> */}
       </div>
     </>
   )

@@ -274,8 +274,9 @@ const Sections = (props: IProps) => {
 
   return (
     <>
-      <div className='ad-course-menu'>
+      <div className='ad-course-sections'>
         {props.sections.map((item: any, index: number) => {
+          // video is fixed on the top
           if (item.type !== 'video') {
             return (
               <div key={item.key}>
@@ -296,7 +297,6 @@ const Sections = (props: IProps) => {
                     rename(index, value)
                   }
                   handleDeleteItem={(item: any) => handleDeleteItem(item)}
-                  goToSection={(index: number) => {}}
                 />
               </div>
             )

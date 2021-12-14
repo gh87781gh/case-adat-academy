@@ -150,4 +150,91 @@
   }
 }
 .ad-course-sections {
+  .item {
+    background-color: #fff;
+    min-height: @course-menu-item-height;
+    margin-bottom: 1.5rem;
+    &.isDragging {
+      background-color: #ccc;
+      border: unset;
+      .item-grab,
+      .item-content {
+        opacity: 0;
+      }
+    }
+    .item-grab {
+      background-color: #2664eb;
+      width: 100%;
+      min-height: @course-menu-item-height;
+      cursor: grab;
+      .anticon {
+        top: 7px;
+        left: 10px;
+        display: inline-block;
+        width: 22px;
+        height: 22px;
+        position: relative;
+        border: 1px solid #fff;
+        border-radius: 50%;
+        color: #fff;
+        svg {
+          .center();
+        }
+      }
+    }
+
+    .item-content {
+      background-color: #efefef;
+      padding: 1rem;
+    }
+
+    .item-btn-arrow {
+      width: @course-menu-item-height;
+      min-height: @course-menu-item-height;
+      padding-left: 20px;
+      padding-right: 20px;
+      position: relative;
+      cursor: pointer;
+      svg {
+        .center();
+      }
+    }
+    .item-text {
+      width: 100%;
+      min-height: 100%;
+      height: auto;
+      padding: 7px 0;
+      font-size: 14px;
+      input {
+        width: 100%;
+        height: 90%;
+        background-color: transparent;
+        outline: none;
+        border: unset;
+      }
+    }
+    .item-extra {
+      min-width: 65px;
+      min-height: @course-menu-item-height;
+      display: flex;
+      align-items: center;
+      flex-wrap: nowrap;
+      justify-content: flex-end;
+      .anticon {
+        margin-right: 10px;
+        display: inline-block;
+        vertical-align: middle;
+        width: @course-menu-item-btn-width;
+        height: @course-menu-item-btn-width;
+        border-radius: 50%;
+        border: 1px solid #000;
+        background-color: #fff;
+        position: relative;
+        cursor: pointer;
+        svg {
+          .center();
+        }
+      }
+    }
+  }
 }
