@@ -9,7 +9,9 @@ import {
   IconArrowRight,
   IconDanger
 } from 'utility/icon'
-import { Menu, Dropdown } from 'antd'
+import UploadImg from 'utility/component/UploadImg'
+import { Menu, Dropdown, Input } from 'antd'
+const { TextArea } = Input
 
 interface IProps {
   menu: any
@@ -184,6 +186,21 @@ const SectionItem = (props: IProps) => {
   //   </>
   // )
 
+  const onChange = (key: string, e: any) => {
+    const value = e.target.value
+    // if (value) {
+    //   switch (key) {
+    //     case 'email':
+    //       if (value && !ValidateStr('isUserName', value)) return false
+    //       break
+    //   }
+    // }
+    // setData({ ...data, [key]: value })
+  }
+  const onUpload = (key: string, value: string) => {
+    // setData({ ...data, [key]: value })
+  }
+
   return (
     <>
       <div
@@ -199,7 +216,33 @@ const SectionItem = (props: IProps) => {
         <div className='item-grab' ref={ref} data-handler-id={handlerId}>
           <IconMenu />
         </div>
-        <div className='item-content'>{props.item.key}</div>
+        {/* props.item.type = title | picture | video | paragraph */}
+        <div className={`item-content item-content-${props.item.type}`}>
+          {props.item.type === 'title' ? (
+            <TextArea
+              className='item-content-textarea title'
+              rows={2}
+              value={props.item.content}
+              onChange={(e) => onChange('remark', e)}
+            />
+          ) : props.item.type === 'paragraph' ? (
+            <TextArea
+              className='item-content-textarea paragraph'
+              rows={6}
+              value={props.item.content}
+              onChange={(e) => onChange('remark', e)}
+            />
+          ) : props.item.type === 'picture' ? (
+            <UploadImg
+              type='rectangle'
+              desc='Upload logo'
+              system='temp'
+              systemId=''
+              imgId={props.item.archive_id}
+              setUploadId={(id: string) => onUpload('logo_image_id', id)}
+            />
+          ) : null}
+        </div>
         {/* {props.type === 'COURSE_MENU' ? (
           <div
             className='item-btn-arrow'

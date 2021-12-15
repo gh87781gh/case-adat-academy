@@ -6,8 +6,9 @@ import { IconMenu, IconArrowUp, IconMore, IconPlus } from 'utility/icon'
 import { Row, Col, Button, Table, Breadcrumb } from 'antd'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import Menu from './courseDetail/Menu'
+import CourseDetailMenu from './courseDetail/Menu'
 import Sections from './courseDetail/Sections'
+import { Dropdown, Input, Menu } from 'antd'
 
 interface IProps {
   prev: () => void
@@ -88,6 +89,12 @@ const CourseDetail = (props: IProps) => {
     sections[0].archive_id = id
     setSections(ary)
   }
+  const updateContent = (contentIndex: string, value: string) => {
+    // TODO
+    // const ary: any = [...sections]
+    // sections[0].archive_id = id
+    // setSections(ary)
+  }
 
   const getInitData = async () => {
     context.setIsLoading(true)
@@ -107,6 +114,33 @@ const CourseDetail = (props: IProps) => {
     getInitData()
   }, [])
 
+  const addContentType = (type: string) => {
+    let content: any = {
+      type: type,
+      content: '',
+      archive_id: ''
+    }
+    // setAddSectionCount(addSectionCount + 1)
+  }
+  const renderContentTypeList = () => {
+    return (
+      <Menu className='ad-course-content-addContent'>
+        <Menu.Item key={0} onClick={() => addContentType('title')}>
+          Paragraph title
+        </Menu.Item>
+        <Menu.Item key={1} onClick={() => addContentType('paragraph')}>
+          Paragraph body
+        </Menu.Item>
+        <Menu.Item key={2} onClick={() => addContentType('picture')}>
+          Photo
+        </Menu.Item>
+        <Menu.Item key={3} onClick={() => addContentType('video')}>
+          Video
+        </Menu.Item>
+      </Menu>
+    )
+  }
+
   return (
     <>
       <Breadcrumb separator='>'>
@@ -122,7 +156,7 @@ const CourseDetail = (props: IProps) => {
       <Row gutter={20}>
         <Col span={7}>
           <DndProvider backend={HTML5Backend}>
-            <Menu
+            <CourseDetailMenu
               type='COURSE_MENU'
               menu={menu}
               setMenu={(menu: any) => setMenu(menu)}
@@ -166,15 +200,19 @@ const CourseDetail = (props: IProps) => {
               addLevelACount={addSectionCount}
             />
           </DndProvider>
-          <div
-            className='ad-course-menu-addGroup'
-            onClick={() => setAddSectionCount(addSectionCount + 1)}
+
+          <Dropdown
+            overlay={renderContentTypeList}
+            trigger={['click']}
+            placement='bottomCenter'
           >
-            <span>
-              <em></em>
-              <em></em>
-            </span>
-          </div>
+            <div className='ad-course-menu-addGroup'>
+              <span>
+                <em></em>
+                <em></em>
+              </span>
+            </div>
+          </Dropdown>
         </Col>
       </Row>
     </>
