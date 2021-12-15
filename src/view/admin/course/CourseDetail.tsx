@@ -66,7 +66,6 @@ const CourseDetail = (props: IProps) => {
   const [sections, setSections] = useState<any>([])
   const [sectionIndex, setSectionIndex] = useState<null | number>(null)
   const [sectionName, setSectionName] = useState<string>('')
-  let [addSectionCount, setAddSectionCount] = useState<number>(0)
   const goToSection = (menu: any, index: number) => {
     if (menu[index]) {
       const ary: any = [...menu]
@@ -84,16 +83,34 @@ const CourseDetail = (props: IProps) => {
       setSectionName(ary[index].name)
     }
   }
-  const setUploadVideoId = (id: string) => {
-    const ary: any = [...sections]
-    sections[0].archive_id = id
-    setSections(ary)
+  const updateSection = (index: number, type: string, value: string) => {
+    const newMenu: any = [...menu]
+    const newSections: any = [...sections]
+    if (type === 'video' || type === 'picture') {
+      newSections[index].archive_id = value
+    } else {
+      newSections[index].content = value
+    }
+    if (sectionIndex !== null) {
+      newMenu[sectionIndex].sections = newSections
+    }
+    setMenu(newMenu)
+    setSections(newSections)
   }
-  const updateContent = (contentIndex: string, value: string) => {
-    // TODO
-    // const ary: any = [...sections]
-    // sections[0].archive_id = id
-    // setSections(ary)
+  const addSection = (type: string) => {
+    const newMenu: any = [...menu]
+    const newSections: any = [...sections]
+    newSections.push({
+      type,
+      content: '',
+      archive_id: '',
+      key: `${sections.length}`
+    })
+    if (sectionIndex !== null) {
+      newMenu[sectionIndex].sections = newSections
+    }
+    setMenu(newMenu)
+    setSections(newSections)
   }
 
   const getInitData = async () => {
@@ -114,27 +131,19 @@ const CourseDetail = (props: IProps) => {
     getInitData()
   }, [])
 
-  const addContentType = (type: string) => {
-    let content: any = {
-      type: type,
-      content: '',
-      archive_id: ''
-    }
-    // setAddSectionCount(addSectionCount + 1)
-  }
   const renderContentTypeList = () => {
     return (
       <Menu className='ad-course-content-addContent'>
-        <Menu.Item key={0} onClick={() => addContentType('title')}>
+        <Menu.Item key={0} onClick={() => addSection('title')}>
           Paragraph title
         </Menu.Item>
-        <Menu.Item key={1} onClick={() => addContentType('paragraph')}>
+        <Menu.Item key={1} onClick={() => addSection('paragraph')}>
           Paragraph body
         </Menu.Item>
-        <Menu.Item key={2} onClick={() => addContentType('picture')}>
+        <Menu.Item key={2} onClick={() => addSection('picture')}>
           Photo
         </Menu.Item>
-        <Menu.Item key={3} onClick={() => addContentType('video')}>
+        <Menu.Item key={3} onClick={() => addSection('video')}>
           Video
         </Menu.Item>
       </Menu>
@@ -184,7 +193,7 @@ const CourseDetail = (props: IProps) => {
                 system='course'
                 systemId={courseDetail.id}
                 imgId={sections[0]?.archive_id}
-                setUploadId={(id: string) => setUploadVideoId(id)}
+                setUploadId={(id: string) => updateSection(0, 'video', id)}
               />
               <p className='ad-upload-info'>
                 Format should be .mp4 The file size limit is 300mb.
@@ -197,7 +206,10 @@ const CourseDetail = (props: IProps) => {
             <Sections
               sections={sections}
               setMenu={(menu: any) => setSections(menu)}
-              addLevelACount={addSectionCount}
+              updateSection={(index: number, type: string, value: string) =>
+                updateSection(index, type, value)
+              }
+              courseId={courseDetail.id}
             />
           </DndProvider>
 

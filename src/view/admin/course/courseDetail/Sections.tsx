@@ -6,7 +6,8 @@ import { Button, Modal } from 'antd'
 interface IProps {
   sections: any
   setMenu: (menu: any) => void
-  addLevelACount: number
+  updateSection: (index: number, type: string, value: string) => void
+  courseId: string
 }
 
 const Sections = (props: IProps) => {
@@ -132,11 +133,11 @@ const Sections = (props: IProps) => {
     }
     props.setMenu(ary)
   }
-  const rename = (index: number, value: string) => {
-    const newMenu = [...props.sections]
-    newMenu[index].name = value
-    props.setMenu(newMenu)
-  }
+  // const rename = (index: number, value: string) => {
+  //   const newMenu = [...props.sections]
+  //   newMenu[index].name = value
+  //   props.setMenu(newMenu)
+  // }
   const handleDeleteItem = (item: any) => {
     switch (item.level) {
       case 1:
@@ -268,16 +269,13 @@ const Sections = (props: IProps) => {
   useEffect(() => {
     if (deleteItemCache) setIsModalConfirmShow(true)
   }, [deleteItemCache])
-  useEffect(() => {
-    if (props.addLevelACount !== 0) addChild()
-  }, [props.addLevelACount])
 
   return (
     <>
       <div className='ad-course-sections'>
         {props.sections.map((item: any, index: number) => {
-          // video is fixed on the top
-          if (item.type !== 'video') {
+          // the first video is fixed on the top
+          if (item.key !== '0') {
             return (
               <div key={item.key}>
                 <SectionItem
@@ -293,9 +291,10 @@ const Sections = (props: IProps) => {
                   isInDragging={draggingItem !== null}
                   endDragging={() => endDragging()}
                   expandChildren={(item: any) => expandChildren(item)}
-                  rename={(index: number, value: string) =>
-                    rename(index, value)
+                  updateSection={(index: number, type: string, value: string) =>
+                    props.updateSection(index, type, value)
                   }
+                  courseId={props.courseId}
                   handleDeleteItem={(item: any) => handleDeleteItem(item)}
                 />
               </div>

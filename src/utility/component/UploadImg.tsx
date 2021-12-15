@@ -1,4 +1,4 @@
-import { useContext, useRef } from 'react'
+import { useContext, useRef, useEffect } from 'react'
 import { MyContext, StaticService } from 'storage'
 import { IconUploadPic } from 'utility/icon'
 import GlobalApi from 'api/GlobalApi'
@@ -11,6 +11,7 @@ interface IProps {
   systemId: string
   imgId: string
   setUploadId: (id: string) => void
+  replaceCount?: number
 }
 
 const UploadImg = (props: IProps) => {
@@ -31,6 +32,12 @@ const UploadImg = (props: IProps) => {
         .finally(() => context.setIsLoading(false))
     }
   }
+
+  useEffect(() => {
+    if (props.replaceCount !== undefined && props.replaceCount > 0) {
+      inputEl.current?.click()
+    }
+  }, [props.replaceCount]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className={`ad-upload ${props.type}`}>

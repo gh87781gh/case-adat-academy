@@ -168,9 +168,9 @@
       width: 100%;
       min-height: @course-menu-item-height;
       cursor: grab;
+      display: flex;
+      justify-content: space-between;
       .anticon {
-        top: 7px;
-        left: 10px;
         display: inline-block;
         width: 22px;
         height: 22px;
@@ -181,11 +181,29 @@
         svg {
           .center();
         }
+        &.item-icon-grab {
+          top: 7px;
+          left: 10px;
+        }
+        &.item-icon-more {
+          top: 7px;
+          right: 10px;
+        }
       }
     }
 
     .item-content {
       background-color: #efefef;
+      .ad-upload {
+        label {
+          margin-bottom: unset;
+          height: auto;
+          min-height: 200px;
+        }
+        .ad-btn-group {
+          display: none;
+        }
+      }
     }
     .item-content-textarea {
       border: unset;
@@ -199,6 +217,11 @@
       }
       &.paragraph {
         font-size: 1rem;
+      }
+    }
+    .item-content-picture {
+      .ad-upload.rectangle label {
+        width: 100%;
       }
     }
 

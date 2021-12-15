@@ -4,12 +4,13 @@ import { XYCoord } from 'dnd-core'
 import {
   IconMenu,
   IconArrowUp,
-  IconPlus,
+  IconMore,
   IconDelete,
   IconArrowRight,
   IconDanger
 } from 'utility/icon'
 import UploadImg from 'utility/component/UploadImg'
+import UploadVideo from 'utility/component/UploadVideo'
 import { Menu, Dropdown, Input } from 'antd'
 const { TextArea } = Input
 
@@ -22,7 +23,8 @@ interface IProps {
   isInDragging: boolean
   endDragging: () => void
   expandChildren: (item: any) => void
-  rename: (index: number, value: string) => void
+  updateSection: (index: number, type: string, value: string) => void
+  courseId: string
   handleDeleteItem: (item: any) => void
 }
 
@@ -30,6 +32,7 @@ const SectionItem = (props: IProps) => {
   const ref = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const [isEditing, setIsEditing] = useState<boolean>(false)
+  const [replaceCount, setReplaceCount] = useState<number>(0)
 
   useEffect(() => {
     if (isEditing) inputRef.current?.focus()
@@ -134,59 +137,18 @@ const SectionItem = (props: IProps) => {
   })
   drag(drop(ref))
 
-  // const renderCourseList = () => {
-  //   return (
-  //     <Menu>
-  //       {props.courseMenu.map((course: any) => {
-  //         const isSelected: boolean = props.selectedCourseMenu.find(
-  //           (el: any) => el.id === course.id
-  //         )
-  //         return (
-  //           <Menu.Item
-  //             key={course.key}
-  //             disabled={isSelected}
-  //             onClick={() => props.addChild(props.item, course)}
-  //           >
-  //             <div>{course.name}</div>
-  //           </Menu.Item>
-  //         )
-  //       })}
-  //     </Menu>
-  //   )
-  // }
-  // const renderText = () => (
-  //   <>
-  //     {isEditing ? (
-  //       <input
-  //         ref={inputRef}
-  //         type='text'
-  //         defaultValue={props.item.name}
-  //         onBlur={(e) => {
-  //           setIsEditing(false)
-  //           props.rename(props.item.index, e.target.value)
-  //         }}
-  //       />
-  //     ) : (
-  //       <div
-  //         onClick={() => {
-  //           if (
-  //             props.type === 'COURSE_MENU' ||
-  //             (props.type === 'LEARNING_PATH' && props.item.level === 1)
-  //           ) {
-  //             setIsEditing(true)
-  //           }
-  //         }}
-  //       >
-  //         {props.item.name}{' '}
-  //         {props.item.level === 2 && props.item.enable === false ? (
-  //           <IconDanger className='ad-color-danger' />
-  //         ) : null}
-  //       </div>
-  //     )}
-  //   </>
-  // )
+  const renderMoreList = () => {
+    return (
+      <Menu>
+        <Menu.Item key={0} onClick={() => setReplaceCount(replaceCount + 1)}>
+          Replace
+        </Menu.Item>
+        <Menu.Item key={1}>Delete</Menu.Item>
+      </Menu>
+    )
+  }
 
-  const onChange = (key: string, e: any) => {
+  const onChange = (type: string, e: any) => {
     const value = e.target.value
     // if (value) {
     //   switch (key) {
@@ -195,10 +157,11 @@ const SectionItem = (props: IProps) => {
     //       break
     //   }
     // }
+    props.updateSection(props.item.index, type, value)
     // setData({ ...data, [key]: value })
   }
-  const onUpload = (key: string, value: string) => {
-    // setData({ ...data, [key]: value })
+  const onUpload = (type: string, value: string) => {
+    props.updateSection(props.item.index, type, value)
   }
 
   return (
@@ -214,7 +177,16 @@ const SectionItem = (props: IProps) => {
         className={`${isDragging ? 'isDragging' : ''} item`}
       >
         <div className='item-grab' ref={ref} data-handler-id={handlerId}>
-          <IconMenu />
+          <IconMenu className='item-icon-grab' />
+          {props.item.type === 'picture' || props.item.type === 'video' ? (
+            <Dropdown
+              overlay={renderMoreList}
+              trigger={['click']}
+              placement='bottomRight'
+            >
+              <IconMore className='item-icon-more' />
+            </Dropdown>
+          ) : null}
         </div>
         {/* props.item.type = title | picture | video | paragraph */}
         <div className={`item-content item-content-${props.item.type}`}>
@@ -223,23 +195,33 @@ const SectionItem = (props: IProps) => {
               className='item-content-textarea title'
               rows={2}
               value={props.item.content}
-              onChange={(e) => onChange('remark', e)}
+              onChange={(e) => onChange(props.item.type, e)}
             />
           ) : props.item.type === 'paragraph' ? (
             <TextArea
               className='item-content-textarea paragraph'
               rows={6}
               value={props.item.content}
-              onChange={(e) => onChange('remark', e)}
+              onChange={(e) => onChange(props.item.type, e)}
             />
           ) : props.item.type === 'picture' ? (
             <UploadImg
               type='rectangle'
-              desc='Upload logo'
-              system='temp'
-              systemId=''
+              desc='Upload picture'
+              system='course'
+              systemId={props.courseId}
               imgId={props.item.archive_id}
-              setUploadId={(id: string) => onUpload('logo_image_id', id)}
+              setUploadId={(id: string) => onUpload(props.item.type, id)}
+              replaceCount={replaceCount}
+            />
+          ) : props.item.type === 'video' ? (
+            <UploadVideo
+              type='video'
+              desc='Upload video'
+              system='course'
+              systemId={props.courseId}
+              imgId={props.item.archive_id}
+              setUploadId={(id: string) => onUpload(props.item.type, id)}
             />
           ) : null}
         </div>
@@ -260,7 +242,7 @@ const SectionItem = (props: IProps) => {
         ) : null} */}
         {/* <div className='item-extra'>
           {props.type === 'COURSE_MENU' && props.item.level !== 3 ? (
-            <IconPlus
+            <IconMore
               onClick={() =>
                 props.addChild ? props.addChild(props.item) : null
               }
@@ -268,11 +250,11 @@ const SectionItem = (props: IProps) => {
           ) : null}
           {props.type === 'LEARNING_PATH' && props.item.level === 1 ? (
             <Dropdown
-              overlay={renderCourseList}
+              overlay={renderMoreList}
               trigger={['click']}
               placement='bottomRight'
             >
-              <IconPlus />
+              <IconMore />
             </Dropdown>
           ) : null}
           <IconDelete onClick={() => props.handleDeleteItem(props.item)} />
