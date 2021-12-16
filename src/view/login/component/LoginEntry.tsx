@@ -75,15 +75,15 @@ const LoginEntry = () => {
     <>
       <div className='ad-login-content-header'>
         <h2 style={{ visibility: loginErr ? 'unset' : 'hidden' }}>
-          {loginErr}
+          {loginErr} &nbsp;
         </h2>
         <h1>
-          Log in account
+          LOG IN
           <Button
             className='ad-float-right'
             onClick={() => history.push('/login/create')}
           >
-            Create account
+            Sign up
           </Button>
         </h1>
       </div>

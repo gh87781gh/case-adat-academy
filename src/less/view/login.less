@@ -1,10 +1,10 @@
-@page-login-container-padding-x: 130px;
-@page-login-container-padding-y: 50px;
-
-// #root > .ant-spin-nested-loading > .
+.ad-login-container-box {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+}
 .ad-login-bg {
-  position: relative;
-  z-index: -1;
   height: 100%;
   background-image: url('/img/industry.jpg');
   background-repeat: no-repeat;
@@ -16,13 +16,17 @@
     height: 100%;
     background-color: fade(@color-primary, 70%);
     position: absolute;
+    top: 0;
+    left: 0;
     z-index: 0;
   }
 }
+
 .ad-login-container {
   width: 100%;
-  background-color: #fff;
-  // position: fixed;
+  max-width: 660px;
+  background-color: @color-gray01;
+  padding: 80px 90px 100px 90px;
 
   & > *:not(:last-child) {
     margin-bottom: 50px;
@@ -37,9 +41,9 @@
   }
 }
 .ad-login-footer {
-  width: 100%;
-  position: absolute;
-  left: 0;
-  bottom: @page-login-container-padding-y;
-  padding: 0 @page-login-container-padding-x;
+  // width: 100%;
+  // position: absolute;
+  // left: 0;
+  // bottom: @page-login-container-padding-y;
+  // padding: 0 @page-login-container-padding-x;
 }

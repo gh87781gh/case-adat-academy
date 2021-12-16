@@ -11,7 +11,7 @@ const Login = () => {
 
   return (
     <Row className='ad-login-bg'>
-      <Col span={16}>
+      <Col span={16} className='ad-login-container-box'>
         <div className='ad-login-container'>
           <Switch>
             <Route exact path={'/login'}>
