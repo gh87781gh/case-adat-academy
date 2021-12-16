@@ -1,32 +1,29 @@
 @page-login-container-padding-x: 130px;
 @page-login-container-padding-y: 50px;
 
-.ad-login-col {
-  min-height: 100vh;
-}
-.ad-login-left {
-  background-color: #ccc;
-}
-.ad-login-right {
-  padding: @page-login-container-padding-y @page-login-container-padding-x;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+// #root > .ant-spin-nested-loading > .
+.ad-login-bg {
   position: relative;
-
-  h1 {
-    margin-bottom: 45px;
-    .clearFix();
-  }
-  h2 {
-    background-color: rgba(255, 65, 65, 0.08);
-    color: @color-error;
-    padding: 10px 30px;
-    margin-bottom: 50px;
+  z-index: -1;
+  height: 100%;
+  background-image: url('/img/industry.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: right;
+  &::before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    background-color: fade(@color-primary, 70%);
+    position: absolute;
+    z-index: 0;
   }
 }
 .ad-login-container {
   width: 100%;
+  background-color: #fff;
+  // position: fixed;
+
   & > *:not(:last-child) {
     margin-bottom: 50px;
   }

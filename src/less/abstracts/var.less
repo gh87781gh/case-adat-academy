@@ -7,9 +7,9 @@
 @color-primary-light01: #8f9fca;
 
 @color-error: #da1414;
-@color-error-bgc: #feefef;
+@color-error-light: #feefef;
 @color-success: #287d3c;
-@color-success-bgc: #edf9f0;
+@color-success-light: #edf9f0;
 
 @color-black: #1d1d1e;
 @color-white: #fdfeff;
@@ -18,22 +18,36 @@
 @color-gray03: #989898;
 @color-gray04: #646464;
 
+// gradient
+.bg-gradient-emphasis() {
+  background-color: @color-primary;
+  background: linear-gradient(
+    132.03deg,
+    #2efee4 -8.84%,
+    #826aff 38.2%,
+    #ff0adf 106.26%,
+    #ff008f 106.26%
+  );
+}
+.bg-gradient-default() {
+  background-color: @color-primary-light03;
+  background: linear-gradient(
+    135.19deg,
+    #ffffff -4.43%,
+    #f6f8fe -4.42%,
+    #dae4ff 86.52%
+  );
+}
+
+// shadow
+@box-shadow-separator:0px 1px 0px @color-gray02;
+@box-shadow-emphasis:0px 4px 4px rgba(0, 0, 0, 0.25);
+
+// NOTE mockup design system 建置到這裡以上
+
 // color setting
 @color-input-border: @color-primary;
 @color-body-bgc: #fff;
-@bg-gradient-default: linear-gradient(
-  135.19deg,
-  #ffffff -4.43%,
-  #f6f8fe -4.42%,
-  #dae4ff 86.52%
-);
-@bg-gradient-emphasis: -webkit-linear-gradient(
-  132.03deg,
-  #2efee4 -8.84%,
-  #826aff 38.2%,
-  #ff0adf 106.26%,
-  #ff008f 106.26%
-);
 
 // transition
 @transition: all 0.3s ease;
