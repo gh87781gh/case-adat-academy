@@ -157,7 +157,7 @@ const Course = (props: IProps) => {
 
   return (
     <>
-      <h1 className='ad-layout-article-title'>
+      <h1 className='ad-layout-admin-article-title'>
         Course management
         <div className='ad-float-right ad-btn-group'>
           <Button type='primary' onClick={() => setIsModalCreateShow(true)}>
@@ -166,7 +166,7 @@ const Course = (props: IProps) => {
           <Button onClick={() => props.next(2)}>Edit learning path</Button>
         </div>
       </h1>
-      <div className='ad-layout-article-toolBar'>
+      <div className='ad-layout-admin-article-toolBar'>
         <Row gutter={20}>
           <Col span={6}>
             <div className='ad-form-group ad-form-group-horizontal'>

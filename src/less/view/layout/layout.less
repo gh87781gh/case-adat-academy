@@ -1,0 +1,36 @@
+article {
+  background-color: @color-gray01;
+}
+.ad-layout-version {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  color: #ccc;
+}
+
+// user
+.ad-layout-article {
+  padding-top: @header-height;
+}
+
+// admin
+.ad-layout-admin {
+  display: flex;
+  flex-wrap: nowrap;
+  height: 100%;
+  & > article {
+    width: 100%;
+    padding: 50px 20px;
+  }
+}
+.ad-layout-admin-article-title {
+  .clearFix();
+  font-size: 30px;
+  font-weight: 700;
+}
+.ad-layout-admin-article-toolBar {
+  margin-bottom: @layout-section-gutter;
+  .ad-form-group > label {
+    .typo-bodyBold();
+  }
+}

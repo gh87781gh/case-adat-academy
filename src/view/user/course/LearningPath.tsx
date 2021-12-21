@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from 'react'
-import { MyContext } from 'storage'
+import { MyContext, StaticService } from 'storage'
 import CourseApi from 'api/user/CourseApi'
+import { Btn } from 'utility/component'
 import {
   IconPathEmpty,
   IconPathInProgress,
@@ -80,7 +81,8 @@ const Stage = (props: IPropsStage) => {
               <div className='status'>
                 {index !== hoverIndex ? (
                   <>
-                    {course.status === 'Not started' ? (
+                    {course.status === 'Not started' ||
+                    course.status === 'Not available' ? (
                       <IconPathEmpty />
                     ) : course.status === 'In progress' ? (
                       <IconPathInProgress />
@@ -96,6 +98,20 @@ const Stage = (props: IPropsStage) => {
                 />
               </div>
               <span>{course.name}</span>
+              <div className='class-hoverCard'>
+                <div className='logo'>
+                  <img
+                    className='ad-upload-uploaded'
+                    src={`${StaticService.apiUrl}/archive/${course.logo_image_id}`}
+                    alt=''
+                  />
+                </div>
+                <div className='info'>
+                  <div className='desc'>{course.description}</div>
+                  <small>{course.status}</small>
+                  <Btn>Take class</Btn>
+                </div>
+              </div>
             </div>
           ))}
         </div>
@@ -119,7 +135,7 @@ const LearningPath = () => {
   }, [])
 
   return (
-    <div className='ad-banner-course-path'>
+    <div className='ad-course-banner-path'>
       {/* TODO fakeData 要改用 data */}
       {fakeData.map((stage: any, index: number) => (
         <Stage stage={stage} key={index} />

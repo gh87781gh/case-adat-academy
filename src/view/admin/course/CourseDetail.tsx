@@ -158,7 +158,7 @@ const CourseDetail = (props: IProps) => {
         </Breadcrumb.Item>
         <Breadcrumb.Item>{courseDetail.name}</Breadcrumb.Item>
       </Breadcrumb>
-      <h1 className='ad-layout-article-title'>
+      <h1 className='ad-layout-admin-article-title'>
         {courseDetail.name}
         <span className='ad-float-right'>{courseDetail.status}status</span>
       </h1>

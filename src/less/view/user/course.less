@@ -1,0 +1,90 @@
+@ad-course-banner-path-width: 120px;
+.ad-course-banner {
+  .bg-gradient-default();
+  padding-top: 140px;
+  padding-bottom: 240px;
+  .container {
+    .layout-user-container();
+  }
+  .desc {
+    color: @color-primary;
+    margin-bottom: 8px;
+  }
+  .title {
+    .typo-header();
+    color: @color-primary;
+    & > span {
+      user-select: none;
+      .bg-gradient-emphasis();
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+}
+.ad-course-banner-path {
+  display: flex;
+  flex-wrap: nowrap;
+
+  .stage p {
+    color: @color-primary;
+    margin-bottom: 27px;
+    font-weight: 700;
+  }
+  .group {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .status {
+    width: @ad-course-banner-path-width;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    margin-bottom: 24px;
+
+    .anticon:first-child {
+      margin-right: 10px;
+    }
+  }
+  .next-arrow {
+    margin: 52px 20px 0 10px;
+    &:last-child {
+      display: none;
+    }
+  }
+  .class {
+    .size(@ad-course-banner-path-width,auto);
+    margin-right: 10px;
+    padding-bottom: 20px;
+    position: relative;
+    cursor: pointer;
+    span {
+      color: @color-gray04;
+    }
+
+    .class-hoverCard {
+      width: 360px;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: @color-white;
+      padding: 36px 24px;
+      border: 3px solid @color-primary;
+      z-index: 1;
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      .logo {
+        width: 55px;
+        margin-right: 16px;
+      }
+      .info {
+        width: 100%;
+        .desc {
+          .typo-bodyDefault();
+        }
+      }
+    }
+  }
+}

@@ -153,7 +153,7 @@ const Index = () => {
       <div className='ad-layout-admin'>
         <AdminSideBar />
         <article>
-          <h1 className='ad-layout-article-title'>
+          <h1 className='ad-layout-admin-article-title'>
             Account management
             <Button
               className='ad-float-right'
@@ -163,7 +163,7 @@ const Index = () => {
               Create account
             </Button>
           </h1>
-          <div className='ad-layout-article-toolBar'>
+          <div className='ad-layout-admin-article-toolBar'>
             <Row gutter={20}>
               <Col span={8}>
                 <div className='ad-form-group ad-form-group-horizontal'>

@@ -43,7 +43,17 @@
 @box-shadow-separator:0px 1px 0px @color-gray02;
 @box-shadow-emphasis:0px 4px 4px @color-gray02;
 
-
+// layout
+@layout-user-container-max-width: 1200px;
+.layout-user-container() {
+  max-width: @layout-user-container-max-width;
+  margin-left: auto;
+  margin-right: auto;
+  @media (max-width: @layout-user-container-max-width + 15px) {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
 
 // NOTE mockup design system 建置到這裡以上
 
@@ -53,9 +63,6 @@
 
 // transition
 @transition: all 0.3s ease;
-
-// layout
-@layout-container-max-width: 1194px;
 
 // space
 @layout-section-gutter: 36px;

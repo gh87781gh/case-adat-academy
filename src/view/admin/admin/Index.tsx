@@ -124,7 +124,7 @@ const Index = () => {
       <div className='ad-layout-admin'>
         <AdminSideBar />
         <article>
-          <h1 className='ad-layout-article-title'>
+          <h1 className='ad-layout-admin-article-title'>
             Admin management
             <Button
               className='ad-float-right'
@@ -137,7 +137,7 @@ const Index = () => {
               Create admin
             </Button>
           </h1>
-          <div className='ad-layout-article-toolBar'>
+          <div className='ad-layout-admin-article-toolBar'>
             <Row gutter={20}>
               <Col span={6}>
                 <div className='ad-form-group ad-form-group-horizontal'>
