@@ -6,11 +6,10 @@
   padding-bottom: 240px;
   .ad-banner-course-desc {
     color: @color-primary;
+    margin-bottom: 8px;
   }
-  .ad-banner-course-h1 {
-    font-size: 64px;
-    line-height: 59px;
-    letter-spacing: -0.02em;
+  .ad-banner-course-title {
+    .typo-header();
     color: @color-primary;
     & > span {
       user-select: none;
@@ -19,6 +18,42 @@
       -webkit-text-fill-color: transparent;
     }
   }
+}
+
+.ad-banner-course-path {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.ad-banner-course-path-stage p {
+  color: @color-primary;
+  margin-bottom: 27px;
+  font-weight: 700;
+}
+.ad-banner-course-path-group {
+  display: flex;
+  flex-wrap: wrap;
+}
+.ad-banner-course-path-class {
+  .size(@path-width,auto);
+  margin-right: 10px;
+  span {
+    color: @color-gray04;
+  }
+}
+.ad-banner-course-path-status {
+  width: @path-width;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  margin-bottom: 24px;
+
+  .anticon:first-child {
+    margin-right: 10px;
+  }
+}
+.ad-banner-course-path-arrow {
+  margin: 52px 20px 0 10px;
 }
 // .ad-banner-course-path {
 //   display: flex;

@@ -3,9 +3,15 @@
     margin-right: 30px;
   }
 }
+
+// type
 .ant-btn {
-  .typo-b();
+  .typo-bodyBold();
   padding: 12px;
+}
+.ad-btn-primary {
+  color: @color-black;
+  background-color: @color-white;
 
   &:hover,
   &:focus {
@@ -14,12 +20,38 @@
   }
   &:active {
     color: @color-primary-light01;
+    background-color: @color-primary;
   }
 }
-.ant-btn-link {
+.ad-btn-action {
+  &:hover,
+  &:focus {
+    color: @color-primary-light03;
+    background-color: @color-black;
+  }
+  &:active {
+    color: @color-primary-light01;
+    background-color: @color-black;
+  }
+}
+.ad-btn-bordless {
+  color: @color-primary;
+  background-color: transparent;
+  &:hover,
+  &:focus {
+    color: @color-primary;
+    background-color: @color-primary-light02;
+  }
+  &:active {
+    color: @color-primary-light01;
+    background-color: @color-primary-light02;
+  }
+}
+.ad-btn-link.ant-btn-link {
+  .typo-bodyDefault();
+  font-family: NotoSansRegular;
   padding: unset;
   height: auto;
-  font-weight: 400;
   &:hover,
   &:focus {
     color: @color-primary;
@@ -36,27 +68,19 @@
     }
   }
 }
-.ant-btn-sm {
-  font-size: 1rem;
-  font-weight: 400;
-  padding: 0 7px;
+
+// disabled
+.ant-btn[disabled],
+.ant-btn[disabled]:hover,
+.ant-btn[disabled]:focus,
+.ant-btn[disabled]:active {
+  color: @color-gray03;
+  background-color: @color-gray02;
 }
-// .ant-btn-text {
-//   color: @color-primary;
-//   &:hover,
-//   &:focus {
-//     color: @color-primary;
-//     background-color: @color-primary-light02;
-//   }
-//   &:active {
-//     color: @color-primary-light01;
-//   }
-//   &[disabled] {
-//     color: @color-gray03;
-//     background-color: @color-gray02;
-//     &:hover {
-//       color: @color-gray03;
-//       background-color: @color-gray02;
-//     }
-//   }
+
+// size
+// .ant-btn-sm {
+//   font-size: 1rem;
+//   font-weight: 400;
+//   padding: 0 7px;
 // }

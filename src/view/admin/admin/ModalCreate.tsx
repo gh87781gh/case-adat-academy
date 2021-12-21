@@ -58,7 +58,7 @@ const ModalCreate = (props: IProps) => {
     if (props.isShow) {
       setIsEmail(undefined)
       api_global
-        .getOptions(['admin_roles'])
+        .getOptions(['admin_management_roles'])
         .then((res: any) => {
           setRoleOption(res.data[0])
         })

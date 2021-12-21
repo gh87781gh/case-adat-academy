@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
-import { LogoADAT } from '../../utility/icon'
+import { IconADATFull } from '../../utility/icon'
 import { IconSearch, IconArrowDown } from '../../utility/icon'
 import { Input, Button, Menu, Dropdown } from 'antd'
 import { MyContext, BrowserStorage } from '../../storage'
@@ -49,7 +49,7 @@ const Header = () => {
         {/* TODO switch logo */}
         {/* <div className='ad-header-container-logo'> */}
         <div className='ad-header-container-logo-primary'>
-          <LogoADAT />
+          <IconADATFull />
         </div>
         <ul className='ad-header-tabHead'>
           <li

@@ -1,5 +1,15 @@
 import Header from '../layout/Header'
 import Footer from '../layout/Footer'
+import {
+  IconPathEmpty,
+  IconPathCheck,
+  IconPathInProgress,
+  IconPathLine,
+  IconPathArrow,
+  IconArrowDown,
+  IconBookmark
+} from 'utility/icon'
+import { Btn } from 'utility/component'
 import { Button, Row, Col, Select } from 'antd'
 const { Option } = Select
 
@@ -10,12 +20,67 @@ const User = () => {
       <div className='ad-banner-course'>
         <div className='ad-layout-container'>
           <p className='ad-banner-course-desc'>
-            Based on your <Button type='link'>learning profile</Button>, we
-            recommend this
+            Based on your <Btn type='link'>learning profile</Btn>, we recommend
+            this
           </p>
-          <h1 className='ad-banner-course-h1'>
+          <h1 className='ad-banner-course-title'>
             <span>LEARNING</span> <span>PATH</span>
           </h1>
+          <div className='ad-banner-course-path'>
+            <div className='ad-banner-course-path-stage'>
+              <p>stage 1</p>
+              <div className='ad-banner-course-path-group'>
+                <div className='ad-banner-course-path-class'>
+                  <div className='ad-banner-course-path-status'>
+                    <IconPathCheck /> <IconPathLine />
+                  </div>
+                  <span>System architecture</span>
+                </div>
+              </div>
+            </div>
+            <IconPathArrow className='ad-banner-course-path-arrow' />
+            <div className='ad-banner-course-path-stage'>
+              <p>stage 2</p>
+              <div className='ad-banner-course-path-group'>
+                <div className='ad-banner-course-path-class'>
+                  <div className='ad-banner-course-path-status'>
+                    <IconPathCheck /> <IconPathLine />
+                  </div>
+                  <span>System architecture</span>
+                </div>
+                <div className='ad-banner-course-path-class'>
+                  <div className='ad-banner-course-path-status'>
+                    <IconPathInProgress /> <IconPathLine />
+                  </div>
+                  <span>System architecture</span>
+                </div>
+              </div>
+            </div>
+            <IconPathArrow className='ad-banner-course-path-arrow' />
+            <div className='ad-banner-course-path-stage'>
+              <p>stage 3</p>
+              <div className='ad-banner-course-path-group'>
+                <div className='ad-banner-course-path-class'>
+                  <div className='ad-banner-course-path-status'>
+                    <IconPathEmpty /> <IconPathLine />
+                  </div>
+                  <span>System architecture</span>
+                </div>
+                <div className='ad-banner-course-path-class'>
+                  <div className='ad-banner-course-path-status'>
+                    <IconPathEmpty /> <IconPathLine />
+                  </div>
+                  <span>System architecture</span>
+                </div>
+                <div className='ad-banner-course-path-class'>
+                  <div className='ad-banner-course-path-status'>
+                    <IconPathEmpty /> <IconPathLine />
+                  </div>
+                  <span>System architecture</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <article className='ad-layout-article ad-layout-container'>

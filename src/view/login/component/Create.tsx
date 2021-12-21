@@ -35,7 +35,11 @@ const Create = () => {
   useEffect(() => {
     context.setIsLoading(true)
     api_global
-      .getOptions(['industries', 'experience_levels', 'experiences'])
+      .getOptions([
+        'learning_profile_industries',
+        'learning_profile_experience_levels',
+        'learning_profile_experiences'
+      ])
       .then((res: any) => {
         setIndustryOption(res.data[0])
         setExperienceLevelOption(res.data[1])

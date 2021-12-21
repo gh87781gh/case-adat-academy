@@ -5,6 +5,7 @@ import Create from './component/Create'
 import Contact from './component/Contact'
 import Recover from './component/Recover'
 import TermsPrivacy from './component/TermsPrivacy'
+import { IconADAT } from 'utility/icon'
 
 const Login = () => {
   const history = useHistory()
@@ -33,19 +34,20 @@ const Login = () => {
           </Switch>
         </div>
       </Col>
-      <Col span={8}>
-        <div className='ad-login-footer'>
-          <div className='ad-btn-group'>
-            <Button type='link' onClick={() => history.push('/login/contact')}>
-              Contact us
-            </Button>
-            <Button
-              type='link'
-              onClick={() => history.push('/login/terms&privacy')}
-            >
-              Terms & policy
-            </Button>
-          </div>
+      <Col span={8} className='ad-login-footer'>
+        <div className='ad-login-footer-logo'>
+          <IconADAT />
+        </div>
+        <div className='ad-login-footer-btn-group'>
+          <Button type='link' onClick={() => history.push('/login/contact')}>
+            Contact us
+          </Button>
+          <Button
+            type='link'
+            onClick={() => history.push('/login/terms&privacy')}
+          >
+            Terms & policy
+          </Button>
         </div>
       </Col>
     </Row>

@@ -23,7 +23,7 @@ const Index = () => {
   const [roleOption, setRoleOption] = useState<any>([])
   useEffect(() => {
     api_global
-      .getOptions(['admin_roles'])
+      .getOptions(['admin_management_roles'])
       .then((res: any) => {
         setRoleOption(res.data[0])
       })

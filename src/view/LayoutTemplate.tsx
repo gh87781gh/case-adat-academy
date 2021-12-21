@@ -7,6 +7,7 @@ import Account from './admin/account/Index'
 import Course from './admin/course/Index'
 import Admin from './admin/admin/Index'
 import User from './user/User'
+import DemoPage from './DemoPage'
 import { Spin } from 'antd'
 import { MyContext, BrowserStorage } from '../storage'
 import { version } from '../../package.json'
@@ -51,7 +52,12 @@ const LayoutTemplate = () => {
           <HashRouter>
             <Switch>
               <Route
-                // exact={true}
+                exact={true}
+                path='/demo'
+                render={() => componentPage(DemoPage, 'LOGIN')}
+              />
+              <Route
+                exact={true}
                 path='/login'
                 render={() => componentPage(Login, 'LOGIN')}
               />

@@ -6,7 +6,7 @@
 }
 .ad-login-bg {
   height: 100%;
-  background-image: url('/img/industry.jpg');
+  background-image: url('/assets/img/industry.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: right;
@@ -21,7 +21,6 @@
     z-index: 0;
   }
 }
-
 .ad-login-container {
   width: 100%;
   max-width: 660px;
@@ -41,9 +40,25 @@
   }
 }
 .ad-login-footer {
-  // width: 100%;
-  // position: absolute;
-  // left: 0;
-  // bottom: @page-login-container-padding-y;
-  // padding: 0 @page-login-container-padding-x;
+  padding: 1rem 79px 90px 1rem;
+  color: @color-white;
+  text-align: right;
+  margin-top: auto;
+  .ad-login-footer-logo {
+    margin-bottom: 1rem;
+    width: 100%;
+    text-align: right;
+  }
+  .ad-login-footer-btn-group {
+    width: 100%;
+    text-align: right;
+
+    .ant-btn-link {
+      color: @color-white;
+    }
+    .ant-btn-link:first-child::after {
+      content: '|';
+      margin: 0 1rem;
+    }
+  }
 }

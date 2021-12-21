@@ -25,10 +25,10 @@ export default class LoginApi {
       experience: experienceStrAry,
       is_login: false // true -> 順便登入,並返回token
     }
+    // TODO api 1.1.0 有新增欄位 name
     return this.restAPI.request('post', '/auth/signup', sendData)
   }
   recoverPassword = (data: any) => {
-    // TOCHECK 這支未完成
     return this.restAPI.request('post', '/auth/pwd_recover', data)
   }
   contact = (data: any) => {

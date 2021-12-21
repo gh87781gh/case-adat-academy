@@ -26,7 +26,7 @@ const Course = (props: IProps) => {
   const [statusOption, setStatusOption] = useState<any>([])
   useEffect(() => {
     api_global
-      .getOptions(['course_status'])
+      .getOptions(['course_management_status'])
       .then((res: any) => setStatusOption(res.data[0]))
       .finally(() => context.setIsLoading(false))
   }, []) // eslint-disable-line react-hooks/exhaustive-deps

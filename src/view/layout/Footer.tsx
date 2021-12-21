@@ -1,4 +1,4 @@
-// import { LogoADAT } from '../../utility/icon'
+// import { IconADATFull } from '../../utility/icon'
 // import {
 //   IconSearch,
 //   IconArrowDown,
@@ -20,7 +20,7 @@ const Footer = () => {
           <Col span={12}>
             <Row>
               <Col span={12}>
-                {/* <LogoADAT className='ad-footer-logo' />
+                {/* <IconADATFull className='ad-footer-logo' />
                 <IconWeb className='ad-footer-link' />
                 <IconLinkedin className='ad-footer-link' /> */}
               </Col>
