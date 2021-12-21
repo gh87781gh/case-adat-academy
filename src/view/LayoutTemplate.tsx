@@ -1,16 +1,23 @@
 import { useState, useEffect } from 'react'
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom'
-import GlobalApi from '../api/GlobalApi'
-import Login from './login/Login'
-import Purchase from './admin/purchase/Index'
-import Account from './admin/account/Index'
-import Course from './admin/course/Index'
-import Admin from './admin/admin/Index'
-import User from './user/User'
-import DemoPage from './DemoPage'
-import { Spin } from 'antd'
-import { MyContext, BrowserStorage } from '../storage'
 import { version } from '../../package.json'
+import { MyContext, BrowserStorage } from '../storage'
+import GlobalApi from '../api/GlobalApi'
+
+// no validate auth
+import Login from './login/Login'
+import DemoPage from './DemoPage'
+
+// user console
+import Course from './user/course/Index'
+
+// admin console
+import AdminPurchase from './admin/purchase/Index'
+import AdminAccount from './admin/account/Index'
+import AdminCourse from './admin/course/Index'
+import AdminAdmin from './admin/admin/Index'
+
+import { Spin } from 'antd'
 
 const LayoutTemplate = () => {
   const browserStorage = new BrowserStorage()
@@ -64,27 +71,27 @@ const LayoutTemplate = () => {
               <Route
                 exact={true}
                 path='/index'
-                render={() => componentPage(User, 'USER')}
+                render={() => componentPage(Course, 'USER')}
               />
               <Route
                 exact={true}
                 path='/admin/purchase/:id?'
-                render={() => componentPage(Purchase, 'ADMIN')}
+                render={() => componentPage(AdminPurchase, 'ADMIN')}
               />
               <Route
                 exact={true}
                 path='/admin/account'
-                render={() => componentPage(Account, 'ADMIN')}
+                render={() => componentPage(AdminAccount, 'ADMIN')}
               />
               <Route
                 exact={true}
                 path='/admin/course'
-                render={() => componentPage(Course, 'ADMIN')}
+                render={() => componentPage(AdminCourse, 'ADMIN')}
               />
               <Route
                 exact={true}
                 path='/admin/admin'
-                render={() => componentPage(Admin, 'ADMIN')}
+                render={() => componentPage(AdminAdmin, 'ADMIN')}
               />
               <Redirect to='/login' />
             </Switch>

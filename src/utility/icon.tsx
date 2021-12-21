@@ -255,6 +255,37 @@ const svgPathInProgress = () => (
 export const IconPathInProgress = (props: any) => {
   return <Icon component={svgPathInProgress} {...props} />
 }
+const svgPathHover = () => (
+  <svg width='30' height='30' viewBox='0 0 30 30' fill='none'>
+    <circle
+      opacity='0.7'
+      cx='15'
+      cy='15'
+      r='13.5'
+      fill='url(#paint0_linear_3411_1752)'
+      stroke='#022061'
+      strokeWidth='3'
+    />
+    <defs>
+      <linearGradient
+        id='paint0_linear_3411_1752'
+        x1='-5.04273'
+        y1='-3.79117e-07'
+        x2='31.1799'
+        y2='32.6538'
+        gradientUnits='userSpaceOnUse'
+      >
+        <stop stopColor='#2EFEE4' />
+        <stop offset='0.408715' stopColor='#826AFF' />
+        <stop offset='1' stopColor='#FF0ADF' />
+        <stop offset='1' stopColor='#FF008F' />
+      </linearGradient>
+    </defs>
+  </svg>
+)
+export const IconPathHover = (props: any) => {
+  return <Icon component={svgPathHover} {...props} />
+}
 const svgPathLine = () => (
   <svg width='80' height='2' viewBox='0 0 80 2' fill='none'>
     <line
