@@ -1,10 +1,8 @@
 import { useState, useEffect, useContext } from 'react'
-import { MyContext, StaticService } from 'storage'
+import { MyContext } from 'storage'
 import CourseApi from 'api/admin/CourseApi'
 import ModalLearnPath from './ModalLearnPath'
-// import ModalDetail from '../account/ModalDetail'
-// import ModalRecord from '../account/ModalRecord'
-import { Row, Col, Button, Table, Breadcrumb } from 'antd'
+import { Button, Table, Breadcrumb } from 'antd'
 
 interface IProps {
   prev: () => void
@@ -14,13 +12,7 @@ const LearningPath = (props: IProps) => {
   const context = useContext(MyContext)
   const api = new CourseApi()
 
-  const [purchaseDetail, setPurchaseDetail] = useState<any>({})
   const [list, setList] = useState<any>([])
-  const [total, setTotal] = useState(0)
-  const [page, setPage] = useState(1)
-  const [accountId, setAccountId] = useState<string>('')
-  const [userId, setUserId] = useState<string>('')
-
   const [learningGoal, setLearningGoal] = useState<string>('')
   const [isModalEditShow, setIsModalEditShow] = useState<boolean>(false)
   const columns = [

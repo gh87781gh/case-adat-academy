@@ -1,14 +1,13 @@
-import { useState, useEffect, useContext, useRef } from 'react'
-import { MyContext, StaticService } from 'storage'
+import { useState, useEffect, useContext } from 'react'
+import { MyContext } from 'storage'
 import CourseApi from 'api/admin/CourseApi'
 import UploadVideo from 'utility/component/UploadVideo'
-import { IconMenu, IconArrowUp, IconMore, IconPlus } from 'utility/icon'
-import { Row, Col, Button, Table, Breadcrumb } from 'antd'
+import { Row, Col, Breadcrumb } from 'antd'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import CourseDetailMenu from './courseDetail/Menu'
 import Sections from './courseDetail/Sections'
-import { Dropdown, Input, Menu } from 'antd'
+import { Dropdown, Menu } from 'antd'
 
 interface IProps {
   prev: () => void
@@ -129,7 +128,7 @@ const CourseDetail = (props: IProps) => {
   }
   useEffect(() => {
     getInitData()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const renderContentTypeList = () => {
     return (

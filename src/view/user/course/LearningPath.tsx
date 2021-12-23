@@ -11,53 +11,53 @@ import {
   IconPathArrow
 } from 'utility/icon'
 
-const fakeData = [
-  {
-    name: 'Stage 1',
-    courses: [
-      {
-        id: '1ca6bc26-f9c8-45f8-8ea1-d5bcc391db27',
-        name: 'Test Course A',
-        logo_image_id: '',
-        description: 'Test description',
-        status: 'All read'
-      },
-      {
-        id: '25bb6b0b-d341-4518-a1b3-2874831d6a21',
-        name: 'Test Course B',
-        logo_image_id: '',
-        description: 'Test description',
-        status: 'In progress'
-      }
-    ]
-  },
-  {
-    name: 'Stage 2',
-    courses: [
-      {
-        id: '1ca6bc26-f9c8-45f8-8ea1-d5bcc391db27123',
-        name: 'Test Course C',
-        logo_image_id: '',
-        description: 'Test description',
-        status: 'All read'
-      },
-      {
-        id: '25bb6b0b-d341-4518-a1b3-2874831d6a215432',
-        name: 'Test Course D',
-        logo_image_id: '',
-        description: 'Test description',
-        status: 'Not started'
-      },
-      {
-        id: '25bb6b0b-d341-4518-a1b3-2874831d6a21234565432',
-        name: 'Test Course E',
-        logo_image_id: '',
-        description: 'Test description',
-        status: 'Not started'
-      }
-    ]
-  }
-]
+// const fakeData = [
+//   {
+//     name: 'Stage 1',
+//     courses: [
+//       {
+//         id: '1ca6bc26-f9c8-45f8-8ea1-d5bcc391db27',
+//         name: 'Test Course A',
+//         logo_image_id: '',
+//         description: 'Test description',
+//         status: 'All read'
+//       },
+//       {
+//         id: '25bb6b0b-d341-4518-a1b3-2874831d6a21',
+//         name: 'Test Course B',
+//         logo_image_id: '',
+//         description: 'Test description',
+//         status: 'In progress'
+//       }
+//     ]
+//   },
+//   {
+//     name: 'Stage 2',
+//     courses: [
+//       {
+//         id: '1ca6bc26-f9c8-45f8-8ea1-d5bcc391db27123',
+//         name: 'Test Course C',
+//         logo_image_id: '',
+//         description: 'Test description',
+//         status: 'All read'
+//       },
+//       {
+//         id: '25bb6b0b-d341-4518-a1b3-2874831d6a215432',
+//         name: 'Test Course D',
+//         logo_image_id: '',
+//         description: 'Test description',
+//         status: 'Not started'
+//       },
+//       {
+//         id: '25bb6b0b-d341-4518-a1b3-2874831d6a21234565432',
+//         name: 'Test Course E',
+//         logo_image_id: '',
+//         description: 'Test description',
+//         status: 'Not started'
+//       }
+//     ]
+//   }
+// ]
 
 interface IPropsStage {
   stage: any
@@ -143,11 +143,10 @@ const LearningPath = () => {
       .getBannerLearningPath()
       .then((res: any) => setData(res.data))
       .finally(() => context.setIsLoading(false))
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className='ad-course-banner-path'>
-      {/* TODO fakeData 要改用 data */}
       {data.map((stage: any, index: number) => (
         <Stage stage={stage} key={index} />
       ))}

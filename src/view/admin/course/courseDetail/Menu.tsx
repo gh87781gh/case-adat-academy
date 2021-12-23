@@ -298,10 +298,10 @@ const Menu = (props: IProps) => {
   }
   useEffect(() => {
     if (deleteItemCache) setIsModalConfirmShow(true)
-  }, [deleteItemCache])
+  }, [deleteItemCache]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (props.addLevelACount !== 0) addChild()
-  }, [props.addLevelACount])
+  }, [props.addLevelACount]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>

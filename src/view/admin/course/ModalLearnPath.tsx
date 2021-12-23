@@ -13,7 +13,6 @@ interface IProps {
   getList: () => void
   learningGoal: string
 }
-interface IState {}
 
 const ModalLearnPath = (props: IProps) => {
   const context = useContext(MyContext)

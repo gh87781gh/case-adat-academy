@@ -1,6 +1,5 @@
-import { useState, useEffect, useContext, useRef } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { MyContext, StaticService } from 'storage'
-import GlobalApi from 'api/GlobalApi'
 import CourseApi from 'api/user/CourseApi'
 import Header from 'view/layout/Header'
 import Footer from 'view/layout/Footer'
@@ -8,7 +7,7 @@ import { IconArrowDown, IconBookmark } from 'utility/icon'
 import { Btn } from 'utility/component'
 import LearningPath from './LearningPath'
 
-import { Button, Row, Col, Select, Pagination } from 'antd'
+import { Row, Col, Select, Pagination } from 'antd'
 const { Option } = Select
 
 interface IState {
@@ -17,7 +16,6 @@ interface IState {
 
 const Index = () => {
   const context = useContext(MyContext)
-  const api_global = new GlobalApi()
   const api = new CourseApi()
 
   const [data, setData] = useState<IState>({

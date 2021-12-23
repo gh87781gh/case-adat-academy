@@ -1,7 +1,6 @@
 import { useState, useContext, useEffect } from 'react'
 import { MyContext } from 'storage'
 import CourseApi from 'api/admin/CourseApi'
-import GlobalApi from 'api/GlobalApi'
 import { ValidateStr } from 'utility/validate'
 import UploadImg from 'utility/component/UploadImg'
 import { Row, Col, Button, Input, Modal } from 'antd'
@@ -23,7 +22,6 @@ interface IState {
 const ModalCreate = (props: IProps) => {
   const context = useContext(MyContext)
   const api = new CourseApi()
-  const api_global = new GlobalApi()
 
   const initData = {
     name: '',
