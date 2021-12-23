@@ -14,8 +14,8 @@ const Index = () => {
       <div className='ad-course-banner'>
         <div className='container'>
           <p className='desc'>
-            Based on your <Btn type='link'>learning profile</Btn>, we recommend
-            this
+            Based on your <Btn feature='link'>learning profile</Btn>, we
+            recommend this
           </p>
           <h1 className='title'>
             <span>LEARNING</span> <span>PATH</span>
@@ -40,7 +40,7 @@ const Index = () => {
                     suffixIcon={<IconArrowDown />}
                     // onChange={(val) => onSelect('industry', val)}
                   >
-                    {/* TODO get list from api */}
+                    {/* TODO get list from api and set default*/}
                     <Option value='option1' key='option1'>
                       Based on learning path
                     </Option>
@@ -57,7 +57,7 @@ const Index = () => {
               </div>
             </Col>
             <Col span={4} style={{ textAlign: 'right' }}>
-              <Btn type='bordless'>
+              <Btn feature='secondary'>
                 <IconBookmark />
                 Bookmark
               </Btn>

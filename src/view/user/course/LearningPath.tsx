@@ -98,20 +98,23 @@ const Stage = (props: IPropsStage) => {
                 />
               </div>
               <span>{course.name}</span>
-              <div className='class-hoverCard'>
-                <div className='logo'>
-                  <img
-                    className='ad-upload-uploaded'
-                    src={`${StaticService.apiUrl}/archive/${course.logo_image_id}`}
-                    alt=''
-                  />
+              {index === hoverIndex ? (
+                <div className='class-hoverCard'>
+                  <div className='logo'>
+                    <img
+                      src={`${StaticService.apiUrl}/archive/${course.logo_image_id}`}
+                      alt=''
+                    />
+                  </div>
+                  <div className='info'>
+                    <div className='desc'>{course.description}</div>
+                    <small>{course.status}</small>
+                    <Btn feature='primary' className='w-100'>
+                      Take class
+                    </Btn>
+                  </div>
                 </div>
-                <div className='info'>
-                  <div className='desc'>{course.description}</div>
-                  <small>{course.status}</small>
-                  <Btn>Take class</Btn>
-                </div>
-              </div>
+              ) : null}
             </div>
           ))}
         </div>

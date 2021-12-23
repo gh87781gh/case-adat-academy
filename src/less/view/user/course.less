@@ -63,7 +63,7 @@
     }
 
     .class-hoverCard {
-      width: 360px;
+      width: 370px;
       position: absolute;
       top: 100%;
       left: 0;
@@ -75,14 +75,25 @@
       flex-wrap: nowrap;
       align-items: flex-start;
       justify-content: space-between;
+      gap: 16px;
       .logo {
-        width: 55px;
-        margin-right: 16px;
+        width: 64px;
+        height: 64px;
+        min-width: 64px;
+        min-height: 64px;
+        // background-color: #ccc;
       }
       .info {
         width: 100%;
+
         .desc {
           .typo-bodyDefault();
+          margin-bottom: 8px;
+        }
+        small {
+          display: block;
+          color: @color-gray04;
+          margin-bottom: 8px;
         }
       }
     }

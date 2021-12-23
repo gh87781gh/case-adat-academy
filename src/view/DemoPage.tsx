@@ -14,33 +14,32 @@ const DemoPage = () => {
         <Col span={6}>
           <h3>filled</h3>
           <p>call to actions</p>
-          <Btn type='action'>Action button</Btn>
-          <Btn type='action' props={{ disabled: true }}>
+          <Btn feature='action'>Action button</Btn>
+          <Btn feature='action' disabled={true}>
             Action button
           </Btn>
         </Col>
         <Col span={6}>
           <h3>outlined</h3>
           <p>primary</p>
-          <Btn type='primary'>Primary button</Btn>
-          <Btn type='primary' props={{ disabled: true }}>
+          <Btn feature='primary'>Primary button</Btn>
+          <Btn feature='primary' disabled={true}>
             Primary button
           </Btn>
         </Col>
         <Col span={6}>
           <h3>bordless</h3>
           <p>navigation / secondary </p>
-          <Btn type='bordless'>Text Btn</Btn>
-          <Btn type='bordless' props={{ disabled: true }}>
-            Text Btn
+          <Btn feature='secondary'>Secondary Btn</Btn>
+          <Btn feature='secondary' disabled={true}>
+            Secondary Btn
           </Btn>
         </Col>
         <Col span={6}>
           <h3>link</h3>
-          <Btn type='link'>Link Btn</Btn>
-          <Btn type='link' props={{ disabled: true }}>
-            Link Btn
-          </Btn>
+          <Btn feature='link'>Link Btn</Btn>
+          <br />
+          <small>Link Btn has no disabled status</small>
         </Col>
       </Row>
 

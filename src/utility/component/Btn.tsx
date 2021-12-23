@@ -1,34 +1,24 @@
 import { Button } from 'antd'
 
-interface IProps {
-  type?: string
-  children?: any
-  props?: any
-}
-
-const Btn = (props: IProps) => {
-  switch (props.type) {
-    case 'primary':
-      return (
-        <Button className='ad-btn-primary' {...props.props}>
-          {props.children}
-        </Button>
-      )
+const Btn = (props: any) => {
+  switch (props.feature) {
     case 'action':
       return (
-        <Button className='ad-btn-action' type='primary' {...props.props}>
+        <Button type='primary' {...props}>
           {props.children}
         </Button>
       )
-    case 'bordless':
+    case 'primary':
+      return <Button {...props}>{props.children}</Button>
+    case 'secondary':
       return (
-        <Button className='ad-btn-bordless' type='text' {...props.props}>
+        <Button type='text' {...props}>
           {props.children}
         </Button>
       )
     case 'link':
       return (
-        <Button className='ad-btn-link' type='link' {...props.props}>
+        <Button type='link' {...props}>
           {props.children}
         </Button>
       )

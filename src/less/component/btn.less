@@ -4,71 +4,83 @@
   }
 }
 
-// type
+// feature in adat (type in antd), the classNames here is from antd
+// feature = primary
 .ant-btn {
   .typo-bodyBold();
   padding: 12px;
-}
-.ad-btn-primary {
-  color: @color-black;
-  background-color: @color-white;
 
   &:hover,
   &:focus {
-    color: @color-primary-light03;
-    background-color: @color-primary;
+    background-color: @color-primary!important;
+    span {
+      color: @color-primary-light03!important;
+    }
   }
   &:active {
-    color: @color-primary-light01;
-    background-color: @color-primary;
+    background-color: @color-primary!important;
+    span {
+      color: @color-primary-light01!important;
+    }
+  }
+
+  &.w-100 {
+    width: 100%;
   }
 }
-.ad-btn-action {
+// feature = action
+.ant-btn-primary {
   &:hover,
   &:focus {
-    color: @color-primary-light03;
-    background-color: @color-black;
+    background-color: @color-black!important;
   }
   &:active {
-    color: @color-primary-light01;
-    background-color: @color-black;
+    background-color: @color-black!important;
+    span {
+      color: @color-primary-light01!important;
+    }
   }
 }
-.ad-btn-bordless {
-  color: @color-primary;
-  background-color: transparent;
+// feature = secondary
+.ant-btn-text {
+  color: @color-primary!important;
   &:hover,
   &:focus {
-    color: @color-primary;
-    background-color: @color-primary-light02;
+    background-color: @color-primary-light02!important;
+    span {
+      color: @color-primary!important;
+    }
   }
   &:active {
-    color: @color-primary-light01;
+    span {
+      color: @color-primary-light01;
+    }
     background-color: @color-primary-light02;
   }
 }
-.ad-btn-link.ant-btn-link {
+// feature = link
+.ant-btn-link {
   .typo-bodyDefault();
   font-family: NotoSansRegular;
   padding: unset;
   height: auto;
   &:hover,
   &:focus {
-    color: @color-primary;
-    background-color: unset;
+    span {
+      color: @color-primary !important;
+      text-decoration: none !important;
+    }
+    background-color: transparent !important;
   }
   &:active {
-    border: 1px solid @color-primary;
+    span {
+      color: @color-primary !important;
+      text-decoration: underline !important;
+    }
+    border: 1px solid @color-primary!important;
   }
   span {
-    &:hover,
-    &:focus {
-      text-decoration: none;
-    }
-    &,
-    &:active {
-      text-decoration: underline;
-    }
+    text-decoration: underline !important;
   }
 }
 
@@ -77,8 +89,10 @@
 .ant-btn[disabled]:hover,
 .ant-btn[disabled]:focus,
 .ant-btn[disabled]:active {
-  color: @color-gray03;
-  background-color: @color-gray02;
+  background-color: @color-gray02!important;
+  span {
+    color: @color-gray03!important;
+  }
 }
 
 // size
