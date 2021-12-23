@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from 'react'
 import { MyContext, StaticService } from 'storage'
+import { useHistory } from 'react-router-dom'
 import CourseApi from 'api/user/CourseApi'
 import { Btn } from 'utility/component'
 import {
@@ -64,6 +65,8 @@ interface IPropsStage {
 }
 
 const Stage = (props: IPropsStage) => {
+  const history = useHistory()
+
   const [hoverIndex, setHoverIndex] = useState<number | null>(null)
 
   return (
@@ -117,6 +120,7 @@ const Stage = (props: IPropsStage) => {
                       disabled={
                         !course.available || course.status === 'Not available'
                       }
+                      onClick={() => history.push(`/index/course/${course.id}`)}
                     >
                       Take class
                     </Btn>

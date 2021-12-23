@@ -10,6 +10,7 @@ import DemoPage from './DemoPage'
 
 // user console
 import Course from './user/course/Index'
+import CourseDetail from './user/course/CourseDetail'
 
 // admin console
 import AdminPurchase from './admin/purchase/Index'
@@ -36,14 +37,15 @@ const LayoutTemplate = () => {
     if (browserStorage.getStorage('AUTH')) getAuth()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const componentPage = (Component: any, authType: string, props?: any) => {
+  const componentPage = (Component: any, pageType: string, props?: any) => {
     const token = browserStorage.getStorage('AUTH')
-    return (authType !== 'LOGIN' && !token) ||
-      (authType === 'ADMIN' && token && !auth) ? (
-      <Redirect to='/login' />
-    ) : (
-      <Component {...props} />
-    )
+    if ((pageType === 'USER' || pageType === 'ADMIN') && !token) {
+      return <Redirect to='/login' />
+    } else if (pageType === 'ADMIN' && !auth.is_admin) {
+      return <Redirect to='/index' />
+    } else {
+      return <Component {...props} />
+    }
   }
 
   return (
@@ -72,6 +74,11 @@ const LayoutTemplate = () => {
                 exact={true}
                 path='/index'
                 render={() => componentPage(Course, 'USER')}
+              />
+              <Route
+                exact={true}
+                path='/index/course/:courseId'
+                render={() => componentPage(CourseDetail, 'USER')}
               />
               <Route
                 exact={true}

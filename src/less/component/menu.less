@@ -1,0 +1,49 @@
+.ant-menu.ad-menu-user-course {
+  border: 1px solid @border-color-base;
+  border-bottom: unset;
+  border-radius: 2px;
+  margin-right: unset;
+
+  .ant-menu-title-content {
+    .typo-bodyDefault();
+  }
+
+  *[role^='menuitem'] {
+    border-bottom: 1px solid @border-color-base;
+    margin: 0;
+  }
+  .ant-menu-inline .ant-menu-submenu-title {
+    padding-right: 38px !important;
+  }
+  .ant-menu-submenu-arrow {
+    right: 18px;
+  }
+  & > li {
+    // menu item level 1
+    & > .ant-menu-submenu-title {
+      color: @color-primary;
+      padding-left: 27px !important;
+    }
+    & > .ant-menu > li {
+      // menu item level 2
+      & > .ant-menu-submenu-title {
+        color: @color-primary;
+        padding-left: 57px !important;
+      }
+      & > .ant-menu > li {
+        // menu item level 3
+        .ant-menu-title-content {
+          display: flex;
+          flex-wrap: nowrap;
+          gap: 5px;
+          justify-content: space-between;
+        }
+      }
+    }
+  }
+
+  .ad-menu-user-course-section-text {
+  }
+  .ad-menu-user-course-section-icon {
+  }
+}

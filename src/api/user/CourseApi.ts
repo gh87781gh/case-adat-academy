@@ -10,19 +10,13 @@ export default class CourseApi {
     Object.keys(data).forEach((key: string) => {
       if (data[key]) query.push(`${key}=${data[key]}`)
     })
-
-    return new Promise((resolve, reject) => {
-      this.restAPI
-        .request('get', `/user/${coursesType}?${query.join('&')}`, {})
-        .then((res: any) => {
-          res.data.forEach((item: any, index: number) => {
-            item.key = index
-          })
-          resolve(res)
-        })
-        .catch(() => {
-          reject(false)
-        })
-    })
+    return this.restAPI.request(
+      'get',
+      `/user/${coursesType}?${query.join('&')}`,
+      {}
+    )
+  }
+  getCourseDetail = (id: string) => {
+    return this.restAPI.request('get', `/user/course/${id}`, {})
   }
 }

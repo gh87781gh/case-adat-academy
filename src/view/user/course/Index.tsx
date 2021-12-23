@@ -1,11 +1,12 @@
 import { useState, useEffect, useContext } from 'react'
 import { MyContext, StaticService } from 'storage'
+import { useHistory } from 'react-router-dom'
 import CourseApi from 'api/user/CourseApi'
 import Header from 'view/layout/Header'
 import Footer from 'view/layout/Footer'
 import { IconArrowDown, IconBookmark } from 'utility/icon'
 import { Btn } from 'utility/component'
-import LearningPath from './LearningPath'
+import LearningPath from './component/LearningPath'
 
 import { Row, Col, Select, Pagination } from 'antd'
 const { Option } = Select
@@ -17,6 +18,7 @@ interface IState {
 const Index = () => {
   const context = useContext(MyContext)
   const api = new CourseApi()
+  const history = useHistory()
 
   const [data, setData] = useState<IState>({
     coursesType: 'courseA'
@@ -25,136 +27,7 @@ const Index = () => {
     setData({ ...data, [key]: value })
   }
 
-  const [list, setList] = useState([
-    {
-      available: true,
-      description: 'Test description',
-      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
-      last_read_day: 0,
-      logo_image_id: '',
-      name: 'Test Course A'
-    },
-    {
-      available: true,
-      description: 'Test description',
-      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
-      last_read_day: 0,
-      logo_image_id: '',
-      name: 'Test Course A'
-    },
-    {
-      available: true,
-      description: 'Test description',
-      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
-      last_read_day: 0,
-      logo_image_id: '',
-      name: 'Test Course A'
-    },
-    {
-      available: true,
-      description: 'Test description',
-      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
-      last_read_day: 0,
-      logo_image_id: '',
-      name: 'Test Course A'
-    },
-    {
-      available: true,
-      description: 'Test description',
-      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
-      last_read_day: 0,
-      logo_image_id: '',
-      name: 'Test Course A'
-    },
-    {
-      available: true,
-      description: 'Test description',
-      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
-      last_read_day: 0,
-      logo_image_id: '',
-      name: 'Test Course A'
-    },
-    {
-      available: true,
-      description: 'Test description',
-      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
-      last_read_day: 0,
-      logo_image_id: '',
-      name: 'Test Course A'
-    },
-    {
-      available: true,
-      description: 'Test description',
-      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
-      last_read_day: 0,
-      logo_image_id: '',
-      name: 'Test Course A'
-    },
-    {
-      available: true,
-      description: 'Test description',
-      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
-      last_read_day: 0,
-      logo_image_id: '',
-      name: 'Test Course A'
-    },
-    {
-      available: true,
-      description: 'Test description',
-      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
-      last_read_day: 0,
-      logo_image_id: '',
-      name: 'Test Course A'
-    },
-    {
-      available: true,
-      description: 'Test description',
-      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
-      last_read_day: 0,
-      logo_image_id: '',
-      name: 'Test Course A'
-    },
-    {
-      available: true,
-      description: 'Test description',
-      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
-      last_read_day: 0,
-      logo_image_id: '',
-      name: 'Test Course A'
-    },
-    {
-      available: true,
-      description: 'Test description',
-      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
-      last_read_day: 0,
-      logo_image_id: '',
-      name: 'Test Course A'
-    },
-    {
-      available: true,
-      description: 'Test description',
-      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
-      last_read_day: 0,
-      logo_image_id: '',
-      name: 'Test Course A'
-    },
-    {
-      available: true,
-      description: 'Test description',
-      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
-      last_read_day: 0,
-      logo_image_id: '',
-      name: 'Test Course A'
-    },
-    {
-      available: true,
-      description: 'Test description',
-      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
-      last_read_day: 0,
-      logo_image_id: '',
-      name: 'Test Course A'
-    }
-  ])
+  const [list, setList] = useState([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
   const getCoursesByLearningPath = (toPage?: number) => {
@@ -223,10 +96,10 @@ const Index = () => {
               </Btn>
             </Col>
           </Row>
-          <ul className='ad-section-course-list-group'>
+          <ul className='ad-course-list-group'>
             {list.map((course: any) => (
-              <li className='ad-section-course-list'>
-                <div className='ad-section-course-list-img'>
+              <li className='ad-course-list' key={course.id}>
+                <div className='ad-course-list-img'>
                   {course.logo_image_id ? (
                     <img
                       src={`${StaticService.apiUrl}/archive/${course.logo_image_id}`}
@@ -234,17 +107,18 @@ const Index = () => {
                     />
                   ) : null}
                 </div>
-                <div className='ad-section-course-list-content'>
+                <div className='ad-course-list-content'>
                   <h2>{course.name}</h2>
                   <p>{course.description}</p>
                 </div>
-                <div className='ad-section-course-list-action'>
+                <div className='ad-course-list-action'>
                   <Btn
                     className='w-100'
                     feature='primary'
                     disabled={
                       !course.available || course.status === 'Not available'
                     }
+                    onClick={() => history.push(`/index/course/${course.id}`)}
                   >
                     Take class
                   </Btn>

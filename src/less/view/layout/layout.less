@@ -22,6 +22,24 @@ article {
   //   padding-right: 15px;
   // }
 }
+.ad-layout-banner {
+  height: 275px;
+  background-image: url('/assets/img/industry.jpg');
+
+  &::before {
+    content: '';
+    display: block;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      rgba(0, 164, 241, 0.7) -0.01%,
+      rgba(4, 126, 243, 0.7) 20.11%,
+      rgba(10, 58, 247, 0.7) 58.24%,
+      rgba(14, 16, 250, 0.7) 85.88%,
+      rgba(16, 0, 251, 0.7) 100%
+    );
+  }
+}
 
 // admin
 .ad-layout-admin {

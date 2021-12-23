@@ -48,7 +48,10 @@ const Header = () => {
       <div className='ad-layout-container ad-header-container'>
         {/* TODO switch logo */}
         {/* <div className='ad-header-container-logo'> */}
-        <div className='ad-header-container-logo-primary'>
+        <div
+          className='ad-header-container-logo-primary'
+          onClick={() => history.push('/index')}
+        >
           <IconADATFull />
         </div>
         <ul className='ad-header-tabHead'>

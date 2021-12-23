@@ -1,8 +1,25 @@
+@section-padding-y: 55px;
+@section-padding-x: 70px;
+@section-course-detail-top-move: -150px;
+@section-course-detail-title-padding-x: 150px;
+
 .ad-section {
   background-color: @color-gray01;
+  position: relative;
+}
+.ad-section-breadcrumb {
+  top: @section-course-detail-top-move;
+  border-bottom: 1px solid @border-color-base;
+  padding: 16px @section-course-detail-title-padding-x;
 }
 .ad-section-course {
-  padding: 55px 70px;
-  position: relative;
+  padding: @section-padding-y @section-padding-x;
   top: -80px;
+}
+.ad-section-course-detail {
+  top: @section-course-detail-top-move;
+}
+.ad-section-course-detail-title {
+  top: @section-course-detail-top-move;
+  padding: 60px @section-course-detail-title-padding-x 70px;
 }
