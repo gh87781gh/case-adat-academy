@@ -114,7 +114,9 @@ const Stage = (props: IPropsStage) => {
                     <Btn
                       feature='primary'
                       className='w-100'
-                      disabled={course.status === 'Not available'}
+                      disabled={
+                        !course.available || course.status === 'Not available'
+                      }
                     >
                       Take class
                     </Btn>
