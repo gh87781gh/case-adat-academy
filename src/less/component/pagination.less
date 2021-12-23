@@ -1,0 +1,30 @@
+.ad-pagination-box {
+  text-align: right;
+}
+.ant-pagination {
+  .ant-pagination-item {
+    border: unset;
+    border-radius: 4px;
+    a {
+      .typo-bodyDefault();
+      line-height: @pagination-width;
+      color: @color-black;
+    }
+
+    &:hover,
+    &:active,
+    &.ant-pagination-item-active {
+      background-color: @color-primary-light01;
+      a {
+        .typo-bodyBold();
+        line-height: @pagination-width;
+        color: @color-white;
+      }
+    }
+  }
+
+  .ant-pagination-item-link {
+    border-color: transparent !important;
+    background-color: transparent !important;
+  }
+}

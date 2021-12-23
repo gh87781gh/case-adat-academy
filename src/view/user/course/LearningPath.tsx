@@ -101,15 +101,21 @@ const Stage = (props: IPropsStage) => {
               {index === hoverIndex ? (
                 <div className='class-hoverCard'>
                   <div className='logo'>
-                    <img
-                      src={`${StaticService.apiUrl}/archive/${course.logo_image_id}`}
-                      alt=''
-                    />
+                    {course.logo_image_id ? (
+                      <img
+                        src={`${StaticService.apiUrl}/archive/${course.logo_image_id}`}
+                        alt=''
+                      />
+                    ) : null}
                   </div>
                   <div className='info'>
                     <div className='desc'>{course.description}</div>
                     <small>{course.status}</small>
-                    <Btn feature='primary' className='w-100'>
+                    <Btn
+                      feature='primary'
+                      className='w-100'
+                      disabled={course.status === 'Not available'}
+                    >
                       Take class
                     </Btn>
                   </div>
@@ -140,7 +146,7 @@ const LearningPath = () => {
   return (
     <div className='ad-course-banner-path'>
       {/* TODO fakeData 要改用 data */}
-      {fakeData.map((stage: any, index: number) => (
+      {data.map((stage: any, index: number) => (
         <Stage stage={stage} key={index} />
       ))}
     </div>

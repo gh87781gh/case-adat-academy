@@ -1,18 +1,187 @@
+import { useState, useEffect, useContext, useRef } from 'react'
+import { MyContext, StaticService } from 'storage'
+import GlobalApi from 'api/GlobalApi'
+import CourseApi from 'api/user/CourseApi'
 import Header from 'view/layout/Header'
 import Footer from 'view/layout/Footer'
 import { IconArrowDown, IconBookmark } from 'utility/icon'
 import { Btn } from 'utility/component'
 import LearningPath from './LearningPath'
 
-import { Button, Row, Col, Select } from 'antd'
+import { Button, Row, Col, Select, Pagination } from 'antd'
 const { Option } = Select
 
+interface IState {
+  coursesType: string
+}
+
 const Index = () => {
+  const context = useContext(MyContext)
+  const api_global = new GlobalApi()
+  const api = new CourseApi()
+
+  const [data, setData] = useState<IState>({
+    coursesType: 'courseA'
+  })
+  const onSelect = (key: string, value: any) => {
+    setData({ ...data, [key]: value })
+  }
+
+  const [list, setList] = useState([
+    {
+      available: true,
+      description: 'Test description',
+      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
+      last_read_day: 0,
+      logo_image_id: '',
+      name: 'Test Course A'
+    },
+    {
+      available: true,
+      description: 'Test description',
+      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
+      last_read_day: 0,
+      logo_image_id: '',
+      name: 'Test Course A'
+    },
+    {
+      available: true,
+      description: 'Test description',
+      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
+      last_read_day: 0,
+      logo_image_id: '',
+      name: 'Test Course A'
+    },
+    {
+      available: true,
+      description: 'Test description',
+      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
+      last_read_day: 0,
+      logo_image_id: '',
+      name: 'Test Course A'
+    },
+    {
+      available: true,
+      description: 'Test description',
+      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
+      last_read_day: 0,
+      logo_image_id: '',
+      name: 'Test Course A'
+    },
+    {
+      available: true,
+      description: 'Test description',
+      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
+      last_read_day: 0,
+      logo_image_id: '',
+      name: 'Test Course A'
+    },
+    {
+      available: true,
+      description: 'Test description',
+      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
+      last_read_day: 0,
+      logo_image_id: '',
+      name: 'Test Course A'
+    },
+    {
+      available: true,
+      description: 'Test description',
+      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
+      last_read_day: 0,
+      logo_image_id: '',
+      name: 'Test Course A'
+    },
+    {
+      available: true,
+      description: 'Test description',
+      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
+      last_read_day: 0,
+      logo_image_id: '',
+      name: 'Test Course A'
+    },
+    {
+      available: true,
+      description: 'Test description',
+      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
+      last_read_day: 0,
+      logo_image_id: '',
+      name: 'Test Course A'
+    },
+    {
+      available: true,
+      description: 'Test description',
+      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
+      last_read_day: 0,
+      logo_image_id: '',
+      name: 'Test Course A'
+    },
+    {
+      available: true,
+      description: 'Test description',
+      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
+      last_read_day: 0,
+      logo_image_id: '',
+      name: 'Test Course A'
+    },
+    {
+      available: true,
+      description: 'Test description',
+      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
+      last_read_day: 0,
+      logo_image_id: '',
+      name: 'Test Course A'
+    },
+    {
+      available: true,
+      description: 'Test description',
+      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
+      last_read_day: 0,
+      logo_image_id: '',
+      name: 'Test Course A'
+    },
+    {
+      available: true,
+      description: 'Test description',
+      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
+      last_read_day: 0,
+      logo_image_id: '',
+      name: 'Test Course A'
+    },
+    {
+      available: true,
+      description: 'Test description',
+      id: 'dd0cf1fd-0aa3-406a-8bf0-8cf496f36a32',
+      last_read_day: 0,
+      logo_image_id: '',
+      name: 'Test Course A'
+    }
+  ])
+  const [total, setTotal] = useState(0)
+  const [page, setPage] = useState(1)
+  const getCoursesByLearningPath = (toPage?: number) => {
+    const page = toPage ?? 1
+    setPage(page)
+
+    context.setIsLoading(true)
+    api
+      .getCoursesByLearningPath(data.coursesType, { page })
+      .then((res: any) => {
+        setList(res.data)
+        setTotal(res.total)
+      })
+      .finally(() => context.setIsLoading(false))
+  }
+
+  useEffect(() => {
+    getCoursesByLearningPath()
+  }, [data.coursesType]) // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <>
       <Header />
       <div className='ad-course-banner'>
-        <div className='container'>
+        <div className='ad-layout-container'>
           <p className='desc'>
             Based on your <Btn feature='link'>learning profile</Btn>, we
             recommend this
@@ -24,7 +193,7 @@ const Index = () => {
         </div>
       </div>
       <article>
-        <section className='ad-section ad-section-course'>
+        <section className='ad-layout-container ad-section ad-section-course'>
           <Row>
             <Col span={20}>
               <div className='ad-clearfix'>
@@ -34,24 +203,17 @@ const Index = () => {
                   </label>
                   <Select
                     style={{ width: '300px' }}
-                    // open={true}
-                    // value={data.industry}
+                    value={data.coursesType}
                     placeholder='Please select'
                     suffixIcon={<IconArrowDown />}
-                    // onChange={(val) => onSelect('industry', val)}
+                    onChange={(val) => onSelect('coursesType', val)}
                   >
-                    {/* TODO get list from api and set default*/}
-                    <Option value='option1' key='option1'>
+                    <Option value='courseA' key='courseA'>
                       Based on learning path
                     </Option>
-                    <Option value='option2' key='option2'>
+                    <Option value='courseB' key='courseB'>
                       All available course
                     </Option>
-                    {/* {list.map((item: any) => (
-                      <Option value={item.value} key={item.value}>
-                        {item.name}
-                      </Option>
-                    ))} */}
                   </Select>
                 </div>
               </div>
@@ -63,62 +225,53 @@ const Index = () => {
               </Btn>
             </Col>
           </Row>
-          <ul className='ad-card-group'>
-            <li className='ad-card'>
-              <div className='ad-card-img'>
-                {/* <img src='../../utility/' alt='' /> logo pic */}
-              </div>
-              <div className='ad-card-content'>
-                <h2>SYSTEM ARCHITECTURE</h2>
-                <p>
-                  Some DescriptionSome DescriptionSome DescriptionSome Some
-                  DescriptionSome DescriptionSome DescriptionSome
-                </p>
-              </div>
-              <div className='ad-card-action'>
-                <Button
-                //  onClick={() => history.push('/Course')}
-                >
-                  Take class
-                </Button>
-                <small>
-                  <span>3 DAYS AGO</span> LAST READ
-                </small>
-              </div>
-            </li>
-            <li className='ad-card'>
-              <div className='ad-card-img'>{/* <LogoAIR /> */}</div>
-              <div className='ad-card-content'>
-                <h2>SYSTEM ARCHITECTURE</h2>
-                <p>
-                  Some DescriptionSome DescriptionSome DescriptionSome Some
-                  DescriptionSome DescriptionSome DescriptionSome
-                </p>
-              </div>
-              <div className='ad-card-action'>
-                <Button>Take class</Button>
-                <small>
-                  <span>3 DAYS AGO</span> LAST READ
-                </small>
-              </div>
-            </li>
-            <li className='ad-card'>
-              <div className='ad-card-img'>{/* <LogoAIR /> */}</div>
-              <div className='ad-card-content'>
-                <h2>SYSTEM ARCHITECTURE</h2>
-                <p>
-                  Some DescriptionSome DescriptionSome DescriptionSome Some
-                  DescriptionSome DescriptionSome DescriptionSome
-                </p>
-              </div>
-              <div className='ad-card-action'>
-                <Button>Take class</Button>
-                <small>
-                  <span>3 DAYS AGO</span> LAST READ
-                </small>
-              </div>
-            </li>
+          <ul className='ad-section-course-list-group'>
+            {list.map((course: any) => (
+              <li className='ad-section-course-list'>
+                <div className='ad-section-course-list-img'>
+                  {course.logo_image_id ? (
+                    <img
+                      src={`${StaticService.apiUrl}/archive/${course.logo_image_id}`}
+                      alt=''
+                    />
+                  ) : null}
+                </div>
+                <div className='ad-section-course-list-content'>
+                  <h2>{course.name}</h2>
+                  <p>{course.description}</p>
+                </div>
+                <div className='ad-section-course-list-action'>
+                  <Btn
+                    className='w-100'
+                    feature='primary'
+                    disabled={
+                      !course.available || course.status === 'Not available'
+                    }
+                  >
+                    Take class
+                  </Btn>
+                  <small>
+                    {course.status === 'Not started' ||
+                    course.status === 'Not available' ||
+                    course.status === 'All read' ? (
+                      <>{course.status}</>
+                    ) : course.status === 'In progress' ? (
+                      <>
+                        <span>{course.last_read_day} DAYS AGO</span> LAST READ
+                      </>
+                    ) : null}
+                  </small>
+                </div>
+              </li>
+            ))}
           </ul>
+          <div className='ad-pagination-box'>
+            <Pagination
+              current={page}
+              total={total}
+              onChange={(page: number) => getCoursesByLearningPath(page)}
+            />
+          </div>
         </section>
       </article>
       <Footer />

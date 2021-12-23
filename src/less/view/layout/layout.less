@@ -9,8 +9,18 @@ article {
 }
 
 // user
+@layout-user-container-max-width: 1200px;
 .ad-layout-article {
   padding-top: @header-height;
+}
+.ad-layout-container {
+  max-width: @layout-user-container-max-width;
+  margin-left: auto;
+  margin-right: auto;
+  @media (max-width: @layout-user-container-max-width + 15px) {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
 }
 
 // admin

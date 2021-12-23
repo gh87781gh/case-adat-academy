@@ -3,9 +3,6 @@
   .bg-gradient-default();
   padding-top: 140px;
   padding-bottom: 240px;
-  .container {
-    .layout-user-container();
-  }
   .desc {
     color: @color-primary;
     margin-bottom: 8px;
@@ -95,6 +92,55 @@
           color: @color-gray04;
           margin-bottom: 8px;
         }
+      }
+    }
+  }
+}
+.ad-section-course-list {
+  padding-top: 56px;
+  padding-bottom: 56px;
+  display: flex;
+  align-items: flex-start;
+  gap: 73px;
+  &:not(:last-child) {
+    border-bottom: 1px dashed #000;
+  }
+
+  .ad-section-course-list-group {
+    .ulReset();
+  }
+  .ad-section-course-list-img {
+    .size(90px,90px);
+    width: 90px;
+    min-width: 90px;
+    height: 90px;
+
+    img {
+      .size(100%,100%);
+    }
+  }
+  .ad-section-course-list-content {
+    width: 100%;
+    h2 {
+      color: @color-primary;
+      margin-bottom: 4px;
+    }
+    p {
+      color: @color-gray03;
+      margin-bottom: unset;
+    }
+  }
+  .ad-section-course-list-action {
+    min-width: 216px;
+    .ant-btn {
+      margin-bottom: 12px;
+    }
+    small {
+      display: block;
+      text-align: right;
+      color: @color-gray03;
+      span {
+        color: @color-primary;
       }
     }
   }
