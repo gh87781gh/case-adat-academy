@@ -323,3 +323,23 @@ const svgLevels = () => (
 export const IconLevels = (props: any) => {
   return <Icon component={svgLevels} {...props} />
 }
+const svgSuccess = () => (
+  <svg width='24' height='24' viewBox='0 0 24 24' fill='none'>
+    <circle
+      cx='12'
+      cy='12'
+      r='11.5'
+      fill='currentColor'
+      stroke='currentColor'
+    />
+    <path
+      fillRule='evenodd'
+      clipRule='evenodd'
+      d='M17.7619 8.5716L12.0628 16.7564C11.8496 17.0626 11.5062 17.2522 11.1335 17.2694C10.7609 17.2867 10.4014 17.1296 10.1608 16.8444L6.40039 12.3867L8.23485 10.8392L10.9869 14.1016L15.7923 7.2002L17.7619 8.5716Z'
+      fill='#fff'
+    />
+  </svg>
+)
+export const IconSuccess = (props: any) => {
+  return <Icon component={svgSuccess} {...props} />
+}

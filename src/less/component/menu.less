@@ -1,33 +1,29 @@
+@menu-item-default-color: @color-gray04;
 .ant-menu.ad-menu-user-course {
   border: 1px solid @border-color-base;
   border-bottom: unset;
   border-radius: 2px;
   margin-right: unset;
 
-  .ant-menu-title-content {
-    .typo-bodyDefault();
-  }
-
+  // ad default menu item
   *[role^='menuitem'] {
     border-bottom: 1px solid @border-color-base;
     margin: 0;
   }
-  .ant-menu-inline .ant-menu-submenu-title {
-    padding-right: 38px !important;
+  .ant-menu-title-content {
+    .typo-bodyDefault();
   }
-  .ant-menu-submenu-arrow {
-    right: 18px;
+  .ant-menu-submenu-selected {
+    color: @menu-item-default-color;
   }
   & > li {
     // menu item level 1
     & > .ant-menu-submenu-title {
-      color: @color-primary;
       padding-left: 27px !important;
     }
     & > .ant-menu > li {
       // menu item level 2
       & > .ant-menu-submenu-title {
-        color: @color-primary;
         padding-left: 57px !important;
       }
       & > .ant-menu > li {
@@ -42,8 +38,37 @@
     }
   }
 
-  .ad-menu-user-course-section-text {
+  // arrow
+  .ant-menu-submenu-arrow {
+    right: 20px;
+    color: @color-gray03;
   }
+
+  // expand
+  .ant-menu-submenu-open > .ant-menu-submenu-title {
+    .ant-menu-item-icon,
+    .ant-menu-title-content,
+    .ant-menu-submenu-arrow {
+      color: @color-primary;
+    }
+  }
+
+  // section style - active
+  .ant-menu-inline .ant-menu-item::after {
+    border-right: unset;
+    right: unset;
+    border-left: 4px solid @color-primary;
+    left: 0;
+  }
+  .ant-menu-item-selected .ant-menu-title-content {
+    .typo-bodyBold();
+  }
+
+  // section style - completed
   .ad-menu-user-course-section-icon {
+    max-height: 24px;
+    .icon-success {
+      color: @color-success;
+    }
   }
 }

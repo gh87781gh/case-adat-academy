@@ -4,7 +4,12 @@ import { useHistory, useParams } from 'react-router-dom'
 import CourseApi from 'api/user/CourseApi'
 import Header from 'view/layout/Header'
 import Footer from 'view/layout/Footer'
-import { IconArrowDown, IconBookmark, IconLevels } from 'utility/icon'
+import {
+  IconArrowDown,
+  IconBookmark,
+  IconLevels,
+  IconSuccess
+} from 'utility/icon'
 import { Btn } from 'utility/component'
 import LearningPath from './component/LearningPath'
 import {
@@ -26,9 +31,9 @@ const CourseDetail = () => {
   const history = useHistory()
   const { courseId } = useParams<{ courseId: string }>()
 
-  const [menu, setMenu] = useState<any>({})
+  const [menu, setMenu] = useState<any>([])
   const [courseName, setCourseName] = useState<string>('')
-  const [courseImage, setCourseImage] = useState<string>('')
+  const [courseLogoImage, setCourseLogoImage] = useState<string>('')
   const [lastReadSectionId, setLastReadSectionId] = useState<string>('')
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
 
@@ -39,7 +44,7 @@ const CourseDetail = () => {
       .then((res: any) => {
         setMenu(res.data)
         setCourseName(res.name)
-        setCourseImage(res.name)
+        setCourseLogoImage(res.logo_image_id)
         setLastReadSectionId(res.last_read_section_id)
         setIsBookmarked(res.is_bookmarked)
       })
@@ -63,9 +68,9 @@ const CourseDetail = () => {
         <SubMenu key='1' icon={<IconLevels />} title='Navigation Two'>
           <SubMenu key='1-1' title='Submenu'>
             <Menu.Item key='1-1-1'>
-              <div className='ad-menu-user-course-section-text'>Option 7</div>
+              <div>Option 7</div>
               <div className='ad-menu-user-course-section-icon'>
-                <IconLevels />
+                <IconSuccess className='icon-success' />
               </div>
             </Menu.Item>
             <Menu.Item key='1-1-2'>Option 8</Menu.Item>
@@ -73,12 +78,6 @@ const CourseDetail = () => {
           <SubMenu key='1-2' title='Submenu'>
             <Menu.Item key='1-2-1'>Option 7</Menu.Item>
             <Menu.Item key='1-2-2'>Option 8</Menu.Item>
-          </SubMenu>
-        </SubMenu>
-        <SubMenu key='2' icon={<IconLevels />} title='Navigation Two'>
-          <SubMenu key='2-1' title='Submenu'>
-            <Menu.Item key='2-1-1'>Option 7</Menu.Item>
-            <Menu.Item key='2-1-2'>Option 8</Menu.Item>
           </SubMenu>
         </SubMenu>
       </Menu>
@@ -96,20 +95,20 @@ const CourseDetail = () => {
               <Btn feature='link'>Course</Btn>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-              <b>{courseName}123456</b>
+              <b>{courseName}</b>
             </Breadcrumb.Item>
           </Breadcrumb>
         </section>
         <section className='ad-layout-container ad-section ad-section-course-detail-title'>
           <div className='ad-course-detail-logo'>
-            {setCourseImage ? (
+            {courseLogoImage ? (
               <img
-                src={`${StaticService.apiUrl}/archive/${setCourseImage}`}
+                src={`${StaticService.apiUrl}/archive/${courseLogoImage}`}
                 alt=''
               />
             ) : null}
           </div>
-          <h1 className='ad-course-detail-title'>{courseName}12345678</h1>
+          <h1 className='ad-course-detail-title'>{courseName}</h1>
         </section>
         <section className='ad-layout-container ad-section ad-section-course-detail'>
           <Row gutter={20}>
