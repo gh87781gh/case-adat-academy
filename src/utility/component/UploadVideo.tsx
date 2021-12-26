@@ -1,9 +1,9 @@
 import { useContext, useRef } from 'react'
 import { MyContext, StaticService } from 'storage'
 import { IconUploadVideo } from 'utility/icon'
+import VideoPlayer from './VideoPlayer'
 import GlobalApi from 'api/GlobalApi'
 import { Button } from 'antd'
-import VideoJS from 'view/admin/course/courseDetail/VideoJS'
 
 interface IProps {
   type: string
@@ -18,34 +18,6 @@ const UploadVideo = (props: IProps) => {
   const context = useContext(MyContext)
   const api = new GlobalApi()
   const inputEl = useRef<HTMLInputElement>(null)
-
-  const playerRef = useRef<any>(null)
-  const videoJsOptions: any = {
-    // lookup the options in the docs for more options
-    autoplay: false,
-    controls: true,
-    responsive: true,
-    fluid: true,
-    sources: [
-      {
-        src: `${StaticService.apiUrl}/archive/${props.imgId}`,
-        type: 'video/mp4'
-      }
-    ]
-  }
-
-  const handlePlayerReady = (player: any) => {
-    playerRef.current = player
-
-    // you can handle player events here
-    player.on('waiting', () => {
-      console.log('player is waiting')
-    })
-
-    player.on('dispose', () => {
-      console.log('player will dispose')
-    })
-  }
 
   const upload = (event: any) => {
     // console.log('event.target.files[0]:', event.target.files[0])
@@ -65,7 +37,7 @@ const UploadVideo = (props: IProps) => {
     <div className={`ad-upload ${props.type}`}>
       <label>
         {props.imgId ? (
-          <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
+          <VideoPlayer id={props.imgId} />
         ) : (
           <span className='ad-upload-watermark'>
             <IconUploadVideo />

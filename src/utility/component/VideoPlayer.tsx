@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import { MyContext, StaticService } from 'storage'
 import videojs from 'video.js'
 import 'video.js/dist/video-js.css'
 
@@ -44,4 +45,39 @@ const VideoJS = (props: any) => {
   )
 }
 
-export default VideoJS
+interface IProps {
+  id: string | null
+}
+const VideoPlayer = (props: IProps) => {
+  const playerRef = useRef<any>(null)
+  const videoJsOptions: any = {
+    // lookup the options in the docs for more options
+    autoplay: false,
+    controls: true,
+    responsive: true,
+    fluid: true,
+    sources: [
+      {
+        src: `${StaticService.apiUrl}/archive/${props.id}`,
+        type: 'video/mp4'
+      }
+    ]
+  }
+  const handlePlayerReady = (player: any) => {
+    playerRef.current = player
+
+    // you can handle player events here
+    player.on('waiting', () => {
+      console.log('player is waiting')
+    })
+
+    player.on('dispose', () => {
+      console.log('player will dispose')
+    })
+  }
+
+  return props.id ? (
+    <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
+  ) : null
+}
+export default VideoPlayer

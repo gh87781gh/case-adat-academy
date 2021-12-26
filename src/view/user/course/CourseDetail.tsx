@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, useRef } from 'react'
 import { MyContext, StaticService } from 'storage'
 import { useHistory, useParams } from 'react-router-dom'
 import CourseApi from 'api/user/CourseApi'
@@ -10,7 +10,7 @@ import {
   IconLevels,
   IconSuccess
 } from 'utility/icon'
-import { Btn } from 'utility/component'
+import { Btn, VideoPlayer } from 'utility/component'
 import LearningPath from './component/LearningPath'
 import {
   AppstoreOutlined,
@@ -43,7 +43,7 @@ const CourseDetail = () => {
   const [menu, setMenu] = useState<any>([])
 
   // current section
-  const [currentSection, setCurrentSection] = useState<any>([])
+  const [currentSection, setCurrentSection] = useState<any>({})
   useEffect(() => {
     if (menu.length > 0 && selectedKeys.length > 0) {
       // set current section
@@ -147,10 +147,26 @@ const CourseDetail = () => {
         <section className='ad-layout-container ad-section ad-section-course-detail'>
           <Row gutter={20}>
             <Col span={6}>{renderMenu()}</Col>
-            <Col span={18}>
+            <Col span={15}>
               <div className='ad-course-detail-current-section'>
                 <h2>{currentSection.name}</h2>
-                <div className=''></div>
+                {currentSection
+                  ? currentSection.sections?.map(
+                      (content: any, index: number) => (
+                        <div key={index}>
+                          {/* props.item.type = title | picture | video | paragraph */}
+                          {content.type === 'video' ? (
+                            <VideoPlayer
+                              // id={content.archive_id}
+
+                              // TODO only for test ，可再刪掉
+                              id={'bdac3685-bac0-4869-8d75-877156a9680b'}
+                            />
+                          ) : null}
+                        </div>
+                      )
+                    )
+                  : null}
               </div>
             </Col>
           </Row>
