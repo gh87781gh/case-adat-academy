@@ -22,14 +22,18 @@ export default class CourseApi {
         .request('get', `/user/course/${id}`, {})
         .then((res: any) => {
           // add key on every item
-          // 轉成巢狀結構以因應 ui 的 menu component
           let keyA: number = 0
           let keyB: number = 0
           let keyC: number = 0
+
+          // 轉成巢狀結構以因應 ui 的 menu component
           let newAry: any = []
           let newIndexA: number | null = null
           let newIndexB: number | null = null
-          let firstSectionId: string = ''
+
+          let selectedKeys: any = [] // current section
+          let menuOpenKeys: any = [] // all open group and chapter keys
+
           res.data.forEach((item: any, index: number) => {
             switch (item.level) {
               case 1:
@@ -58,16 +62,34 @@ export default class CourseApi {
                 if (newIndexA !== null && newIndexB !== null) {
                   newAry[newIndexA].children[newIndexB].children.push(item)
                 }
-                // 抓第一個 section
-                if (!firstSectionId) firstSectionId = item.id
+
+                // If has no last read record, get the first section to be the default active key
+                if (!res.last_read_section_id && selectedKeys.length === 0) {
+                  selectedKeys.push(item.key)
+                }
+
                 break
             }
           })
 
-          res.data = newAry
-          if (!res.last_read_section_id)
-            res.last_read_section_id = firstSectionId
+          res.data.forEach((item: any) => {
+            // all submenu open for default
+            if (item.level === 1 || item.level === 2) {
+              menuOpenKeys.push(item.key)
+            }
 
+            // If has last read record, use it to be the default active key
+            if (
+              res.last_read_section_id &&
+              res.last_read_section_id === item.id
+            ) {
+              selectedKeys.push(item.key)
+            }
+          })
+
+          res.menuOpenKeys = menuOpenKeys
+          res.selectedKeys = selectedKeys
+          res.data = newAry
           resolve(res)
         })
         .catch(() => {

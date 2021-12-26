@@ -31,14 +31,39 @@ const CourseDetail = () => {
   const history = useHistory()
   const { courseId } = useParams<{ courseId: string }>()
 
-  const [menu, setMenu] = useState<any>([])
+  // course detail setting
   const [courseName, setCourseName] = useState<string>('')
   const [courseLogoImage, setCourseLogoImage] = useState<string>('')
   const [lastReadSectionId, setLastReadSectionId] = useState<string>('')
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
-  const [currentSection, setCurrentSection] = useState<any>([])
 
-  const getCourseDetail = () => {
+  // course menu
+  const [menuOpenKeys, setMenuOpenKeys] = useState<any>([])
+  const [selectedKeys, setSelectedKeys] = useState<any>([])
+  const [menu, setMenu] = useState<any>([])
+
+  // current section
+  const [currentSection, setCurrentSection] = useState<any>([])
+  useEffect(() => {
+    if (menu.length > 0 && selectedKeys.length > 0) {
+      // set current section
+      for (const group of menu) {
+        for (const chapter of group.children) {
+          for (const section of chapter.children) {
+            if (section.key === selectedKeys[0]) {
+              setCurrentSection(section)
+              break
+            }
+          }
+          break
+        }
+        break
+      }
+    }
+  }, [menu, selectedKeys]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // init page
+  useEffect(() => {
     context.setIsLoading(true)
     api
       .getCourseDetail(courseId)
@@ -48,55 +73,19 @@ const CourseDetail = () => {
         setLastReadSectionId(res.last_read_section_id)
         setIsBookmarked(res.is_bookmarked)
         setMenu(res.data)
+        setMenuOpenKeys(res.menuOpenKeys)
+        setSelectedKeys(res.selectedKeys)
       })
       .finally(() => context.setIsLoading(false))
-  }
-
-  useEffect(() => {
-    getCourseDetail()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    if (menu) {
-      console.log('lastReadSectionId:', lastReadSectionId)
-      if (lastReadSectionId) {
-        for (const group of menu) {
-          console.log('group:', group)
-
-          for (const chapter of group.children) {
-            console.log('chapter:', chapter)
-
-            for (const section of chapter.children) {
-              console.log('section:', section)
-              if (section.sections.length > 0)
-                setCurrentSection(section.sections)
-              console.log('section.sections:', section.sections)
-
-              break
-              // TODO 最後閱讀 id 是正確的後要打開這個
-              // if (section.id === lastReadSectionId) {
-              //   setCurrentSection(section.sections)
-              //   break
-              // }
-            }
-            break
-          }
-          break
-        }
-      } else {
-        setCurrentSection(menu[0]?.children[0]?.children[0]?.sections)
-      }
-      console.log('currentSection:', currentSection)
-    }
-  }, [menu]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const renderMenu = () => {
     return (
       <Menu
         className='ad-menu-user-course'
-        // onClick={this.handleClick}
-        style={{ width: 256 }}
-        defaultSelectedKeys={['1']}
-        defaultOpenKeys={['1', '1-1', '1-2', '2', '2-1', '2-2']}
+        onOpenChange={(keys: any) => setMenuOpenKeys(keys)}
+        openKeys={menuOpenKeys}
+        selectedKeys={selectedKeys}
         mode='inline'
       >
         {menu.map((group: any) => (
@@ -104,7 +93,13 @@ const CourseDetail = () => {
             {group.children.map((chapter: any) => (
               <SubMenu key={chapter.key} title={chapter.name}>
                 {chapter.children.map((section: any) => (
-                  <Menu.Item key={section.key}>
+                  <Menu.Item
+                    key={section.key}
+                    onClick={() => {
+                      setSelectedKeys([section.key])
+                      setCurrentSection(section)
+                    }}
+                  >
                     <div>{section.name}</div>
                     <div className='ad-menu-user-course-section-icon'>
                       {section.status === 'All read' ? (
@@ -152,6 +147,12 @@ const CourseDetail = () => {
         <section className='ad-layout-container ad-section ad-section-course-detail'>
           <Row gutter={20}>
             <Col span={6}>{renderMenu()}</Col>
+            <Col span={18}>
+              <div className='ad-course-detail-current-section'>
+                <h2>{currentSection.name}</h2>
+                <div className=''></div>
+              </div>
+            </Col>
           </Row>
         </section>
       </article>

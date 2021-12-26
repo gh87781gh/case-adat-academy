@@ -1,13 +1,13 @@
 @menu-item-default-color: @color-gray04;
 .ant-menu.ad-menu-user-course {
-  border: 1px solid @border-color-base;
+  border: 1px solid @border-color-default;
   border-bottom: unset;
   border-radius: 2px;
   margin-right: unset;
 
   // ad default menu item
   *[role^='menuitem'] {
-    border-bottom: 1px solid @border-color-base;
+    border-bottom: 1px solid @border-color-default;
     margin: 0;
   }
   .ant-menu-title-content {
@@ -62,6 +62,9 @@
   }
   .ant-menu-item-selected .ant-menu-title-content {
     .typo-bodyBold();
+  }
+  .ant-menu-item.ant-menu-item-selected {
+    border-right: 1px solid @border-color-default;
   }
 
   // section style - completed

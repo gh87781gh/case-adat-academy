@@ -1,4 +1,4 @@
-@ad-course-banner-path-width: 120px;
+@course-banner-path-width: 120px;
 @course-detail-title-logo-height: 64px;
 .ad-course-banner {
   .bg-gradient-default();
@@ -33,7 +33,7 @@
     flex-wrap: wrap;
   }
   .status {
-    width: @ad-course-banner-path-width;
+    width: @course-banner-path-width;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -51,7 +51,7 @@
     }
   }
   .class {
-    .size(@ad-course-banner-path-width,auto);
+    .size(@course-banner-path-width,auto);
     margin-right: 10px;
     padding-bottom: 20px;
     position: relative;
@@ -170,5 +170,12 @@
     width: 100%;
     line-height: @course-detail-title-logo-height;
     color: @color-primary;
+  }
+}
+.ad-course-detail-current-section {
+  h2 {
+    .typo-subTitle();
+    color: @color-primary;
+    margin-bottom: 1rem;
   }
 }
