@@ -36,17 +36,18 @@ const CourseDetail = () => {
   const [courseLogoImage, setCourseLogoImage] = useState<string>('')
   const [lastReadSectionId, setLastReadSectionId] = useState<string>('')
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
+  const [currentSection, setCurrentSection] = useState<any>([])
 
   const getCourseDetail = () => {
     context.setIsLoading(true)
     api
       .getCourseDetail(courseId)
       .then((res: any) => {
-        setMenu(res.data)
         setCourseName(res.name)
         setCourseLogoImage(res.logo_image_id)
         setLastReadSectionId(res.last_read_section_id)
         setIsBookmarked(res.is_bookmarked)
+        setMenu(res.data)
       })
       .finally(() => context.setIsLoading(false))
   }
@@ -54,6 +55,39 @@ const CourseDetail = () => {
   useEffect(() => {
     getCourseDetail()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (menu) {
+      console.log('lastReadSectionId:', lastReadSectionId)
+      if (lastReadSectionId) {
+        for (const group of menu) {
+          console.log('group:', group)
+
+          for (const chapter of group.children) {
+            console.log('chapter:', chapter)
+
+            for (const section of chapter.children) {
+              console.log('section:', section)
+              if (section.sections.length > 0)
+                setCurrentSection(section.sections)
+              console.log('section.sections:', section.sections)
+
+              break
+              // TODO 最後閱讀 id 是正確的後要打開這個
+              // if (section.id === lastReadSectionId) {
+              //   setCurrentSection(section.sections)
+              //   break
+              // }
+            }
+            break
+          }
+          break
+        }
+      } else {
+        setCurrentSection(menu[0]?.children[0]?.children[0]?.sections)
+      }
+      console.log('currentSection:', currentSection)
+    }
+  }, [menu]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const renderMenu = () => {
     return (
@@ -65,21 +99,24 @@ const CourseDetail = () => {
         defaultOpenKeys={['1', '1-1', '1-2', '2', '2-1', '2-2']}
         mode='inline'
       >
-        <SubMenu key='1' icon={<IconLevels />} title='Navigation Two'>
-          <SubMenu key='1-1' title='Submenu'>
-            <Menu.Item key='1-1-1'>
-              <div>Option 7</div>
-              <div className='ad-menu-user-course-section-icon'>
-                <IconSuccess className='icon-success' />
-              </div>
-            </Menu.Item>
-            <Menu.Item key='1-1-2'>Option 8</Menu.Item>
+        {menu.map((group: any) => (
+          <SubMenu key={group.key} icon={<IconLevels />} title={group.name}>
+            {group.children.map((chapter: any) => (
+              <SubMenu key={chapter.key} title={chapter.name}>
+                {chapter.children.map((section: any) => (
+                  <Menu.Item key={section.key}>
+                    <div>{section.name}</div>
+                    <div className='ad-menu-user-course-section-icon'>
+                      {section.status === 'All read' ? (
+                        <IconSuccess className='icon-success' />
+                      ) : null}
+                    </div>
+                  </Menu.Item>
+                ))}
+              </SubMenu>
+            ))}
           </SubMenu>
-          <SubMenu key='1-2' title='Submenu'>
-            <Menu.Item key='1-2-1'>Option 7</Menu.Item>
-            <Menu.Item key='1-2-2'>Option 8</Menu.Item>
-          </SubMenu>
-        </SubMenu>
+        ))}
       </Menu>
     )
   }
@@ -100,15 +137,17 @@ const CourseDetail = () => {
           </Breadcrumb>
         </section>
         <section className='ad-layout-container ad-section ad-section-course-detail-title'>
-          <div className='ad-course-detail-logo'>
+          <div className='ad-course-detail-title'>
             {courseLogoImage ? (
-              <img
-                src={`${StaticService.apiUrl}/archive/${courseLogoImage}`}
-                alt=''
-              />
+              <span>
+                <img
+                  src={`${StaticService.apiUrl}/archive/${courseLogoImage}`}
+                  alt=''
+                />
+              </span>
             ) : null}
+            <h1>{courseName}</h1>
           </div>
-          <h1 className='ad-course-detail-title'>{courseName}</h1>
         </section>
         <section className='ad-layout-container ad-section ad-section-course-detail'>
           <Row gutter={20}>

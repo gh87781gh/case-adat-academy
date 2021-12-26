@@ -1,4 +1,5 @@
 @ad-course-banner-path-width: 120px;
+@course-detail-title-logo-height: 64px;
 .ad-course-banner {
   .bg-gradient-default();
   padding-top: 140px;
@@ -148,14 +149,26 @@
     }
   }
 }
-.ad-course-detail-logo {
-  .size(64px,64px);
-  min-width: 64px;
-  img {
-    .size(100%,100%);
-  }
-}
 .ad-course-detail-title {
   .typo-title();
   color: @color-primary;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  span {
+    display: block;
+    .size(@course-detail-title-logo-height,@course-detail-title-logo-height);
+    min-width: @course-detail-title-logo-height;
+    margin-right: 30px;
+    img {
+      .size(100%,100%);
+    }
+  }
+  h1 {
+    .typo-title();
+    width: 100%;
+    line-height: @course-detail-title-logo-height;
+    color: @color-primary;
+  }
 }
