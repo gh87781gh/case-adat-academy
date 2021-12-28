@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import Header from '../../layout/Header'
-import Course from './Course'
-import CourseDetail from './CourseDetail'
-import LearningPath from './LearningPath'
+import Course from './course/Course'
+import CourseDetail from './courseDetail/CourseDetail'
+import LearningPath from './learningPath/LearningPath'
 import AdminSideBar from '../AdminSideBar'
 
 const Index = () => {

@@ -1,8 +1,7 @@
-@header-height: 90px;
 @header-padding-top: 24px;
 
 .ad-header {
-  .size(100%,90px);
+  .size(100%,@global-header-height);
   background-color: @color-white;
   position: relative;
 
@@ -32,7 +31,7 @@
 .ad-header-container-logo-primary {
   background-color: @color-primary;
   padding: 36px 65px 33px 57px;
-  z-index: @header-logo-primary;
+  z-index: @z-index-header-logo-primary;
   color: @color-primary-light03;
   cursor: pointer;
 }

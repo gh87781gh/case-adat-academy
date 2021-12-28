@@ -68,7 +68,7 @@
       background-color: @color-white;
       padding: 36px 24px;
       border: 3px solid @color-primary;
-      z-index: 1;
+      z-index: @z-index-user-index-learningPath-hoverCard;
       display: flex;
       flex-wrap: nowrap;
       align-items: flex-start;
@@ -170,6 +170,7 @@
     width: 100%;
     line-height: @course-detail-title-logo-height;
     color: @color-primary;
+    margin-bottom: unset;
   }
 }
 .ad-course-detail-current-section {
@@ -177,5 +178,15 @@
     .typo-subTitle();
     color: @color-primary;
     margin-bottom: 1rem;
+  }
+  img {
+    .size(100% ,auto);
+  }
+  h3 {
+    .typo-bodyBold();
+  }
+  p {
+    .typo-bodyDefault();
+    color: @color-gray04;
   }
 }

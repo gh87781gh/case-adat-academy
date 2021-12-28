@@ -156,12 +156,16 @@ const CourseDetail = () => {
                         <div key={index}>
                           {/* props.item.type = title | picture | video | paragraph */}
                           {content.type === 'video' ? (
-                            <VideoPlayer
-                              // id={content.archive_id}
-
-                              // TODO only for test ，可再刪掉
-                              id={'bdac3685-bac0-4869-8d75-877156a9680b'}
+                            <VideoPlayer id={content.archive_id} />
+                          ) : content.type === 'picture' ? (
+                            <img
+                              src={`${StaticService.apiUrl}/archive/${content.imgId}`}
+                              alt=''
                             />
+                          ) : content.type === 'title' ? (
+                            <h3>{content.content}</h3>
+                          ) : content.type === 'paragraph' ? (
+                            <p>{content.content}</p>
                           ) : null}
                         </div>
                       )

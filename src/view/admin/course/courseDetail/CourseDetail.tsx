@@ -1,12 +1,12 @@
 import { useState, useEffect, useContext } from 'react'
 import { MyContext } from 'storage'
 import CourseApi from 'api/admin/CourseApi'
-import UploadVideo from 'utility/component/UploadVideo'
+import { Btn, UploadVideo } from 'utility/component'
 import { Row, Col, Breadcrumb } from 'antd'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import CourseDetailMenu from './courseDetail/Menu'
-import Sections from './courseDetail/Sections'
+import CourseDetailMenu from './Menu'
+import Sections from './Sections'
 import { Dropdown, Menu } from 'antd'
 
 interface IProps {
@@ -150,7 +150,7 @@ const CourseDetail = (props: IProps) => {
   }
 
   return (
-    <>
+    <div className='ad-layout-admin-courseDetail'>
       <Breadcrumb separator='>'>
         <Breadcrumb.Item onClick={props.prev}>
           Course management
@@ -226,7 +226,13 @@ const CourseDetail = (props: IProps) => {
           </Dropdown>
         </Col>
       </Row>
-    </>
+      <div className='ad-layout-admin-courseDetail-footer'>
+        <div className='ad-btn-group'>
+          <Btn feature='action'>Save</Btn>
+          <Btn feature='primary'>Reset</Btn>
+        </div>
+      </div>
+    </div>
   )
 }
 export default CourseDetail
