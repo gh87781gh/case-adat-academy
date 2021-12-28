@@ -78,6 +78,22 @@ export default class CourseApi {
         })
     })
   }
+  editCourseChapter = (id: string, data: any) => {
+    const ary = data.map((chapter: any) => {
+      return {
+        name: chapter.name,
+        level: chapter.level,
+        sections: chapter.sections.map((content: any) => {
+          return {
+            archive_id: content.archive_id,
+            content: content.content,
+            type: content.type
+          }
+        })
+      }
+    })
+    return this.restAPI.request('post', `/course/${id}/chapter`, ary)
+  }
   createCourse = (data: any) => {
     return this.restAPI.request('post', '/course', data)
   }

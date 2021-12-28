@@ -1,8 +1,9 @@
 import { useState, useEffect, useContext } from 'react'
 import { MyContext } from 'storage'
+import { useParams } from 'react-router-dom'
 import CourseApi from 'api/admin/CourseApi'
 import { Btn, UploadVideo } from 'utility/component'
-import { Row, Col, Breadcrumb } from 'antd'
+import { Row, Col, Breadcrumb, message } from 'antd'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import CourseDetailMenu from './Menu'
@@ -11,12 +12,12 @@ import { Dropdown, Menu } from 'antd'
 
 interface IProps {
   prev: () => void
-  courseId: string
 }
 
 const CourseDetail = (props: IProps) => {
   const context = useContext(MyContext)
   const api = new CourseApi()
+  const { courseId } = useParams<{ courseId: string }>()
 
   // course detail and menu
   const [courseDetail, setCourseDetail] = useState<any>({})
@@ -115,10 +116,10 @@ const CourseDetail = (props: IProps) => {
   const getInitData = async () => {
     context.setIsLoading(true)
     await api
-      .getCourseDetail(props.courseId)
+      .getCourseDetail(courseId)
       .then((res: any) => setCourseDetail(res.data))
     await api
-      .getCourseChapter(props.courseId)
+      .getCourseChapter(courseId)
       .then((res: any) => {
         setMenu(res)
         const firstSectionsIndex = res.findIndex((el: any) => el.level === 3)
@@ -126,8 +127,17 @@ const CourseDetail = (props: IProps) => {
       })
       .finally(() => context.setIsLoading(false))
   }
+  const editCourseChapter = () => {
+    context.setIsLoading(true)
+    api
+      .editCourseChapter(courseId, menu)
+      .then(() => {
+        message.success('Course saved successfully')
+      })
+      .finally(() => context.setIsLoading(false))
+  }
   useEffect(() => {
-    getInitData()
+    getInitData().catch(() => props.prev())
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const renderContentTypeList = () => {
@@ -184,23 +194,18 @@ const CourseDetail = (props: IProps) => {
         </Col>
         <Col span={17}>
           <h2>{sectionName}</h2>
-          {sectionIndex ? (
-            <>
-              <UploadVideo
-                type='video'
-                desc='Upload section video'
-                system='course'
-                systemId={courseDetail.id}
-                imgId={sections[0]?.archive_id}
-                setUploadId={(id: string) => updateSection(0, 'video', id)}
-              />
-              <p className='ad-upload-info'>
-                Format should be .mp4 The file size limit is 300mb.
-                <br /> This section video is required, and will be fixed on the
-                top
-              </p>
-            </>
-          ) : null}
+          <UploadVideo
+            type='video'
+            desc='Upload section video'
+            system='course'
+            systemId={courseDetail.id}
+            imgId={sections[0]?.archive_id}
+            setUploadId={(id: string) => updateSection(0, 'video', id)}
+          />
+          <p className='ad-upload-info'>
+            Format should be .mp4 The file size limit is 300mb.
+            <br /> This section video is required, and will be fixed on the top
+          </p>
           <DndProvider backend={HTML5Backend}>
             <Sections
               sections={sections}
@@ -228,7 +233,9 @@ const CourseDetail = (props: IProps) => {
       </Row>
       <div className='ad-layout-admin-courseDetail-footer'>
         <div className='ad-btn-group'>
-          <Btn feature='action'>Save</Btn>
+          <Btn feature='action' onClick={() => editCourseChapter()}>
+            Save
+          </Btn>
           <Btn feature='primary'>Reset</Btn>
         </div>
       </div>

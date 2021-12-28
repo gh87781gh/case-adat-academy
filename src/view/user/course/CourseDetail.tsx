@@ -159,7 +159,7 @@ const CourseDetail = () => {
                             <VideoPlayer id={content.archive_id} />
                           ) : content.type === 'picture' ? (
                             <img
-                              src={`${StaticService.apiUrl}/archive/${content.imgId}`}
+                              src={`${StaticService.apiUrl}/archive/${content.archive_id}`}
                               alt=''
                             />
                           ) : content.type === 'title' ? (

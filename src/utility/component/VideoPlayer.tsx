@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react'
-import { MyContext, StaticService } from 'storage'
+import { useEffect, useRef, useState } from 'react'
+import { StaticService } from 'storage'
 import videojs from 'video.js'
 import 'video.js/dist/video-js.css'
 
@@ -20,9 +20,8 @@ const VideoJS = (props: any) => {
       }))
     } else {
       // you can update player here [update player through props]
-      // const player = playerRef.current;
-      // player.autoplay(options.autoplay);
-      // player.src(options.sources);
+      const player = playerRef.current
+      player.src(options.sources)
     }
   }, [options, videoRef])
 
@@ -50,9 +49,10 @@ interface IProps {
 }
 const VideoPlayer = (props: IProps) => {
   const playerRef = useRef<any>(null)
-  const videoJsOptions: any = {
+  const [videoJsOptions, setVideoJsOptions] = useState<any>({
     // lookup the options in the docs for more options
-    autoplay: false,
+    // autoplay: false,
+    auto: true,
     controls: true,
     responsive: true,
     fluid: true,
@@ -62,7 +62,8 @@ const VideoPlayer = (props: IProps) => {
         type: 'video/mp4'
       }
     ]
-  }
+  })
+
   const handlePlayerReady = (player: any) => {
     playerRef.current = player
 
@@ -75,6 +76,23 @@ const VideoPlayer = (props: IProps) => {
       console.log('player will dispose')
     })
   }
+
+  useEffect(() => {
+    setVideoJsOptions({
+      // lookup the options in the docs for more options
+      // autoplay: false,
+      auto: true,
+      controls: true,
+      responsive: true,
+      fluid: true,
+      sources: [
+        {
+          src: `${StaticService.apiUrl}/archive/${props.id}`,
+          type: 'video/mp4'
+        }
+      ]
+    })
+  }, [props.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return props.id ? (
     <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />

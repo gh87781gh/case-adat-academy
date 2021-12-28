@@ -1,8 +1,12 @@
-import { useLocation, useHistory } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useLocation, useHistory, useParams } from 'react-router-dom'
 
 const AdminSideBar = () => {
   const location = useLocation()
   const history = useHistory()
+  const { courseId } = useParams<{ courseId: string }>()
+
+  const [activePath, setActivePath] = useState<string>()
 
   const menu = [
     {
@@ -22,12 +26,20 @@ const AdminSideBar = () => {
       path: '/admin/admin'
     }
   ]
+
+  useEffect(() => {
+    if (courseId) {
+      setActivePath(location.pathname.replace(`/${courseId}`, ''))
+    } else {
+      setActivePath(location.pathname)
+    }
+  }, [location, courseId]) // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <>
       <ul className='ad-sideBar'>
         {menu.map((item: any) => (
           <li
-            className={item.path === location.pathname ? 'active' : ''}
+            className={item.path === activePath ? 'active' : ''}
             key={item.name}
             onClick={() => history.push(item.path)}
           >

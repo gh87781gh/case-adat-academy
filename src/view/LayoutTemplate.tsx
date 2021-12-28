@@ -92,7 +92,7 @@ const LayoutTemplate = () => {
               />
               <Route
                 exact={true}
-                path='/admin/course'
+                path='/admin/course/:courseId?'
                 render={() => componentPage(AdminCourse, 'ADMIN')}
               />
               <Route

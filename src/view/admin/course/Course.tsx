@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext, useRef } from 'react'
 import { MyContext, StaticService } from 'storage'
+import { useLocation, useHistory } from 'react-router-dom'
 import GlobalApi from 'api/GlobalApi'
 import CourseApi from 'api/admin/CourseApi'
 import { ValidateStr } from 'utility/validate'
@@ -11,7 +12,6 @@ const { Option } = Select
 
 interface IProps {
   next: (step: number) => void
-  setCourseId: (courseId: string) => void
 }
 interface IState {
   status: string
@@ -19,6 +19,8 @@ interface IState {
 }
 
 const Course = (props: IProps) => {
+  const location = useLocation()
+  const history = useHistory()
   const context = useContext(MyContext)
   const api_global = new GlobalApi()
   const api = new CourseApi()
@@ -100,7 +102,7 @@ const Course = (props: IProps) => {
             key='edit'
             size='small'
             onClick={() => {
-              props.setCourseId(record.id)
+              history.push(`${location.pathname}/${record.id}`)
               props.next(1)
             }}
           >
