@@ -67,21 +67,23 @@ const CourseDetail = (props: IProps) => {
   const [sectionIndex, setSectionIndex] = useState<null | number>(null)
   const [sectionName, setSectionName] = useState<string>('')
   const goToSection = (menu: any, index: number) => {
-    if (menu[index]) {
-      const ary: any = [...menu]
-      if (ary[index].sections.length === 0) {
-        ary[index].sections.push({
-          type: 'video',
-          content: '',
-          archive_id: '',
-          key: '0'
-        })
-      }
-      setMenu(ary)
-      setSectionIndex(index)
-      setSections(ary[index].sections)
-      setSectionName(ary[index].name)
+    if (!menu[index]) return false
+
+    const ary: any = [...menu]
+    if (ary[index].sections.length === 0) {
+      // first item must be video
+      ary[index].sections.push({
+        type: 'video',
+        content: '',
+        archive_id: '',
+        key: '0'
+      })
     }
+
+    setMenu(ary)
+    setSectionIndex(index)
+    setSections(ary[index].sections)
+    setSectionName(ary[index].name)
   }
   const updateSection = (index: number, type: string, value: string) => {
     const newMenu: any = [...menu]
@@ -100,15 +102,15 @@ const CourseDetail = (props: IProps) => {
   const addSection = (type: string) => {
     const newMenu: any = [...menu]
     const newSections: any = [...sections]
+
     newSections.push({
       type,
       content: '',
       archive_id: '',
       key: `${sections.length}`
     })
-    if (sectionIndex !== null) {
-      newMenu[sectionIndex].sections = newSections
-    }
+    if (sectionIndex !== null) newMenu[sectionIndex].sections = newSections
+
     setMenu(newMenu)
     setSections(newSections)
   }
