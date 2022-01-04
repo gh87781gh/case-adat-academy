@@ -7,6 +7,7 @@ import Footer from 'view/layout/Footer'
 import {
   IconArrowDown,
   IconBookmark,
+  IconBookmarked,
   IconLevels,
   IconSuccess
 } from 'utility/icon'
@@ -17,7 +18,7 @@ import {
   MailOutlined,
   SettingOutlined
 } from '@ant-design/icons'
-import { Row, Col, Select, Breadcrumb, Menu } from 'antd'
+import { Row, Col, Select, Breadcrumb, Menu, message } from 'antd'
 const { Option } = Select
 const { SubMenu } = Menu
 
@@ -36,6 +37,16 @@ const CourseDetail = () => {
   const [courseLogoImage, setCourseLogoImage] = useState<string>('')
   const [lastReadSectionId, setLastReadSectionId] = useState<string>('')
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
+  const switchIsBookmarked = () => {
+    context.setIsLoading(true)
+    api
+      .switchIsBookmarked(courseId, isBookmarked)
+      .then(() => {
+        message.success(!isBookmarked ? 'Bookmarked' : 'No Bookmarked')
+        setIsBookmarked(!isBookmarked)
+      })
+      .finally(() => context.setIsLoading(false))
+  }
 
   // course menu
   const [menuOpenKeys, setMenuOpenKeys] = useState<any>([])
@@ -196,11 +207,8 @@ const CourseDetail = () => {
             <Col span={15}>{renderCurrentSection()}</Col>
             <Col span={3}>
               <div className='ad-course-detail-bookmark'>
-                <Btn feature='secondary'>
-                  <IconBookmark
-                    // TODO icon 的 active 狀態
-                    style={{ backgroundColor: isBookmarked ? 'red' : '' }}
-                  />
+                <Btn feature='secondary' onClick={switchIsBookmarked}>
+                  {isBookmarked ? <IconBookmarked /> : <IconBookmark />}
                 </Btn>
               </div>
               {renderCurrentSectionChapterNav()}

@@ -9,6 +9,10 @@
   *[role^='menuitem'] {
     border-bottom: 1px solid @border-color-default;
     margin: 0;
+    &:active {
+      background-color: unset;
+      color: @color-black;
+    }
   }
   .ant-menu-title-content {
     .typo-bodyDefault();

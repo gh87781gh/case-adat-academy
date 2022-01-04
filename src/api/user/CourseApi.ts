@@ -97,4 +97,11 @@ export default class CourseApi {
         })
     })
   }
+  switchIsBookmarked = (courseId: string, isBookmarked: boolean) => {
+    return this.restAPI.request(
+      `${isBookmarked ? 'delete' : 'post'}`,
+      `/user/bookmark/${courseId}`,
+      {}
+    )
+  }
 }

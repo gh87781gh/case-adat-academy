@@ -224,6 +224,17 @@ const svgBookmark = () => (
 export const IconBookmark = (props: any) => {
   return <Icon component={svgBookmark} {...props} />
 }
+const svgBookmarked = () => (
+  <svg width='12' height='18' viewBox='0 0 12 18' fill='currentColor'>
+    <path
+      d='M-9.53674e-07 18H1.25893L5.99971 13.6946L10.7333 18H12V0H-9.53674e-07V18Z'
+      fill='currentColor'
+    />
+  </svg>
+)
+export const IconBookmarked = (props: any) => {
+  return <Icon component={svgBookmarked} {...props} />
+}
 const svgPathEmpty = () => (
   <svg width='30' height='30' viewBox='0 0 30 30' fill='none'>
     <circle cx='15' cy='15' r='14.5' fill='#FDFEFF' stroke='#022061' />
