@@ -1,5 +1,6 @@
 @course-banner-path-width: 120px;
 @course-detail-title-logo-height: 64px;
+@course-detail-current-section-gap: 30px;
 .ad-course-banner {
   .bg-gradient-default();
   padding-top: 140px;
@@ -179,15 +180,21 @@
     color: @color-primary;
     margin-bottom: 1rem;
   }
+  .video-box {
+    margin-bottom: @course-detail-current-section-gap;
+  }
   img {
     .size(100% ,auto);
+    margin-bottom: @course-detail-current-section-gap;
   }
   h3 {
     .typo-bodyBold();
+    margin-bottom: 10px;
   }
   p {
     .typo-bodyDefault();
     color: @color-gray04;
+    margin-bottom: @course-detail-current-section-gap;
   }
 }
 .ad-course-detail-bookmark {

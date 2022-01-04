@@ -125,23 +125,22 @@ const CourseDetail = () => {
     )
   }
   const renderCurrentSection = () => {
+    const { chapterContentType, apiUrl } = StaticService
     return (
       <div className='ad-course-detail-current-section'>
         <h2>{currentSection.name}</h2>
         {currentSection
           ? currentSection.sections?.map((content: any, index: number) => (
               <div key={index}>
-                {/* props.item.type = title | picture | video | paragraph */}
-                {content.type === 'video' ? (
-                  <VideoPlayer id={content.archive_id} />
-                ) : content.type === 'picture' ? (
-                  <img
-                    src={`${StaticService.apiUrl}/archive/${content.archive_id}`}
-                    alt=''
-                  />
-                ) : content.type === 'title' ? (
+                {content.type === chapterContentType.video ? (
+                  <div className='video-box'>
+                    <VideoPlayer id={content.archive_id} />
+                  </div>
+                ) : content.type === chapterContentType.picture ? (
+                  <img src={`${apiUrl}/archive/${content.archive_id}`} alt='' />
+                ) : content.type === chapterContentType.title ? (
                   <h3>{content.content}</h3>
-                ) : content.type === 'paragraph' ? (
+                ) : content.type === chapterContentType.paragraph ? (
                   <p>{content.content}</p>
                 ) : null}
               </div>

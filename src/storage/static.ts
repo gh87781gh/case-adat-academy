@@ -11,4 +11,10 @@ export default class StaticService {
     A: 'textA',
     B: 'textB'
   }
+  static chapterContentType: any = {
+    title: 'title',
+    picture: 'picture',
+    video: 'video',
+    paragraph: 'paragraph'
+  }
 }

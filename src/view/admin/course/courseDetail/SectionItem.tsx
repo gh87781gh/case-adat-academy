@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from 'react'
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd'
 import { XYCoord } from 'dnd-core'
+import { StaticService } from 'storage'
 import {
   IconMenu,
   IconArrowUp,
@@ -164,6 +165,7 @@ const SectionItem = (props: IProps) => {
     props.updateSection(props.item.index, type, value)
   }
 
+  const { chapterContentType } = StaticService
   return (
     <>
       <div
@@ -188,23 +190,22 @@ const SectionItem = (props: IProps) => {
             </Dropdown>
           ) : null}
         </div>
-        {/* props.item.type = title | picture | video | paragraph */}
         <div className={`item-content item-content-${props.item.type}`}>
-          {props.item.type === 'title' ? (
+          {props.item.type === chapterContentType.title ? (
             <TextArea
               className='item-content-textarea title'
               rows={2}
               value={props.item.content}
               onChange={(e) => onChange(props.item.type, e)}
             />
-          ) : props.item.type === 'paragraph' ? (
+          ) : props.item.type === chapterContentType.paragraph ? (
             <TextArea
               className='item-content-textarea paragraph'
               rows={6}
               value={props.item.content}
               onChange={(e) => onChange(props.item.type, e)}
             />
-          ) : props.item.type === 'picture' ? (
+          ) : props.item.type === chapterContentType.picture ? (
             <UploadImg
               type='rectangle'
               desc='Upload picture'
@@ -214,7 +215,7 @@ const SectionItem = (props: IProps) => {
               setUploadId={(id: string) => onUpload(props.item.type, id)}
               replaceCount={replaceCount}
             />
-          ) : props.item.type === 'video' ? (
+          ) : props.item.type === chapterContentType.video ? (
             <UploadVideo
               type='video'
               desc='Upload video'
