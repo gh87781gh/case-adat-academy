@@ -6,7 +6,7 @@ import Header from 'view/layout/Header'
 import Footer from 'view/layout/Footer'
 import { IconArrowDown, IconBookmark } from 'utility/icon'
 import { Btn } from 'utility/component'
-import LearningPath from './component/LearningPath'
+import LearningPath from './learningPath/LearningPath'
 
 import { Row, Col, Select, Pagination } from 'antd'
 const { Option } = Select
@@ -99,14 +99,14 @@ const Index = () => {
           <ul className='ad-course-list-group'>
             {list.map((course: any) => (
               <li className='ad-course-list' key={course.id}>
-                <div className='ad-course-list-img'>
-                  {course.logo_image_id ? (
+                {course.logo_image_id ? (
+                  <div className='ad-course-list-img'>
                     <img
                       src={`${StaticService.apiUrl}/archive/${course.logo_image_id}`}
                       alt=''
                     />
-                  ) : null}
-                </div>
+                  </div>
+                ) : null}
                 <div className='ad-course-list-content'>
                   <h2>{course.name}</h2>
                   <p>{course.description}</p>

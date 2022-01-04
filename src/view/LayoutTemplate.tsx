@@ -10,7 +10,7 @@ import DemoPage from './DemoPage'
 
 // user console
 import Course from './user/course/Index'
-import CourseDetail from './user/course/CourseDetail'
+import CourseDetail from './user/course/courseDetail/CourseDetail'
 
 // admin console
 import AdminPurchase from './admin/purchase/Index'

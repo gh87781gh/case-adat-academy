@@ -343,3 +343,14 @@ const svgSuccess = () => (
 export const IconSuccess = (props: any) => {
   return <Icon component={svgSuccess} {...props} />
 }
+// const svgBookmark = () => (
+//   <svg width='12' height='18' viewBox='0 0 12 18' fill='none'>
+//     <path
+//       d='M-9.53674e-07 18H1.25893L5.99971 13.6946L10.7333 18H12V0H-9.53674e-07V18ZM10.8571 1.2V16.525L6.00029 12.1075L1.14286 16.5188V1.2H10.8571Z'
+//       fill='currentColor'
+//     />
+//   </svg>
+// )
+// export const IconBookmark = (props: any) => {
+//   return <Icon component={svgBookmark} {...props} />
+// }

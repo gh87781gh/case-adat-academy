@@ -190,3 +190,29 @@
     color: @color-gray04;
   }
 }
+.ad-course-detail-bookmark {
+  text-align: right;
+  margin-bottom: 5px;
+}
+.ad-course-detail-chapterNav {
+  h3 {
+    color: @color-black;
+    .typo-bodyBold();
+  }
+  .ad-course-detail-chapterNav-item {
+    padding-left: 16px;
+    margin-bottom: 20px;
+    position: relative;
+    .typo-small();
+    cursor: pointer;
+
+    &.active::before {
+      content: '';
+      .size(3px,100%);
+      background-color: @color-black;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
+}
