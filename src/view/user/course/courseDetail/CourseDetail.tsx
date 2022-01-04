@@ -35,7 +35,6 @@ const CourseDetail = () => {
   // course detail setting
   const [courseName, setCourseName] = useState<string>('')
   const [courseLogoImage, setCourseLogoImage] = useState<string>('')
-  const [lastReadSectionId, setLastReadSectionId] = useState<string>('')
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
   const switchIsBookmarked = () => {
     context.setIsLoading(true)
@@ -81,7 +80,6 @@ const CourseDetail = () => {
       .then((res: any) => {
         setCourseName(res.name)
         setCourseLogoImage(res.logo_image_id)
-        setLastReadSectionId(res.last_read_section_id)
         setIsBookmarked(res.is_bookmarked)
         setMenu(res.data)
         setMenuOpenKeys(res.menuOpenKeys)
