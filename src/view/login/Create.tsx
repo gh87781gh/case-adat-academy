@@ -6,6 +6,7 @@ import LoginApi from 'api/LoginApi'
 import { ValidateStr } from 'utility/validate'
 import FormGroupMsg from 'utility/component/FormGroupMsg'
 import msg from 'api/engine/msg'
+import LoginTemplate from './LoginTemplate'
 import { Row, Col, Button, Input, Checkbox, Select, message } from 'antd'
 const { Option } = Select
 
@@ -123,10 +124,7 @@ const Create = () => {
       <div className='ad-login-content-header'>
         <h1>
           Create account
-          <Button
-            className='ad-float-right'
-            onClick={() => history.push('/login')}
-          >
+          <Button className='ad-float-right' onClick={() => history.push('/')}>
             Log in
           </Button>
         </h1>
@@ -218,10 +216,7 @@ const Create = () => {
       <div className='ad-login-content-header'>
         <h1>
           Create account
-          <Button
-            className='ad-float-right'
-            onClick={() => history.push('/login')}
-          >
+          <Button className='ad-float-right' onClick={() => history.push('/')}>
             Log in
           </Button>
         </h1>
@@ -343,19 +338,23 @@ const Create = () => {
           className='ad-login-content-actionBtn'
           type='primary'
           block
-          onClick={() => history.push('/login')}
+          onClick={() => history.push('/')}
         >
           Continue
         </Button>
       </div>
     </>
   )
-  return step === 0
-    ? renderStep1()
-    : step === 1
-    ? renderStep2()
-    : step === 2
-    ? renderStep3()
-    : null
+  return (
+    <LoginTemplate>
+      {step === 0
+        ? renderStep1()
+        : step === 1
+        ? renderStep2()
+        : step === 2
+        ? renderStep3()
+        : null}
+    </LoginTemplate>
+  )
 }
 export default Create

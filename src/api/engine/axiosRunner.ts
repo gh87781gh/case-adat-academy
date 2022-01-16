@@ -42,7 +42,7 @@ export class ApiEngine {
           message.error('404 Not Found')
         } else if (err.response.status === 401) {
           message.error('Unauthorized')
-          history.push('/login')
+          history.push('/')
         } else if (err.response && url !== '/auth/login') {
           message.error(err.response.data.message)
         }

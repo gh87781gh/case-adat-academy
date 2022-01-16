@@ -6,6 +6,7 @@ import GlobalApi from '../api/GlobalApi'
 
 // no validate auth
 import Login from './login/Login'
+import Create from './login/Create'
 import DemoPage from './DemoPage'
 
 // user console
@@ -44,14 +45,14 @@ const LayoutTemplate = () => {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const componentPage = (Component: any, pageType: string, props?: any) => {
-    // const token = browserStorage.getStorage('AUTH')
-    // if ((pageType === 'USER' || pageType === 'ADMIN') && !token) {
-    //   return <Redirect to='/login' />
-    // } else if (pageType === 'ADMIN' && !auth.is_admin) {
-    //   return <Redirect to='/course' />
-    // } else {
-    return <Component {...props} />
-    // }
+    const token = browserStorage.getStorage('AUTH')
+    if ((pageType === 'USER' || pageType === 'ADMIN') && !token) {
+      return <Redirect to='/' />
+    } else if (pageType === 'ADMIN' && !auth.is_admin) {
+      return <Redirect to='/course' />
+    } else {
+      return <Component {...props} />
+    }
   }
 
   return (
@@ -74,8 +75,13 @@ const LayoutTemplate = () => {
               />
               <Route
                 exact={true}
-                path='/login'
+                path='/'
                 render={() => componentPage(Login, 'LOGIN')}
+              />
+              <Route
+                exact={true}
+                path='/create'
+                render={() => componentPage(Create, 'LOGIN')}
               />
 
               {/* NOTE USER */}
@@ -141,7 +147,7 @@ const LayoutTemplate = () => {
                 path='/admin/admin'
                 render={() => componentPage(AdminAdmin, 'ADMIN')}
               />
-              {/* <Redirect to='/login' /> */}
+              <Redirect to='/' />
             </Switch>
           </HashRouter>
           <span className='ad-layout-version'>v{version}</span>
