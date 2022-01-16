@@ -22,10 +22,12 @@
   .ad-card-action {
     position: relative;
     .size(100%,100%);
+
     .ad-btn-group {
       .center();
-      display: inline-block;
-      .size(100px + @btn-group-gap,48px);
+      display: flex;
+      flex-wrap: nowrap;
+      // .size(100px + @btn-group-gap,48px);
     }
   }
 }

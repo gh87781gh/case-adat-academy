@@ -12,6 +12,11 @@ import DemoPage from './DemoPage'
 import Course from './user/course/Index'
 import CourseDetail from './user/course/courseDetail/CourseDetail'
 import Bookmark from './user/course/bookmark/Bookmark'
+import Search from './user/search/Index'
+import HelpCenter from './user/helpCenter/Index'
+import ContactUs from './user/helpCenter/contact/ContactUs'
+import NoResult from './layout/NoResult'
+import NoAccess from './layout/NoAccess'
 
 // admin console
 import AdminPurchase from './admin/purchase/Index'
@@ -39,14 +44,14 @@ const LayoutTemplate = () => {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const componentPage = (Component: any, pageType: string, props?: any) => {
-    const token = browserStorage.getStorage('AUTH')
-    if ((pageType === 'USER' || pageType === 'ADMIN') && !token) {
-      return <Redirect to='/login' />
-    } else if (pageType === 'ADMIN' && !auth.is_admin) {
-      return <Redirect to='/index' />
-    } else {
-      return <Component {...props} />
-    }
+    // const token = browserStorage.getStorage('AUTH')
+    // if ((pageType === 'USER' || pageType === 'ADMIN') && !token) {
+    //   return <Redirect to='/login' />
+    // } else if (pageType === 'ADMIN' && !auth.is_admin) {
+    //   return <Redirect to='/course' />
+    // } else {
+    return <Component {...props} />
+    // }
   }
 
   return (
@@ -61,6 +66,7 @@ const LayoutTemplate = () => {
         <Spin className='ad-spin-global' spinning={isLoading} size='large'>
           <HashRouter>
             <Switch>
+              {/* NOTE LOGIN */}
               <Route
                 exact={true}
                 path='/demo'
@@ -71,21 +77,50 @@ const LayoutTemplate = () => {
                 path='/login'
                 render={() => componentPage(Login, 'LOGIN')}
               />
+
+              {/* NOTE USER */}
               <Route
                 exact={true}
-                path='/index'
+                path='/course'
                 render={() => componentPage(Course, 'USER')}
               />
               <Route
                 exact={true}
-                path='/index/course/:courseId'
+                path='/courseDetail/:courseId'
                 render={() => componentPage(CourseDetail, 'USER')}
               />
               <Route
                 exact={true}
-                path='/index/bookmark'
+                path='/bookmark'
                 render={() => componentPage(Bookmark, 'USER')}
               />
+              <Route
+                exact={true}
+                path='/search'
+                render={() => componentPage(Search, 'USER')}
+              />
+              <Route
+                exact={true}
+                path='/helpCenter'
+                render={() => componentPage(HelpCenter, 'USER')}
+              />
+              <Route
+                exact={true}
+                path='/contactUs'
+                render={() => componentPage(ContactUs, 'USER')}
+              />
+              <Route
+                exact={true}
+                path='/noResult'
+                render={() => componentPage(NoResult, 'USER')}
+              />
+              <Route
+                exact={true}
+                path='/noAccess'
+                render={() => componentPage(NoAccess, 'USER')}
+              />
+
+              {/* NOTE ADMIN */}
               <Route
                 exact={true}
                 path='/admin/purchase/:id?'
@@ -106,7 +141,7 @@ const LayoutTemplate = () => {
                 path='/admin/admin'
                 render={() => componentPage(AdminAdmin, 'ADMIN')}
               />
-              <Redirect to='/login' />
+              {/* <Redirect to='/login' /> */}
             </Switch>
           </HashRouter>
           <span className='ad-layout-version'>v{version}</span>

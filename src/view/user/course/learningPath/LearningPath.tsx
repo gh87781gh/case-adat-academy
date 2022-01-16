@@ -120,7 +120,7 @@ const Stage = (props: IPropsStage) => {
                       disabled={
                         !course.available || course.status === 'Not available'
                       }
-                      onClick={() => history.push(`/index/course/${course.id}`)}
+                      onClick={() => history.push(`/courseDetail/${course.id}`)}
                     >
                       Take class
                     </Btn>

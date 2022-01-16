@@ -25,9 +25,31 @@ article {
   //   padding-right: 15px;
   // }
 }
+.ad-layout-container-prompt {
+  text-align: center;
+  min-height: @layout-user-page-min-height;
+  position: relative;
+}
+.ad-layout-container-prompt-content {
+  .center();
+  .size(auto,auto);
+  display: inline-block;
+  h1 {
+    margin-bottom: 24px;
+  }
+  p {
+    .typo-bodyDefault();
+    color: @color-primary;
+    margin-bottom: 40px;
+  }
+  .ant-btn {
+    width: 100%;
+  }
+}
 .ad-page-container {
   max-width: @layout-user-container-max-width;
-  padding-top: 35px;
+  min-height: @layout-user-page-min-height;
+  padding-top: 68px;
   padding-bottom: 95px;
   margin-left: auto;
   margin-right: auto;

@@ -256,7 +256,7 @@ const CourseDetail = () => {
       <article className='ad-layout-container'>
         <section className='ad-section ad-section-course-detail-breadcrumb ad-breadcrumb'>
           <Breadcrumb separator='|'>
-            <Breadcrumb.Item onClick={() => history.push('/index')}>
+            <Breadcrumb.Item onClick={() => history.push('/course')}>
               <Btn feature='link'>Course</Btn>
             </Breadcrumb.Item>
             <Breadcrumb.Item>

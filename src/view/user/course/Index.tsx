@@ -92,7 +92,7 @@ const Index = () => {
             <Col span={4} style={{ textAlign: 'right' }}>
               <Btn
                 feature='secondary'
-                onClick={() => history.push('/index/bookmark')}
+                onClick={() => history.push('/bookmark')}
               >
                 <IconBookmark />
                 Bookmark
@@ -121,7 +121,7 @@ const Index = () => {
                     disabled={
                       !course.available || course.status === 'Not available'
                     }
-                    onClick={() => history.push(`/index/course/${course.id}`)}
+                    onClick={() => history.push(`/courseDetail/${course.id}`)}
                   >
                     Take class
                   </Btn>

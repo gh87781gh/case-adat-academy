@@ -1,0 +1,50 @@
+.ad-helpCenter-card {
+  border: 1px solid @color-primary-light01;
+  padding: 32px;
+  background-color: @color-white;
+  border-radius: 2px;
+  h2 {
+    .typo-subTitle();
+    margin-bottom: 16px;
+    color: @color-primary;
+  }
+  ul {
+    .typo-bodyDefault();
+    color: @color-gray03;
+    margin-bottom: 33px;
+  }
+  .ant-btn.ant-btn-primary {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+  p {
+    color: @color-primary;
+    margin-bottom: unset;
+  }
+}
+.ad-helpCenter-desc {
+  .typo-bodyBold();
+  display: inline-block;
+  max-width: 350px;
+  color: @color-primary;
+  margin-bottom: 27px;
+  text-align: left;
+  .ad-helpCenter-desc-cs {
+    display: inline-block;
+    width: 98px;
+    .size(98px,auto);
+    &:not(:last-child) {
+      margin-right: 28px;
+    }
+    img {
+      .size(98px,98px);
+      border-radius: 50%;
+      margin-bottom: 16px;
+      background-color: #ccc;
+    }
+    h4 {
+      .typo-bodyDefault();
+      text-align: center;
+    }
+  }
+}

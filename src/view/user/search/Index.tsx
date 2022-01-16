@@ -5,14 +5,14 @@ import CourseApi from 'api/user/CourseApi'
 import Header from 'view/layout/Header'
 import Footer from 'view/layout/Footer'
 import { Btn } from 'utility/component'
-import Card from '../../component/Card'
+import Card from '../component/Card'
 import { Row, Col, Breadcrumb, Pagination } from 'antd'
 
 interface IState {
   coursesType: string
 }
 
-const Bookmark = () => {
+const Index = () => {
   const context = useContext(MyContext)
   const api = new CourseApi()
   const history = useHistory()
@@ -41,27 +41,24 @@ const Bookmark = () => {
   return (
     <>
       <Header />
-      <div className='ad-breadcrumb'>
-        <Breadcrumb separator='|'>
-          <Breadcrumb.Item onClick={() => history.push('/course')}>
-            <Btn feature='link'>Course</Btn>
-          </Breadcrumb.Item>
-          <Breadcrumb.Item>
-            <b>Bookmark</b>
-          </Breadcrumb.Item>
-        </Breadcrumb>
-      </div>
       <article className='ad-page-container'>
-        <h1 className='ad-title'>Bookmark</h1>
+        <h1 className='ad-title'>Search result</h1>
         <section className='ad-section-card'>
+          <div
+            className='ad-text-right ad-color-primary'
+            style={{ marginBottom: '24px' }}
+          >
+            Can’t find the solutions? Please visit{' '}
+            <Btn feature='link'>help center</Btn>
+          </div>
           <Card
-            type='BOOKMARK'
+            type='SEARCH'
             subtitle={'ADB CONTROL CENTER'}
             title={'What is ADB Control Center?'}
             text={'Lorem ipsum dolor sit amet consectetur adipisicing elit.'}
           />
           <Card
-            type='BOOKMARK'
+            type='SEARCH'
             subtitle={'ADB CONTROL CENTER'}
             title={'What is ADB Control Center?'}
             text={'Lorem ipsum dolor sit amet consectetur adipisicing elit.'}
@@ -69,7 +66,7 @@ const Bookmark = () => {
           <Row gutter={20}>
             <Col span={10}>
               <div className='ad-section-card-result'>
-                <span>24</span> Bookmarks
+                <span>24</span> Search results
               </div>
             </Col>
             <Col span={14} className='ad-text-right'>
@@ -86,4 +83,4 @@ const Bookmark = () => {
     </>
   )
 }
-export default Bookmark
+export default Index

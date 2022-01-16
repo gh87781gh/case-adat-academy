@@ -50,16 +50,16 @@ const Header = () => {
         {/* <div className='ad-header-container-logo'> */}
         <div
           className='ad-header-container-logo-primary'
-          onClick={() => history.push('/index')}
+          onClick={() => history.push('/course')}
         >
           <IconADATFull />
         </div>
         <ul className='ad-header-tabHead'>
           <li
             className={`ad-header-btn ${
-              location.pathname === '/index' ? 'active' : ''
+              location.pathname === '/course' ? 'active' : ''
             }`}
-            onClick={() => history.push('/index')}
+            onClick={() => history.push('/course')}
           >
             Course
           </li>
@@ -67,7 +67,7 @@ const Header = () => {
             className={`ad-header-btn ${
               location.pathname === '/help' ? 'active' : ''
             }`}
-            onClick={() => history.push('/help')}
+            onClick={() => history.push('/helpCenter')}
           >
             Help center
           </li>
