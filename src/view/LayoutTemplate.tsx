@@ -11,6 +11,7 @@ import DemoPage from './DemoPage'
 // user console
 import Course from './user/course/Index'
 import CourseDetail from './user/course/courseDetail/CourseDetail'
+import Bookmark from './user/course/bookmark/Bookmark'
 
 // admin console
 import AdminPurchase from './admin/purchase/Index'
@@ -79,6 +80,11 @@ const LayoutTemplate = () => {
                 exact={true}
                 path='/index/course/:courseId'
                 render={() => componentPage(CourseDetail, 'USER')}
+              />
+              <Route
+                exact={true}
+                path='/index/bookmark'
+                render={() => componentPage(Bookmark, 'USER')}
               />
               <Route
                 exact={true}

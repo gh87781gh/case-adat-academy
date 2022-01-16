@@ -15,12 +15,25 @@
 .ad-section-course-detail {
   top: @section-course-detail-top-move;
 }
+.ad-section-course-detail-title {
+  top: @section-course-detail-top-move;
+  padding: 60px @section-course-detail-title-padding-x 70px;
+}
+.ad-section-bookmark {
+  padding-right: 120px;
+  .ad-section-bookmark-result {
+    .typo-bodyDefault();
+    color: @color-gray03;
+    span {
+      .typo-bodyBold();
+      color: @color-primary;
+    }
+  }
+}
+
+// TODO 拆到 breadcrumb 去
 .ad-section-course-detail-breadcrumb {
   top: @section-course-detail-top-move;
   padding-left: @section-course-detail-title-padding-x;
   padding-right: @section-course-detail-title-padding-x;
-}
-.ad-section-course-detail-title {
-  top: @section-course-detail-top-move;
-  padding: 60px @section-course-detail-title-padding-x 70px;
 }

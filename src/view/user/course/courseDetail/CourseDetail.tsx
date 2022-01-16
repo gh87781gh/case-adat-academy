@@ -5,7 +5,8 @@ import CourseApi from 'api/user/CourseApi'
 import Header from 'view/layout/Header'
 import Footer from 'view/layout/Footer'
 import {
-  IconArrowDown,
+  IconArrowPrev,
+  IconArrowNext,
   IconBookmark,
   IconBookmarked,
   IconLevels,
@@ -32,7 +33,7 @@ const CourseDetail = () => {
   const history = useHistory()
   const { courseId } = useParams<{ courseId: string }>()
 
-  // course detail setting
+  // course deta il setting
   const [courseName, setCourseName] = useState<string>('')
   const [courseLogoImage, setCourseLogoImage] = useState<string>('')
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
@@ -48,15 +49,41 @@ const CourseDetail = () => {
   }
 
   // course menu
+  // selectedKeys is the same as currentSection's key
   const [menuOpenKeys, setMenuOpenKeys] = useState<any>([])
   const [selectedKeys, setSelectedKeys] = useState<any>([])
   const [menu, setMenu] = useState<any>([])
 
   // current section
   const [currentSection, setCurrentSection] = useState<any>({})
+  const [allSectionKeys, setAllSectionKeys] = useState<any>([])
+  const slideCurrentSection = (sectionKey: string) => {
+    console.log('sectionKey:', sectionKey)
+  }
+  const markAsRead = () => {
+    context.setIsLoading(true)
+    api
+      .markAsRead(courseId, currentSection.id) //TODO api 會報錯 500
+      .then(() => getInitData())
+      .finally(() => context.setIsLoading(false))
+  }
   useEffect(() => {
+    // after menu onload, get allSectionKeys
+    if (menu.length > 0) {
+      const allSectionKeys: any = []
+      for (const group of menu) {
+        for (const chapter of group.children) {
+          for (const section of chapter.children) {
+            allSectionKeys.push(section.key)
+          }
+        }
+      }
+      setAllSectionKeys(allSectionKeys)
+    }
+  }, [menu]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    // when user click the section item in menu, set current section
     if (menu.length > 0 && selectedKeys.length > 0) {
-      // set current section
       for (const group of menu) {
         for (const chapter of group.children) {
           for (const section of chapter.children) {
@@ -70,10 +97,10 @@ const CourseDetail = () => {
         break
       }
     }
-  }, [menu, selectedKeys]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [selectedKeys]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // init page
-  useEffect(() => {
+  const getInitData = () => {
     context.setIsLoading(true)
     api
       .getCourseDetail(courseId)
@@ -86,6 +113,9 @@ const CourseDetail = () => {
         setSelectedKeys(res.selectedKeys)
       })
       .finally(() => context.setIsLoading(false))
+  }
+  useEffect(() => {
+    getInitData()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const renderMenu = () => {
@@ -125,6 +155,25 @@ const CourseDetail = () => {
     )
   }
   const renderCurrentSection = () => {
+    // check the prev/next section of current section
+    let prevSectionKey = ''
+    let nextSectionKey = ''
+    const newAry = [...allSectionKeys]
+    const reverseAllSectionKeys: any = newAry.reverse()
+    for (const key of allSectionKeys) {
+      if (key === currentSection.key) {
+        break
+      }
+      prevSectionKey = key
+      break
+    }
+    for (const key of reverseAllSectionKeys) {
+      if (key === currentSection.key) {
+        break
+      }
+      nextSectionKey = key
+    }
+
     const { chapterContentType, apiUrl } = StaticService
     return (
       <div className='ad-course-detail-current-section'>
@@ -146,6 +195,36 @@ const CourseDetail = () => {
               </div>
             ))
           : null}
+        <div className='ad-course-detail-current-section-markRead'>
+          {currentSection.status === 'Not started' ? (
+            <Btn feature='primary' onClick={markAsRead}>
+              Mark as read
+            </Btn>
+          ) : currentSection.status === 'Finished' ? (
+            <div className='success'>
+              <IconSuccess />
+              Section completed
+            </div>
+          ) : null}
+        </div>
+        <div className='ad-course-detail-current-section-slide'>
+          <Btn
+            feature='secondary'
+            style={{ visibility: prevSectionKey ? 'visible' : 'hidden' }}
+            onClick={() => slideCurrentSection(currentSection.key)}
+          >
+            <IconArrowPrev />
+            Go to previous section
+          </Btn>
+          <Btn
+            feature='secondary'
+            style={{ visibility: nextSectionKey ? 'visible' : 'hidden' }}
+            onClick={() => slideCurrentSection(currentSection.key)}
+          >
+            Go to next section
+            <IconArrowNext />
+          </Btn>
+        </div>
       </div>
     )
   }

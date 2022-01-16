@@ -90,7 +90,10 @@ const Index = () => {
               </div>
             </Col>
             <Col span={4} style={{ textAlign: 'right' }}>
-              <Btn feature='secondary'>
+              <Btn
+                feature='secondary'
+                onClick={() => history.push('/index/bookmark')}
+              >
                 <IconBookmark />
                 Bookmark
               </Btn>
@@ -137,7 +140,7 @@ const Index = () => {
               </li>
             ))}
           </ul>
-          <div className='ad-pagination-box'>
+          <div className='ad-text-right'>
             <Pagination
               current={page}
               total={total}

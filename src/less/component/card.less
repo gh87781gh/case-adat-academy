@@ -1,0 +1,31 @@
+.ad-card {
+  background-color: @color-white;
+  border: 1px solid #8f9fca;
+  border-radius: 2px;
+  padding: 32px;
+  margin-bottom: 24px;
+  h3 {
+    .typo-bodyDefault();
+    color: @color-gray04;
+    margin-bottom: 12px;
+  }
+  h2 {
+    .typo-subTitle();
+    color: @color-primary;
+    margin-bottom: 12px;
+  }
+  p {
+    .typo-bodyDefault();
+    color: @color-gray03;
+    margin-bottom: unset;
+  }
+  .ad-card-action {
+    position: relative;
+    .size(100%,100%);
+    .ad-btn-group {
+      .center();
+      display: inline-block;
+      .size(100px + @btn-group-gap,48px);
+    }
+  }
+}

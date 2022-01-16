@@ -104,4 +104,11 @@ export default class CourseApi {
       {}
     )
   }
+  markAsRead = (courseId: string, sectionId: string) => {
+    return this.restAPI.request(
+      'post',
+      `/user/course/${courseId}/${sectionId}`,
+      { is_finished: true }
+    )
+  }
 }
