@@ -1,10 +1,12 @@
 .ad-form-group {
   position: relative;
   & > label {
+    .typo-bodyDefault();
     display: block;
     font-size: @form-group-font-size;
     font-weight: 400;
     margin-bottom: 0.5rem;
+    color: @color-gray04;
     &.required {
       &::before {
         content: '*';

@@ -5,8 +5,10 @@ import { MyContext, BrowserStorage } from '../storage'
 import GlobalApi from '../api/GlobalApi'
 
 // no validate auth
-import Login from './login/Login'
-import Create from './login/Create'
+import Login from './login/login/Login'
+import SignUp1 from './login/signUp/SignUp1'
+import SignUp2 from './login/signUp/SignUp2'
+import SignUpConfirm from './login/signUp/SignUpConfirm'
 import DemoPage from './DemoPage'
 
 // user console
@@ -67,12 +69,15 @@ const LayoutTemplate = () => {
         <Spin className='ad-spin-global' spinning={isLoading} size='large'>
           <HashRouter>
             <Switch>
+              {process.env.REACT_APP_ENV === 'LOCAL' ? (
+                <Route
+                  exact={true}
+                  path='/demo'
+                  render={() => componentPage(DemoPage, 'LOGIN')}
+                />
+              ) : null}
+
               {/* NOTE LOGIN */}
-              <Route
-                exact={true}
-                path='/demo'
-                render={() => componentPage(DemoPage, 'LOGIN')}
-              />
               <Route
                 exact={true}
                 path='/'
@@ -80,8 +85,18 @@ const LayoutTemplate = () => {
               />
               <Route
                 exact={true}
-                path='/create'
-                render={() => componentPage(Create, 'LOGIN')}
+                path='/signUp1'
+                render={() => componentPage(SignUp1, 'LOGIN')}
+              />
+              <Route
+                exact={true}
+                path='/signUp2'
+                render={() => componentPage(SignUp2, 'LOGIN')}
+              />
+              <Route
+                exact={true}
+                path='/signUpConfirm'
+                render={() => componentPage(SignUpConfirm, 'LOGIN')}
               />
 
               {/* NOTE USER */}

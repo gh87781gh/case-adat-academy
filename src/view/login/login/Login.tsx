@@ -1,11 +1,14 @@
 import { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import { MyContext, BrowserStorage } from '../../storage'
-import LoginApi from '../../api/LoginApi'
-import FormGroupMsg from '../../utility/component/FormGroupMsg'
-import { ValidateStr } from '../../utility/validate'
+import { MyContext, BrowserStorage } from '../../../storage'
+import LoginApi from '../../../api/LoginApi'
+import FormGroupMsg from '../../../utility/component/FormGroupMsg'
+import { Btn } from 'utility/component'
+import { ValidateStr } from '../../../utility/validate'
 import { Button, Input, Checkbox } from 'antd'
-import LoginTemplate from './LoginTemplate'
+import LoginTemplate from '../LoginTemplate'
+import LoginPrompt from '../LoginPrompt'
+import { IconInfor, IconArrowNext } from 'utility/icon'
 
 interface IState {
   account: string
@@ -71,22 +74,18 @@ const Login = () => {
       .finally(() => context.setIsLoading(false))
   }
 
-  const [step, setStep] = useState<number>(0)
-  const renderLogin = () => (
-    <>
+  return (
+    <LoginTemplate>
+      <LoginPrompt text={loginErr} />
       <div className='ad-login-content-header'>
-        <h2 style={{ visibility: loginErr ? 'unset' : 'hidden' }}>
-          {loginErr} &nbsp;
-        </h2>
-        <h1>
-          LOG IN
-          <Button
-            className='ad-float-right'
-            onClick={() => history.push('/create')}
-          >
-            Sign up
-          </Button>
-        </h1>
+        LOG IN
+        <Btn
+          feature='secondary'
+          className='ad-float-right'
+          onClick={() => history.push('/signUp1')}
+        >
+          Sign up <IconArrowNext />
+        </Btn>
       </div>
       <div className='ad-login-content-body'>
         <div className='ad-form-group'>
@@ -142,37 +141,7 @@ const Login = () => {
           Forgot password ?
         </Button>
       </div>
-    </>
-  )
-  const renderLoginSuccessfully = () => (
-    <>
-      <div className='ad-login-content-header'>
-        <h1>Successfully login!</h1>
-      </div>
-      <div className='ad-login-content-body'>
-        <p>We’ve send a confirmation letter to your mailbox...</p>
-      </div>
-      <div className='ad-login-content-footer'>
-        <Button
-          className='ad-login-content-actionBtn'
-          type='primary'
-          block
-          onClick={() => setStep(0)}
-        >
-          Continue
-        </Button>
-      </div>
-    </>
-  )
-  return (
-    <LoginTemplate>
-      {step === 0
-        ? renderLogin()
-        : step === 1
-        ? renderLoginSuccessfully()
-        : null}
     </LoginTemplate>
   )
-  return
 }
 export default Login

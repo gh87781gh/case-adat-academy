@@ -25,18 +25,37 @@
   width: 100%;
   max-width: 660px;
   background-color: @color-gray01;
-  padding: 80px 90px 100px 90px;
-
-  & > *:not(:last-child) {
-    margin-bottom: 50px;
+  padding: 48px 92px;
+}
+.ad-login-content-err {
+  .typo-bodyDefault();
+  background-color: @color-error-light;
+  border: 1px solid @color-error;
+  padding: 10px 17px;
+  color: @color-error;
+  margin-bottom: 16px;
+  .anticon {
+    margin-right: 16px;
+  }
+  &.show {
+    visibility: unset;
+  }
+  &.hide {
+    visibility: hidden;
+  }
+}
+.ad-login-content-header {
+  .clearFix();
+  .typo-title();
+  margin-bottom: 24px;
+  .ant-btn {
+    margin-top: 5px;
   }
 }
 .ad-login-content-body {
+  margin-bottom: 48px;
   & > *:not(:last-child) {
-    margin-bottom: 40px;
-  }
-  .ad-form-group {
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
 }
 .ad-login-footer {

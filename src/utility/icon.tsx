@@ -387,6 +387,19 @@ const svgSuccess = () => (
 export const IconSuccess = (props: any) => {
   return <Icon component={svgSuccess} {...props} />
 }
+const svgInfor = () => (
+  <svg width='20' height='20' viewBox='0 0 20 20' fill='none'>
+    <path
+      fillRule='evenodd'
+      clipRule='evenodd'
+      d='M0 10C0 4.481 4.48 0 10 0C15.53 0 20 4.481 20 10C20 15.521 15.53 20 10 20C4.48 20 0 15.521 0 10ZM9.12109 6.21008C9.12109 5.73108 9.52109 5.33008 10.0011 5.33008C10.4811 5.33008 10.8711 5.73108 10.8711 6.21008V10.6301C10.8711 11.1111 10.4811 11.5001 10.0011 11.5001C9.52109 11.5001 9.12109 11.1111 9.12109 10.6301V6.21008ZM10.0089 14.6812C9.51891 14.6812 9.12891 14.2812 9.12891 13.8012C9.12891 13.3212 9.51891 12.9312 9.99891 12.9312C10.4889 12.9312 10.8789 13.3212 10.8789 13.8012C10.8789 14.2812 10.4889 14.6812 10.0089 14.6812Z'
+      fill='currentColor'
+    />
+  </svg>
+)
+export const IconInfor = (props: any) => {
+  return <Icon component={svgInfor} {...props} />
+}
 // const svgBookmark = () => (
 //   <svg width='12' height='18' viewBox='0 0 12 18' fill='none'>
 //     <path
