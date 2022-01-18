@@ -1,14 +1,16 @@
 import { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import { MyContext, BrowserStorage } from '../../../storage'
-import LoginApi from '../../../api/LoginApi'
-import FormGroupMsg from '../../../utility/component/FormGroupMsg'
-import { Btn } from 'utility/component'
-import { ValidateStr } from '../../../utility/validate'
-import { Button, Input, Checkbox } from 'antd'
+import { MyContext, BrowserStorage } from 'storage'
+import LoginApi from 'api/LoginApi'
+
 import LoginTemplate from '../LoginTemplate'
 import LoginPrompt from '../LoginPrompt'
-import { IconInfor, IconArrowNext } from 'utility/icon'
+
+import FormGroupMsg from 'utility/component/FormGroupMsg'
+import { Btn } from 'utility/component'
+import { ValidateStr } from 'utility/validate'
+import { IconArrowNext } from 'utility/icon'
+import { Button, Input, Checkbox } from 'antd'
 
 interface IState {
   account: string
@@ -70,7 +72,10 @@ const Login = () => {
         context.getAuth()
         history.push('/course')
       })
-      .catch((err: any) => setLoginErr(err ?? ''))
+      .catch((err: any) => {
+        if (err.status === '400 Bad Request')
+          setLoginErr('Your user ID or password is incorrect.')
+      })
       .finally(() => context.setIsLoading(false))
   }
 
@@ -82,7 +87,7 @@ const Login = () => {
         <Btn
           feature='secondary'
           className='ad-float-right'
-          onClick={() => history.push('/signUp1')}
+          onClick={() => history.push('/login/signUp1')}
         >
           Sign up <IconArrowNext />
         </Btn>
@@ -94,7 +99,10 @@ const Login = () => {
             placeholder='Clear hint for the input'
             maxLength={200}
             value={data.account}
-            onChange={(e) => onChange('account', e)}
+            onChange={(e) => {
+              onChange('account', e)
+              setLoginErr('')
+            }}
           />
           <FormGroupMsg
             isShow={isEmail === false}
@@ -108,13 +116,14 @@ const Login = () => {
             placeholder='Clear hint for the input'
             maxLength={16}
             value={data.password}
-            onChange={(e) => onChange('password', e)}
+            onChange={(e) => {
+              onChange('password', e)
+              setLoginErr('')
+            }}
           />
-          <FormGroupMsg
-            isShow={data.password.length > 0 && data.password.length < 8}
-            type='error'
-            msg='Password is too short'
-          />
+          <Btn feature='link' onClick={() => history.push('/login/recover')}>
+            Forgot password ?
+          </Btn>
         </div>
       </div>
       <div className='ad-login-content-footer'>
@@ -125,20 +134,12 @@ const Login = () => {
           Remember my user ID
         </Checkbox>
         <Button
-          disabled={
-            !data.account ||
-            !data.password ||
-            data.password.length < 8 ||
-            isEmail === false
-          }
+          disabled={!data.account || !data.password || isEmail === false}
           type='primary'
           block
           onClick={() => login()}
         >
           Log in
-        </Button>
-        <Button type='link' onClick={() => history.push('/login/recover')}>
-          Forgot password ?
         </Button>
       </div>
     </LoginTemplate>

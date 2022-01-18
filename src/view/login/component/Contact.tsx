@@ -69,7 +69,7 @@ const Contact = () => {
   const renderStep1 = () => (
     <>
       <div className='ad-login-content-header'>
-        <Button className='ad-mb-1' onClick={() => history.push('/')}>
+        <Button className='ad-mb-1' onClick={() => history.push('/login')}>
           Back
         </Button>
         <h1>Contact us</h1>
@@ -150,7 +150,7 @@ const Contact = () => {
           className='ad-login-content-actionBtn'
           type='primary'
           block
-          onClick={() => history.push('/')}
+          onClick={() => history.push('/login')}
         >
           Continue
         </Button>

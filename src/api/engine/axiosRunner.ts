@@ -42,7 +42,7 @@ export class ApiEngine {
           message.error('404 Not Found')
         } else if (err.response.status === 401) {
           message.error('Unauthorized')
-          history.push('/')
+          history.push('/login')
         } else if (err.response && url !== '/auth/login') {
           message.error(err.response.data.message)
         }
@@ -52,7 +52,12 @@ export class ApiEngine {
   }
 }
 export class RestAPI extends ApiEngine {
-  request = (method: string, url: string, body: any): Promise<any> => {
+  request = (
+    method: string,
+    url: string,
+    body: any,
+    isCustomizeErr?: false
+  ): Promise<any> => {
     this.setToken()
     this.setInterceptor(url)
     const config = this.config
@@ -68,8 +73,8 @@ export class RestAPI extends ApiEngine {
           resolve(res.data)
         })
         .catch((err: any) => {
-          if (url === '/auth/login') {
-            reject(err.message)
+          if (isCustomizeErr) {
+            reject(err)
           } else {
             reject(false)
           }

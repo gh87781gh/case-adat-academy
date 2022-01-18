@@ -4,7 +4,7 @@ export default class LoginApi {
   restAPI: any = new RestAPI()
 
   login = (data: any) => {
-    return this.restAPI.request('post', '/auth/login', data)
+    return this.restAPI.request('post', '/auth/login', data, true)
   }
   checkAccount = (data: any) => {
     const toCheck = {

@@ -49,7 +49,7 @@ const LayoutTemplate = () => {
   const componentPage = (Component: any, pageType: string, props?: any) => {
     const token = browserStorage.getStorage('AUTH')
     if ((pageType === 'USER' || pageType === 'ADMIN') && !token) {
-      return <Redirect to='/' />
+      return <Redirect to='/login' />
     } else if (pageType === 'ADMIN' && !auth.is_admin) {
       return <Redirect to='/course' />
     } else {
@@ -80,22 +80,22 @@ const LayoutTemplate = () => {
               {/* NOTE LOGIN */}
               <Route
                 exact={true}
-                path='/'
+                path='/login'
                 render={() => componentPage(Login, 'LOGIN')}
               />
               <Route
                 exact={true}
-                path='/signUp1'
+                path='/login/signUp1'
                 render={() => componentPage(SignUp1, 'LOGIN')}
               />
               <Route
                 exact={true}
-                path='/signUp2'
+                path='/login/signUp2'
                 render={() => componentPage(SignUp2, 'LOGIN')}
               />
               <Route
                 exact={true}
-                path='/signUpConfirm'
+                path='/login/signUpConfirm'
                 render={() => componentPage(SignUpConfirm, 'LOGIN')}
               />
 
@@ -162,7 +162,7 @@ const LayoutTemplate = () => {
                 path='/admin/admin'
                 render={() => componentPage(AdminAdmin, 'ADMIN')}
               />
-              <Redirect to='/' />
+              <Redirect to='/login' />
             </Switch>
           </HashRouter>
           <span className='ad-layout-version'>v{version}</span>

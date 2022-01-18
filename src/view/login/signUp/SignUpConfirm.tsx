@@ -17,7 +17,7 @@ const SignUpConfirm = () => {
         </p>
       </div>
       <div className='ad-login-content-footer'>
-        <Btn feature='action' onClick={() => history.push('/')}>
+        <Btn feature='action' onClick={() => history.push('/login')}>
           Continue
         </Btn>
       </div>

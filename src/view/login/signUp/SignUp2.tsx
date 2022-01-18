@@ -123,7 +123,10 @@ const SignUp2 = () => {
       <div className='ad-login-content-header'>
         <h1>
           Create account
-          <Button className='ad-float-right' onClick={() => history.push('/')}>
+          <Button
+            className='ad-float-right'
+            onClick={() => history.push('/login')}
+          >
             Log in
           </Button>
         </h1>

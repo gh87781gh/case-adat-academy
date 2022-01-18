@@ -1,8 +1,5 @@
-import Header from './layout/Header'
-import Footer from './layout/Footer'
 import { Btn } from 'utility/component'
-import { Button, Row, Col, Select } from 'antd'
-const { Option } = Select
+import { Row, Col } from 'antd'
 
 const DemoPage = () => {
   return (

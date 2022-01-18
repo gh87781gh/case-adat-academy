@@ -13,7 +13,7 @@ const Header = () => {
 
   const logout = () => {
     browserStorage.removeStorage('AUTH')
-    history.push('/')
+    history.push('/login')
   }
 
   const menu = () => {

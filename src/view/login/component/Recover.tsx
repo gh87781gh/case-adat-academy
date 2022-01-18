@@ -54,7 +54,7 @@ const Recover = () => {
   const renderStep1 = () => (
     <>
       <div className='ad-login-content-header'>
-        <Button className='ad-mb-1' onClick={() => history.push('/')}>
+        <Button className='ad-mb-1' onClick={() => history.push('/login')}>
           Back
         </Button>
         <h1>Recover password</h1>
@@ -111,7 +111,7 @@ const Recover = () => {
           className='ad-login-content-actionBtn'
           block
           onClick={() => setStep(2)}
-          // onClick={() => history.push('/')} //TODO
+          // onClick={() => history.push('/login')} //TODO
         >
           Continue
         </Button>
@@ -147,7 +147,7 @@ const Recover = () => {
           type='primary'
           className='ad-login-content-actionBtn'
           block
-          onClick={() => history.push('/')}
+          onClick={() => history.push('/login')}
         >
           Go to Log in
         </Button>
