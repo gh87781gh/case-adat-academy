@@ -10,7 +10,7 @@ import FormGroupMsg from 'utility/component/FormGroupMsg'
 import { Btn } from 'utility/component'
 import { ValidateStr } from 'utility/validate'
 import { IconArrowNext } from 'utility/icon'
-import { Button, Input, Checkbox } from 'antd'
+import { Input, Checkbox } from 'antd'
 
 interface IState {
   account: string
@@ -28,7 +28,6 @@ const Login = () => {
     password: ''
   })
   const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
-  const [loginErr, setLoginErr] = useState<string>('')
   const onChange = (key: string, e: any) => {
     let value = e.target.value
     if (value) {
@@ -47,6 +46,9 @@ const Login = () => {
     }
     setData({ ...data, [key]: value })
   }
+  useEffect(() => {
+    setErrMsg('')
+  }, [data])
 
   const [isKeep, setIsKeep] = useState<boolean>(false)
   useEffect(() => {
@@ -59,6 +61,7 @@ const Login = () => {
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+  const [errMsg, setErrMsg] = useState<string>('')
   const login = () => {
     isKeep
       ? browserStorage.setStorage('LOGIN_USERNAME', data.account)
@@ -74,14 +77,14 @@ const Login = () => {
       })
       .catch((err: any) => {
         if (err.status === '400 Bad Request')
-          setLoginErr('Your user ID or password is incorrect.')
+          setErrMsg('Your user ID or password is incorrect.')
       })
       .finally(() => context.setIsLoading(false))
   }
 
   return (
     <LoginTemplate>
-      <LoginPrompt text={loginErr} />
+      <LoginPrompt text={errMsg} />
       <div className='ad-login-content-header'>
         LOG IN
         <Btn
@@ -99,10 +102,7 @@ const Login = () => {
             placeholder='Clear hint for the input'
             maxLength={200}
             value={data.account}
-            onChange={(e) => {
-              onChange('account', e)
-              setLoginErr('')
-            }}
+            onChange={(e) => onChange('account', e)}
           />
           <FormGroupMsg
             isShow={isEmail === false}
@@ -116,10 +116,7 @@ const Login = () => {
             placeholder='Clear hint for the input'
             maxLength={16}
             value={data.password}
-            onChange={(e) => {
-              onChange('password', e)
-              setLoginErr('')
-            }}
+            onChange={(e) => onChange('password', e)}
           />
           <Btn feature='link' onClick={() => history.push('/login/recover')}>
             Forgot password ?
@@ -133,14 +130,14 @@ const Login = () => {
         >
           Remember my user ID
         </Checkbox>
-        <Button
+        <Btn
+          feature='action'
           disabled={!data.account || !data.password || isEmail === false}
-          type='primary'
           block
           onClick={() => login()}
         >
           Log in
-        </Button>
+        </Btn>
       </div>
     </LoginTemplate>
   )

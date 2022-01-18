@@ -1,14 +1,17 @@
 import { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { MyContext } from 'storage'
-import GlobalApi from 'api/GlobalApi'
 import LoginApi from 'api/LoginApi'
+import msg from 'api/engine/msg'
+
+import LoginTemplate from 'view/login/LoginTemplate'
+import LoginPrompt from '../LoginPrompt'
+
 import { ValidateStr } from 'utility/validate'
 import FormGroupMsg from 'utility/component/FormGroupMsg'
-import msg from 'api/engine/msg'
-import LoginTemplate from 'view/login/LoginTemplate'
-import { Row, Col, Button, Input, Checkbox, Select, message } from 'antd'
-const { Option } = Select
+import { Btn } from 'utility/component'
+import { IconArrowNext } from 'utility/icon'
+import { Input } from 'antd'
 
 interface IState {
   user_id: string
@@ -24,32 +27,9 @@ interface IState {
 
 const SignUp1 = () => {
   const context = useContext(MyContext)
-  const api_global = new GlobalApi()
   const api = new LoginApi()
   const history = useHistory()
 
-  const [industryOption, setIndustryOption] = useState<string[]>([])
-  const [experienceLevelOption, setExperienceLevelOption] = useState<string[]>(
-    []
-  )
-  const [experienceOption, setExperienceOption] = useState<string[]>([])
-  useEffect(() => {
-    context.setIsLoading(true)
-    api_global
-      .getOptions([
-        'learning_profile_industries',
-        'learning_profile_experience_levels',
-        'learning_profile_experiences'
-      ])
-      .then((res: any) => {
-        setIndustryOption(res.data[0])
-        setExperienceLevelOption(res.data[1])
-        setExperienceOption(res.data[2])
-      })
-      .finally(() => context.setIsLoading(false))
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
-  const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
   const [data, setData] = useState<IState>({
     user_id: '',
     password: '',
@@ -61,6 +41,7 @@ const SignUp1 = () => {
     experience: [],
     experience_level: ''
   })
+  const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
   const onChange = (key: string, e: any) => {
     let value = e.target.value
     if (value) {
@@ -85,52 +66,33 @@ const SignUp1 = () => {
     }
     setData({ ...data, [key]: value })
   }
-  const onSelect = (key: string, value: any) => {
-    setData({ ...data, [key]: value })
-  }
-  const onChecks = (checkedValues: any) => {
-    if (checkedValues.includes(3)) {
-      checkedValues.length >= 2 && checkedValues.indexOf(3) === 0
-        ? checkedValues.shift()
-        : (checkedValues = [3])
-    }
-    setData({ ...data, experience: checkedValues })
-  }
+  useEffect(() => {
+    setErrMsg('')
+  }, [data])
+
+  const [errMsg, setErrMsg] = useState<string>('')
   const checkAccount = () => {
     context.setIsLoading(true)
     api
       .checkAccount(data)
-      .then((res: any) =>
-        res.is_exist ? message.error(msg.checkAccount) : setStep(1)
-      )
-      .finally(() => context.setIsLoading(false))
-  }
-  const create = () => {
-    context.setIsLoading(true)
-
-    const experienceStrAry = data.experience.map((item: any) => {
-      return experienceOption[item]
-    })
-
-    api
-      .create(data, experienceStrAry)
-      .then(() => setStep(2))
+      .then((res: any) => {
+        if (res.is_exist) setErrMsg(msg.checkAccount)
+      })
       .finally(() => context.setIsLoading(false))
   }
 
-  const [step, setStep] = useState<number>(0)
   return (
     <LoginTemplate>
+      <LoginPrompt text={errMsg} />
       <div className='ad-login-content-header'>
-        <h1>
-          Create account
-          <Button
-            className='ad-float-right'
-            onClick={() => history.push('/login')}
-          >
-            Log in
-          </Button>
-        </h1>
+        Create account
+        <Btn
+          feature='secondary'
+          className='ad-float-right'
+          onClick={() => history.push('/login')}
+        >
+          Log in <IconArrowNext />
+        </Btn>
       </div>
       <div className='ad-login-content-body'>
         <div className='ad-form-group'>
@@ -194,7 +156,8 @@ const SignUp1 = () => {
         </div>
       </div>
       <div className='ad-login-content-footer'>
-        <Button
+        <Btn
+          feature='action'
           disabled={
             !data.user_id ||
             !data.password ||
@@ -210,7 +173,7 @@ const SignUp1 = () => {
           onClick={() => checkAccount()}
         >
           Next
-        </Button>
+        </Btn>
       </div>
     </LoginTemplate>
   )

@@ -1,15 +1,19 @@
 .ad-form-group {
   position: relative;
+  margin-bottom: 16px;
+
   & > label {
     .typo-bodyDefault();
     display: block;
     font-size: @form-group-font-size;
     font-weight: 400;
-    margin-bottom: 0.5rem;
     color: @color-gray04;
     &.required {
-      &::before {
+      &::after {
         content: '*';
+        color: @color-error;
+        font-size: 14px;
+        margin-left: 1px;
       }
     }
     em {
@@ -38,4 +42,5 @@
   position: absolute;
   top: calc(100% + 2px);
   left: 0;
+  .typo-small();
 }
