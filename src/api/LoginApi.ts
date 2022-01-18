@@ -21,7 +21,7 @@ export default class LoginApi {
     return this.restAPI.request('post', '/auth/signup', sendData)
   }
   recoverPassword = (data: any) => {
-    return this.restAPI.request('post', '/auth/pwd_recover', data)
+    return this.restAPI.request('post', '/recovery/submit', data, true)
   }
   contact = (data: any) => {
     return this.restAPI.request('post', '/contact', data)

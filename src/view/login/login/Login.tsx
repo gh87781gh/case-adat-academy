@@ -118,7 +118,10 @@ const Login = () => {
             value={data.password}
             onChange={(e) => onChange('password', e)}
           />
-          <Btn feature='link' onClick={() => history.push('/login/recover')}>
+          <Btn
+            feature='link'
+            onClick={() => history.push('/login/passwordRecover1')}
+          >
             Forgot password ?
           </Btn>
         </div>

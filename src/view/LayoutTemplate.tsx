@@ -5,11 +5,14 @@ import { MyContext, BrowserStorage } from '../storage'
 import GlobalApi from '../api/GlobalApi'
 
 // no validate auth
+import DemoPage from './DemoPage' // only for local
 import Login from './login/login/Login'
 import SignUp1 from './login/signUp/SignUp1'
 import SignUp2 from './login/signUp/SignUp2'
 import SignUpConfirm from './login/signUp/SignUpConfirm'
-import DemoPage from './DemoPage'
+import PasswordRecover1 from './login/password/PasswordRecover1'
+import PasswordRecover2 from './login/password/PasswordRecover2'
+import PasswordRecover3 from './login/password/PasswordRecover3'
 
 // user console
 import Course from './user/course/Index'
@@ -97,6 +100,21 @@ const LayoutTemplate = () => {
                 exact={true}
                 path='/login/signUpConfirm'
                 render={() => componentPage(SignUpConfirm, 'LOGIN')}
+              />
+              <Route
+                exact={true}
+                path='/login/passwordRecover1'
+                render={() => componentPage(PasswordRecover1, 'LOGIN')}
+              />
+              <Route
+                exact={true}
+                path='/login/passwordRecover2'
+                render={() => componentPage(PasswordRecover2, 'LOGIN')}
+              />
+              <Route
+                exact={true}
+                path='/login/passwordRecover3'
+                render={() => componentPage(PasswordRecover3, 'LOGIN')}
               />
 
               {/* NOTE USER */}
