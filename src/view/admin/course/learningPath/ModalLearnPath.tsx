@@ -78,7 +78,7 @@ const ModalLearnPath = (props: IProps) => {
       </div>
       <FormGroupMsg
         isShow={true}
-        withIcon={true}
+        isShowIcon={true}
         type='error'
         msg='Course is in inactive status, so user won’t see it'
       />

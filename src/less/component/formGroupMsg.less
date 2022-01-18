@@ -1,7 +1,16 @@
 .ad-form-group-msg {
+  .typo-small();
   color: @color-gray03;
-  line-height: 1;
+  padding-top: 1px;
+  padding-bottom: 1px;
   &.error {
     color: @color-error;
+    background-color: @color-error-light;
+    border-radius: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .anticon {
+    .size(13px,13px);
   }
 }

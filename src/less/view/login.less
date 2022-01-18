@@ -36,6 +36,7 @@
   margin-bottom: 16px;
   .anticon {
     margin-right: 16px;
+    .size(20px,20px);
   }
   &.show {
     visibility: unset;
@@ -54,16 +55,18 @@
   }
 }
 .ad-login-content-body {
+  .typo-bodyDefault();
+  color: @color-primary;
   margin-bottom: 48px;
   & > *:not(:last-child) {
-    margin-bottom: 24px;
+    margin-bottom: 32px;
   }
 }
 .ad-login-content-footer {
+  color: @color-primary;
   .ant-checkbox-wrapper {
     margin-bottom: 16px;
     .typo-bodyDefault();
-    color: @color-primary;
   }
 }
 .ad-login-footer {

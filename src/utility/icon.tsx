@@ -388,7 +388,7 @@ export const IconSuccess = (props: any) => {
   return <Icon component={svgSuccess} {...props} />
 }
 const svgInfor = () => (
-  <svg width='20' height='20' viewBox='0 0 20 20' fill='none'>
+  <svg width='100%' height='100%' viewBox='0 0 20 20' fill='none'>
     <path
       fillRule='evenodd'
       clipRule='evenodd'

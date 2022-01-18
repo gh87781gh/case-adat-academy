@@ -13,19 +13,11 @@ export default class LoginApi {
     }
     return this.restAPI.request('post', '/auth/check', toCheck)
   }
-  create = (data: any, experienceStrAry: string[]) => {
+  signUp = (data: any) => {
     const sendData = {
-      user_id: data.user_id,
-      password: data.password,
-      email: data.email,
-      industry: data.industry,
-      profession: data.profession,
-      current_company: data.current_company,
-      experience_level: data.experience_level,
-      experience: experienceStrAry,
+      ...data,
       is_login: false // true -> 順便登入,並返回token
     }
-    // TODO api 1.1.0 有新增欄位 name
     return this.restAPI.request('post', '/auth/signup', sendData)
   }
   recoverPassword = (data: any) => {

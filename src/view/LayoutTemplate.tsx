@@ -102,7 +102,7 @@ const LayoutTemplate = () => {
               {/* NOTE USER */}
               <Route
                 exact={true}
-                path='/course'
+                path='/course/'
                 render={() => componentPage(Course, 'USER')}
               />
               <Route

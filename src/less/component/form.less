@@ -40,7 +40,16 @@
 }
 .ad-form-group .ad-form-group-msg {
   position: absolute;
-  top: calc(100% + 2px);
+  top: calc(100% + 3px);
   left: 0;
   .typo-small();
+  width: 100%;
+}
+.ad-input-error {
+  border: 1px solid @color-error;
+  background-color: @color-error-light;
+  border-radius: 2px;
+  input {
+    background-color: @color-error-light;
+  }
 }

@@ -18,11 +18,6 @@ interface IState {
   password: string
   passwordAgain: string
   email: string
-  industry: string
-  profession: string
-  current_company: string
-  experience: string[]
-  experience_level: string
 }
 
 const SignUp1 = () => {
@@ -34,12 +29,7 @@ const SignUp1 = () => {
     user_id: '',
     password: '',
     passwordAgain: '',
-    email: '',
-    industry: '',
-    profession: '',
-    current_company: '',
-    experience: [],
-    experience_level: ''
+    email: ''
   })
   const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
   const onChange = (key: string, e: any) => {
@@ -58,10 +48,6 @@ const SignUp1 = () => {
         case 'passwordAgain':
           if (value && !ValidateStr('isEngInt', value)) return false
           break
-        case 'profession':
-        case 'current_company':
-          if (value && ValidateStr('isSymbol', value)) return false
-          break
       }
     }
     setData({ ...data, [key]: value })
@@ -75,9 +61,18 @@ const SignUp1 = () => {
     context.setIsLoading(true)
     api
       .checkAccount(data)
-      .then((res: any) => {
-        if (res.is_exist) setErrMsg(msg.checkAccount)
-      })
+      .then((res: any) =>
+        res.data.is_exist
+          ? setErrMsg(msg.checkAccount)
+          : history.push({
+              pathname: '/login/signUp2',
+              state: {
+                user_id: data.user_id,
+                password: data.password,
+                email: data.email
+              }
+            })
+      )
       .finally(() => context.setIsLoading(false))
   }
 
@@ -85,7 +80,7 @@ const SignUp1 = () => {
     <LoginTemplate>
       <LoginPrompt text={errMsg} />
       <div className='ad-login-content-header'>
-        Create account
+        SIGN UP
         <Btn
           feature='secondary'
           className='ad-float-right'
@@ -117,18 +112,32 @@ const SignUp1 = () => {
             onChange={(e) => onChange('password', e)}
           />
           <FormGroupMsg
+            isShow={true}
+            msg='At least 8 characters. A mixture of letters and numbers.'
+          />
+          <FormGroupMsg
             isShow={data.password.length > 0 && data.password.length < 8}
             type='error'
+            isShowIcon={true}
             msg='Password is too short'
           />
         </div>
         <div className='ad-form-group'>
           <label className='required'>Password again</label>
           <Input.Password
+            className={
+              data.passwordAgain && data.password !== data.passwordAgain
+                ? 'ad-input-error'
+                : ''
+            }
             placeholder='Clear hint for the input'
             maxLength={16}
             value={data.passwordAgain}
             onChange={(e) => onChange('passwordAgain', e)}
+          />
+          <FormGroupMsg
+            isShow={true}
+            msg='Please confirm by typing password again.'
           />
           <FormGroupMsg
             isShow={
@@ -137,6 +146,7 @@ const SignUp1 = () => {
                 : false
             }
             type='error'
+            isShowIcon={true}
             msg='Passwords do not match.'
           />
         </div>
@@ -149,8 +159,13 @@ const SignUp1 = () => {
             onChange={(e) => onChange('email', e)}
           />
           <FormGroupMsg
+            isShow={true}
+            msg='Please enter the authorized email.'
+          />
+          <FormGroupMsg
             isShow={isEmail === false}
             type='error'
+            isShowIcon={true}
             msg='The Email format is not correct.'
           />
         </div>

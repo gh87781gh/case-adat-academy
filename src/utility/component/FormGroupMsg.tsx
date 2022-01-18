@@ -1,19 +1,19 @@
-import { IconDanger } from 'utility/icon'
+import { IconInfor } from 'utility/icon'
 
 interface IProps {
   type?: string
-  withIcon?: boolean
+  isShowIcon?: boolean
   isShow: boolean
   msg: string
 }
 
 const FormGroupMsg = (props: IProps) => {
-  const icon = () => (props.type === 'error' ? <IconDanger /> : null)
+  const icon = () => (props.type === 'error' ? <IconInfor /> : null)
   return (
     <>
       {props.isShow ? (
         <span className={`ad-form-group-msg ${props.type}`}>
-          {props.withIcon ? icon() : null} {props.msg}
+          {props.isShowIcon ? icon() : null} {props.msg}
         </span>
       ) : null}
     </>

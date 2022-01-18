@@ -1,22 +1,23 @@
 import { useState, useContext, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { MyContext } from 'storage'
 import GlobalApi from 'api/GlobalApi'
 import LoginApi from 'api/LoginApi'
+import msg from 'api/engine/msg'
+
+import LoginTemplate from 'view/login/LoginTemplate'
+
 import { ValidateStr } from 'utility/validate'
 import FormGroupMsg from 'utility/component/FormGroupMsg'
-import msg from 'api/engine/msg'
-import LoginTemplate from 'view/login/LoginTemplate'
+import { Btn } from 'utility/component'
+import { IconArrowPrev } from 'utility/icon'
 import { Row, Col, Button, Input, Checkbox, Select, message } from 'antd'
 const { Option } = Select
 
 interface IState {
-  user_id: string
-  password: string
-  passwordAgain: string
-  email: string
+  name: string
   industry: string
-  profession: string
+  position: string
   current_company: string
   experience: string[]
   experience_level: string
@@ -27,6 +28,8 @@ const SignUp2 = () => {
   const api_global = new GlobalApi()
   const api = new LoginApi()
   const history = useHistory()
+  const location = useLocation()
+  const { state } = location
 
   const [industryOption, setIndustryOption] = useState<string[]>([])
   const [experienceLevelOption, setExperienceLevelOption] = useState<string[]>(
@@ -34,6 +37,9 @@ const SignUp2 = () => {
   )
   const [experienceOption, setExperienceOption] = useState<string[]>([])
   useEffect(() => {
+    console.log('location:', location)
+    if (!state) history.push('/login/signUp1')
+
     context.setIsLoading(true)
     api_global
       .getOptions([
@@ -49,14 +55,10 @@ const SignUp2 = () => {
       .finally(() => context.setIsLoading(false))
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
   const [data, setData] = useState<IState>({
-    user_id: '',
-    password: '',
-    passwordAgain: '',
-    email: '',
+    name: '',
     industry: '',
-    profession: '',
+    position: '',
     current_company: '',
     experience: [],
     experience_level: ''
@@ -65,19 +67,7 @@ const SignUp2 = () => {
     let value = e.target.value
     if (value) {
       switch (key) {
-        case 'user_id':
-          if (value && !ValidateStr('isEngInt', value)) return false
-          value = value.toLowerCase()
-          break
-        case 'email':
-          if (value && !ValidateStr('isUserName', value)) return false
-          setIsEmail(ValidateStr('isEmail', value))
-          break
-        case 'password':
-        case 'passwordAgain':
-          if (value && !ValidateStr('isEngInt', value)) return false
-          break
-        case 'profession':
+        case 'position':
         case 'current_company':
           if (value && ValidateStr('isSymbol', value)) return false
           break
@@ -96,47 +86,46 @@ const SignUp2 = () => {
     }
     setData({ ...data, experience: checkedValues })
   }
-  const checkAccount = () => {
-    context.setIsLoading(true)
-    api
-      .checkAccount(data)
-      .then((res: any) =>
-        res.is_exist ? message.error(msg.checkAccount) : history.push('signUp2')
-      )
-      .finally(() => context.setIsLoading(false))
-  }
-  const create = () => {
+  const signUp = () => {
     context.setIsLoading(true)
 
-    const experienceStrAry = data.experience.map((item: any) => {
-      return experienceOption[item]
-    })
+    let sendData = {}
+    if (state && typeof state === 'object') sendData = { ...state, ...data }
 
     api
-      .create(data, experienceStrAry)
+      .signUp(sendData)
       .then(() => history.push('signUpConfirm'))
       .finally(() => context.setIsLoading(false))
   }
 
   return (
     <LoginTemplate>
-      <div className='ad-login-content-header'>
-        <h1>
-          Create account
-          <Button
-            className='ad-float-right'
-            onClick={() => history.push('/login')}
-          >
-            Log in
-          </Button>
-        </h1>
-      </div>
+      <Btn
+        style={{ marginBottom: '16px' }}
+        feature='secondary'
+        onClick={() => history.push('/login/signUp1')}
+      >
+        <IconArrowPrev />
+        Back
+      </Btn>
+      <div className='ad-login-content-header'>SIGN UP</div>
       <div className='ad-login-content-body'>
         <p>
           Help us recommend learning path for you by providing your work
-          experienceOption
+          experiences
         </p>
         <Row gutter={20}>
+          <Col span={24}>
+            <div className='ad-form-group'>
+              <label className='required'>Full name</label>
+              <Input
+                placeholder='Please input'
+                maxLength={50}
+                value={data.name}
+                onChange={(e) => onChange('name', e)}
+              />
+            </div>
+          </Col>
           <Col span={12}>
             <div className='ad-form-group'>
               <label className='required'>Industry</label>
@@ -155,12 +144,12 @@ const SignUp2 = () => {
           </Col>
           <Col span={12}>
             <div className='ad-form-group'>
-              <label className='required'>Profession</label>
+              <label className='required'>Position</label>
               <Input
                 placeholder='Clear hint for the input'
                 maxLength={50}
-                value={data.profession}
-                onChange={(e) => onChange('profession', e)}
+                value={data.position}
+                onChange={(e) => onChange('position', e)}
               />
             </div>
           </Col>
@@ -193,7 +182,7 @@ const SignUp2 = () => {
           </Col>
         </Row>
         <div className='ad-form-group'>
-          <label className='required ad-clearfix'>
+          <label className='required'>
             What is your experience regarding to AIR?
             <em className='ad-float-right'>multiple choices</em>
           </label>
@@ -205,7 +194,7 @@ const SignUp2 = () => {
             <Row gutter={[10, 10]}>
               {experienceOption.map((item: string, index: number) => (
                 <Col span={12} key={item}>
-                  <Checkbox className='ad-checkbox-btn' value={index}>
+                  <Checkbox className='ad-checkbox-btn' value={item}>
                     {item}
                   </Checkbox>
                 </Col>
@@ -215,23 +204,21 @@ const SignUp2 = () => {
         </div>
       </div>
       <div className='ad-login-content-footer'>
-        <Button
+        <p className=''>By signning up, you agree with our terms & policy.</p>
+        <Btn
+          feature='action'
           disabled={
             !data.industry ||
-            !data.profession ||
+            !data.position ||
             !data.experience_level ||
             data.experience.length === 0
           }
           className='ad-login-content-actionBtn'
-          type='primary'
           block
-          onClick={() => create()}
+          onClick={() => signUp()}
         >
-          Next
-        </Button>
-        <p className='ad-color-gray'>
-          by creating...you agree with the terms & policy
-        </p>
+          Sign up
+        </Btn>
       </div>
     </LoginTemplate>
   )
