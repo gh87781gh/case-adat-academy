@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react'
 import { MyContext } from 'storage'
 import CourseApi from 'api/admin/CourseApi'
-import FormGroupMsg from 'utility/component/FormGroupMsg'
+import { FormGroupMsg } from 'utility/component'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import Menu from '../courseDetail/Menu'

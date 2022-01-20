@@ -13,6 +13,8 @@ import SignUpConfirm from './login/signUp/SignUpConfirm'
 import PasswordRecover1 from './login/password/PasswordRecover1'
 import PasswordRecover2 from './login/password/PasswordRecover2'
 import PasswordRecover3 from './login/password/PasswordRecover3'
+import Contact from './login/contact/Contact'
+import ContactConfirm from './login/contact/ContactConfirm'
 
 // user console
 import Course from './user/course/Index'
@@ -115,6 +117,16 @@ const LayoutTemplate = () => {
                 exact={true}
                 path='/login/passwordRecover3'
                 render={() => componentPage(PasswordRecover3, 'LOGIN')}
+              />
+              <Route
+                exact={true}
+                path='/login/contact'
+                render={() => componentPage(Contact, 'LOGIN')}
+              />
+              <Route
+                exact={true}
+                path='/login/contactConfirm'
+                render={() => componentPage(ContactConfirm, 'LOGIN')}
               />
 
               {/* NOTE USER */}

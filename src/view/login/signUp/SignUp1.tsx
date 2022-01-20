@@ -8,8 +8,7 @@ import LoginTemplate from 'view/login/LoginTemplate'
 import LoginPrompt from '../LoginPrompt'
 
 import { ValidateStr } from 'utility/validate'
-import FormGroupMsg from 'utility/component/FormGroupMsg'
-import { Btn } from 'utility/component'
+import { Btn, FormGroupMsg } from 'utility/component'
 import { IconArrowNext } from 'utility/icon'
 import { Input } from 'antd'
 

@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from 'react'
 import { MyContext } from 'storage'
 import AccountApi from 'api/admin/AccountApi'
 import PurchaseApi from 'api/admin/PurchaseApi'
-import FormGroupMsg from 'utility/component/FormGroupMsg'
+import { FormGroupMsg } from 'utility/component'
 import { ValidateStr } from 'utility/validate'
 import { Row, Col, Button, Input, Select, Modal } from 'antd'
 const { Option } = Select

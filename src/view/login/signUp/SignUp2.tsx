@@ -8,8 +8,7 @@ import msg from 'api/engine/msg'
 import LoginTemplate from 'view/login/LoginTemplate'
 
 import { ValidateStr } from 'utility/validate'
-import FormGroupMsg from 'utility/component/FormGroupMsg'
-import { Btn } from 'utility/component'
+import { Btn, FormGroupMsg } from 'utility/component'
 import { IconArrowPrev } from 'utility/icon'
 import { Row, Col, Button, Input, Checkbox, Select, message } from 'antd'
 const { Option } = Select
@@ -183,8 +182,7 @@ const SignUp2 = () => {
         </Row>
         <div className='ad-form-group'>
           <label className='required'>
-            What is your experience regarding to AIR?
-            <em className='ad-float-right'>multiple choices</em>
+            What is your experience regarding to AIR? (multiple choice)
           </label>
           <Checkbox.Group
             value={data.experience}

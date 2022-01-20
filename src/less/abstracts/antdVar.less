@@ -76,12 +76,12 @@
 // vertical paddings
 @padding-lg: 24px; // containers
 @padding-md: 16px; // small containers and buttons
-@padding-sm: @input-padding-y; //12px; // Form controls and items NOTE
+@padding-sm: @form-input-padding-y; //12px; // Form controls and items NOTE
 @padding-xs: 8px; // small items
 @padding-xss: 4px; // more small
 
 // vertical padding for all form controls
-@control-padding-horizontal: @input-padding-x + 1px; //@padding-sm; NOTE
+@control-padding-horizontal: @form-input-padding-x + 1px; //@padding-sm; NOTE
 @control-padding-horizontal-sm: @padding-xs;
 
 // vertical margins
@@ -411,16 +411,16 @@
   ) - @border-width-base;
 @input-placeholder-color: @color-gray03; //hsv(0, 0, 75%);NOTE
 @input-color: @text-color;
-@input-icon-color: @input-cus-icon-color; //@input-color; NOTE
-@input-border-color: @color-input-border; //@border-color-base; NOTE
+@input-icon-color: @form-input-customize-icon-color; //@input-color; NOTE
+@input-border-color: @form-input-border-color; //@border-color-base; NOTE
 @input-bg: @component-background;
-@input-number-hover-border-color: @color-input-border; //@input-hover-border-color; NOTE
+@input-number-hover-border-color: @input-border-color; //@input-hover-border-color; NOTE
 @input-number-handler-active-bg: #f4f4f4;
 @input-number-handler-hover-bg: @primary-5;
 @input-number-handler-bg: @component-background;
-@input-number-handler-border-color: @color-input-border; //@border-color-base; NOTE
+@input-number-handler-border-color: @input-border-color; //@border-color-base; NOTE
 @input-addon-bg: @background-color-light;
-@input-hover-border-color: @color-input-border; //@primary-5; NOTE
+@input-hover-border-color: @input-border-color; //@primary-5; NOTE
 @input-disabled-bg: @disabled-bg;
 @input-outline-offset: 0 0;
 @input-icon-hover-color: fade(@black, 85%);
@@ -433,7 +433,7 @@
 
 // Select
 // ---
-@select-border-color: @color-input-border; // @border-color-base;NOTE
+@select-border-color: @input-border-color; // @border-color-base;NOTE
 @select-item-selected-color: @color-black; // @text-color;NOTE
 @select-item-selected-font-weight: normal; //600;NOTE
 @select-dropdown-bg: @color-white; // @component-background; NOTE

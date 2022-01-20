@@ -40,7 +40,6 @@
 }
 
 // shadow
-// @box-shadow-separator:0px 1px 0px @color-gray02; //TODO 建議改成 border-bottom
 @box-shadow-emphasis:0px 4px 4px @color-gray02;
 
 //pagination
@@ -53,6 +52,7 @@
 @global-header-height: 90px;
 @layout-user-container-max-width: 1200px;
 @layout-user-page-min-height: 800px;
+@layout-admin-section-gutter: 36px;
 
 // z-index
 @z-index-global-login-bg: 0;
@@ -60,31 +60,16 @@
 @z-index-user-index-learningPath-hoverCard: 2;
 @z-index-header-logo-primary: 3;
 
+// transition
+@transition-base: all 0.3s ease;
+
 // button
 @btn-group-gap: 30px;
 
 // form
-@color-input-border: @color-gray03;
-
-// NOTE mockup design system 建置到這裡以上
-
-// color setting
-@color-body-bgc: #fff;
-
-// transition
-@transition: all 0.3s ease;
-
-// space
-@layout-section-gutter: 36px;
-
-// form
-@form-group-info-color: pink; //TODO
+@form-input-border-color: @color-gray03;
+@form-input-max-height: 48px;
 @form-group-value-color: #646464;
-@form-group-font-size: 1rem;
-// @input-height: 48px;
-// @input-line-height: 24px;
-@input-padding-y: 12px;
-@input-padding-x: 16px;
-@input-cus-icon-color: @color-black;
-// @input-color: @color-black;
-// @input-placeholder-color: @color-gray03;
+@form-input-padding-y: 12px;
+@form-input-padding-x: 16px;
+@form-input-customize-icon-color: @color-black;

@@ -5,9 +5,9 @@
   & > label {
     .typo-bodyDefault();
     display: block;
-    font-size: @form-group-font-size;
     font-weight: 400;
     color: @color-gray04;
+    margin-bottom: 5px;
     &.required {
       &::after {
         content: '*';
@@ -15,10 +15,6 @@
         font-size: 14px;
         margin-left: 1px;
       }
-    }
-    em {
-      font-size: 12px;
-      font-weight: 300;
     }
   }
 }
@@ -32,7 +28,7 @@
   }
 }
 .ad-form-group-value {
-  font-size: @form-group-font-size;
+  .typo-bodyDefault();
   color: @form-group-value-color;
   & + .ant-btn {
     margin-left: 1rem;
