@@ -21,7 +21,7 @@ export class ApiEngine {
       this.config.headers.Authorization = `Bearer ${token}`
     }
   }
-  setInterceptor = (url: string) => {
+  setInterceptor = (url: string, isCustomizeErr?: boolean) => {
     this.instance.interceptors.request.use(
       function (config: any) {
         // Do something before request is sent
@@ -38,13 +38,13 @@ export class ApiEngine {
         return res
       },
       (err: any) => {
-        if (err.response.status === 404) {
-          message.error('404 Not Found')
-        } else if (err.response.status === 401) {
-          message.error('Unauthorized')
-          history.push('/login')
-        } else if (err.response && url !== '/auth/login') {
-          message.error(err.response.data.message)
+        if (!isCustomizeErr) {
+          if (err.response.status === 404) {
+            message.error('404 Not Found')
+          } else if (err.response.status === 401) {
+            message.error('Unauthorized')
+            history.push('/login')
+          }
         }
         return Promise.reject(err.response.data)
       }
@@ -56,10 +56,10 @@ export class RestAPI extends ApiEngine {
     method: string,
     url: string,
     body: any,
-    isCustomizeErr?: false
+    isCustomizeErr?: boolean
   ): Promise<any> => {
     this.setToken()
-    this.setInterceptor(url)
+    this.setInterceptor(url, isCustomizeErr)
     const config = this.config
     config.headers['Content-Type'] = 'application/json'
     config.headers.Accept = 'application/json'
@@ -83,9 +83,14 @@ export class RestAPI extends ApiEngine {
   }
 }
 export class RestAPIUpload extends ApiEngine {
-  request = (method: string, url: string, body: any): Promise<any> => {
+  request = (
+    method: string,
+    url: string,
+    body: any,
+    isCustomizeErr?: boolean
+  ): Promise<any> => {
     this.setToken()
-    this.setInterceptor(url)
+    this.setInterceptor(url, isCustomizeErr)
     const config = this.config
     config.headers['Content-Type'] = 'multipart/form-data'
     // config.headers.Accept = 'application/json'

@@ -84,7 +84,7 @@ const Login = () => {
 
   return (
     <LoginTemplate>
-      <LoginPrompt text={errMsg} />
+      <LoginPrompt type='error' text={errMsg} />
       <div className='ad-login-content-header'>
         LOG IN
         <Btn
@@ -118,13 +118,13 @@ const Login = () => {
             value={data.password}
             onChange={(e) => onChange('password', e)}
           />
-          <Btn
-            feature='link'
-            onClick={() => history.push('/login/passwordRecover1')}
-          >
-            Forgot password ?
-          </Btn>
         </div>
+        <Btn
+          feature='link'
+          onClick={() => history.push('/login/passwordRecover1')}
+        >
+          Forgot password ?
+        </Btn>
       </div>
       <div className='ad-login-content-footer'>
         <Checkbox

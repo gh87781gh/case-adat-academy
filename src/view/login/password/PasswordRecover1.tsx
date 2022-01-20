@@ -9,7 +9,7 @@ import { ValidateStr } from 'utility/validate'
 import FormGroupMsg from 'utility/component/FormGroupMsg'
 import { Btn } from 'utility/component'
 import { IconArrowPrev } from 'utility/icon'
-import { Button, Input } from 'antd'
+import { Input } from 'antd'
 
 interface IState {
   account: string
@@ -41,13 +41,10 @@ const PasswordRecover1 = () => {
   }
   const recoverPassword = () => {
     context.setIsLoading(true)
-    api
-      .recoverPassword(data)
-      .then(() => {
-        // setStep(1)
-      })
-      .catch()
-      .finally(() => context.setIsLoading(false))
+    api.recoverPassword(data).finally(() => {
+      context.setIsLoading(false)
+      history.push('/login/passwordRecover2')
+    })
   }
 
   return (
@@ -78,20 +75,20 @@ const PasswordRecover1 = () => {
             msg='The Email format is not correct.'
           />
         </div>
-        <Button type='link' onClick={() => history.push('/login/contact')}>
+        <Btn feature='link' onClick={() => history.push('/login/contact')}>
           Forgot user ID or Email? Contact us
-        </Button>
+        </Btn>
       </div>
       <div className='ad-login-content-footer'>
-        <Button
+        <Btn
+          feature='action'
           disabled={!data.account || isEmail === false}
-          type='primary'
           className='ad-login-content-actionBtn'
           block
           onClick={() => recoverPassword()}
         >
           Email me a recovery link
-        </Button>
+        </Btn>
       </div>
     </LoginTemplate>
   )

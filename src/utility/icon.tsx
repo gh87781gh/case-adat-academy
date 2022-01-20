@@ -367,25 +367,18 @@ const svgLevels = () => (
 export const IconLevels = (props: any) => {
   return <Icon component={svgLevels} {...props} />
 }
-const svgSuccess = () => (
-  <svg width='24' height='24' viewBox='0 0 24 24' fill='none'>
-    <circle
-      cx='12'
-      cy='12'
-      r='11.5'
-      fill='currentColor'
-      stroke='currentColor'
-    />
+const svgSuccessfully = () => (
+  <svg width='20' height='20' viewBox='0 0 20 20' fill='none'>
     <path
       fillRule='evenodd'
       clipRule='evenodd'
-      d='M17.7619 8.5716L12.0628 16.7564C11.8496 17.0626 11.5062 17.2522 11.1335 17.2694C10.7609 17.2867 10.4014 17.1296 10.1608 16.8444L6.40039 12.3867L8.23485 10.8392L10.9869 14.1016L15.7923 7.2002L17.7619 8.5716Z'
-      fill='#fff'
+      d='M5.67 -0.00012207H14.34C17.73 -0.00012207 20 2.37988 20 5.91988V14.0909C20 17.6199 17.73 19.9999 14.34 19.9999H5.67C2.28 19.9999 0 17.6199 0 14.0909V5.91988C0 2.37988 2.28 -0.00012207 5.67 -0.00012207ZM9.43141 12.99L14.1814 8.24C14.5214 7.9 14.5214 7.35 14.1814 7C13.8414 6.66 13.2814 6.66 12.9414 7L8.81141 11.13L7.06141 9.38C6.72141 9.04 6.16141 9.04 5.82141 9.38C5.48141 9.72 5.48141 10.27 5.82141 10.62L8.20141 12.99C8.37141 13.16 8.59141 13.24 8.81141 13.24C9.04141 13.24 9.26141 13.16 9.43141 12.99Z'
+      fill='currentColor'
     />
   </svg>
 )
-export const IconSuccess = (props: any) => {
-  return <Icon component={svgSuccess} {...props} />
+export const IconSuccessfully = (props: any) => {
+  return <Icon component={svgSuccessfully} {...props} />
 }
 const svgInfor = () => (
   <svg width='100%' height='100%' viewBox='0 0 20 20' fill='none'>
@@ -399,6 +392,17 @@ const svgInfor = () => (
 )
 export const IconInfor = (props: any) => {
   return <Icon component={svgInfor} {...props} />
+}
+const svgCopy = () => (
+  <svg width='16' height='19' viewBox='0 0 16 19' fill='none'>
+    <path
+      d='M15.2727 0H3.09091C2.99091 0 2.90909 0.0763393 2.90909 0.169643V1.35714C2.90909 1.45045 2.99091 1.52679 3.09091 1.52679H14.3636V16.1161C14.3636 16.2094 14.4455 16.2857 14.5455 16.2857H15.8182C15.9182 16.2857 16 16.2094 16 16.1161V0.678571C16 0.303237 15.675 0 15.2727 0ZM12.3636 2.71429H0.727273C0.325 2.71429 0 3.01752 0 3.39286V14.6465C0 14.8268 0.0772726 14.9985 0.213636 15.1258L4.15227 18.8007C4.20227 18.8473 4.25909 18.8855 4.32045 18.9173V18.9576H4.41591C4.49545 18.9852 4.57955 19 4.66591 19H12.3636C12.7659 19 13.0909 18.6968 13.0909 18.3214V3.39286C13.0909 3.01752 12.7659 2.71429 12.3636 2.71429ZM4.31818 16.7989L2.36136 14.971H4.31818V16.7989ZM11.4545 17.4732H5.77273V14.4621C5.77273 13.9934 5.36591 13.6138 4.86364 13.6138H1.63636V4.24107H11.4545V17.4732Z'
+      fill='currentColor'
+    />
+  </svg>
+)
+export const IconCopy = (props: any) => {
+  return <Icon component={svgCopy} {...props} />
 }
 // const svgBookmark = () => (
 //   <svg width='12' height='18' viewBox='0 0 12 18' fill='none'>

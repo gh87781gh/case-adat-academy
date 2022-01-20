@@ -10,7 +10,7 @@ import {
   IconBookmark,
   IconBookmarked,
   IconLevels,
-  IconSuccess
+  IconSuccessfully
 } from 'utility/icon'
 import { Btn, VideoPlayer } from 'utility/component'
 import LearningPath from '../learningPath/LearningPath'
@@ -142,7 +142,7 @@ const CourseDetail = () => {
                     <div>{section.name}</div>
                     <div className='ad-menu-user-course-section-icon'>
                       {section.status === 'All read' ? (
-                        <IconSuccess className='icon-success' />
+                        <IconSuccessfully className='icon-success' />
                       ) : null}
                     </div>
                   </Menu.Item>
@@ -202,7 +202,7 @@ const CourseDetail = () => {
             </Btn>
           ) : currentSection.status === 'Finished' ? (
             <div className='success'>
-              <IconSuccess />
+              <IconSuccessfully />
               Section completed
             </div>
           ) : null}

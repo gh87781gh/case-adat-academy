@@ -78,7 +78,7 @@ const SignUp1 = () => {
 
   return (
     <LoginTemplate>
-      <LoginPrompt text={errMsg} />
+      <LoginPrompt type='error' text={errMsg} />
       <div className='ad-login-content-header'>
         SIGN UP
         <Btn
