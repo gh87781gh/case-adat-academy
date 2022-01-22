@@ -37,19 +37,21 @@ const MenuItem = (props: IProps) => {
     if (isEditing) inputRef.current?.focus()
   }, [isEditing])
 
-  const [{ handlerId, isCanDrop }, drop] = useDrop({
+  const [{ handlerId }, drop] = useDrop({
+    // const [{ handlerId, isCanDrop }, drop] = useDrop({
     accept: 'card',
     collect(monitor) {
       return {
-        handlerId: monitor.getHandlerId(),
-        isCanDrop: monitor.canDrop()
+        handlerId: monitor.getHandlerId()
+        // isCanDrop: monitor.canDrop()
       }
     },
     canDrop(item: any) {
       //  item : dragging item
       //  props.item : hover 當下位置的 item，有可能是 dragging item 本身
       switch (item.level) {
-        case 2:
+        // TOCHECK
+        case 1:
           return (
             (props.menu[props.item.index - 1]?.level === 2 ||
               props.menu[props.item.index - 1]?.level === 2) &&

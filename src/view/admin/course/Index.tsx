@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams, useHistory, useLocation } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import Header from '../../layout/Header'
 import Course from './Course'
 import CourseDetail from './courseDetail/CourseDetail'
@@ -9,7 +9,6 @@ import AdminSideBar from '../AdminSideBar'
 const Index = () => {
   const { courseId } = useParams<{ courseId: string }>()
   const history = useHistory()
-  const location = useLocation()
 
   const [step, setStep] = useState<number>(0)
 

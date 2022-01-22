@@ -16,6 +16,13 @@ export default class CourseApi {
       {}
     )
   }
+  getBookmarks = (data: any) => {
+    const query: any = []
+    Object.keys(data).forEach((key: string) => {
+      if (data[key]) query.push(`${key}=${data[key]}`)
+    })
+    return this.restAPI.request('get', `/user/bookmark?${query.join('&')}`, {})
+  }
   getCourseDetail = (id: string) => {
     return new Promise((resolve, reject) => {
       this.restAPI

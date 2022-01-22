@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { MyContext } from 'storage'
-import GlobalApi from 'api/GlobalApi'
+// import GlobalApi from 'api/GlobalApi'
 import LoginApi from 'api/LoginApi'
 
 import LoginTemplate from '../LoginTemplate'
@@ -9,8 +9,7 @@ import LoginTemplate from '../LoginTemplate'
 import { Btn, FormGroupMsg } from 'utility/component'
 import { ValidateStr } from 'utility/validate'
 import { IconArrowPrev } from 'utility/icon'
-import { Row, Col, Button, Input, Checkbox, Select } from 'antd'
-const { TextArea } = Input
+import { Row, Col, Input, Checkbox, Select } from 'antd'
 const { Option } = Select
 
 interface IState {
@@ -25,7 +24,7 @@ interface IState {
 
 const Contact = () => {
   const context = useContext(MyContext)
-  const api_global = new GlobalApi()
+  // const api_global = new GlobalApi()
   const api = new LoginApi()
   const history = useHistory()
 

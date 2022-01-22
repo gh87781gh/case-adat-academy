@@ -132,7 +132,7 @@ const LayoutTemplate = () => {
               {/* NOTE USER */}
               <Route
                 exact={true}
-                path='/course/'
+                path='/course'
                 render={() => componentPage(Course, 'USER')}
               />
               <Route
@@ -147,7 +147,7 @@ const LayoutTemplate = () => {
               />
               <Route
                 exact={true}
-                path='/search'
+                path='/search/:text'
                 render={() => componentPage(Search, 'USER')}
               />
               <Route

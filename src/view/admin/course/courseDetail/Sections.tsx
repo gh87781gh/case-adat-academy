@@ -30,7 +30,7 @@ const Sections = (props: IProps) => {
         })
       )
     },
-    [props.sections]
+    [props.sections] // eslint-disable-line react-hooks/exhaustive-deps
   )
   const startDragging = (item: any) => {
     // console.warn('startDragging')
@@ -170,7 +170,11 @@ const Sections = (props: IProps) => {
           : level === 2
           ? `${el.key.split('-')[0]}-${el.key.split('-')[1]}`
           : el.key
-      if (prefix !== item.key) return el
+      if (prefix !== item.key) {
+        return el
+      } else {
+        return false
+      }
     })
 
     // handle parent item's expanding arrow
@@ -299,6 +303,8 @@ const Sections = (props: IProps) => {
                 />
               </div>
             )
+          } else {
+            return false
           }
         })}
       </div>

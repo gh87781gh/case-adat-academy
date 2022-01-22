@@ -23,7 +23,7 @@ const VideoJS = (props: any) => {
       const player = playerRef.current
       player.src(options.sources)
     }
-  }, [options, videoRef])
+  }, [options, videoRef]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Dispose the Video.js player when the functional component unmounts
   useEffect(() => {

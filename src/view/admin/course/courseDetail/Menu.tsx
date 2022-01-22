@@ -33,7 +33,7 @@ const Menu = (props: IProps) => {
         })
       )
     },
-    [props.menu]
+    [props.menu] // eslint-disable-line react-hooks/exhaustive-deps
   )
   const startDragging = (item: any) => {
     // console.warn('startDragging')
@@ -173,8 +173,13 @@ const Menu = (props: IProps) => {
           : level === 2
           ? `${el.key.split('-')[0]}-${el.key.split('-')[1]}`
           : el.key
-      if (prefix !== item.key) return el
+      if (prefix !== item.key) {
+        return el
+      } else {
+        return false //TOCHECK
+      }
     })
+    console.log('TOCHECK ary:', ary)
 
     // handle parent item's expanding arrow
     if (level === 2 || level === 3) {

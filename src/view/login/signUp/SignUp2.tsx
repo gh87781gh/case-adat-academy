@@ -3,14 +3,14 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { MyContext } from 'storage'
 import GlobalApi from 'api/GlobalApi'
 import LoginApi from 'api/LoginApi'
-import msg from 'api/engine/msg'
+// import msg from 'api/engine/msg'
 
 import LoginTemplate from 'view/login/LoginTemplate'
 
 import { ValidateStr } from 'utility/validate'
-import { Btn, FormGroupMsg } from 'utility/component'
+import { Btn } from 'utility/component'
 import { IconArrowPrev } from 'utility/icon'
-import { Row, Col, Button, Input, Checkbox, Select, message } from 'antd'
+import { Row, Col, Input, Checkbox, Select } from 'antd'
 const { Option } = Select
 
 interface IState {
@@ -28,7 +28,7 @@ const SignUp2 = () => {
   const api = new LoginApi()
   const history = useHistory()
   const location = useLocation()
-  const { state } = location
+  const { state }: any = location
 
   const [industryOption, setIndustryOption] = useState<string[]>([])
   const [experienceLevelOption, setExperienceLevelOption] = useState<string[]>(
@@ -89,7 +89,7 @@ const SignUp2 = () => {
     context.setIsLoading(true)
 
     let sendData = {}
-    if (state && typeof state === 'object') sendData = { ...state, ...data }
+    if (state) sendData = { ...state, ...data }
 
     api
       .signUp(sendData)

@@ -1,15 +1,8 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState } from 'react'
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd'
 import { XYCoord } from 'dnd-core'
 import { StaticService } from 'storage'
-import {
-  IconMenu,
-  IconArrowUp,
-  IconMore,
-  IconDelete,
-  IconArrowRight,
-  IconDanger
-} from 'utility/icon'
+import { IconMenu, IconMore } from 'utility/icon'
 import UploadImg from 'utility/component/UploadImg'
 import UploadVideo from 'utility/component/UploadVideo'
 import { Menu, Dropdown, Input } from 'antd'
@@ -31,20 +24,21 @@ interface IProps {
 
 const SectionItem = (props: IProps) => {
   const ref = useRef<HTMLDivElement>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [isEditing, setIsEditing] = useState<boolean>(false)
+  // const inputRef = useRef<HTMLInputElement>(null)
+  // const [isEditing, setIsEditing] = useState<boolean>(false) //TOCHECK
   const [replaceCount, setReplaceCount] = useState<number>(0)
 
-  useEffect(() => {
-    if (isEditing) inputRef.current?.focus()
-  }, [isEditing])
+  // useEffect(() => {
+  //   if (isEditing) inputRef.current?.focus()
+  // }, [isEditing])
 
-  const [{ handlerId, isCanDrop }, drop] = useDrop({
+  // const [{ handlerId, isCanDrop }, drop] = useDrop({
+  const [{ handlerId }, drop] = useDrop({
     accept: 'card',
     collect(monitor) {
       return {
-        handlerId: monitor.getHandlerId(),
-        isCanDrop: monitor.canDrop()
+        handlerId: monitor.getHandlerId()
+        // isCanDrop: monitor.canDrop()
       }
     },
     canDrop(item: any) {

@@ -2,12 +2,14 @@ import { useState, useEffect, useContext } from 'react'
 import { MyContext, StaticService } from 'storage'
 import { useHistory } from 'react-router-dom'
 import CourseApi from 'api/user/CourseApi'
+
 import Header from 'view/layout/Header'
 import Footer from 'view/layout/Footer'
+import LearningPath from './learningPath/LearningPath'
+import NoCourse from 'view/layout/NoCourse'
+
 import { IconArrowDown, IconBookmark } from 'utility/icon'
 import { Btn } from 'utility/component'
-import LearningPath from './learningPath/LearningPath'
-
 import { Row, Col, Select, Pagination } from 'antd'
 const { Option } = Select
 
@@ -99,54 +101,70 @@ const Index = () => {
               </Btn>
             </Col>
           </Row>
-          <ul className='ad-course-list-group'>
-            {list.map((course: any) => (
-              <li className='ad-course-list' key={course.id}>
-                {course.logo_image_id ? (
-                  <div className='ad-course-list-img'>
-                    <img
-                      src={`${StaticService.apiUrl}/archive/${course.logo_image_id}`}
-                      alt=''
-                    />
-                  </div>
-                ) : null}
-                <div className='ad-course-list-content'>
-                  <h2>{course.name}</h2>
-                  <p>{course.description}</p>
-                </div>
-                <div className='ad-course-list-action'>
-                  <Btn
-                    className='w-100'
-                    feature='primary'
-                    disabled={
-                      !course.available || course.status === 'Not available'
-                    }
-                    onClick={() => history.push(`/courseDetail/${course.id}`)}
-                  >
-                    Take class
-                  </Btn>
-                  <small>
-                    {course.status === 'Not started' ||
-                    course.status === 'Not available' ||
-                    course.status === 'All read' ? (
-                      <>{course.status}</>
-                    ) : course.status === 'In progress' ? (
-                      <>
-                        <span>{course.last_read_day} DAYS AGO</span> LAST READ
-                      </>
+          {list.length > 0 ? (
+            <>
+              <ul className='ad-course-list-group'>
+                {list.map((course: any) => (
+                  <li className='ad-course-list' key={course.id}>
+                    {course.logo_image_id ? (
+                      <div className='ad-course-list-img'>
+                        <img
+                          src={`${StaticService.apiUrl}/archive/${course.logo_image_id}`}
+                          alt=''
+                        />
+                      </div>
                     ) : null}
-                  </small>
-                </div>
-              </li>
-            ))}
-          </ul>
-          <div className='ad-text-right'>
-            <Pagination
-              current={page}
-              total={total}
-              onChange={(page: number) => getCoursesByLearningPath(page)}
-            />
-          </div>
+                    <div className='ad-course-list-content'>
+                      <h2>{course.name}</h2>
+                      <p>{course.description}</p>
+                    </div>
+                    <div className='ad-course-list-action'>
+                      <Btn
+                        className='w-100'
+                        feature='primary'
+                        disabled={
+                          !course.available || course.status === 'Not available'
+                        }
+                        onClick={() =>
+                          history.push(`/courseDetail/${course.id}`)
+                        }
+                      >
+                        Take class
+                      </Btn>
+                      <small>
+                        {course.status === 'Not started' ||
+                        course.status === 'Not available' ||
+                        course.status === 'All read' ? (
+                          <>{course.status}</>
+                        ) : course.status === 'In progress' ? (
+                          <>
+                            <span>{course.last_read_day} DAYS AGO</span> LAST
+                            READ
+                          </>
+                        ) : null}
+                      </small>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <Row gutter={20}>
+                <Col span={10}>
+                  <div className='ad-section-list-result'>
+                    <span>24</span> courses
+                  </div>
+                </Col>
+                <Col span={14} className='ad-text-right'>
+                  <Pagination
+                    current={page}
+                    total={total}
+                    onChange={(page: number) => getCoursesByLearningPath(page)}
+                  />
+                </Col>
+              </Row>
+            </>
+          ) : (
+            <NoCourse />
+          )}
         </section>
       </article>
       <Footer />

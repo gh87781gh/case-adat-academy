@@ -1,5 +1,5 @@
 import { useContext, useRef } from 'react'
-import { MyContext, StaticService } from 'storage'
+import { MyContext } from 'storage'
 import { IconUploadVideo } from 'utility/icon'
 import VideoPlayer from './VideoPlayer'
 import GlobalApi from 'api/GlobalApi'

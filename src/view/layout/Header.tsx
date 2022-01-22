@@ -1,9 +1,14 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
-import { IconADATFull } from '../../utility/icon'
-import { IconSearch, IconArrowDown } from '../../utility/icon'
-import { Input, Button, Menu, Dropdown } from 'antd'
 import { MyContext, BrowserStorage } from '../../storage'
+
+import { Btn } from 'utility/component'
+import { IconSearch, IconArrowDown, IconADATFull } from '../../utility/icon'
+import { Input, Menu, Dropdown } from 'antd'
+
+interface IState {
+  text: string
+}
 
 const Header = () => {
   const context = useContext(MyContext)
@@ -16,7 +21,24 @@ const Header = () => {
     history.push('/login')
   }
 
-  const menu = () => {
+  const [data, setData] = useState<IState>({
+    text: ''
+  })
+  const onChange = (key: string, e: any) => {
+    let value = e.target.value
+    // if (value) {
+    //   switch (key) {
+    //     case 'text':
+    //       if (value && !ValidateStr('isEngInt', value)) return false
+    //       value = value.toLowerCase()
+    //       break
+    //     case 'email':
+    //   }
+    // }
+    setData({ ...data, [key]: value })
+  }
+
+  const renderMenu = () => {
     return (
       <Menu className='ad-header-profile-menu'>
         <Menu.Item className='ad-header-profile-menu-text' key='user' disabled>
@@ -73,10 +95,20 @@ const Header = () => {
           </li>
         </ul>
         <div className='ad-header-searchBar'>
-          <Input placeholder='Search course content' />
-          <Button type='primary' icon={<IconSearch />} />
+          <Input
+            placeholder='Search course content'
+            value={data.text}
+            onChange={(e) => onChange('text', e)}
+          />
+          <Btn
+            feature='action'
+            onClick={() => {
+              if (data.text) history.push(`/search/${data.text}`)
+            }}
+            icon={<IconSearch />}
+          />
         </div>
-        <Dropdown overlay={menu()} trigger={['click']}>
+        <Dropdown overlay={renderMenu()} trigger={['click']}>
           <div className='ad-header-btn'>
             {context.auth.user_id}
             <IconArrowDown />
