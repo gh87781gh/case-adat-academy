@@ -1,11 +1,22 @@
 .ad-footer {
+  .typo-bodyDefault();
   background-color: @color-primary;
   padding-top: 74px;
   padding-bottom: 100px;
+  color: @color-gray02;
+}
+.ad-footer-logo-adat {
+  margin-bottom: 35px;
+  .size(auto,60px);
   color: @color-primary-light03;
 }
-.ad-footer-logo {
-  margin-bottom: 35px;
+.ad-footer-share {
+  color: @color-white;
+  .anticon:not(:last-child) {
+    margin-right: 20px;
+    cursor: pointer;
+  }
+  margin-bottom: 20px;
 }
 .ad-footer-link {
   margin-right: 20px;
@@ -14,8 +25,7 @@
 }
 .ad-footer-address {
   text-align: right;
-
   .ant-btn-link {
-    color: @color-white;
+    color: @color-white; //TODO active hover?
   }
 }

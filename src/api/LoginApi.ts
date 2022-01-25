@@ -14,11 +14,7 @@ export default class LoginApi {
     return this.restAPI.request('post', '/auth/check', toCheck)
   }
   signUp = (data: any) => {
-    const sendData = {
-      ...data,
-      is_login: false // true -> 順便登入,並返回token
-    }
-    return this.restAPI.request('post', '/auth/signup', sendData)
+    return this.restAPI.request('post', '/auth/signup', data)
   }
   recoverPassword = (data: any) => {
     return this.restAPI.request('post', '/recovery/submit', data, true)
