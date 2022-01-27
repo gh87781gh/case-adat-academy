@@ -143,7 +143,7 @@ const LayoutTemplate = () => {
               />
               <Route
                 exact={true}
-                path='/courseDetail/:courseId'
+                path='/courseDetail/:courseId/:sectionId?'
                 render={() => componentPage(CourseDetail, 'USER')}
               />
               <Route

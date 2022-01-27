@@ -38,8 +38,8 @@ export default class CourseApi {
           let newIndexA: number | null = null
           let newIndexB: number | null = null
 
-          let selectedKeys: any = [] // current section
-          let menuOpenKeys: any = [] // all open group and chapter keys
+          // let selectedKeys: any = [] // current section
+          // let menuOpenKeys: any = [] // all open group and chapter keys
 
           res.data.forEach((item: any, index: number) => {
             switch (item.level) {
@@ -71,31 +71,31 @@ export default class CourseApi {
                 }
 
                 // If has no last read record, get the first section to be the default active key
-                if (!res.last_read_section_id && selectedKeys.length === 0) {
-                  selectedKeys.push(item.key)
-                }
+                // if (!res.last_read_section_id && selectedKeys.length === 0) {
+                //   selectedKeys.push(item.key)
+                // }
 
                 break
             }
           })
 
-          res.data.forEach((item: any) => {
-            // all submenu open for default
-            if (item.level === 1 || item.level === 2) {
-              menuOpenKeys.push(item.key)
-            }
+          // res.data.forEach((item: any) => {
+          //   // all submenu open for default
+          //   if (item.level === 1 || item.level === 2) {
+          //     menuOpenKeys.push(item.key)
+          //   }
 
-            // If has last read record, use it to be the default active key
-            if (
-              res.last_read_section_id &&
-              res.last_read_section_id === item.id
-            ) {
-              selectedKeys.push(item.key)
-            }
-          })
+          //   // If has last read record, use it to be the default active key
+          //   if (
+          //     res.last_read_section_id &&
+          //     res.last_read_section_id === item.id
+          //   ) {
+          //     selectedKeys.push(item.key)
+          //   }
+          // })
 
-          res.menuOpenKeys = menuOpenKeys
-          res.selectedKeys = selectedKeys
+          // res.menuOpenKeys = menuOpenKeys
+          // res.selectedKeys = selectedKeys
           res.data = newAry
           resolve(res)
         })
@@ -103,6 +103,13 @@ export default class CourseApi {
           reject(false)
         })
     })
+  }
+  getCurrentSection = (courseId: string, sectionId: string) => {
+    return this.restAPI.request(
+      'get',
+      `/user/course/${courseId}/${sectionId}`,
+      {}
+    )
   }
   switchIsBookmarked = (courseId: string, isBookmarked: boolean) => {
     return this.restAPI.request(

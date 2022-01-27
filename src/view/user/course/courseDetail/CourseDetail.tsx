@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext, useRef } from 'react'
 import { MyContext, StaticService } from 'storage'
-import { useHistory, useParams } from 'react-router-dom'
+import { useHistory, useParams, useLocation } from 'react-router-dom'
 import CourseApi from 'api/user/CourseApi'
 import Header from 'view/layout/Header'
 import Footer from 'view/layout/Footer'
@@ -31,9 +31,11 @@ const CourseDetail = () => {
   const context = useContext(MyContext)
   const api = new CourseApi()
   const history = useHistory()
-  const { courseId } = useParams<{ courseId: string }>()
+  const location = useLocation()
+  const { courseId, sectionId } =
+    useParams<{ courseId: string; sectionId?: string }>()
 
-  // course deta il setting
+  // course detail setting
   const [courseName, setCourseName] = useState<string>('')
   const [courseLogoImage, setCourseLogoImage] = useState<string>('')
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
@@ -48,59 +50,42 @@ const CourseDetail = () => {
       .finally(() => context.setIsLoading(false))
   }
 
-  // course menu
-  // selectedKeys is the same as currentSection's key
+  // course menu and current section
   const [menuOpenKeys, setMenuOpenKeys] = useState<any>([])
-  const [selectedKeys, setSelectedKeys] = useState<any>([])
   const [menu, setMenu] = useState<any>([])
-
-  // current section
-  const [currentSection, setCurrentSection] = useState<any>({})
-  const [allSectionKeys, setAllSectionKeys] = useState<any>([])
-  const slideCurrentSection = (sectionKey: string) => {
-    console.log('sectionKey:', sectionKey)
-  }
-  const markAsRead = () => {
+  const getCurrentSection = (courseId: string, sectionId: string) => {
     context.setIsLoading(true)
     api
-      .markAsRead(courseId, currentSection.id) //TODO api 會報錯 500
-      .then(() => getInitData())
+      .getCurrentSection(courseId, sectionId)
+      .then((res: any) => setCurrentSection(res.data))
       .finally(() => context.setIsLoading(false))
   }
-  useEffect(() => {
-    // after menu onload, get allSectionKeys
-    if (menu.length > 0) {
-      const allSectionKeys: any = []
-      for (const group of menu) {
-        for (const chapter of group.children) {
-          for (const section of chapter.children) {
-            allSectionKeys.push(section.key)
-          }
+  const setPrevAndNextSection = (sectionId: string) => {
+    console.log('setPrevAndNextSection:', sectionId)
+  }
+  const parseItemIdToKey = (sectionId: string) => {
+    for (const chapter of menu) {
+      if (chapter.id === sectionId) {
+        return chapter.key
+      }
+      for (const section of chapter.children) {
+        if (section.id === sectionId) {
+          return section.key
         }
       }
-      setAllSectionKeys(allSectionKeys)
     }
-  }, [menu]) // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    // when user click the section item in menu, set current section
-    if (menu.length > 0 && selectedKeys.length > 0) {
-      for (const group of menu) {
-        for (const chapter of group.children) {
-          for (const section of chapter.children) {
-            if (section.key === selectedKeys[0]) {
-              setCurrentSection(section)
-              break
-            }
-          }
-          break
-        }
-        break
+  }
+  const openAllMenuItems = (menu: any) => {
+    let menuOpenKeys: string[] = []
+    for (const chapter of menu) {
+      menuOpenKeys.push(chapter.key)
+      for (const section of chapter.children) {
+        menuOpenKeys.push(section.key)
       }
     }
-  }, [selectedKeys]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  // init page
-  const getInitData = () => {
+    setMenuOpenKeys(menuOpenKeys)
+  }
+  const getInitData = (courseId: string, sectionId?: string) => {
     context.setIsLoading(true)
     api
       .getCourseDetail(courseId)
@@ -108,15 +93,91 @@ const CourseDetail = () => {
         setCourseName(res.name)
         setCourseLogoImage(res.logo_image_id)
         setIsBookmarked(res.is_bookmarked)
+        setLastReadSectionId(res.last_read_section_id)
         setMenu(res.data)
-        setMenuOpenKeys(res.menuOpenKeys)
-        setSelectedKeys(res.selectedKeys)
+        openAllMenuItems(res.data)
+
+        // 設置 currentSection
+        if (sectionId) {
+          // 1. 判斷網址是否有 params: sectionId？
+          // 有 sectionId -> 設置 currentSection & prev/next sectionId
+          getCurrentSection(courseId, sectionId)
+          setPrevAndNextSection(sectionId)
+        } else {
+          // 無 sectionId ->
+          // 2. 判斷是否有前次閱讀紀錄？
+          if (res.last_read_section_id) {
+            // 有 last_read_section_id -> 將 last_read_section_id 設成 params
+            history.push(`${location.pathname}/${res.last_read_section_id}`)
+          } else {
+            // 無 last_read_section_id -> 將第一個 section 設成 params
+            let firstSection: string = ''
+            for (const chapter of menu) {
+              for (const section of chapter.children) {
+                firstSection = section.id
+              }
+            }
+            history.push(`${location.pathname}/${firstSection}`)
+          }
+        }
       })
       .finally(() => context.setIsLoading(false))
   }
   useEffect(() => {
-    getInitData()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    if (courseId) {
+      getInitData(courseId, sectionId)
+    }
+  }, [courseId, sectionId]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // current section
+  const [currentSection, setCurrentSection] = useState<any>({})
+  const [lastReadSectionId, setLastReadSectionId] = useState<string>('')
+  const [prevSectionId, setPrevSectionId] = useState<string>('')
+  const [nextSectionId, setNextSectionId] = useState<string>('')
+  const [allSectionKeys, setAllSectionKeys] = useState<any>([])
+  const slideCurrentSection = (sectionKey: string) => {
+    console.log('sectionKey:', sectionKey)
+  }
+  // const markAsRead = () => {
+  //   context.setIsLoading(true)
+  //   api
+  //     .markAsRead(courseId, currentSectionId) //TODO api 會報錯 500
+  //     .then(() => getInitData())
+  //     .finally(() => context.setIsLoading(false))
+  // }
+  // useEffect(() => {
+  //   // after menu onload, get allSectionKeys
+  //   if (menu.length > 0) {
+  //     const allSectionKeys: any = []
+  //     for (const group of menu) {
+  //       for (const chapter of group.children) {
+  //         for (const section of chapter.children) {
+  //           allSectionKeys.push(section.key)
+  //         }
+  //       }
+  //     }
+  //     setAllSectionKeys(allSectionKeys)
+  //   }
+  // }, [menu]) // eslint-disable-line react-hooks/exhaustive-deps
+  // useEffect(() => {
+  //   // when user click the section item in menu, set current section
+  //   if (menu.length > 0 && selectedKeys.length > 0) {
+  //     for (const group of menu) {
+  //       for (const chapter of group.children) {
+  //         for (const section of chapter.children) {
+  //           if (section.key === selectedKeys[0]) {
+  //             setCurrentSection(section)
+  //             break
+  //           }
+  //         }
+  //         break
+  //       }
+  //       break
+  //     }
+  //   }
+  // }, [selectedKeys]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // init page
 
   const renderMenu = () => {
     return (
@@ -124,7 +185,7 @@ const CourseDetail = () => {
         className='ad-menu-user-course'
         onOpenChange={(keys: any) => setMenuOpenKeys(keys)}
         openKeys={menuOpenKeys}
-        selectedKeys={selectedKeys}
+        selectedKeys={[sectionId ? parseItemIdToKey(sectionId) : '']}
         mode='inline'
       >
         {menu.map((group: any) => (
@@ -134,10 +195,9 @@ const CourseDetail = () => {
                 {chapter.children.map((section: any) => (
                   <Menu.Item
                     key={section.key}
-                    onClick={() => {
-                      setSelectedKeys([section.key])
-                      setCurrentSection(section)
-                    }}
+                    onClick={() =>
+                      history.push(`/courseDetail/${courseId}/${section.id}`)
+                    }
                   >
                     <div>{section.name}</div>
                     <div className='ad-menu-user-course-section-icon'>
@@ -155,7 +215,7 @@ const CourseDetail = () => {
     )
   }
   const renderCurrentSection = () => {
-    // check the prev/next section of current section
+    // set the prev/next section of current section
     let prevSectionKey = ''
     let nextSectionKey = ''
     const newAry = [...allSectionKeys]
@@ -197,7 +257,10 @@ const CourseDetail = () => {
           : null}
         <div className='ad-course-detail-current-section-markRead'>
           {currentSection.status === 'Not started' ? (
-            <Btn feature='primary' onClick={markAsRead}>
+            <Btn
+              feature='primary'
+              // onClick={markAsRead}
+            >
               Mark as read
             </Btn>
           ) : currentSection.status === 'Finished' ? (
@@ -228,7 +291,7 @@ const CourseDetail = () => {
       </div>
     )
   }
-  const renderCurrentSectionChapterNav = () => {
+  const renderPrevAndNextSectionBtn = () => {
     return (
       <div className='ad-course-detail-chapterNav'>
         <h3>In section</h3>
@@ -287,7 +350,7 @@ const CourseDetail = () => {
                   {isBookmarked ? <IconBookmarked /> : <IconBookmark />}
                 </Btn>
               </div>
-              {renderCurrentSectionChapterNav()}
+              {renderPrevAndNextSectionBtn()}
             </Col>
           </Row>
         </section>
