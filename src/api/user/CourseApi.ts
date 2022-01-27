@@ -23,6 +23,13 @@ export default class CourseApi {
     })
     return this.restAPI.request('get', `/user/bookmark?${query.join('&')}`, {})
   }
+  cancelBookmark = (courseId: string, sectionId: string) => {
+    return this.restAPI.request(
+      'delete',
+      `/user/bookmark/${courseId}/${sectionId}`,
+      {}
+    )
+  }
   getCourseDetail = (id: string) => {
     return new Promise((resolve, reject) => {
       this.restAPI
@@ -111,10 +118,14 @@ export default class CourseApi {
       {}
     )
   }
-  switchIsBookmarked = (courseId: string, isBookmarked: boolean) => {
+  switchIsBookmarked = (
+    courseId: string,
+    sectionId: string,
+    isBookmarked: boolean
+  ) => {
     return this.restAPI.request(
       `${isBookmarked ? 'delete' : 'post'}`,
-      `/user/bookmark/${courseId}`,
+      `/user/bookmark/${courseId}/${sectionId}`,
       {}
     )
   }

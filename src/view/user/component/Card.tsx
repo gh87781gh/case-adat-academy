@@ -1,3 +1,5 @@
+import { useHistory } from 'react-router-dom'
+
 import { IconTrash, IconArrowNext } from 'utility/icon'
 import { Btn } from 'utility/component'
 import { Row, Col } from 'antd'
@@ -7,9 +9,14 @@ interface IProps {
   subtitle: string
   title: string
   text: string
+  course_id: string
+  section_id: string
+  cancelBookmark?: () => void
 }
 
 const Card = (props: IProps) => {
+  const history = useHistory()
+
   return (
     <div className='ad-card'>
       <Row gutter={20}>
@@ -22,11 +29,18 @@ const Card = (props: IProps) => {
           <div className='ad-card-action'>
             <div className='ad-btn-group'>
               {props.type === 'BOOKMARK' ? (
-                <Btn feature='secondary'>
+                <Btn feature='secondary' onClick={props.cancelBookmark}>
                   <IconTrash />
                 </Btn>
               ) : null}
-              <Btn feature='secondary'>
+              <Btn
+                feature='secondary'
+                onClick={() =>
+                  history.push(
+                    `/courseDetail/${props.course_id}/${props.section_id}`
+                  )
+                }
+              >
                 <IconArrowNext />
               </Btn>
             </div>

@@ -61,7 +61,12 @@ const LearningPath = (props: IProps) => {
         <Breadcrumb.Item>learning path</Breadcrumb.Item>
       </Breadcrumb>
       <h1 className='ad-layout-admin-article-title'>Learning path</h1>
-      <Table columns={columns} dataSource={list} pagination={false} />
+      <Table
+        className='ad-admin-table'
+        columns={columns}
+        dataSource={list}
+        pagination={false}
+      />
       <ModalLearnPath
         isShow={isModalEditShow}
         onCancel={() => setIsModalEditShow(false)}

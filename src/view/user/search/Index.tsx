@@ -64,6 +64,8 @@ const Index = () => {
                     subtitle={card.course_name}
                     title={card.title}
                     text={card.content}
+                    course_id={card.course_id}
+                    section_id={card.section_id}
                   />
                 </div>
               ))}

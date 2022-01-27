@@ -40,28 +40,30 @@ const CourseDetail = () => {
   const [courseLogoImage, setCourseLogoImage] = useState<string>('')
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
   const switchIsBookmarked = () => {
-    context.setIsLoading(true)
-    api
-      .switchIsBookmarked(courseId, isBookmarked)
-      .then(() => {
-        message.success(!isBookmarked ? 'Bookmarked' : 'No Bookmarked')
-        setIsBookmarked(!isBookmarked)
-      })
-      .finally(() => context.setIsLoading(false))
+    if (sectionId) {
+      context.setIsLoading(true)
+      api
+        .switchIsBookmarked(courseId, sectionId, isBookmarked)
+        .then(() => {
+          message.success(!isBookmarked ? 'Bookmarked' : 'No Bookmarked')
+          setIsBookmarked(!isBookmarked)
+        })
+        .finally(() => context.setIsLoading(false))
+    }
   }
 
-  // course menu and current section
-  const [menuOpenKeys, setMenuOpenKeys] = useState<any>([])
+  // course menu
   const [menu, setMenu] = useState<any>([])
-  const getCurrentSection = (courseId: string, sectionId: string) => {
-    context.setIsLoading(true)
-    api
-      .getCurrentSection(courseId, sectionId)
-      .then((res: any) => setCurrentSection(res.data))
-      .finally(() => context.setIsLoading(false))
-  }
-  const setPrevAndNextSection = (sectionId: string) => {
-    console.log('setPrevAndNextSection:', sectionId)
+  const [menuOpenKeys, setMenuOpenKeys] = useState<any>([])
+  const openAllMenuItems = (menu: any) => {
+    let menuOpenKeys: string[] = []
+    for (const chapter of menu) {
+      menuOpenKeys.push(chapter.key)
+      for (const section of chapter.children) {
+        menuOpenKeys.push(section.key)
+      }
+    }
+    setMenuOpenKeys(menuOpenKeys)
   }
   const parseItemIdToKey = (sectionId: string) => {
     for (const chapter of menu) {
@@ -75,16 +77,44 @@ const CourseDetail = () => {
       }
     }
   }
-  const openAllMenuItems = (menu: any) => {
-    let menuOpenKeys: string[] = []
-    for (const chapter of menu) {
-      menuOpenKeys.push(chapter.key)
-      for (const section of chapter.children) {
-        menuOpenKeys.push(section.key)
+
+  // current section
+  const [currentSection, setCurrentSection] = useState<any>({})
+  const [prevSectionId, setPrevSectionId] = useState<string>('')
+  const [nextSectionId, setNextSectionId] = useState<string>('')
+  const getCurrentSection = (courseId: string, sectionId: string) => {
+    context.setIsLoading(true)
+    api
+      .getCurrentSection(courseId, sectionId)
+      .then((res: any) => setCurrentSection(res.data))
+      .finally(() => context.setIsLoading(false))
+  }
+  const setPrevAndNextSection = (menu: any, sectionId: string) => {
+    let sections = []
+    for (const group of menu) {
+      for (const chapter of group.children) {
+        for (const section of chapter.children) {
+          sections.push(section)
+        }
       }
     }
-    setMenuOpenKeys(menuOpenKeys)
+    sections.forEach((section: any, index: number, array: any) => {
+      if (section.id === sectionId) {
+        setPrevSectionId(array[index - 1]?.id)
+        setNextSectionId(array[index + 1]?.id)
+        return
+      }
+    })
   }
+  const markAsRead = () => {
+    context.setIsLoading(true)
+    api
+      .markAsRead(courseId, sectionId || '')
+      .then(() => {})
+      .finally(() => context.setIsLoading(false))
+  }
+
+  // init page
   const getInitData = (courseId: string, sectionId?: string) => {
     context.setIsLoading(true)
     api
@@ -93,7 +123,7 @@ const CourseDetail = () => {
         setCourseName(res.name)
         setCourseLogoImage(res.logo_image_id)
         setIsBookmarked(res.is_bookmarked)
-        setLastReadSectionId(res.last_read_section_id)
+        // setLastReadSectionId(res.last_read_section_id)
         setMenu(res.data)
         openAllMenuItems(res.data)
 
@@ -102,7 +132,7 @@ const CourseDetail = () => {
           // 1. 判斷網址是否有 params: sectionId？
           // 有 sectionId -> 設置 currentSection & prev/next sectionId
           getCurrentSection(courseId, sectionId)
-          setPrevAndNextSection(sectionId)
+          setPrevAndNextSection(res.data, sectionId)
         } else {
           // 無 sectionId ->
           // 2. 判斷是否有前次閱讀紀錄？
@@ -129,56 +159,7 @@ const CourseDetail = () => {
     }
   }, [courseId, sectionId]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // current section
-  const [currentSection, setCurrentSection] = useState<any>({})
-  const [lastReadSectionId, setLastReadSectionId] = useState<string>('')
-  const [prevSectionId, setPrevSectionId] = useState<string>('')
-  const [nextSectionId, setNextSectionId] = useState<string>('')
-  const [allSectionKeys, setAllSectionKeys] = useState<any>([])
-  const slideCurrentSection = (sectionKey: string) => {
-    console.log('sectionKey:', sectionKey)
-  }
-  // const markAsRead = () => {
-  //   context.setIsLoading(true)
-  //   api
-  //     .markAsRead(courseId, currentSectionId) //TODO api 會報錯 500
-  //     .then(() => getInitData())
-  //     .finally(() => context.setIsLoading(false))
-  // }
-  // useEffect(() => {
-  //   // after menu onload, get allSectionKeys
-  //   if (menu.length > 0) {
-  //     const allSectionKeys: any = []
-  //     for (const group of menu) {
-  //       for (const chapter of group.children) {
-  //         for (const section of chapter.children) {
-  //           allSectionKeys.push(section.key)
-  //         }
-  //       }
-  //     }
-  //     setAllSectionKeys(allSectionKeys)
-  //   }
-  // }, [menu]) // eslint-disable-line react-hooks/exhaustive-deps
-  // useEffect(() => {
-  //   // when user click the section item in menu, set current section
-  //   if (menu.length > 0 && selectedKeys.length > 0) {
-  //     for (const group of menu) {
-  //       for (const chapter of group.children) {
-  //         for (const section of chapter.children) {
-  //           if (section.key === selectedKeys[0]) {
-  //             setCurrentSection(section)
-  //             break
-  //           }
-  //         }
-  //         break
-  //       }
-  //       break
-  //     }
-  //   }
-  // }, [selectedKeys]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  // init page
-
+  // render
   const renderMenu = () => {
     return (
       <Menu
@@ -215,25 +196,6 @@ const CourseDetail = () => {
     )
   }
   const renderCurrentSection = () => {
-    // set the prev/next section of current section
-    let prevSectionKey = ''
-    let nextSectionKey = ''
-    const newAry = [...allSectionKeys]
-    const reverseAllSectionKeys: any = newAry.reverse()
-    for (const key of allSectionKeys) {
-      if (key === currentSection.key) {
-        break
-      }
-      prevSectionKey = key
-      break
-    }
-    for (const key of reverseAllSectionKeys) {
-      if (key === currentSection.key) {
-        break
-      }
-      nextSectionKey = key
-    }
-
     const { chapterContentType, apiUrl } = StaticService
     return (
       <div className='ad-course-detail-current-section'>
@@ -257,10 +219,7 @@ const CourseDetail = () => {
           : null}
         <div className='ad-course-detail-current-section-markRead'>
           {currentSection.status === 'Not started' ? (
-            <Btn
-              feature='primary'
-              // onClick={markAsRead}
-            >
+            <Btn feature='primary' onClick={markAsRead}>
               Mark as read
             </Btn>
           ) : currentSection.status === 'Finished' ? (
@@ -273,16 +232,20 @@ const CourseDetail = () => {
         <div className='ad-course-detail-current-section-slide'>
           <Btn
             feature='secondary'
-            style={{ visibility: prevSectionKey ? 'visible' : 'hidden' }}
-            onClick={() => slideCurrentSection(currentSection.key)}
+            style={{ visibility: prevSectionId ? 'visible' : 'hidden' }}
+            onClick={() =>
+              history.push(`/courseDetail/${courseId}/${prevSectionId}`)
+            }
           >
             <IconArrowPrev />
             Go to previous section
           </Btn>
           <Btn
             feature='secondary'
-            style={{ visibility: nextSectionKey ? 'visible' : 'hidden' }}
-            onClick={() => slideCurrentSection(currentSection.key)}
+            style={{ visibility: nextSectionId ? 'visible' : 'hidden' }}
+            onClick={() =>
+              history.push(`/courseDetail/${courseId}/${nextSectionId}`)
+            }
           >
             Go to next section
             <IconArrowNext />

@@ -147,6 +147,7 @@ const PurchaseAccount = (props: IProps) => {
         </Row>
       </div>
       <Table
+        className='ad-admin-table'
         columns={columns}
         dataSource={list}
         pagination={{

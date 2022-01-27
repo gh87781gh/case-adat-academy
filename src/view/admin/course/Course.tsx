@@ -7,7 +7,8 @@ import { ValidateStr } from 'utility/validate'
 import ModalCreate from './ModalCreate'
 // import ModalDetail from './ModalDetail'
 import { IconSearch } from 'utility/icon'
-import { Row, Col, Button, Input, Select, Table } from 'antd'
+import { Btn } from 'utility/component'
+import { Row, Col, Input, Select, Table } from 'antd'
 const { Option } = Select
 
 interface IProps {
@@ -89,7 +90,8 @@ const Course = (props: IProps) => {
       width: 370,
       render: (text: any, record: any) => (
         <div className='ad-btn-group'>
-          <Button
+          <Btn
+            feature='primary'
             key='switch'
             size='small'
             onClick={() =>
@@ -97,8 +99,9 @@ const Course = (props: IProps) => {
             }
           >
             {record.status === 'Active' ? 'Inactivate' : 'Activate'}
-          </Button>
-          <Button
+          </Btn>
+          <Btn
+            feature='primary'
             key='edit'
             size='small'
             onClick={() => {
@@ -107,8 +110,9 @@ const Course = (props: IProps) => {
             }}
           >
             Edit
-          </Button>
-          <Button
+          </Btn>
+          <Btn
+            feature='primary'
             key='editCourse'
             size='small'
             onClick={() => {
@@ -117,7 +121,7 @@ const Course = (props: IProps) => {
             }}
           >
             Edit course information
-          </Button>
+          </Btn>
         </div>
       )
     }
@@ -162,10 +166,12 @@ const Course = (props: IProps) => {
       <h1 className='ad-layout-admin-article-title'>
         Course management
         <div className='ad-float-right ad-btn-group'>
-          <Button type='primary' onClick={() => setIsModalCreateShow(true)}>
+          <Btn feature='action' onClick={() => setIsModalCreateShow(true)}>
             Create course
-          </Button>
-          <Button onClick={() => props.next(2)}>Edit learning path</Button>
+          </Btn>
+          <Btn feature='action' onClick={() => props.next(2)}>
+            Edit learning path
+          </Btn>
         </div>
       </h1>
       <div className='ad-layout-admin-article-toolBar'>
@@ -200,6 +206,7 @@ const Course = (props: IProps) => {
         </Row>
       </div>
       <Table
+        className='ad-admin-table'
         columns={columns}
         dataSource={list}
         pagination={{

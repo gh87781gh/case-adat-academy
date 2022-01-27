@@ -29,6 +29,12 @@ const Bookmark = () => {
       })
       .finally(() => context.setIsLoading(false))
   }
+  const cancelBookmark = (courseId: string, sectionId: string) => {
+    context.setIsLoading(true)
+    api
+      .cancelBookmark(courseId, sectionId)
+      .finally(() => context.setIsLoading(false))
+  }
 
   useEffect(() => {
     getBookmarks()
@@ -56,9 +62,14 @@ const Bookmark = () => {
                 <div key={index}>
                   <Card
                     type='BOOKMARK'
-                    subtitle={'12345'} //TOCHECK
-                    title={card.name}
-                    text={card.description}
+                    subtitle={card.course_name}
+                    title={card.section_name}
+                    text={card.section_content}
+                    course_id={card.course_id}
+                    section_id={card.section_id}
+                    cancelBookmark={() =>
+                      cancelBookmark(card.course_id, card.section_id)
+                    }
                   />
                 </div>
               ))}

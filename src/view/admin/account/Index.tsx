@@ -2,14 +2,17 @@ import { useState, useEffect, useContext, useRef } from 'react'
 import { MyContext, StaticService } from 'storage'
 import GlobalApi from 'api/GlobalApi'
 import AccountApi from 'api/admin/AccountApi'
-import { ValidateStr } from 'utility/validate'
-import { IconSearch } from 'utility/icon'
+
 import Header from 'view/layout/Header'
 import AdminSideBar from '../AdminSideBar'
 import ModalCreate from './ModalCreate'
 import ModalDetail from './ModalDetail'
 import ModalRecord from './ModalRecord'
-import { Row, Col, Button, Input, Select, Table } from 'antd'
+
+import { ValidateStr } from 'utility/validate'
+import { IconSearch } from 'utility/icon'
+import { Btn } from 'utility/component'
+import { Row, Col, Input, Select, Table } from 'antd'
 const { Option } = Select
 
 interface IState {
@@ -89,7 +92,8 @@ const Index = () => {
       width: 220,
       render: (text: any, record: any) => (
         <div className='ad-btn-group'>
-          <Button
+          <Btn
+            feature='primary'
             key='more'
             size='small'
             onClick={() => {
@@ -99,8 +103,9 @@ const Index = () => {
             }}
           >
             More
-          </Button>
-          <Button
+          </Btn>
+          <Btn
+            feature='primary'
             key='view'
             size='small'
             onClick={() => {
@@ -110,7 +115,7 @@ const Index = () => {
             }}
           >
             View record
-          </Button>
+          </Btn>
         </div>
       )
     }
@@ -155,13 +160,14 @@ const Index = () => {
         <article>
           <h1 className='ad-layout-admin-article-title'>
             Account management
-            <Button
+            <Btn
+              feature='action'
               className='ad-float-right'
               type='primary'
               onClick={() => setIsModalCreateShow(true)}
             >
               Create account
-            </Button>
+            </Btn>
           </h1>
           <div className='ad-layout-admin-article-toolBar'>
             <Row gutter={20}>
@@ -214,6 +220,7 @@ const Index = () => {
             </Row>
           </div>
           <Table
+            className='ad-admin-table'
             columns={columns}
             dataSource={list}
             pagination={{

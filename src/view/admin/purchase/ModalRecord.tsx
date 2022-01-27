@@ -78,6 +78,7 @@ const ModalRecord = (props: IProps) => {
       footer={null}
     >
       <Table
+        className='ad-admin-table'
         columns={columns}
         dataSource={list}
         pagination={{

@@ -2,12 +2,15 @@ import { useState, useEffect, useContext, useRef } from 'react'
 import { MyContext, StaticService } from 'storage'
 import GlobalApi from 'api/GlobalApi'
 import AdminApi from 'api/admin/AdminApi'
-import { ValidateStr } from 'utility/validate'
-import { IconSearch } from 'utility/icon'
+
 import Header from 'view/layout/Header'
 import AdminSideBar from '../AdminSideBar'
 import ModalCreate from './ModalCreate'
-import { Row, Col, Button, Input, Select, Table } from 'antd'
+
+import { ValidateStr } from 'utility/validate'
+import { IconSearch } from 'utility/icon'
+import { Btn } from 'utility/component'
+import { Row, Col, Input, Select, Table } from 'antd'
 const { Option } = Select
 
 interface IState {
@@ -76,7 +79,8 @@ const Index = () => {
       width: 220,
       render: (text: any, record: any) => (
         <div className='ad-btn-group'>
-          <Button
+          <Btn
+            feature='primary'
             key='more'
             size='small'
             onClick={() => {
@@ -85,7 +89,7 @@ const Index = () => {
             }}
           >
             Edit
-          </Button>
+          </Btn>
         </div>
       )
     }
@@ -126,7 +130,8 @@ const Index = () => {
         <article>
           <h1 className='ad-layout-admin-article-title'>
             Admin management
-            <Button
+            <Btn
+              feature='action'
               className='ad-float-right'
               type='primary'
               onClick={() => {
@@ -135,7 +140,7 @@ const Index = () => {
               }}
             >
               Create admin
-            </Button>
+            </Btn>
           </h1>
           <div className='ad-layout-admin-article-toolBar'>
             <Row gutter={20}>
@@ -169,6 +174,7 @@ const Index = () => {
             </Row>
           </div>
           <Table
+            className='ad-admin-table'
             columns={columns}
             dataSource={list}
             pagination={{
