@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { MyContext } from 'storage'
-// import GlobalApi from 'api/GlobalApi'
+import GlobalApi from 'api/GlobalApi'
 import LoginApi from 'api/LoginApi'
 
 import LoginTemplate from '../LoginTemplate'
@@ -24,28 +24,19 @@ interface IState {
 
 const Contact = () => {
   const context = useContext(MyContext)
-  // const api_global = new GlobalApi()
+  const api_global = new GlobalApi()
   const api = new LoginApi()
   const history = useHistory()
 
-  const [contryOption, setContryOption] = useState<string[]>([])
+  const [preferWayOption, setPreferWayOption] = useState<string[]>([])
   useEffect(() => {
-    //TODO 國碼？
-    // console.log('location:', location)
-    // if (!state) history.push('/login/signUp1')
-    // context.setIsLoading(true)
-    // api_global
-    //   .getOptions([
-    //     'learning_profile_industries',
-    //     'learning_profile_experience_levels',
-    //     'learning_profile_experiences'
-    //   ])
-    //   .then((res: any) => {
-    //     setIndustryOption(res.data[0])
-    //     setExperienceLevelOption(res.data[1])
-    //     setExperienceOption(res.data[2])
-    //   })
-    //   .finally(() => context.setIsLoading(false))
+    context.setIsLoading(true)
+    api_global
+      .getOptions(['contact_us_prefered_way_of_contact'])
+      .then((res: any) => {
+        setPreferWayOption(res.data[0])
+      })
+      .finally(() => context.setIsLoading(false))
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
@@ -55,7 +46,7 @@ const Contact = () => {
     description: '',
     prefered_way_of_contact: [],
     email: '',
-    contry_code: '886', //TODO 國碼？
+    contry_code: '+886',
     phone_number: ''
   })
   const onChange = (key: string, e: any) => {
@@ -153,39 +144,34 @@ const Contact = () => {
             onChange={onChecks}
           >
             <Row gutter={[10, 10]}>
-              <Col span={12}>
-                <Checkbox className='ad-checkbox-btn' value='Phone number'>
-                  Phone number
-                </Checkbox>
-              </Col>
-              <Col span={12}>
-                <Checkbox className='ad-checkbox-btn' value='Email'>
-                  Email
-                </Checkbox>
-              </Col>
+              {preferWayOption.map((item: string) => (
+                <Col span={12} key={item}>
+                  <Checkbox className='ad-checkbox-btn' value={item}>
+                    {item}
+                  </Checkbox>
+                </Col>
+              ))}
             </Row>
           </Checkbox.Group>
         </div>
-        {data.prefered_way_of_contact.includes('Email') ? (
-          <div className='ad-form-group'>
-            <label className='required'>Your valid email</label>
-            <Input
-              value={data.email}
-              maxLength={200}
-              placeholder='Clear hint for the input'
-              onChange={(e) => onChange('email', e)}
-            />
-            <FormGroupMsg
-              isShow={isEmail === false}
-              type='error'
-              msg='The Email format is not correct.'
-            />
-            <FormGroupMsg
-              isShow={isEmail !== false}
-              msg='Please provide an valid email for us to contact you.'
-            />
-          </div>
-        ) : null}
+        <div className='ad-form-group'>
+          <label className='required'>Your valid email</label>
+          <Input
+            value={data.email}
+            maxLength={200}
+            placeholder='Clear hint for the input'
+            onChange={(e) => onChange('email', e)}
+          />
+          <FormGroupMsg
+            isShow={isEmail === false}
+            type='error'
+            msg='The Email format is not correct.'
+          />
+          <FormGroupMsg
+            isShow={isEmail !== false}
+            msg='Please provide an valid email for us to contact you.'
+          />
+        </div>
         {data.prefered_way_of_contact.includes('Phone number') ? (
           <>
             <div className='ad-form-group' style={{ marginBottom: '0' }}>
@@ -200,11 +186,11 @@ const Contact = () => {
                     onChange={(val) => onSelect('contry_code', val)}
                   >
                     {/* TODO 國碼？ */}
-                    {contryOption.map((item: string) => (
+                    {/* {contryOption.map((item: string) => (
                       <Option value={item} key={item}>
                         {item}
                       </Option>
-                    ))}
+                    ))} */}
                   </Select>
                 </div>
               </Col>
@@ -233,7 +219,7 @@ const Contact = () => {
             (data.prefered_way_of_contact.includes('Phone number') &&
               !data.contry_code &&
               !data.phone_number) ||
-            (data.prefered_way_of_contact.includes('Email') && !data.email) ||
+            !data.email ||
             isEmail === false
           }
           className='ad-login-content-actionBtn'
