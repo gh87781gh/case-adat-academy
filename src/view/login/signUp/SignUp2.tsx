@@ -78,10 +78,10 @@ const SignUp2 = () => {
     setData({ ...data, [key]: value })
   }
   const onChecks = (checkedValues: any) => {
-    if (checkedValues.includes(3)) {
-      checkedValues.length >= 2 && checkedValues.indexOf(3) === 0
+    if (checkedValues.includes('Not sure')) {
+      checkedValues.length >= 2 && checkedValues.indexOf('Not sure') === 0
         ? checkedValues.shift()
-        : (checkedValues = [3])
+        : (checkedValues = ['Not sure'])
     }
     setData({ ...data, experience: checkedValues })
   }

@@ -1,6 +1,8 @@
-import { Row, Col, Button } from 'antd'
 import { useHistory } from 'react-router-dom'
+
 import { IconADAT } from 'utility/icon'
+import { Btn } from 'utility/component'
+import { Row, Col } from 'antd'
 
 const LoginTemplate = (props: any) => {
   const history = useHistory()
@@ -15,15 +17,20 @@ const LoginTemplate = (props: any) => {
           <IconADAT />
         </div>
         <div className='ad-login-footer-btn-group'>
-          <Button type='link' onClick={() => history.push('/login/contact')}>
+          <Btn
+            feature='link'
+            className='ad-mode-dark'
+            onClick={() => history.push('/login/contact')}
+          >
             Contact us
-          </Button>
-          <Button
-            type='link'
-            onClick={() => history.push('/login/terms&privacy')}
+          </Btn>
+          <Btn
+            feature='link'
+            className='ad-mode-dark'
+            onClick={() => history.push('/login/terms&privacyt')}
           >
             Terms & policy
-          </Button>
+          </Btn>
         </div>
       </Col>
     </Row>

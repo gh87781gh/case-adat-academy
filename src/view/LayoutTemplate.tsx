@@ -6,6 +6,7 @@ import GlobalApi from '../api/GlobalApi'
 
 // no validate auth
 import DemoPage from './DemoPage' // only for local
+import RedirectPage from './layout/RedirectPage'
 import Login from './login/login/Login'
 import SignUp1 from './login/signUp/SignUp1'
 import SignUp2 from './login/signUp/SignUp2'
@@ -49,9 +50,9 @@ const LayoutTemplate = () => {
   }
   useEffect(() => {
     if (browserStorage.getStorage('AUTH')) getAuth()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [browserStorage.getStorage('AUTH')]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const componentPage = (Component: any, pageType: string, props?: any) => {
+  const componentPage = (Component: any, pageType?: string, props?: any) => {
     const token = browserStorage.getStorage('AUTH')
     if ((pageType === 'USER' || pageType === 'ADMIN') && !token) {
       return <Redirect to='/login' />
@@ -78,11 +79,16 @@ const LayoutTemplate = () => {
                 <Route
                   exact={true}
                   path='/demo'
-                  render={() => componentPage(DemoPage, 'LOGIN')}
+                  render={() => componentPage(DemoPage)}
                 />
               ) : null}
 
               {/* NOTE LOGIN */}
+              <Route
+                // exact={false}
+                path='/redirect/:target/:verify'
+                render={() => componentPage(RedirectPage)}
+              />
               <Route
                 exact={true}
                 path='/login'

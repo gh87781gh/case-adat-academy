@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useHistory, useLocation } from 'react-router-dom'
 
 import LoginTemplate from 'view/login/LoginTemplate'
 import LoginPrompt from '../LoginPrompt'
@@ -11,22 +11,27 @@ import { Input } from 'antd'
 
 const PasswordRecover3 = () => {
   const history = useHistory()
+  const location = useLocation()
+  const { state }: any = location
 
-  const [tempPassword, setTempPassword] = useState<string>('123456')
   const [isCopy, setIsCopy] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (!state) history.push('/login')
+  }, [state])
 
   return (
     <LoginTemplate>
       <LoginPrompt type='success' text={isCopy ? 'Copied' : ''} />
       <div className='ad-login-content-header'>Recover password</div>
       <div className='ad-login-content-body'>
-        <p>Your temporary password for ????? is</p>
+        <p>Your temporary password {/*for  TODO name? */} is</p>
         {/* <p>Your temporary password for {data.account} is</p> */}
         <div className='ad-form-group'>
           <label className='required'>User ID</label>
 
           <CopyToClipboard
-            text={tempPassword}
+            text={state?.tempPassword ?? ''}
             onCopy={() => {
               setIsCopy(true)
               setTimeout(() => {
@@ -36,7 +41,7 @@ const PasswordRecover3 = () => {
           >
             <Input
               className='ad-input-copy'
-              value={tempPassword}
+              value={state?.tempPassword ?? ''}
               suffix={<IconCopy />}
             />
           </CopyToClipboard>

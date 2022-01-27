@@ -83,6 +83,31 @@
     text-decoration: underline !important;
   }
 }
+.ant-btn-link.ad-mode-dark {
+  .typo-bodyDefault();
+  font-family: NotoSansRegular;
+  padding: unset;
+  height: auto;
+  color: @color-white;
+  &:hover,
+  &:focus {
+    span {
+      color: @color-white !important;
+      text-decoration: none !important;
+    }
+    background-color: transparent !important;
+  }
+  &:active {
+    span {
+      color: @color-gray03 !important;
+      text-decoration: underline !important;
+    }
+    border: 1px solid @color-white!important;
+  }
+  span {
+    text-decoration: underline !important;
+  }
+}
 
 // disabled
 .ant-btn[disabled],

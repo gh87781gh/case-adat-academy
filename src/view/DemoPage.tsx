@@ -35,6 +35,17 @@ const DemoPage = () => {
         <Col span={6}>
           <h3>link</h3>
           <Btn feature='link'>Link Btn</Btn>
+          <span
+            style={{
+              display: 'inline-block',
+              backgroundColor: '#000',
+              padding: '1px'
+            }}
+          >
+            <Btn feature='link' className='ad-mode-dark'>
+              Link Btn
+            </Btn>
+          </span>
           <br />
           <small>Link Btn has no disabled status</small>
         </Col>

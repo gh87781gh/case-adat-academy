@@ -38,8 +38,8 @@ const Login = () => {
           )
           value = value.toLowerCase()
           break
-        case 'password':
-          if (value && !ValidateStr('isEngInt', value)) return false
+          // case 'password':
+          //   if (value && !ValidateStr('isEngInt', value)) return false
           break
       }
     }
@@ -113,7 +113,7 @@ const Login = () => {
           <label>Password</label>
           <Input.Password
             placeholder='Clear hint for the input'
-            maxLength={16}
+            maxLength={100}
             value={data.password}
             onChange={(e) => onChange('password', e)}
           />

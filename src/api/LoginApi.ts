@@ -16,8 +16,18 @@ export default class LoginApi {
   signUp = (data: any) => {
     return this.restAPI.request('post', '/auth/signup', data)
   }
+  signUpEmailVerify = (verification_code: string) => {
+    return this.restAPI.request('post', '/auth/email/verify', {
+      verification_code
+    })
+  }
   recoverPassword = (data: any) => {
     return this.restAPI.request('post', '/recovery/submit', data, true)
+  }
+  recoverPasswordVerify = (temporary_password: string) => {
+    return this.restAPI.request('post', '/recovery/verify', {
+      temporary_password
+    })
   }
   contact = (data: any) => {
     return this.restAPI.request('post', '/contact', data)
