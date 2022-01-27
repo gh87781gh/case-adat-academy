@@ -2,9 +2,9 @@ import { useState, useContext, useEffect } from 'react'
 import { MyContext } from 'storage'
 import GlobalApi from 'api/GlobalApi'
 import AdminApi from 'api/admin/AdminApi'
-import { FormGroupMsg } from 'utility/component'
+import { FormGroupMsg, Btn } from 'utility/component'
 import { ValidateStr } from 'utility/validate'
-import { Row, Col, Button, Input, Select, Modal } from 'antd'
+import { Row, Col, Input, Select, Modal } from 'antd'
 const { Option } = Select
 
 interface IProps {
@@ -112,9 +112,9 @@ const ModalCreate = (props: IProps) => {
       onCancel={props.onCancel}
       width={1100}
       footer={[
-        <Button
+        <Btn
+          feature='action'
           key='Create'
-          type='primary'
           disabled={
             props.adminId
               ? !data.role ||
@@ -131,11 +131,11 @@ const ModalCreate = (props: IProps) => {
           }
           onClick={() => submit()}
         >
-          Create
-        </Button>,
-        <Button key='Cancel' onClick={props.onCancel}>
+          {props.adminId ? 'Save' : 'Create'}
+        </Btn>,
+        <Btn key='Cancel' onClick={props.onCancel}>
           Cancel
-        </Button>
+        </Btn>
       ]}
     >
       <Row gutter={20}>
