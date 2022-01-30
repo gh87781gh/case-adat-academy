@@ -80,7 +80,7 @@ article {
 // admin
 @admin-layout-article-padding-x: 20px;
 @admin-layout-article-padding-y: 50px;
-@admin-layout-courseDetail-footer-height: 120px;
+@admin-layout-courseDetail-footer-height: 90px;
 .ad-layout-admin {
   display: flex;
   flex-wrap: nowrap;
@@ -104,9 +104,26 @@ article {
   }
 }
 .ad-layout-admin-courseDetail {
+  height: 100%;
   padding-bottom: @admin-layout-article-padding-y +
     @admin-layout-courseDetail-footer-height;
-
+  .ant-row {
+    height: 100%;
+  }
+  .ad-layout-admin-article-title {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 1rem;
+  }
+  .ad-layout-admin-article-menu {
+    height: 100%;
+    padding-right: 1rem;
+    border-right: 1px solid #ccc;
+  }
+  .ad-layout-admin-article-content {
+    height: 100%;
+    overflow-y: auto;
+    padding-bottom: 50px;
+  }
   .ad-layout-admin-courseDetail-footer {
     .size(100%,@admin-layout-courseDetail-footer-height);
     background-color: #fff;

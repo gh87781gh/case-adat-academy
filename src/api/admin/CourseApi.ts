@@ -27,57 +27,107 @@ export default class CourseApi {
   getCourseDetail = (id: string) => {
     return this.restAPI.request('get', `/course/${id}`, {})
   }
-  getCourseChapter = (id: string) => {
+  getCourseDetailMenu = (type: string, id: string) => {
     return new Promise((resolve, reject) => {
       this.restAPI
         .request('get', `/course/${id}/chapter`, {})
         .then((res: any) => {
-          let indexA: number = 0
-          let indexB: number = 0
-          let indexC: number = 0
-          res.data.forEach((item: any, index: number, ary: any) => {
-            const level = item.level
-            const nextLevel = ary[index + 1]?.level
-            const isShowChildren: boolean | null =
-              level < nextLevel ? true : null // 預設展開 child
-
-            switch (item.level) {
-              case 1:
-                if (indexA !== 0) {
-                  indexB = 0
-                  indexC = 0
-                }
-                indexA++
-                item.key = `${indexA}`
-                item.isShowChildren = isShowChildren
-                item.isShow = true
-                break
-              case 2:
-                indexB++
-                item.key = `${indexA}-${indexB}`
-                item.isShowChildren = true
-                item.isShow = true
-                break
-              case 3:
-                indexC++
-                item.key = `${indexA}-${indexB}-${indexC}`
-                item.isShowChildren = null
-                item.isShow = true
-                item.sections.forEach((el: any, i: number) => {
-                  el.key = `${i}`
-                })
-                break
-            }
-
-            item.index = index
-          })
-          resolve(res.data)
+          if (type === 'MENU') {
+            // add key on every item
+            let keyA: number = 0
+            let keyB: number = 0
+            let keyC: number = 0
+            // 轉成巢狀結構以因應 ui 的 menu component
+            let newAry: any = []
+            let newIndexA: number | null = null
+            let newIndexB: number | null = null
+            // let selectedKeys: any = [] // current section
+            // let menuOpenKeys: any = [] // all open group and chapter keys
+            res.data.forEach((item: any, index: number) => {
+              switch (item.level) {
+                case 1:
+                  if (keyA !== 0) {
+                    keyB = 0
+                    keyC = 0
+                  }
+                  keyA++
+                  item.key = `${keyA}`
+                  newAry.push(item)
+                  newIndexA === null ? (newIndexA = 0) : newIndexA++
+                  newAry[newIndexA].children = []
+                  break
+                case 2:
+                  keyB++
+                  item.key = `${keyA}-${keyB}`
+                  if (newIndexA !== null) {
+                    newAry[newIndexA].children.push(item)
+                    newIndexB === null ? (newIndexB = 0) : newIndexB++
+                    newAry[newIndexA].children[newIndexB].children = []
+                  }
+                  break
+                case 3:
+                  keyC++
+                  item.key = `${keyA}-${keyB}-${keyC}`
+                  if (newIndexA !== null && newIndexB !== null) {
+                    newAry[newIndexA].children[newIndexB].children.push(item)
+                  }
+                  break
+              }
+            })
+            res.data = newAry
+          } else if (type === 'EDIT') {
+            // TODO
+            // let indexA: number = 0
+            // let indexB: number = 0
+            // let indexC: number = 0
+            // res.data.forEach((item: any, index: number, ary: any) => {
+            //   const level = item.level
+            //   const nextLevel = ary[index + 1]?.level
+            //   const isShowChildren: boolean | null =
+            //     level < nextLevel ? true : null // 預設展開 child
+            //   switch (item.level) {
+            //     case 1:
+            //       if (indexA !== 0) {
+            //         indexB = 0
+            //         indexC = 0
+            //       }
+            //       indexA++
+            //       item.key = `${indexA}`
+            //       item.isShowChildren = isShowChildren
+            //       item.isShow = true
+            //       break
+            //     case 2:
+            //       indexB++
+            //       item.key = `${indexA}-${indexB}`
+            //       item.isShowChildren = true
+            //       item.isShow = true
+            //       break
+            //     case 3:
+            //       indexC++
+            //       item.key = `${indexA}-${indexB}-${indexC}`
+            //       item.isShowChildren = null
+            //       item.isShow = true
+            //       item.sections.forEach((el: any, i: number) => {
+            //         el.key = `${i}`
+            //       })
+            //       break
+            //   }
+            //   item.index = index
+            // })
+          }
+          resolve(res)
         })
         .catch(() => {
           reject(false)
         })
     })
   }
+  getCurrentSection = (courseId: string, sectionId: string) => {
+    return this.restAPI.request('get', `/course/${courseId}/${sectionId}`, {})
+  }
+
+  // NOTE 確認到以上
+
   editCourseChapter = (id: string, data: any) => {
     const ary = data.map((chapter: any) => {
       return {
@@ -103,9 +153,6 @@ export default class CourseApi {
   switchCourse = (id: string, enable: boolean) => {
     // TOCHECK activate 後端檢查還沒做
     return this.restAPI.request('post', `/course/${id}/active`, { enable })
-  }
-  getCurrentSection = (courseId: string, sectionId: string) => {
-    return this.restAPI.request('get', `/course/${courseId}/${sectionId}`, {})
   }
 
   // TOCHECK

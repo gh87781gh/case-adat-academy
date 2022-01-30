@@ -77,32 +77,9 @@ export default class CourseApi {
                   newAry[newIndexA].children[newIndexB].children.push(item)
                 }
 
-                // If has no last read record, get the first section to be the default active key
-                // if (!res.last_read_section_id && selectedKeys.length === 0) {
-                //   selectedKeys.push(item.key)
-                // }
-
                 break
             }
           })
-
-          // res.data.forEach((item: any) => {
-          //   // all submenu open for default
-          //   if (item.level === 1 || item.level === 2) {
-          //     menuOpenKeys.push(item.key)
-          //   }
-
-          //   // If has last read record, use it to be the default active key
-          //   if (
-          //     res.last_read_section_id &&
-          //     res.last_read_section_id === item.id
-          //   ) {
-          //     selectedKeys.push(item.key)
-          //   }
-          // })
-
-          // res.menuOpenKeys = menuOpenKeys
-          // res.selectedKeys = selectedKeys
           res.data = newAry
           resolve(res)
         })

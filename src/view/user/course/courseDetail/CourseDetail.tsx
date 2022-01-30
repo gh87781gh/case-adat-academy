@@ -13,14 +13,7 @@ import {
   IconSuccessfully
 } from 'utility/icon'
 import { Btn, VideoPlayer } from 'utility/component'
-import LearningPath from '../learningPath/LearningPath'
-import {
-  AppstoreOutlined,
-  MailOutlined,
-  SettingOutlined
-} from '@ant-design/icons'
-import { Row, Col, Select, Breadcrumb, Menu, message } from 'antd'
-const { Option } = Select
+import { Row, Col, Breadcrumb, Menu, message } from 'antd'
 const { SubMenu } = Menu
 
 interface IState {
