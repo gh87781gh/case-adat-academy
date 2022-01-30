@@ -31,6 +31,8 @@ import NoAccess from './layout/NoAccess'
 import AdminPurchase from './admin/purchase/Index'
 import AdminAccount from './admin/account/Index'
 import AdminCourse from './admin/course/Index'
+import AdminCourseDetail from './admin/course/courseDetail/CourseDetail'
+import AdminCourseLearningPath from './admin/course/learningPath/LearningPath'
 import AdminAdmin from './admin/admin/Index'
 
 import { Spin } from 'antd'
@@ -56,6 +58,8 @@ const LayoutTemplate = () => {
     const token = browserStorage.getStorage('AUTH')
     if ((pageType === 'USER' || pageType === 'ADMIN') && !token) {
       return <Redirect to='/login' />
+    } else if (pageType === 'ADMIN' && auth.is_admin === false) {
+      return <Redirect to='/course' />
     } else {
       return <Component {...props} />
     }
@@ -186,17 +190,29 @@ const LayoutTemplate = () => {
                 path='/admin/account'
                 render={() => componentPage(AdminAccount, 'ADMIN')}
               />
+              {/* TODO */}
               <Route
                 exact={true}
-                path='/admin/course/:courseId?'
+                path='/admin/course'
                 render={() => componentPage(AdminCourse, 'ADMIN')}
               />
+              <Route
+                exact={true}
+                path='/admin/courseDetail/:courseId'
+                render={() => componentPage(AdminCourseDetail, 'ADMIN')}
+              />
+              <Route
+                exact={true}
+                path='/admin/course/learningPath'
+                render={() => componentPage(AdminCourseLearningPath, 'ADMIN')}
+              />
+
               <Route
                 exact={true}
                 path='/admin/admin'
                 render={() => componentPage(AdminAdmin, 'ADMIN')}
               />
-              <Redirect to='/login' />
+              {/* <Redirect to='/login' /> */}
             </Switch>
           </HashRouter>
           <span className='ad-layout-version'>v{version}</span>

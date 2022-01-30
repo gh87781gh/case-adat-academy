@@ -32,15 +32,6 @@ const AdminSideBar = () => {
   ]
 
   useEffect(() => {
-    // 如果進入 admin 介面，但卻偵測到沒有 is_admin 的身份，導回首頁
-    // context 資料進入慢，給 3 秒緩衝時間（考量 render 順序）
-    clearTimeout(adminValidateDelateTimer)
-    adminValidateDelateTimer = setTimeout(function () {
-      if (!context.auth.is_admin) {
-        history.push('/course')
-      }
-    }, 30000)
-
     if (courseId) {
       setActivePath(location.pathname.replace(`/${courseId}`, ''))
     } else {

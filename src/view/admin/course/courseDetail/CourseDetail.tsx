@@ -1,22 +1,23 @@
 import { useState, useEffect, useContext } from 'react'
 import { MyContext } from 'storage'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import CourseApi from 'api/admin/CourseApi'
-import { Btn, UploadVideo } from 'utility/component'
-import { Row, Col, Breadcrumb, message } from 'antd'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
+
+import Header from 'view/layout/Header'
+import AdminSideBar from '../../AdminSideBar'
 import CourseDetailMenu from './Menu'
 import Sections from './Sections'
-import { Dropdown, Menu } from 'antd'
 
-interface IProps {
-  prev: () => void
-}
+import { Btn, UploadVideo } from 'utility/component'
+import { Row, Col, Breadcrumb, message, Dropdown, Menu } from 'antd'
 
-const CourseDetail = (props: IProps) => {
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+
+const CourseDetail = () => {
   const context = useContext(MyContext)
   const api = new CourseApi()
+  const history = useHistory()
   const { courseId, sectionId } =
     useParams<{ courseId: string; sectionId?: string }>()
 
@@ -240,33 +241,41 @@ const CourseDetail = (props: IProps) => {
     )
   }
   return (
-    <div className='ad-layout-admin-courseDetail'>
-      <Breadcrumb separator='>'>
-        <Breadcrumb.Item onClick={props.prev}>
-          Course management
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>{courseName}</Breadcrumb.Item>
-      </Breadcrumb>
-      <h1 className='ad-layout-admin-article-title'>
-        {courseName}
-        <span className='ad-float-right'>{courseStatus}</span>
-      </h1>
-      <Row gutter={20}>
-        <Col span={7}>{renderMenu()}</Col>
-        <Col span={17}>
-          {renderCurrentSection()}
-          {renderCurrentSectionTypeDropdown()}
-        </Col>
-      </Row>
-      <div className='ad-layout-admin-courseDetail-footer'>
-        <div className='ad-btn-group'>
-          <Btn feature='action' onClick={() => editCourseChapter()}>
-            Save
-          </Btn>
-          <Btn feature='primary'>Reset</Btn>
-        </div>
+    <>
+      <Header />
+      <div className='ad-layout-admin'>
+        <AdminSideBar />
+        <article>
+          <div className='ad-layout-admin-courseDetail'>
+            <Breadcrumb separator='>'>
+              <Breadcrumb.Item onClick={() => history.push('/admin/course')}>
+                Course management
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>{courseName}</Breadcrumb.Item>
+            </Breadcrumb>
+            <h1 className='ad-layout-admin-article-title'>
+              {courseName}
+              <span className='ad-float-right'>{courseStatus}</span>
+            </h1>
+            <Row gutter={20}>
+              <Col span={7}>{renderMenu()}</Col>
+              <Col span={17}>
+                {renderCurrentSection()}
+                {renderCurrentSectionTypeDropdown()}
+              </Col>
+            </Row>
+            <div className='ad-layout-admin-courseDetail-footer'>
+              <div className='ad-btn-group'>
+                <Btn feature='action' onClick={() => editCourseChapter()}>
+                  Save
+                </Btn>
+                <Btn feature='primary'>Reset</Btn>
+              </div>
+            </div>
+          </div>
+        </article>
       </div>
-    </div>
+    </>
   )
 }
 export default CourseDetail

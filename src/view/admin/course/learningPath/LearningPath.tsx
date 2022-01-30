@@ -1,16 +1,18 @@
 import { useState, useEffect, useContext } from 'react'
+import { useHistory } from 'react-router-dom'
 import { MyContext } from 'storage'
 import CourseApi from 'api/admin/CourseApi'
+
+import Header from 'view/layout/Header'
 import ModalLearnPath from './ModalLearnPath'
+import AdminSideBar from 'view/admin/AdminSideBar'
+
 import { Button, Table, Breadcrumb } from 'antd'
 
-interface IProps {
-  prev: () => void
-}
-
-const LearningPath = (props: IProps) => {
+const LearningPath = () => {
   const context = useContext(MyContext)
   const api = new CourseApi()
+  const history = useHistory()
 
   const [list, setList] = useState<any>([])
   const [learningGoal, setLearningGoal] = useState<string>('')
@@ -54,25 +56,31 @@ const LearningPath = (props: IProps) => {
 
   return (
     <>
-      <Breadcrumb separator='>'>
-        <Breadcrumb.Item onClick={props.prev}>
-          Course management
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>learning path</Breadcrumb.Item>
-      </Breadcrumb>
-      <h1 className='ad-layout-admin-article-title'>Learning path</h1>
-      <Table
-        className='ad-admin-table'
-        columns={columns}
-        dataSource={list}
-        pagination={false}
-      />
-      <ModalLearnPath
-        isShow={isModalEditShow}
-        onCancel={() => setIsModalEditShow(false)}
-        getList={() => getList()}
-        learningGoal={learningGoal}
-      />
+      <Header />
+      <div className='ad-layout-admin'>
+        <AdminSideBar />
+        <article>
+          <Breadcrumb separator='>'>
+            <Breadcrumb.Item onClick={() => history.push('/admin/course')}>
+              Course management
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>learning path</Breadcrumb.Item>
+          </Breadcrumb>
+          <h1 className='ad-layout-admin-article-title'>Learning path</h1>
+          <Table
+            className='ad-admin-table'
+            columns={columns}
+            dataSource={list}
+            pagination={false}
+          />
+          <ModalLearnPath
+            isShow={isModalEditShow}
+            onCancel={() => setIsModalEditShow(false)}
+            getList={() => getList()}
+            learningGoal={learningGoal}
+          />
+        </article>
+      </div>
     </>
   )
 }
