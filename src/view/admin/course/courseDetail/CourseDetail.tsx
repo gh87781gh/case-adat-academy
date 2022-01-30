@@ -17,10 +17,14 @@ interface IProps {
 const CourseDetail = (props: IProps) => {
   const context = useContext(MyContext)
   const api = new CourseApi()
-  const { courseId } = useParams<{ courseId: string }>()
+  const { courseId, sectionId } =
+    useParams<{ courseId: string; sectionId?: string }>()
 
-  // course detail and menu
-  const [courseDetail, setCourseDetail] = useState<any>({})
+  // TODO course detail setting
+  const [courseName, setCourseName] = useState<string>('')
+  const [courseStatus, setCourseStatus] = useState<string>('')
+
+  // TODO course menu
   const [menu, setMenu] = useState<any>([
     // {
     //   level: 1,
@@ -60,9 +64,18 @@ const CourseDetail = (props: IProps) => {
     //   ]
     // }
   ])
-  let [addLevelACount, setAddLevelACount] = useState<number>(0)
+  let [addLevel1Count, setAddLevelACount] = useState<number>(0)
 
   // current section
+  const [currentSection, setCurrentSection] = useState<any>({})
+  const getCurrentSection = (courseId: string, sectionId: string) => {
+    context.setIsLoading(true)
+    api
+      .getCurrentSection(courseId, sectionId)
+      .then((res: any) => setCurrentSection(res.data))
+      .finally(() => context.setIsLoading(false))
+  }
+
   const [sections, setSections] = useState<any>([])
   const [sectionIndex, setSectionIndex] = useState<null | number>(null)
   const [sectionName, setSectionName] = useState<string>('')
@@ -117,9 +130,10 @@ const CourseDetail = (props: IProps) => {
 
   const getInitData = async () => {
     context.setIsLoading(true)
-    await api
-      .getCourseDetail(courseId)
-      .then((res: any) => setCourseDetail(res.data))
+    await api.getCourseDetail(courseId).then((res: any) => {
+      setCourseName(res.data.name)
+      setCourseStatus(res.data.status)
+    })
     await api
       .getCourseChapter(courseId)
       .then((res: any) => {
@@ -139,11 +153,66 @@ const CourseDetail = (props: IProps) => {
       .finally(() => context.setIsLoading(false))
   }
   useEffect(() => {
-    getInitData().catch(() => props.prev())
+    getInitData()
+    // .catch(() => props.prev())
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const renderContentTypeList = () => {
+  // render
+  const renderMenu = () => {
     return (
+      <>
+        <DndProvider backend={HTML5Backend}>
+          <CourseDetailMenu
+            type='COURSE_MENU'
+            menu={menu}
+            setMenu={(menu: any) => setMenu(menu)}
+            addLevel1Count={addLevel1Count}
+            goToSection={(index: number) => goToSection(menu, index)}
+          />
+        </DndProvider>
+        <div
+          className='ad-course-menu-addGroup'
+          onClick={() => setAddLevelACount(addLevel1Count + 1)}
+        >
+          <span>
+            <em></em>
+            <em></em>
+          </span>
+        </div>
+      </>
+    )
+  }
+  const renderCurrentSection = () => {
+    return (
+      <>
+        <h2>{sectionName}</h2>
+        {/* <UploadVideo
+          type='video'
+          desc='Upload section video'
+          system='course'
+          systemId={courseDetail.id}
+          imgId={sections[0]?.archive_id}
+          setUploadId={(id: string) => updateSection(0, 'video', id)}
+        /> */}
+        {/* <p className='ad-upload-info'>
+          Format should be .mp4 The file size limit is 300mb.
+          <br /> This section video is required, and will be fixed on the top
+        </p> */}
+        <DndProvider backend={HTML5Backend}>
+          {/* <Sections
+            sections={sections}
+            setMenu={(menu: any) => setSections(menu)}
+            updateSection={(index: number, type: string, value: string) =>
+              updateSection(index, type, value)
+            }
+            courseId={courseDetail.id}
+          /> */}
+        </DndProvider>
+      </>
+    )
+  }
+  const renderCurrentSectionTypeDropdown = () => {
+    const menu = (
       <Menu className='ad-course-content-addContent'>
         <Menu.Item key={0} onClick={() => addSection('title')}>
           Paragraph title
@@ -159,78 +228,34 @@ const CourseDetail = (props: IProps) => {
         </Menu.Item>
       </Menu>
     )
+    return (
+      <Dropdown overlay={menu} trigger={['click']} placement='bottomCenter'>
+        <div className='ad-course-menu-addGroup'>
+          <span>
+            <em></em>
+            <em></em>
+          </span>
+        </div>
+      </Dropdown>
+    )
   }
-
   return (
     <div className='ad-layout-admin-courseDetail'>
       <Breadcrumb separator='>'>
         <Breadcrumb.Item onClick={props.prev}>
           Course management
         </Breadcrumb.Item>
-        <Breadcrumb.Item>{courseDetail.name}</Breadcrumb.Item>
+        <Breadcrumb.Item>{courseName}</Breadcrumb.Item>
       </Breadcrumb>
       <h1 className='ad-layout-admin-article-title'>
-        {courseDetail.name}
-        <span className='ad-float-right'>{courseDetail.status}status</span>
+        {courseName}
+        <span className='ad-float-right'>{courseStatus}</span>
       </h1>
       <Row gutter={20}>
-        <Col span={7}>
-          <DndProvider backend={HTML5Backend}>
-            <CourseDetailMenu
-              type='COURSE_MENU'
-              menu={menu}
-              setMenu={(menu: any) => setMenu(menu)}
-              addLevelACount={addLevelACount}
-              goToSection={(index: number) => goToSection(menu, index)}
-            />
-          </DndProvider>
-          <div
-            className='ad-course-menu-addGroup'
-            onClick={() => setAddLevelACount(addLevelACount + 1)}
-          >
-            <span>
-              <em></em>
-              <em></em>
-            </span>
-          </div>
-        </Col>
+        <Col span={7}>{renderMenu()}</Col>
         <Col span={17}>
-          <h2>{sectionName}</h2>
-          <UploadVideo
-            type='video'
-            desc='Upload section video'
-            system='course'
-            systemId={courseDetail.id}
-            imgId={sections[0]?.archive_id}
-            setUploadId={(id: string) => updateSection(0, 'video', id)}
-          />
-          <p className='ad-upload-info'>
-            Format should be .mp4 The file size limit is 300mb.
-            <br /> This section video is required, and will be fixed on the top
-          </p>
-          <DndProvider backend={HTML5Backend}>
-            <Sections
-              sections={sections}
-              setMenu={(menu: any) => setSections(menu)}
-              updateSection={(index: number, type: string, value: string) =>
-                updateSection(index, type, value)
-              }
-              courseId={courseDetail.id}
-            />
-          </DndProvider>
-
-          <Dropdown
-            overlay={renderContentTypeList}
-            trigger={['click']}
-            placement='bottomCenter'
-          >
-            <div className='ad-course-menu-addGroup'>
-              <span>
-                <em></em>
-                <em></em>
-              </span>
-            </div>
-          </Dropdown>
+          {renderCurrentSection()}
+          {renderCurrentSectionTypeDropdown()}
         </Col>
       </Row>
       <div className='ad-layout-admin-courseDetail-footer'>

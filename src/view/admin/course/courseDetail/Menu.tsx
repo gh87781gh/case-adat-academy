@@ -9,7 +9,7 @@ interface IProps {
   courseMenu?: any
   selectedCourseMenu?: any
   setMenu: (menu: any) => void
-  addLevelACount: number
+  addLevel1Count: number
   goToSection?: (index: number) => void
 }
 
@@ -305,8 +305,8 @@ const Menu = (props: IProps) => {
     if (deleteItemCache) setIsModalConfirmShow(true)
   }, [deleteItemCache]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
-    if (props.addLevelACount !== 0) addChild()
-  }, [props.addLevelACount]) // eslint-disable-line react-hooks/exhaustive-deps
+    if (props.addLevel1Count !== 0) addChild()
+  }, [props.addLevel1Count]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>

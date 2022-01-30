@@ -56,8 +56,6 @@ const LayoutTemplate = () => {
     const token = browserStorage.getStorage('AUTH')
     if ((pageType === 'USER' || pageType === 'ADMIN') && !token) {
       return <Redirect to='/login' />
-    } else if (pageType === 'ADMIN' && !auth.is_admin) {
-      return <Redirect to='/course' />
     } else {
       return <Component {...props} />
     }

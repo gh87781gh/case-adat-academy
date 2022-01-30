@@ -21,7 +21,7 @@ const ModalLearnPath = (props: IProps) => {
   const [courseMenu, setCourseMenu] = useState<any>([])
   const [selectedCourseMenu, setSelectedCourseMenu] = useState<any>([])
   const [menu, setMenu] = useState<any>([])
-  let [addLevelACount, setAddLevelACount] = useState<number>(0)
+  let [addLevel1Count, setAddLevelACount] = useState<number>(0)
   const getData = async () => {
     context.setIsLoading(true)
     await api
@@ -89,12 +89,12 @@ const ModalLearnPath = (props: IProps) => {
           courseMenu={courseMenu}
           selectedCourseMenu={selectedCourseMenu}
           setMenu={(menu: any) => setMenu(menu)}
-          addLevelACount={addLevelACount}
+          addLevel1Count={addLevel1Count}
         />
       </DndProvider>
       <div
         className='ad-course-menu-addGroup'
-        onClick={() => setAddLevelACount(addLevelACount + 1)}
+        onClick={() => setAddLevelACount(addLevel1Count + 1)}
       >
         <span>
           <em></em>

@@ -104,6 +104,9 @@ export default class CourseApi {
     // TOCHECK activate 後端檢查還沒做
     return this.restAPI.request('post', `/course/${id}/active`, { enable })
   }
+  getCurrentSection = (courseId: string, sectionId: string) => {
+    return this.restAPI.request('get', `/course/${courseId}/${sectionId}`, {})
+  }
 
   // TOCHECK
   getCourseMenu = () => {
