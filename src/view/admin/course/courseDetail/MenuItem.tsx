@@ -25,7 +25,6 @@ interface IProps {
   expandChildren: (item: any) => void
   rename: (index: number, value: string) => void
   handleDeleteItem: (item: any) => void
-  goToSection: (index: number) => void
 }
 
 const MenuItem = (props: IProps) => {
@@ -46,38 +45,37 @@ const MenuItem = (props: IProps) => {
         // isCanDrop: monitor.canDrop()
       }
     },
-    canDrop(item: any) {
-      //  item : dragging item
-      //  props.item : hover 當下位置的 item，有可能是 dragging item 本身
-      switch (item.level) {
-        // TOCHECK
-        case 1:
-          return (
-            (props.menu[props.item.index - 1]?.level === 2 ||
-              props.menu[props.item.index - 1]?.level === 2) &&
-            props.menu[props.item.index]?.level !== 1
-          )
-        case 2:
-          return (
-            props.menu[props.item.index - 1]?.level !== 2 &&
-            props.item.index !== 0
-          )
-        default:
-          // case A
-          return item.level === props.item.level
-      }
-    },
+    // canDrop(item: any) {
+    //   //  item : dragging item
+    //   //  props.item : hover 當下位置的 item，有可能是 dragging item 本身
+    //   switch (item.level) {
+    //     // TOCHECK
+    //     case 1:
+    //       return (
+    //         (props.menu[props.item.index - 1]?.level === 2 ||
+    //           props.menu[props.item.index - 1]?.level === 2) &&
+    //         props.menu[props.item.index]?.level !== 1
+    //       )
+    //     case 2:
+    //       return (
+    //         props.menu[props.item.index - 1]?.level !== 2 &&
+    //         props.item.index !== 0
+    //       )
+    //     default:
+    //       // case A
+    //       return item.level === props.item.level
+    //   }
+    // },
     hover(item: any, monitor: DropTargetMonitor) {
-      if (!monitor.canDrop()) {
-        return
-      }
+      // if (!monitor.canDrop()) {
+      //   return
+      // }
 
       if (!ref.current) {
         return
       }
       const dragIndex = item.index
       const hoverIndex = props.item.index
-      // console.log('dragIndex:', dragIndex, 'hoverIndex:', hoverIndex)
 
       // Don't replace items with themselves
       if (dragIndex === hoverIndex) {
@@ -244,11 +242,11 @@ const MenuItem = (props: IProps) => {
             </Dropdown>
           ) : null}
           <IconDelete onClick={() => props.handleDeleteItem(props.item)} />
-          {props.item.level === 3 ? (
+          {/* {props.item.level === 3 ? (
             <IconArrowRight
               onClick={() => props.goToSection(props.item.index)}
             />
-          ) : null}
+          ) : null} */}
         </div>
       </div>
     </>

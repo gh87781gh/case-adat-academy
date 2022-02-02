@@ -2,6 +2,7 @@ import { useCallback, useState, useEffect } from 'react'
 import MenuItem from './MenuItem'
 import update from 'immutability-helper'
 import { Button, Modal } from 'antd'
+import { useForm } from 'antd/lib/form/Form'
 
 interface IProps {
   type: string // COURSE_MENU , LEARNING_PATH
@@ -179,7 +180,6 @@ const Menu = (props: IProps) => {
         return false //TOCHECK
       }
     })
-    console.log('TOCHECK ary:', ary)
 
     // handle parent item's expanding arrow
     if (level === 2 || level === 3) {
@@ -332,9 +332,6 @@ const Menu = (props: IProps) => {
                 expandChildren={(item: any) => expandChildren(item)}
                 rename={(index: number, value: string) => rename(index, value)}
                 handleDeleteItem={(item: any) => handleDeleteItem(item)}
-                goToSection={(index: number) =>
-                  props.goToSection ? props.goToSection(index) : null
-                }
               />
             </div>
           )

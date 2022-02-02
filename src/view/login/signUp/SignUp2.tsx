@@ -36,7 +36,6 @@ const SignUp2 = () => {
   )
   const [experienceOption, setExperienceOption] = useState<string[]>([])
   useEffect(() => {
-    console.log('location:', location)
     if (!state) history.push('/login/signUp1')
 
     context.setIsLoading(true)

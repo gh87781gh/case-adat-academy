@@ -12,9 +12,7 @@ const RedirectPage = () => {
   const { target, verify } = useParams<{ target: string; verify: string }>()
 
   useEffect(() => {
-    console.log('location:', location)
     if (target && verify) {
-      console.log('導向:', target, verify)
       switch (target) {
         case 'course-signUp':
           api
