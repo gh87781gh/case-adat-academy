@@ -30,16 +30,14 @@ const CourseDetail = () => {
   const { courseId, sectionId } =
     useParams<{ courseId: string; sectionId?: string }>()
 
-  // course detail setting
+  // course detail setting and menu
   const [courseName, setCourseName] = useState<string>('')
   const [courseStatus, setCourseStatus] = useState<string>('')
-
-  // course menu
   const [menu, setMenu] = useState<any>([])
   const [menuOpenKeys, setMenuOpenKeys] = useState<any>([])
+  const [isMenuModalShow, setIsMenuModalShow] = useState<boolean>(false)
   const openAllMenuItems = (menu: any) => {
     let menuOpenKeys: string[] = []
-    // TODO
     for (const chapter of menu) {
       menuOpenKeys.push(chapter.key)
       for (const section of chapter.children) {
@@ -86,24 +84,7 @@ const CourseDetail = () => {
       })
       .finally(() => context.setIsLoading(false))
   }
-
-  // course menu edit
-  const [isMenuModalShow, setIsMenuModalShow] = useState<boolean>(false)
-
-  // current section
-  const [currentSection, setCurrentSection] = useState<any>({})
-  const getCurrentSection = (courseId: string, sectionId: string) => {
-    context.setIsLoading(true)
-    api
-      .getCurrentSection(courseId, sectionId)
-      .then((res: any) => {
-        setCurrentSection(res.data)
-      })
-      .finally(() => context.setIsLoading(false))
-  }
-
-  // init page
-  const getInitData = (courseId: string, sectionId?: string) => {
+  const getCourseDetail = (courseId: string) => {
     context.setIsLoading(true)
 
     if (!courseName) {
@@ -115,10 +96,42 @@ const CourseDetail = () => {
   }
   useEffect(() => {
     if (courseId) {
-      getInitData(courseId, sectionId)
+      getCourseDetail(courseId)
       getCourseDetailMenu()
     }
-  }, [courseId, sectionId]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [courseId]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // current section
+  const [currentSectionDetail, setCurrentSectionDetail] = useState<any>({})
+  const [currentSectionContent, setCurrentSectionContent] = useState<any>([])
+  const getCurrentSection = (courseId: string, sectionId: string) => {
+    context.setIsLoading(true)
+    api
+      .getCurrentSection(courseId, sectionId)
+      .then((res: any) => {
+        console.log('getCurrentSection:', res)
+        setCurrentSectionContent(res.data)
+      })
+      .finally(() => context.setIsLoading(false))
+  }
+  const updateCurrentSectionContent = (
+    index: number,
+    type: string,
+    value: string
+  ) => {
+    const newContent: any = [...currentSectionContent]
+    if (type === 'video' || type === 'picture') {
+      newContent[index].archive_id = value
+    } else {
+      newContent[index].content = value
+    }
+    setCurrentSectionContent(newContent)
+  }
+  useEffect(() => {
+    if (courseId && sectionId) {
+      getCurrentSection(courseId, sectionId)
+    }
+  }, [currentSectionDetail]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // render
   const renderMenu = () => {
@@ -139,11 +152,12 @@ const CourseDetail = () => {
                     {chapter.children?.map((section: any) => (
                       <Menu.Item
                         key={section.key}
-                        onClick={() =>
+                        onClick={() => {
                           history.push(
                             `/admin/courseDetail/${courseId}/${section.id}`
                           )
-                        }
+                          setCurrentSectionDetail(section)
+                        }}
                       >
                         <div>{section.key}</div>
                       </Menu.Item>
@@ -160,18 +174,17 @@ const CourseDetail = () => {
   const renderCurrentSection = () => {
     return (
       <>
-        <h2>{currentSection.name}</h2>
-        {currentSection > 0 ? (
+        <h2>{currentSectionDetail.name}</h2>
+        {currentSectionContent.length > 0 ? (
           <>
             <UploadVideo
               type='video'
               desc='Upload section video'
               system='course'
-              systemId={currentSection.id}
-              imgId={currentSection[0]?.archive_id}
-              setUploadId={
-                (id: string) => console.log('updateSection')
-                // updateSection(0, 'video', id)
+              systemId={currentSectionContent.id}
+              imgId={currentSectionContent[0]?.archive_id}
+              setUploadId={(id: string) =>
+                updateCurrentSectionContent(0, 'video', id)
               }
             />
             <p className='ad-upload-info'>
@@ -181,12 +194,10 @@ const CourseDetail = () => {
             </p>
             <DndProvider backend={HTML5Backend}>
               <Sections
-                // TODO 改到這
-                sections={currentSection}
-                setMenu={(menu: any) => setMenu(menu)}
+                sections={currentSectionContent}
+                setMenu={(content: any) => setCurrentSectionContent(content)}
                 updateSection={(index: number, type: string, value: string) =>
-                  // updateSection(index, type, value)
-                  console.log('updateSection')
+                  updateCurrentSectionContent(index, type, value)
                 }
                 courseId={courseId}
               />
@@ -207,7 +218,6 @@ const CourseDetail = () => {
       </>
     )
   }
-
   return (
     <>
       <Header />
