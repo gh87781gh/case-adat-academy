@@ -81,6 +81,8 @@ article {
 @admin-layout-article-padding-x: 20px;
 @admin-layout-article-padding-y: 50px;
 @admin-layout-courseDetail-footer-height: 90px;
+@admin-layout-course-detail-content-padding-bottom: 50px;
+@admin-layout-courseDetail-footer-height: 100px;
 .ad-layout-admin {
   display: flex;
   flex-wrap: nowrap;
@@ -105,36 +107,55 @@ article {
 }
 .ad-layout-admin-courseDetail {
   height: 100%;
-  padding-bottom: @admin-layout-article-padding-y +
-    @admin-layout-courseDetail-footer-height;
-  .ant-row {
-    height: 100%;
+  .ad-layout-admin-article-row {
+    height: calc(100% - 60px);
   }
   .ad-layout-admin-article-title {
     border-bottom: 1px solid #ccc;
     padding-bottom: 1rem;
   }
-  .ad-layout-admin-article-menu {
+  .ad-layout-admin-article-row-menu {
     height: 100%;
     padding-right: 1rem;
+    padding-bottom: @admin-layout-course-detail-content-padding-bottom;
     border-right: 1px solid #ccc;
+    overflow-y: auto;
+    position: relative;
+    z-index: 1;
+    background-color: #fff;
   }
-  .ad-layout-admin-article-content {
+  .ad-layout-admin-article-row-section {
     height: 100%;
     overflow-y: auto;
-    padding-bottom: 50px;
+    padding-bottom: 100px;
+    position: relative;
+    .ad-layout-admin-article-content {
+      padding-bottom: 50px;
+    }
+    .ad-layout-admin-article-row-section-footer {
+      .size(100%,@admin-layout-courseDetail-footer-height);
+      background-color: #fff;
+      text-align: right;
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      border-top: 1px solid @border-color-default;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 @admin-layout-article-padding-x;
+    }
   }
-  .ad-layout-admin-courseDetail-footer {
-    .size(100%,@admin-layout-courseDetail-footer-height);
-    background-color: #fff;
-    text-align: right;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    border-top: 1px solid @border-color-default;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 0 @admin-layout-article-padding-x;
+
+  // TODO
+  .ad-layout-admin-article-menu {
+    // height: 100%;
+    // padding-right: 1rem;
+    // border-right: 1px solid #ccc;
+  }
+  .ad-layout-admin-article-content {
+    // height: 100%;
+    // overflow-y: auto;
+    // padding-bottom: 50px;
   }
 }

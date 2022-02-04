@@ -130,40 +130,38 @@ const CourseDetail = () => {
   // render
   const renderMenu = () => {
     return menu?.length > 0 ? (
-      <>
-        <div className='ad-layout-admin-article-menu'>
-          <Menu
-            className='ad-menu-user-course'
-            onOpenChange={(keys: any) => setMenuOpenKeys(keys)}
-            openKeys={menuOpenKeys}
-            selectedKeys={[sectionId ? parseItemIdToKey(sectionId) : '']}
-            mode='inline'
-          >
-            {menu.map((group: any) => (
-              <SubMenu key={group.key} icon={<IconLevels />} title={group.name}>
-                {group.children?.map((chapter: any) => (
-                  <SubMenu key={chapter.key} title={chapter.name}>
-                    {chapter.children?.map((section: any) => (
-                      <Menu.Item
-                        key={section.key}
-                        onClick={() => {
-                          history.push(
-                            `/admin/courseDetail/${courseId}/${section.id}`
-                          )
-                          console.log('section,', section)
-                          setCurrentSectionDetail({ ...section })
-                        }}
-                      >
-                        <div>{section.name}</div>
-                      </Menu.Item>
-                    ))}
-                  </SubMenu>
-                ))}
-              </SubMenu>
-            ))}
-          </Menu>
-        </div>
-      </>
+      <div className='ad-layout-admin-article-menu'>
+        <Menu
+          className='ad-menu-user-course'
+          onOpenChange={(keys: any) => setMenuOpenKeys(keys)}
+          openKeys={menuOpenKeys}
+          selectedKeys={[sectionId ? parseItemIdToKey(sectionId) : '']}
+          mode='inline'
+        >
+          {menu.map((group: any) => (
+            <SubMenu key={group.key} icon={<IconLevels />} title={group.name}>
+              {group.children?.map((chapter: any) => (
+                <SubMenu key={chapter.key} title={chapter.name}>
+                  {chapter.children?.map((section: any) => (
+                    <Menu.Item
+                      key={section.key}
+                      onClick={() => {
+                        history.push(
+                          `/admin/courseDetail/${courseId}/${section.id}`
+                        )
+                        console.log('section,', section)
+                        setCurrentSectionDetail({ ...section })
+                      }}
+                    >
+                      <div>{section.name}</div>
+                    </Menu.Item>
+                  ))}
+                </SubMenu>
+              ))}
+            </SubMenu>
+          ))}
+        </Menu>
+      </div>
     ) : null
   }
   const renderCurrentSection = () => {
@@ -171,7 +169,7 @@ const CourseDetail = () => {
       <>
         <h2>{currentSectionDetail.name}</h2>
         {currentSectionContent.length > 0 ? (
-          <>
+          <div className='ad-layout-admin-article-content'>
             <UploadVideo
               type='video'
               desc='Upload section video'
@@ -197,18 +195,7 @@ const CourseDetail = () => {
                 courseId={courseId}
               />
             </DndProvider>
-            <div className='ad-layout-admin-courseDetail-footer'>
-              <div className='ad-btn-group'>
-                <Btn
-                  feature='action'
-                  // onClick={() => editCourseChapter()}
-                >
-                  Save
-                </Btn>
-                <Btn feature='primary'>Reset</Btn>
-              </div>
-            </div>
-          </>
+          </div>
         ) : null}
       </>
     )
@@ -226,7 +213,7 @@ const CourseDetail = () => {
               </Breadcrumb.Item>
               <Breadcrumb.Item>{courseDetail.name}</Breadcrumb.Item>
             </Breadcrumb>
-            <h1 className='ad-layout-admin-article-title '>
+            <h1 className='ad-layout-admin-article-title'>
               {currentSectionDetail.name}
               <span style={{ marginLeft: '2rem', fontSize: '20px' }}>
                 {courseDetail.status}
@@ -239,11 +226,22 @@ const CourseDetail = () => {
                 Edit course menu
               </Btn>
             </h1>
-            <Row gutter={20}>
-              <Col span={7}>{renderMenu()}</Col>
-              <Col span={17} style={{ height: '100%' }}>
-                <div className='ad-layout-admin-article-content'>
-                  {renderCurrentSection()}
+            <Row gutter={20} className='ad-layout-admin-article-row'>
+              <Col span={7} className='ad-layout-admin-article-row-menu'>
+                {renderMenu()}
+              </Col>
+              <Col span={17} className='ad-layout-admin-article-row-section'>
+                {renderCurrentSection()}
+                <div className='ad-layout-admin-article-row-section-footer'>
+                  <div className='ad-btn-group'>
+                    <Btn
+                      feature='action'
+                      // onClick={() => editCourseChapter()}
+                    >
+                      Save
+                    </Btn>
+                    <Btn feature='primary'>Reset</Btn>
+                  </div>
                 </div>
               </Col>
             </Row>
