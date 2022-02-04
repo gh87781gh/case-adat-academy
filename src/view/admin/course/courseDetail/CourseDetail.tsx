@@ -31,8 +31,7 @@ const CourseDetail = () => {
     useParams<{ courseId: string; sectionId?: string }>()
 
   // course detail setting and menu
-  const [courseName, setCourseName] = useState<string>('')
-  const [courseStatus, setCourseStatus] = useState<string>('')
+  const [courseDetail, setCourseDetail] = useState<any>({})
   const [menu, setMenu] = useState<any>([])
   const [menuOpenKeys, setMenuOpenKeys] = useState<any>([])
   const [isMenuModalShow, setIsMenuModalShow] = useState<boolean>(false)
@@ -58,6 +57,13 @@ const CourseDetail = () => {
       }
     }
   }
+  const getCourseDetail = (courseId: string) => {
+    context.setIsLoading(true)
+    api
+      .getCourseDetail(courseId)
+      .then((res: any) => setCourseDetail(res.data))
+      .finally(() => context.setIsLoading(false))
+  }
   const getCourseDetailMenu = () => {
     api
       .getCourseDetailMenu('MENU', courseId)
@@ -65,34 +71,23 @@ const CourseDetail = () => {
         setMenu(res.data)
         openAllMenuItems(res.data)
 
-        // 設置 current section
         if (sectionId) {
           // 1. 判斷網址是否有 params: sectionId？
           // 有 sectionId -> 設置 currentSection & prev/next sectionId
-          getCurrentSection(courseId, sectionId)
+          getCurrentSectionContent()
         } else {
           // 無 sectionId -> 抓 menu 的第一個 section 設成 params
           let firstSection: string = ''
-          // TODO
-          // for (const chapter of menu) {
-          //   for (const section of chapter.children) {
-          //     firstSection = section.id
-          //   }
-          // }
+          for (const chapter of menu) {
+            for (const section of chapter.children) {
+              firstSection = section.id
+              break
+            }
+          }
           if (firstSection) history.push(`${location.pathname}/${firstSection}`)
         }
       })
       .finally(() => context.setIsLoading(false))
-  }
-  const getCourseDetail = (courseId: string) => {
-    context.setIsLoading(true)
-
-    if (!courseName) {
-      api.getCourseDetail(courseId).then((res: any) => {
-        setCourseName(res.data.name)
-        setCourseStatus(res.data.status)
-      })
-    }
   }
   useEffect(() => {
     if (courseId) {
@@ -104,15 +99,14 @@ const CourseDetail = () => {
   // current section
   const [currentSectionDetail, setCurrentSectionDetail] = useState<any>({})
   const [currentSectionContent, setCurrentSectionContent] = useState<any>([])
-  const getCurrentSection = (courseId: string, sectionId: string) => {
+  const getCurrentSectionContent = () => {
     context.setIsLoading(true)
-    api
-      .getCurrentSection(courseId, sectionId)
-      .then((res: any) => {
-        console.log('getCurrentSection:', res)
-        setCurrentSectionContent(res.data)
-      })
-      .finally(() => context.setIsLoading(false))
+    if (courseId && sectionId) {
+      api
+        .getCurrentSectionContent(courseId, sectionId)
+        .then((res: any) => setCurrentSectionContent(res.data))
+        .finally(() => context.setIsLoading(false))
+    }
   }
   const updateCurrentSectionContent = (
     index: number,
@@ -129,7 +123,7 @@ const CourseDetail = () => {
   }
   useEffect(() => {
     if (courseId && sectionId) {
-      getCurrentSection(courseId, sectionId)
+      getCurrentSectionContent()
     }
   }, [currentSectionDetail]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -156,10 +150,11 @@ const CourseDetail = () => {
                           history.push(
                             `/admin/courseDetail/${courseId}/${section.id}`
                           )
-                          setCurrentSectionDetail(section)
+                          console.log('section,', section)
+                          setCurrentSectionDetail({ ...section })
                         }}
                       >
-                        <div>{section.key}</div>
+                        <div>{section.name}</div>
                       </Menu.Item>
                     ))}
                   </SubMenu>
@@ -229,12 +224,12 @@ const CourseDetail = () => {
               <Breadcrumb.Item onClick={() => history.push('/admin/course')}>
                 Course management
               </Breadcrumb.Item>
-              <Breadcrumb.Item>{courseName}</Breadcrumb.Item>
+              <Breadcrumb.Item>{courseDetail.name}</Breadcrumb.Item>
             </Breadcrumb>
             <h1 className='ad-layout-admin-article-title '>
-              {courseName}
+              {currentSectionDetail.name}
               <span style={{ marginLeft: '2rem', fontSize: '20px' }}>
-                {courseStatus}
+                {courseDetail.status}
               </span>
               <Btn
                 feature='primary'

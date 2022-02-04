@@ -124,12 +124,14 @@ export default class CourseApi {
     })
     return this.restAPI.request('post', `/course/${courseId}/chapter`, ary)
   }
-
-  getCurrentSection = (courseId: string, sectionId: string) => {
+  getCurrentSectionContent = (courseId: string, sectionId: string) => {
     return new Promise((resolve, reject) => {
       this.restAPI
         .request('get', `/course/${courseId}/${sectionId}`, {})
         .then((res: any) => {
+          res.data.forEach((item: any, index: number) => {
+            item.key = index
+          })
           resolve(res)
         })
         .catch(() => {
