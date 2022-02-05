@@ -30,7 +30,7 @@ const CourseDetail = () => {
   const { courseId, sectionId } =
     useParams<{ courseId: string; sectionId?: string }>()
 
-  // course detail setting and menu
+  // course detail and menu
   const [courseDetail, setCourseDetail] = useState<any>({})
   const [menu, setMenu] = useState<any>([])
   const [menuOpenKeys, setMenuOpenKeys] = useState<any>([])
@@ -70,22 +70,6 @@ const CourseDetail = () => {
       .then((res: any) => {
         setMenu(res.data)
         openAllMenuItems(res.data)
-
-        if (sectionId) {
-          // 1. 判斷網址是否有 params: sectionId？
-          // 有 sectionId -> 設置 currentSection & prev/next sectionId
-          getCurrentSectionContent()
-        } else {
-          // 無 sectionId -> 抓 menu 的第一個 section 設成 params
-          let firstSection: string = ''
-          for (const chapter of menu) {
-            for (const section of chapter.children) {
-              firstSection = section.id
-              break
-            }
-          }
-          if (firstSection) history.push(`${location.pathname}/${firstSection}`)
-        }
       })
       .finally(() => context.setIsLoading(false))
   }
@@ -104,7 +88,14 @@ const CourseDetail = () => {
     if (courseId && sectionId) {
       api
         .getCurrentSectionContent(courseId, sectionId)
-        .then((res: any) => setCurrentSectionContent(res.data))
+        .then((res: any) => {
+          const fakeDetail = {
+            name: 'fake name',
+            statue: 'fake status'
+          }
+          setCurrentSectionDetail(fakeDetail)
+          setCurrentSectionContent(res.data)
+        })
         .finally(() => context.setIsLoading(false))
     }
   }
@@ -122,10 +113,25 @@ const CourseDetail = () => {
     setCurrentSectionContent(newContent)
   }
   useEffect(() => {
+    if (menu.length > 0 && !sectionId) {
+      // 若網址無 sectionId ，則抓第一個做為預設的
+      let firstSectionId: string = ''
+      for (const group of menu) {
+        for (const chapter of group.children) {
+          for (const section of chapter.children) {
+            if (section.level === 3) firstSectionId = section.id
+            break
+          }
+        }
+      }
+      history.push(`/admin/courseDetail/${courseId}/${firstSectionId}`)
+    }
+  }, [menu]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
     if (courseId && sectionId) {
       getCurrentSectionContent()
     }
-  }, [currentSectionDetail]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [sectionId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // render
   const renderMenu = () => {
@@ -149,8 +155,6 @@ const CourseDetail = () => {
                         history.push(
                           `/admin/courseDetail/${courseId}/${section.id}`
                         )
-                        console.log('section,', section)
-                        setCurrentSectionDetail({ ...section })
                       }}
                     >
                       <div>{section.name}</div>
@@ -214,7 +218,7 @@ const CourseDetail = () => {
               <Breadcrumb.Item>{courseDetail.name}</Breadcrumb.Item>
             </Breadcrumb>
             <h1 className='ad-layout-admin-article-title'>
-              {currentSectionDetail.name}
+              {courseDetail.name}
               <span style={{ marginLeft: '2rem', fontSize: '20px' }}>
                 {courseDetail.status}
               </span>
