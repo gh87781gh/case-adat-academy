@@ -1,57 +1,46 @@
-import { useState, useEffect, useContext } from 'react'
-import { useLocation, useHistory, useParams } from 'react-router-dom'
-import { MyContext } from 'storage'
-
-let adminValidateDelateTimer: any = null
+import { useState, useEffect } from 'react'
+import { useLocation, useHistory } from 'react-router-dom'
 
 const AdminSideBar = () => {
-  const context = useContext(MyContext)
   const location = useLocation()
   const history = useHistory()
-  const { courseId } = useParams<{ courseId: string }>()
-
-  const [activePath, setActivePath] = useState<string>()
 
   const menu = [
     {
       name: 'Purchase management',
-      path: '/admin/purchase'
+      childPage: ['purchase']
     },
     {
       name: 'Account management',
-      path: '/admin/account'
+      childPage: ['account']
     },
     {
       name: 'Course management',
-      path: '/admin/course'
+      childPage: ['course', 'courseDetail']
     },
     {
       name: 'Admin management',
-      path: '/admin/admin'
+      childPage: ['admin']
     }
   ]
-
+  const [activePath, setActivePath] = useState<string>()
   useEffect(() => {
-    if (courseId) {
-      setActivePath(location.pathname.replace(`/${courseId}`, ''))
-    } else {
-      setActivePath(location.pathname)
-    }
-  }, [location, courseId]) // eslint-disable-line react-hooks/exhaustive-deps
+    const ary = location.pathname.split('/')
+    setActivePath(ary[2])
+  }, [location]) // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
-    <>
-      <ul className='ad-sideBar'>
-        {menu.map((item: any) => (
-          <li
-            className={item.path === activePath ? 'active' : ''}
-            key={item.name}
-            onClick={() => history.push(item.path)}
-          >
-            {item.name}
-          </li>
-        ))}
-      </ul>
-    </>
+    <ul className='ad-sideBar'>
+      {menu.map((item: any) => (
+        <li
+          className={item.childPage.includes(activePath) ? 'active' : ''}
+          key={item.name}
+          onClick={() => history.push(`/admin/${item.childPage[0]}`)}
+        >
+          {item.name}
+        </li>
+      ))}
+    </ul>
   )
 }
 export default AdminSideBar

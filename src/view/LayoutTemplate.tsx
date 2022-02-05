@@ -190,7 +190,6 @@ const LayoutTemplate = () => {
                 path='/admin/account'
                 render={() => componentPage(AdminAccount, 'ADMIN')}
               />
-              {/* TODO */}
               <Route
                 exact={true}
                 path='/admin/course'
@@ -206,13 +205,12 @@ const LayoutTemplate = () => {
                 path='/admin/course/learningPath'
                 render={() => componentPage(AdminCourseLearningPath, 'ADMIN')}
               />
-
               <Route
                 exact={true}
                 path='/admin/admin'
                 render={() => componentPage(AdminAdmin, 'ADMIN')}
               />
-              {/* <Redirect to='/login' /> */}
+              <Redirect to='/login' />
             </Switch>
           </HashRouter>
           <span className='ad-layout-version'>v{version}</span>
