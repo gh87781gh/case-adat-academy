@@ -10,16 +10,9 @@ import AdminSideBar from '../../AdminSideBar'
 import Sections from './Sections'
 import ModalMenuEdit from './ModalMenuEdit'
 
-import {
-  IconArrowPrev,
-  IconArrowNext,
-  IconBookmark,
-  IconBookmarked,
-  IconLevels,
-  IconSuccessfully
-} from 'utility/icon'
+import { IconLevels } from 'utility/icon'
 import { Btn, UploadVideo } from 'utility/component'
-import { Row, Col, Breadcrumb, message, Dropdown, Menu, Modal } from 'antd'
+import { Row, Col, Breadcrumb, message, Menu } from 'antd'
 const { SubMenu } = Menu
 
 const CourseDetail = () => {
@@ -113,6 +106,18 @@ const CourseDetail = () => {
     }
     setCurrentSectionContent(newContent)
   }
+  const save = () => {
+    if (courseId && sectionId) {
+      api
+        .saveCurrentSectionContent(courseId, sectionId, currentSectionContent)
+        .then((res: any) => {
+          setCurrentSectionContent([])
+          message.success('Saved')
+          getCurrentSectionContent()
+        })
+        .finally(() => context.setIsLoading(false))
+    }
+  }
   useEffect(() => {
     if (menu.length > 0 && !sectionId) {
       // 若網址無 sectionId ，則抓第一個做為預設的
@@ -130,6 +135,7 @@ const CourseDetail = () => {
   }, [menu]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (courseId && sectionId) {
+      setCurrentSectionContent([])
       getCurrentSectionContent()
     }
   }, [sectionId]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -237,17 +243,21 @@ const CourseDetail = () => {
               </Col>
               <Col span={17} className='ad-layout-admin-article-row-section'>
                 {renderCurrentSection()}
-                <div className='ad-layout-admin-article-row-section-footer'>
-                  <div className='ad-btn-group'>
-                    <Btn
-                      feature='action'
-                      // onClick={() => editCourseChapter()}
-                    >
-                      Save
-                    </Btn>
-                    <Btn feature='primary'>Reset</Btn>
+                {currentSectionContent.length > 0 ? (
+                  <div className='ad-layout-admin-article-row-section-footer'>
+                    <div className='ad-btn-group'>
+                      <Btn feature='action' onClick={() => save()}>
+                        Save
+                      </Btn>
+                      <Btn
+                        feature='primary'
+                        onClick={() => getCurrentSectionContent()}
+                      >
+                        Reset
+                      </Btn>
+                    </div>
                   </div>
-                </div>
+                ) : null}
               </Col>
             </Row>
           </div>
@@ -258,7 +268,6 @@ const CourseDetail = () => {
         onCancel={() => setIsMenuModalShow(false)}
         courseId={courseId}
         getCourseDetailMenu={() => getCourseDetailMenu()}
-        // TODO
       />
     </>
   )

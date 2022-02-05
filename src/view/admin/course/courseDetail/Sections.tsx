@@ -279,7 +279,7 @@ const Sections = (props: IProps) => {
       <div className='ad-course-sections'>
         {props.sections.map((item: any, index: number) => {
           // the first video is fixed on the top
-          if (item.key !== '0') {
+          if (item.key !== 0) {
             return (
               <div key={item.key}>
                 <SectionItem

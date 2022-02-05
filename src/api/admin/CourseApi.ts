@@ -130,7 +130,7 @@ export default class CourseApi {
         .request('get', `/course/${courseId}/${sectionId}`, {})
         .then((res: any) => {
           res.data.forEach((item: any, index: number) => {
-            item.key = `${index}`
+            item.key = index
           })
           resolve(res)
         })
@@ -138,6 +138,21 @@ export default class CourseApi {
           reject(false)
         })
     })
+  }
+  saveCurrentSectionContent = (
+    courseId: string,
+    sectionId: string,
+    data: any
+  ) => {
+    for (const item of data) {
+      delete item.key
+    }
+    console.log('data:', data)
+    return this.restAPI.request(
+      'post',
+      `/course/${courseId}/${sectionId}`,
+      data
+    )
   }
 
   // NOTE 確認到以上
