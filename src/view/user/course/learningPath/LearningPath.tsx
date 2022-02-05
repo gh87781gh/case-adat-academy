@@ -81,7 +81,7 @@ const Stage = (props: IPropsStage) => {
               onMouseEnter={() => setHoverIndex(index)}
               onMouseLeave={() => setHoverIndex(null)}
             >
-              <div className='status'>
+              <div className='ad-course-banner-path-status'>
                 {index !== hoverIndex ? (
                   <>
                     {course.status === 'Not started' ||
@@ -97,6 +97,7 @@ const Stage = (props: IPropsStage) => {
                   <IconPathHover />
                 )}
                 <IconPathLine
+                  className='ad-course-banner-path-dashLine'
                   style={{ visibility: ary[index + 1] ? 'visible' : 'hidden' }}
                 />
               </div>
