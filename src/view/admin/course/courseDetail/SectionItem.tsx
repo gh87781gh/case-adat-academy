@@ -188,14 +188,14 @@ const SectionItem = (props: IProps) => {
           {props.item.type === chapterContentType.title ? (
             <TextArea
               className='item-content-textarea title'
-              rows={2}
+              autoSize={true}
               value={props.item.content}
               onChange={(e) => onChange(props.item.type, e)}
             />
           ) : props.item.type === chapterContentType.paragraph ? (
             <TextArea
               className='item-content-textarea paragraph'
-              rows={6}
+              autoSize={true}
               value={props.item.content}
               onChange={(e) => onChange(props.item.type, e)}
             />
@@ -215,7 +215,7 @@ const SectionItem = (props: IProps) => {
               desc='Upload video'
               system='course'
               systemId={props.courseId}
-              imgId={props.item.archive_id}
+              archiveId={props.item.archive_id}
               setUploadId={(id: string) => onUpload(props.item.type, id)}
             />
           ) : null}

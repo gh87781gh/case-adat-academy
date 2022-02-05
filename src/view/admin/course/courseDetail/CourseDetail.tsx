@@ -89,6 +89,7 @@ const CourseDetail = () => {
       api
         .getCurrentSectionContent(courseId, sectionId)
         .then((res: any) => {
+          // TOCHECK
           const fakeDetail = {
             name: 'fake name',
             statue: 'fake status'
@@ -178,11 +179,11 @@ const CourseDetail = () => {
               type='video'
               desc='Upload section video'
               system='course'
-              systemId={currentSectionContent.id}
-              imgId={currentSectionContent[0]?.archive_id}
-              setUploadId={(id: string) =>
+              systemId={courseId}
+              archiveId={currentSectionContent[0].archive_id}
+              setUploadId={(id: string) => {
                 updateCurrentSectionContent(0, 'video', id)
-              }
+              }}
             />
             <p className='ad-upload-info'>
               Format should be .mp4 The file size limit is 300mb.

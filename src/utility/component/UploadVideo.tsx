@@ -10,7 +10,7 @@ interface IProps {
   desc: string
   system: string
   systemId: string
-  imgId: string
+  archiveId: string
   setUploadId: (id: string) => void
 }
 
@@ -36,8 +36,8 @@ const UploadVideo = (props: IProps) => {
   return (
     <div className={`ad-upload ${props.type}`}>
       <label>
-        {props.imgId ? (
-          <VideoPlayer id={props.imgId} />
+        {props.archiveId ? (
+          <VideoPlayer id={props.archiveId} />
         ) : (
           <span className='ad-upload-watermark'>
             <IconUploadVideo />
@@ -53,7 +53,7 @@ const UploadVideo = (props: IProps) => {
           onChange={upload}
         />
       </label>
-      {props.imgId ? (
+      {props.archiveId ? (
         <div className='ad-btn-group'>
           <Button type='link' onClick={() => inputEl.current?.click()}>
             Replace

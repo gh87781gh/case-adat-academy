@@ -130,7 +130,7 @@ export default class CourseApi {
         .request('get', `/course/${courseId}/${sectionId}`, {})
         .then((res: any) => {
           res.data.forEach((item: any, index: number) => {
-            item.key = index
+            item.key = `${index}`
           })
           resolve(res)
         })
