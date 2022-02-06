@@ -23,14 +23,13 @@ const AccountSideBar = () => {
     { name: 'Purchase details', path: '/account/courseManagement' },
     { name: 'Change password', path: '/account/changePassword' }
   ]
-  const [menuOpenKeys, setMenuOpenKeys] = useState<any>([])
+  const [menuOpenKeys, setMenuOpenKeys] = useState<any>(menu[0].name)
 
   return (
     <Menu
       className='ad-menu-user-course ad-menu-user-account-sideBar'
-      onOpenChange={(keys: any) => setMenuOpenKeys(keys)}
-      openKeys={menuOpenKeys}
-      selectedKeys={[menu[0].name]}
+      onClick={(e: any) => setMenuOpenKeys(e.key)}
+      selectedKeys={[menuOpenKeys]}
       mode='inline'
     >
       {menu.map((item: any) => (
