@@ -28,7 +28,7 @@ const AccountSideBar = () => {
   return (
     <Menu
       className='ad-menu-user-course ad-menu-user-account-sideBar'
-      onClick={(keys: any) => setMenuOpenKeys(keys)}
+      onOpenChange={(keys: any) => setMenuOpenKeys(keys)}
       openKeys={menuOpenKeys}
       selectedKeys={[menu[0].name]}
       mode='inline'
