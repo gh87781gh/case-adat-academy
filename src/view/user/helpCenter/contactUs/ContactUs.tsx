@@ -360,28 +360,30 @@ const ContactUs = () => {
         <Row gutter={20}>
           <Col span={16}>
             {renderContactUsForm()}
-            <Btn
-              disabled={
-                !data.support_type ||
-                !data.subject ||
-                !data.description ||
-                !data.contry_code ||
-                !data.phone_number ||
-                (data.support_type === 'Operation questions' &&
-                  (!data.product ||
-                    !data.issue_happen_time ||
-                    !data.frequency)) ||
-                data.prefered_way_of_contact.length === 0 ||
-                (data.prefered_way_of_contact.includes('Email') && !data.email)
-              }
-              style={{ marginTop: '64px' }}
-              feature='action'
-              block
-              key='submit'
-              onClick={() => submit()}
-            >
-              Submit
-            </Btn>
+            <div className='ad-page-container-footer'>
+              <Btn
+                disabled={
+                  !data.support_type ||
+                  !data.subject ||
+                  !data.description ||
+                  !data.contry_code ||
+                  !data.phone_number ||
+                  (data.support_type === 'Operation questions' &&
+                    (!data.product ||
+                      !data.issue_happen_time ||
+                      !data.frequency)) ||
+                  data.prefered_way_of_contact.length === 0 ||
+                  (data.prefered_way_of_contact.includes('Email') &&
+                    !data.email)
+                }
+                feature='action'
+                block
+                key='submit'
+                onClick={() => submit()}
+              >
+                Submit
+              </Btn>
+            </div>
           </Col>
           <Col span={8} className='ad-text-right'>
             {renderHelpCenterDesc()}

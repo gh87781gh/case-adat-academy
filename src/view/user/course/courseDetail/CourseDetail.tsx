@@ -59,13 +59,12 @@ const CourseDetail = () => {
     setMenuOpenKeys(menuOpenKeys)
   }
   const parseItemIdToKey = (sectionId: string) => {
-    for (const chapter of menu) {
-      if (chapter.id === sectionId) {
-        return chapter.key
-      }
-      for (const section of chapter.children) {
-        if (section.id === sectionId) {
-          return section.key
+    for (const group of menu) {
+      for (const chapter of group.children) {
+        for (const section of chapter.children) {
+          if (section.id === sectionId) {
+            return section.key
+          }
         }
       }
     }
@@ -79,7 +78,10 @@ const CourseDetail = () => {
     context.setIsLoading(true)
     api
       .getCurrentSection(courseId, sectionId)
-      .then((res: any) => setCurrentSection(res.data))
+      .then((res: any) => {
+        // if(lastReadSectionId)
+        setCurrentSection(res.data)
+      })
       .finally(() => context.setIsLoading(false))
   }
   const setPrevAndNextSection = (menu: any, sectionId: string) => {
@@ -116,7 +118,6 @@ const CourseDetail = () => {
         setCourseName(res.name)
         setCourseLogoImage(res.logo_image_id)
         setIsBookmarked(res.is_bookmarked)
-        // setLastReadSectionId(res.last_read_section_id)
         setMenu(res.data)
         openAllMenuItems(res.data)
 

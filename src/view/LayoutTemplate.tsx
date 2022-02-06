@@ -24,6 +24,7 @@ import Bookmark from './user/course/bookmark/Bookmark'
 import Search from './user/search/Index'
 import HelpCenter from './user/helpCenter/Index'
 import ContactUs from './user/helpCenter/contactUs/ContactUs'
+import LearningProfile from './user/account/learningProfile/Index'
 import NoResult from './layout/NoResult'
 import NoAccess from './layout/NoAccess'
 
@@ -168,6 +169,12 @@ const LayoutTemplate = () => {
                 path='/contactUs'
                 render={() => componentPage(ContactUs, 'USER')}
               />
+              <Route
+                exact={true}
+                path='/account/learningProfile'
+                render={() => componentPage(LearningProfile, 'USER')}
+              />
+
               <Route
                 exact={true}
                 path='/noResult'
