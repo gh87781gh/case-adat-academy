@@ -18,17 +18,17 @@ const AccountSideBar = () => {
   const history = useHistory()
   const location = useLocation()
 
-  const [menu, setMenu] = useState<any>([
+  const menu = [
     { name: 'Learning profile', path: '/account/learningProfile' },
     { name: 'Purchase details', path: '/account/courseManagement' },
     { name: 'Change password', path: '/account/changePassword' }
-  ])
+  ]
   const [menuOpenKeys, setMenuOpenKeys] = useState<any>([])
 
   return (
     <Menu
       className='ad-menu-user-course ad-menu-user-account-sideBar'
-      onOpenChange={(keys: any) => setMenuOpenKeys(keys)}
+      onClick={(keys: any) => setMenuOpenKeys(keys)}
       openKeys={menuOpenKeys}
       selectedKeys={[menu[0].name]}
       mode='inline'

@@ -174,7 +174,7 @@ const LayoutTemplate = () => {
                 path='/account/learningProfile'
                 render={() => componentPage(LearningProfile, 'USER')}
               />
-              {/* <Route
+              <Route
                 exact={true}
                 path='/account/courseManagement'
                 render={() => componentPage(LearningProfile, 'USER')}
@@ -183,7 +183,7 @@ const LayoutTemplate = () => {
                 exact={true}
                 path='/account/changePassword'
                 render={() => componentPage(LearningProfile, 'USER')}
-              /> */}
+              />
 
               <Route
                 exact={true}
