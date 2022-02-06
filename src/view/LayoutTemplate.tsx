@@ -23,7 +23,7 @@ import CourseDetail from './user/course/courseDetail/CourseDetail'
 import Bookmark from './user/course/bookmark/Bookmark'
 import Search from './user/search/Index'
 import HelpCenter from './user/helpCenter/Index'
-import ContactUs from './user/helpCenter/contact/ContactUs'
+import ContactUs from './user/helpCenter/contactUs/ContactUs'
 import NoResult from './layout/NoResult'
 import NoAccess from './layout/NoAccess'
 

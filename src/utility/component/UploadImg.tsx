@@ -1,6 +1,6 @@
 import { useContext, useRef, useEffect } from 'react'
 import { MyContext, StaticService } from 'storage'
-import { IconUploadPic } from 'utility/icon'
+import { IconImg } from 'utility/icon'
 import GlobalApi from 'api/GlobalApi'
 import { Button } from 'antd'
 
@@ -50,7 +50,7 @@ const UploadImg = (props: IProps) => {
           />
         ) : (
           <span className='ad-upload-watermark'>
-            <IconUploadPic />
+            <IconImg />
             <em>{props.desc}</em>
           </span>
         )}

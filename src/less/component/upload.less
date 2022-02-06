@@ -16,8 +16,9 @@
     border-radius: 50%;
   }
   &.rectangle label {
-    width: 340px;
-    height: 200px;
+    min-height: 200px;
+    background-color: @color-white;
+    .form-input-border-default();
   }
   &.video label {
     width: 100%;
@@ -47,6 +48,13 @@
     display: block;
     margin-top: 0.5rem;
   }
+  .anticon {
+    color: @color-primary-light03;
+    &,
+    svg {
+      .size(67px,auto);
+    }
+  }
 }
 .ad-upload-uploaded {
   width: 100%;
@@ -55,4 +63,5 @@
 .ad-upload-info {
   font-size: 12px;
   color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 16px;
 }

@@ -17,4 +17,8 @@ export default class StaticService {
     video: 'video',
     paragraph: 'paragraph'
   }
+  static countryCodeOption: any = [
+    { country: 'Taiwan', code: '+886' },
+    { country: 'Chinese', code: '+250' }
+  ]
 }

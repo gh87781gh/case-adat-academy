@@ -45,9 +45,6 @@
 //pagination
 @pagination-width: 48px;
 
-// border
-@border-color-default: @color-gray02;
-
 // layout
 @global-header-height: 90px;
 @layout-user-container-max-width: 1200px;
@@ -67,6 +64,9 @@
 // button
 @btn-group-gap: 30px;
 
+// border
+@border-color-default: @color-gray03;
+
 // form
 @form-input-border-color: @color-gray03;
 @form-input-max-height: 48px;
@@ -74,3 +74,9 @@
 @form-input-padding-y: 12px;
 @form-input-padding-x: 16px;
 @form-input-customize-icon-color: @color-black;
+.form-input-border-default {
+  width: 100%;
+  border: 1px solid @border-color-default;
+  border-radius: 2px;
+  max-height: @form-input-max-height;
+}

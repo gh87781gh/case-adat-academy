@@ -1,10 +1,11 @@
-.ant-input,
-.ant-select-selector {
-  max-height: @form-input-max-height;
-}
+input.ant-input,
+textarea.ant-input,
+.ant-select-selector,
 .ant-input-number {
-  width: 100%;
-  border-color: @form-input-border-color;
+  .form-input-border-default();
+}
+textarea.ant-input {
+  max-height: 200px !important;
 }
 .ad-input-copy * {
   cursor: copy;

@@ -93,6 +93,17 @@ const svgWeb = () => (
 export const IconWeb = (props: any) => {
   return <Icon component={svgWeb} {...props} />
 }
+const svgImg = () => (
+  <svg width='20' height='16' viewBox='0 0 20 16' fill='none'>
+    <path
+      d='M18 0H2C0.897 0 0 0.897 0 2V14C0 15.103 0.897 16 2 16H18C19.103 16 20 15.103 20 14V2C20 0.897 19.103 0 18 0ZM4.5 3C4.89782 3 5.27936 3.15804 5.56066 3.43934C5.84196 3.72064 6 4.10218 6 4.5C6 4.89782 5.84196 5.27936 5.56066 5.56066C5.27936 5.84196 4.89782 6 4.5 6C4.10218 6 3.72064 5.84196 3.43934 5.56066C3.15804 5.27936 3 4.89782 3 4.5C3 4.10218 3.15804 3.72064 3.43934 3.43934C3.72064 3.15804 4.10218 3 4.5 3ZM10 13H3L7 8L8.5 10L11.5 6L17 13H10Z'
+      fill='currentColor'
+    />
+  </svg>
+)
+export const IconImg = (props: any) => {
+  return <Icon component={svgImg} {...props} />
+}
 
 // NOTE 已確認名稱與 design system 一樣  end
 

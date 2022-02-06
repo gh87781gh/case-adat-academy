@@ -38,7 +38,28 @@ const HelpCenter = () => {
   // useEffect(() => {
   //   getCoursesByLearningPath()
   // }, [data.coursesType]) // eslint-disable-line react-hooks/exhaustive-deps
-
+  const renderHelpCenterDesc = () => {
+    return (
+      <div className='ad-helpCenter-desc'>
+        <p>
+          We will try to reach you within <b>2</b> working days. Our team
+          members are here for you:
+        </p>
+        <div className='ad-helpCenter-desc-cs'>
+          <img src={CS} alt='' />
+          <h4>Demmy</h4>
+        </div>
+        <div className='ad-helpCenter-desc-cs'>
+          <img src={CS} alt='' />
+          <h4>Violet</h4>
+        </div>
+        <div className='ad-helpCenter-desc-cs'>
+          <img src={CS} alt='' />
+          <h4>Aster</h4>
+        </div>
+      </div>
+    )
+  }
   return (
     <>
       <Header />
@@ -54,31 +75,16 @@ const HelpCenter = () => {
                 <li>Course questions</li>
                 <li>Operation questions</li>
               </ul>
-              <Btn feature='action'>Contact us</Btn>
+              <Btn feature='action' onClick={() => history.push('/contactUs')}>
+                Contact us
+              </Btn>
               <p>
                 Or find solutions in <Btn feature='link'>course</Btn>
               </p>
             </div>
           </Col>
           <Col span={16} className='ad-text-right'>
-            <div className='ad-helpCenter-desc'>
-              <p>
-                We will try to reach you within <b>2</b> working days. Our team
-                members are here for you:
-              </p>
-              <div className='ad-helpCenter-desc-cs'>
-                <img src={CS} alt='' />
-                <h4>Demmy</h4>
-              </div>
-              <div className='ad-helpCenter-desc-cs'>
-                <img src={CS} alt='' />
-                <h4>Violet</h4>
-              </div>
-              <div className='ad-helpCenter-desc-cs'>
-                <img src={CS} alt='' />
-                <h4>Aster</h4>
-              </div>
-            </div>
+            {renderHelpCenterDesc()}
           </Col>
         </Row>
       </article>
