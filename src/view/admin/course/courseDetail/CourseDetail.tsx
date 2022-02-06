@@ -5,7 +5,7 @@ import CourseApi from 'api/admin/CourseApi'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
-import Header from 'view/layout/Header'
+import Header from 'view/Header'
 import AdminSideBar from '../../AdminSideBar'
 import Sections from './Sections'
 import ModalMenuEdit from './ModalMenuEdit'

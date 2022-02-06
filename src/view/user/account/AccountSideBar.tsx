@@ -2,8 +2,8 @@ import { useState, useEffect, useContext } from 'react'
 import { MyContext, StaticService } from 'storage'
 import { useHistory, useLocation } from 'react-router-dom'
 import CourseApi from 'api/user/CourseApi'
-import Header from 'view/layout/Header'
-import Footer from 'view/layout/Footer'
+import Header from 'view/Header'
+import Footer from 'view/user/layout/Footer'
 import { Btn } from 'utility/component'
 import CS from 'assets/img/temp-cs.jpeg'
 import { Row, Col, Breadcrumb, Pagination, Menu } from 'antd'
@@ -19,9 +19,9 @@ const AccountSideBar = () => {
   const location = useLocation()
 
   const [menu, setMenu] = useState<any>([
-    'Learning profile',
-    'Purchase details',
-    'Change password'
+    { name: 'Learning profile', path: '/account/learningProfile' },
+    { name: 'Purchase details', path: '/account/courseManagement' },
+    { name: 'Change password', path: '/account/changePassword' }
   ])
   const [menuOpenKeys, setMenuOpenKeys] = useState<any>([])
 
@@ -30,17 +30,12 @@ const AccountSideBar = () => {
       className='ad-menu-user-course ad-menu-user-account-sideBar'
       onOpenChange={(keys: any) => setMenuOpenKeys(keys)}
       openKeys={menuOpenKeys}
-      selectedKeys={['Learning profile']}
+      selectedKeys={[menu[0].name]}
       mode='inline'
     >
       {menu.map((item: any) => (
-        <Menu.Item
-          key={item}
-          // onClick={() =>
-          //   history.push(`/courseDetail/${courseId}/${section.id}`)
-          // }
-        >
-          <div>{item}</div>
+        <Menu.Item key={item.name} onClick={() => history.push(item.path)}>
+          <div>{item.name}</div>
         </Menu.Item>
       ))}
     </Menu>

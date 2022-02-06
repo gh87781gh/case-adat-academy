@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Header from '../../layout/Header'
+import Header from '../../Header'
 import Purchase from './Purchase'
 import PurchaseAccount from './PurchaseAccount'
 import AdminSideBar from '../AdminSideBar'

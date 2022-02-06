@@ -1,9 +1,9 @@
 import { useContext, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
-import { MyContext, BrowserStorage } from '../../storage'
+import { MyContext, BrowserStorage } from '../storage'
 
 import { Btn } from 'utility/component'
-import { IconSearch, IconArrowDown, IconADATFull } from '../../utility/icon'
+import { IconSearch, IconArrowDown, IconADATFull } from '../utility/icon'
 import { Input, Menu, Dropdown } from 'antd'
 
 interface IState {
@@ -45,9 +45,23 @@ const Header = () => {
           {context.auth.user_id} <br />
           <span className='ad-header-profile-menu-decs'>user ID</span>
         </Menu.Item>
-        <Menu.Item key='learning profile'>learning profile</Menu.Item>
-        <Menu.Item key='course management'>course management</Menu.Item>
-        <Menu.Item className='ad-header-profile-menu-bd' key='change password'>
+        <Menu.Item
+          key='learning profile'
+          onClick={() => history.push('/account/learningProfile')}
+        >
+          learning profile
+        </Menu.Item>
+        <Menu.Item
+          key='course management'
+          onClick={() => history.push('/account/courseManagement')}
+        >
+          course management
+        </Menu.Item>
+        <Menu.Item
+          className='ad-header-profile-menu-bd'
+          key='change password'
+          onClick={() => history.push('/account/changePassword')}
+        >
           change password
         </Menu.Item>
         {context.auth.is_admin ? (

@@ -4,7 +4,7 @@ import { useLocation, useHistory, useParams } from 'react-router-dom'
 import GlobalApi from 'api/GlobalApi'
 import CourseApi from 'api/admin/CourseApi'
 
-import Header from '../../layout/Header'
+import Header from '../../Header'
 import AdminSideBar from '../AdminSideBar'
 import ModalCreate from './ModalCreate'
 // import ModalDetail from './ModalDetail'

@@ -3,8 +3,8 @@ import { useHistory, useParams } from 'react-router-dom'
 import { MyContext } from 'storage'
 import SearchApi from 'api/user/SearchApi'
 
-import Header from 'view/layout/Header'
-import Footer from 'view/layout/Footer'
+import Header from 'view/Header'
+import Footer from 'view/user/layout/Footer'
 
 import { Btn } from 'utility/component'
 import Card from '../component/Card'

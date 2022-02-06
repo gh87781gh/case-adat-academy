@@ -4,8 +4,8 @@ import { useHistory } from 'react-router-dom'
 import GlobalApi from 'api/GlobalApi'
 import HelpCenterApi from 'api/user/HelpCenter'
 
-import Header from 'view/layout/Header'
-import Footer from 'view/layout/Footer'
+import Header from 'view/Header'
+import Footer from 'view/user/layout/Footer'
 import { UploadImg } from 'utility/component'
 
 // TODO

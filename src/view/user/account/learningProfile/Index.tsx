@@ -4,8 +4,8 @@ import { useHistory } from 'react-router-dom'
 import GlobalApi from 'api/GlobalApi'
 import CourseApi from 'api/user/CourseApi'
 
-import Header from 'view/layout/Header'
-import Footer from 'view/layout/Footer'
+import Header from 'view/Header'
+import Footer from 'view/user/layout/Footer'
 import AccountSideBar from '../AccountSideBar'
 
 import { Btn } from 'utility/component'
@@ -332,7 +332,7 @@ const LearningProfile = () => {
                     //   !data.email)
                     // }
                     feature='action'
-                    key='submit'
+                    key='Submit'
                     // onClick={() => submit()}
                   >
                     Submit
@@ -353,10 +353,10 @@ const LearningProfile = () => {
                     //   !data.email)
                     // }
                     feature='primary'
-                    key='submit'
+                    key='Cancel'
                     // onClick={() => submit()}
                   >
-                    Submit
+                    Cancel
                   </Btn>
                 </div>
               </div>

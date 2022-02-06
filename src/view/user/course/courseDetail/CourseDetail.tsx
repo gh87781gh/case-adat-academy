@@ -2,8 +2,8 @@ import { useState, useEffect, useContext, useRef } from 'react'
 import { MyContext, StaticService } from 'storage'
 import { useHistory, useParams, useLocation } from 'react-router-dom'
 import CourseApi from 'api/user/CourseApi'
-import Header from 'view/layout/Header'
-import Footer from 'view/layout/Footer'
+import Header from 'view/Header'
+import Footer from 'view/user/layout/Footer'
 import {
   IconArrowPrev,
   IconArrowNext,

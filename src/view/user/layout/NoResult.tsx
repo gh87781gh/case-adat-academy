@@ -1,17 +1,17 @@
-import Header from 'view/layout/Header'
-import Footer from 'view/layout/Footer'
+import Header from 'view/Header'
+import Footer from 'view/user/layout/Footer'
 import { Btn } from 'utility/component'
 
-const NoAccess = () => {
+const NoResult = () => {
   return (
     <>
       <Header />
       <article className='ad-layout-container ad-layout-container-prompt'>
         <div className=' ad-layout-container-prompt-content'>
-          <h1 className='ad-title'>Oops</h1>
+          <h1 className='ad-title'>No results.</h1>
           <p>
-            It seems that you hace no access to the page. Please visit help
-            center for more information.
+            Can’t find solutions? Please visit help center, and contact us for
+            more information
           </p>
           <Btn feature='primary'>Go to help center</Btn>
         </div>
@@ -20,4 +20,4 @@ const NoAccess = () => {
     </>
   )
 }
-export default NoAccess
+export default NoResult

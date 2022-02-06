@@ -3,10 +3,10 @@ import { MyContext, StaticService } from 'storage'
 import { useHistory } from 'react-router-dom'
 import CourseApi from 'api/user/CourseApi'
 
-import Header from 'view/layout/Header'
-import Footer from 'view/layout/Footer'
+import Header from 'view/Header'
+import Footer from 'view/user/layout/Footer'
 import LearningPath from './learningPath/LearningPath'
-import NoCourse from 'view/layout/NoCourse'
+import NoCourse from 'view/user/layout/NoCourse'
 
 import { IconArrowDown, IconBookmark } from 'utility/icon'
 import { Btn } from 'utility/component'

@@ -6,7 +6,7 @@ import GlobalApi from '../api/GlobalApi'
 
 // no validate auth
 import DemoPage from './DemoPage' // only for local
-import RedirectPage from './layout/RedirectPage'
+import RedirectPage from './user/layout/RedirectPage'
 import Login from './login/login/Login'
 import SignUp1 from './login/signUp/SignUp1'
 import SignUp2 from './login/signUp/SignUp2'
@@ -25,8 +25,8 @@ import Search from './user/search/Index'
 import HelpCenter from './user/helpCenter/Index'
 import ContactUs from './user/helpCenter/contactUs/ContactUs'
 import LearningProfile from './user/account/learningProfile/Index'
-import NoResult from './layout/NoResult'
-import NoAccess from './layout/NoAccess'
+import NoResult from './user/layout/NoResult'
+import NoAccess from './user/layout/NoAccess'
 
 // admin console
 import AdminPurchase from './admin/purchase/Index'
@@ -174,6 +174,16 @@ const LayoutTemplate = () => {
                 path='/account/learningProfile'
                 render={() => componentPage(LearningProfile, 'USER')}
               />
+              {/* <Route
+                exact={true}
+                path='/account/courseManagement'
+                render={() => componentPage(LearningProfile, 'USER')}
+              />
+              <Route
+                exact={true}
+                path='/account/changePassword'
+                render={() => componentPage(LearningProfile, 'USER')}
+              /> */}
 
               <Route
                 exact={true}
