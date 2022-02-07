@@ -85,7 +85,7 @@ const Contact = () => {
     context.setIsLoading(true)
     api
       .contact(data)
-      .then(() => history.push('/login/ContactConfirm'))
+      .then(() => history.push('/login/successfully/submitted'))
       .finally(() => {
         context.setIsLoading(false)
       })

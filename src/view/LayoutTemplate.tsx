@@ -15,7 +15,7 @@ import PasswordRecover1 from './login/password/PasswordRecover1'
 import PasswordRecover2 from './login/password/PasswordRecover2'
 import PasswordRecover3 from './login/password/PasswordRecover3'
 import Contact from './login/contact/Contact'
-import ContactConfirm from './login/contact/ContactConfirm'
+import Successfully from './login/Successfully'
 
 // user console
 import Course from './user/course/Index'
@@ -26,6 +26,7 @@ import HelpCenter from './user/helpCenter/Index'
 import ContactUs from './user/helpCenter/contactUs/ContactUs'
 import LearningProfile from './user/account/learningProfile/Index'
 import PurchaseDetail from './user/account/purchaseDetail/Index'
+import ChangePassword from './user/account/changePassword/Index'
 import NoResult from './user/layout/NoResult'
 import NoAccess from './user/layout/NoAccess'
 
@@ -135,8 +136,8 @@ const LayoutTemplate = () => {
               />
               <Route
                 exact={true}
-                path='/login/contactConfirm'
-                render={() => componentPage(ContactConfirm, 'LOGIN')}
+                path='/login/successfully/:type'
+                render={() => componentPage(Successfully, 'LOGIN')}
               />
 
               {/* NOTE USER */}
@@ -183,7 +184,7 @@ const LayoutTemplate = () => {
               <Route
                 exact={true}
                 path='/account/changePassword'
-                render={() => componentPage(LearningProfile, 'USER')}
+                render={() => componentPage(ChangePassword, 'USER')}
               />
 
               <Route

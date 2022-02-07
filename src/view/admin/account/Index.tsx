@@ -3,7 +3,7 @@ import { MyContext, StaticService } from 'storage'
 import GlobalApi from 'api/GlobalApi'
 import AccountApi from 'api/admin/AccountApi'
 
-import Header from 'view/Header'
+import Header from 'view/user/layout/Header'
 import AdminSideBar from '../AdminSideBar'
 import ModalCreate from './ModalCreate'
 import ModalDetail from './ModalDetail'

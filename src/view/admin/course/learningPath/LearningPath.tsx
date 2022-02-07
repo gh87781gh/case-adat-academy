@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { MyContext } from 'storage'
 import CourseApi from 'api/admin/CourseApi'
 
-import Header from 'view/Header'
+import Header from 'view/user/layout/Header'
 import ModalLearnPath from './ModalLearnPath'
 import AdminSideBar from 'view/admin/AdminSideBar'
 

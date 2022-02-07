@@ -1,4 +1,4 @@
-import Header from 'view/Header'
+import Header from 'view/user/layout/Header'
 import Footer from 'view/user/layout/Footer'
 import { Btn } from 'utility/component'
 

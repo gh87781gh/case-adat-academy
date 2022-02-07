@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 import GlobalApi from 'api/GlobalApi'
 import AccountApi from 'api/user/AccountApi'
 
-import Header from 'view/Header'
+import Header from 'view/user/layout/Header'
 import Footer from 'view/user/layout/Footer'
 import AccountSideBar from '../AccountSideBar'
 

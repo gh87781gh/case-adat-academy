@@ -3,7 +3,7 @@ import { useHistory, useParams } from 'react-router-dom'
 import { MyContext } from 'storage'
 import SearchApi from 'api/user/SearchApi'
 
-import Header from 'view/Header'
+import Header from 'view/user/layout/Header'
 import Footer from 'view/user/layout/Footer'
 
 import { Btn } from 'utility/component'
