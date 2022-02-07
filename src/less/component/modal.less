@@ -2,7 +2,10 @@
   padding: 26px 84px;
   border: unset;
 }
-
+.ant-modal-content {
+  border: 2px solid @color-primary;
+  box-shadow: 0px 0px 18px rgba(2, 32, 97, 0.25);
+}
 .ant-modal-header {
   .ant-modal-reset();
   padding-top: 56px;
@@ -24,6 +27,9 @@
   .ad-form-group {
     margin-bottom: 20px;
   }
+  .ad-title {
+    margin-top: 34px;
+  }
 }
 .ant-modal-footer {
   .ant-modal-reset();
@@ -40,5 +46,20 @@
 .ad-modal-edit {
   .ant-modal-body {
     background-color: #f0f0f0;
+  }
+}
+
+.ant-modal-mask {
+  background-color: rgba(2, 32, 97, 0.1);
+}
+.ad-modal-user-footer {
+  margin-top: 70px;
+  margin-bottom: 40px;
+  p {
+    .typo-bodyDefault();
+    color: @color-primary;
+  }
+  .ant-btn {
+    min-width: 250px;
   }
 }

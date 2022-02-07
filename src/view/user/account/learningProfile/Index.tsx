@@ -311,8 +311,8 @@ const LearningProfile = () => {
           <Col span={5}>
             <AccountSideBar />
           </Col>
-          <Col span={17}>
-            <article className='ad-page-container'>
+          <Col span={19}>
+            <article className='ad-page-container ad-page-container-account'>
               <h1 className='ad-title'>Learning profile</h1>
               {renderForm()}
               <div className='ad-page-container-footer'>

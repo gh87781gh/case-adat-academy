@@ -16,6 +16,11 @@ article {
 .ad-layout-article {
   padding-top: @global-header-height;
 }
+.ad-layout-article-contentCard {
+  padding: 40px 50px;
+  border: 1px solid @color-primary-light01;
+  background-color: @color-white;
+}
 .ad-layout-container {
   max-width: @layout-user-container-max-width;
   margin-left: auto;
@@ -62,6 +67,10 @@ article {
     .ant-btn {
       min-width: 230px;
     }
+  }
+  &.ad-page-container-account {
+    margin-left: 40px;
+    margin-right: calc(50vw - @layout-user-container-max-width*0.5);
   }
 }
 .ad-layout-banner {

@@ -1,26 +1,17 @@
-import { useState, useEffect, useContext } from 'react'
-import { MyContext, StaticService } from 'storage'
-import { useHistory, useLocation } from 'react-router-dom'
-import CourseApi from 'api/user/CourseApi'
-import Header from 'view/Header'
-import Footer from 'view/user/layout/Footer'
-import { Btn } from 'utility/component'
-import CS from 'assets/img/temp-cs.jpeg'
-import { Row, Col, Breadcrumb, Pagination, Menu } from 'antd'
+import { useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { Menu } from 'antd'
 
 interface IState {
   coursesType: string
 }
 
 const AccountSideBar = () => {
-  const context = useContext(MyContext)
-  const api = new CourseApi()
   const history = useHistory()
-  const location = useLocation()
 
   const menu = [
     { name: 'Learning profile', path: '/account/learningProfile' },
-    { name: 'Purchase details', path: '/account/courseManagement' },
+    { name: 'Purchase details', path: '/account/purchaseDetail' },
     { name: 'Change password', path: '/account/changePassword' }
   ]
   const [menuOpenKeys, setMenuOpenKeys] = useState<any>(menu[0].name)

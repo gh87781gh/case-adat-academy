@@ -53,7 +53,7 @@ const Header = () => {
         </Menu.Item>
         <Menu.Item
           key='course management'
-          onClick={() => history.push('/account/courseManagement')}
+          onClick={() => history.push('/account/purchaseDetail')}
         >
           course management
         </Menu.Item>

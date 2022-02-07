@@ -25,6 +25,7 @@ import Search from './user/search/Index'
 import HelpCenter from './user/helpCenter/Index'
 import ContactUs from './user/helpCenter/contactUs/ContactUs'
 import LearningProfile from './user/account/learningProfile/Index'
+import PurchaseDetail from './user/account/purchaseDetail/Index'
 import NoResult from './user/layout/NoResult'
 import NoAccess from './user/layout/NoAccess'
 
@@ -176,8 +177,8 @@ const LayoutTemplate = () => {
               />
               <Route
                 exact={true}
-                path='/account/courseManagement'
-                render={() => componentPage(LearningProfile, 'USER')}
+                path='/account/purchaseDetail'
+                render={() => componentPage(PurchaseDetail, 'USER')}
               />
               <Route
                 exact={true}
