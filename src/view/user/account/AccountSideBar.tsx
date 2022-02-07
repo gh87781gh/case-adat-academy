@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { Menu } from 'antd'
 
 interface IState {
@@ -8,23 +7,22 @@ interface IState {
 
 const AccountSideBar = () => {
   const history = useHistory()
+  const location = useLocation()
 
   const menu = [
     { name: 'Learning profile', path: '/account/learningProfile' },
     { name: 'Purchase details', path: '/account/purchaseDetail' },
     { name: 'Change password', path: '/account/changePassword' }
   ]
-  const [menuOpenKeys, setMenuOpenKeys] = useState<any>(menu[0].name)
 
   return (
     <Menu
       className='ad-menu-user-course ad-menu-user-account-sideBar'
-      onClick={(e: any) => setMenuOpenKeys(e.key)}
-      selectedKeys={[menuOpenKeys]}
+      selectedKeys={[location.pathname]}
       mode='inline'
     >
       {menu.map((item: any) => (
-        <Menu.Item key={item.name} onClick={() => history.push(item.path)}>
+        <Menu.Item key={item.path} onClick={() => history.push(item.path)}>
           <div>{item.name}</div>
         </Menu.Item>
       ))}
