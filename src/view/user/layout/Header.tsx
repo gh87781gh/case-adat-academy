@@ -18,7 +18,7 @@ const Header = () => {
 
   const logout = () => {
     browserStorage.removeStorage('AUTH')
-    history.push('/login')
+    history.push('/login/successfully/loggedOut')
   }
 
   const [data, setData] = useState<IState>({

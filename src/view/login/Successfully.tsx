@@ -4,11 +4,7 @@ import LoginTemplate from 'view/login/LoginTemplate'
 
 import { Btn } from 'utility/component'
 
-interface IProps {
-  type: string
-}
-
-const Successfully = (props: IProps) => {
+const Successfully = () => {
   const history = useHistory()
   const { type } = useParams<{ type: string }>()
 
@@ -16,15 +12,17 @@ const Successfully = (props: IProps) => {
     <LoginTemplate>
       <div className='ad-login-content-header'>
         Successfully{' '}
-        {props.type === 'submitted'
+        {type === 'submitted'
           ? 'submitted!'
-          : props.type === 'submitted'
+          : type === 'submitted'
           ? 'updated'
+          : type === 'loggedOut'
+          ? 'logged out'
           : ''}
         !
       </div>
       <div className='ad-login-content-body'>
-        {props.type === 'submitted' ? (
+        {type === 'submitted' ? (
           <p>'Thank you! We will try to reach you within 2 working days.'</p>
         ) : null}
       </div>
