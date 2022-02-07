@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react'
 import { MyContext, StaticService } from 'storage'
 import { useHistory } from 'react-router-dom'
 import GlobalApi from 'api/GlobalApi'
-import CourseApi from 'api/user/CourseApi'
+import AccountApi from 'api/user/AccountApi'
 
 import Header from 'view/Header'
 import Footer from 'view/user/layout/Footer'
@@ -32,42 +32,35 @@ interface IState {
 const LearningProfile = () => {
   const context = useContext(MyContext)
   const api_global = new GlobalApi()
-  const api = new CourseApi()
+  const api = new AccountApi()
   const history = useHistory()
 
-  const [supportTypeOption, setSupportTypeOption] = useState<any>([])
-  const [productOption, setProductOption] = useState<any>([])
-  const [frequencyOption, setFrequencyOption] = useState<any>([])
+  const [options, setOptions] = useState<any>([])
   useEffect(() => {
     context.setIsLoading(true)
     api_global
       .getOptions([
-        'help_center_support_types',
-        'help_center_products',
-        'help_center_frequencies'
+        'learning_profile_experiences',
+        'learning_profile_experience_levels',
+        'learning_profile_industries',
+        'learning_profile_genders',
+        'learning_profile_age_ranges',
+        'learning_profile_highest_degrees'
       ])
-      .then((res: any) => {
-        setSupportTypeOption(res.data[0])
-        setProductOption(res.data[1])
-        setFrequencyOption(res.data[2])
-        // setData({
-        //   ...data,
-        //   contry_code: StaticService.countryCodeOption[0].code
-        // })
-      })
+      .then((res: any) => setOptions(res.data))
       .finally(() => context.setIsLoading(false))
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [data, setData] = useState<IState>({
     name: '',
-    industry: '',
-    position: '',
-    current_company: '',
-    experience_level: '',
-    experience: [],
     gender: '',
     age_range: '',
     location: '',
+    industry: '',
+    position: '',
+    experience_level: '',
+    current_company: '',
+    experience: [],
     highest_degree: '',
     university: '',
     field_or_major: ''
@@ -89,21 +82,31 @@ const LearningProfile = () => {
   const onSelect = (key: string, value: any) => {
     setData({ ...data, [key]: value })
   }
-  const onChecks = (key: string, checkedValues: any) => {
-    console.log(key, checkedValues)
-    // switch (key) {
-    //   case 'support_type':
-    //     setData({ ...data, support_type: '' })
-    //     setData({
-    //       ...data,
-    //       support_type: data.support_type ? checkedValues[1] : checkedValues[0]
-    //     })
-    //     break
-    //   case 'prefered_way_of_contact':
-    //     setData({ ...data, prefered_way_of_contact: checkedValues })
-    //     break
-    // }
+  const onChecks = (checkedValues: any) => {
+    if (checkedValues.includes('Not sure')) {
+      checkedValues.length >= 2 && checkedValues.indexOf('Not sure') === 0
+        ? checkedValues.shift()
+        : (checkedValues = ['Not sure'])
+    }
+    setData({ ...data, experience: checkedValues })
   }
+  const getLearningProfile = () => {
+    context.setIsLoading(true)
+    api
+      .getLearningProfile()
+      .then((res: any) => setData(res.data))
+      .finally(() => context.setIsLoading(false))
+  }
+  const update = () => {
+    context.setIsLoading(true)
+    api
+      .updateLearningProfile(data)
+      .then(() => message.success('Saved'))
+      .finally(() => context.setIsLoading(false))
+  }
+  useEffect(() => {
+    getLearningProfile()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const renderForm = () => {
     return (
@@ -133,11 +136,11 @@ const LearningProfile = () => {
                 placeholder='Please select'
                 onChange={(val) => onSelect('gender', val)}
               >
-                {/* {genderOption.map((item: string) => (
-                <Option value={item} key={item}>
-                  {item}
-                </Option>
-              ))} */}
+                {options[3]?.map((item: string) => (
+                  <Option value={item} key={item}>
+                    {item}
+                  </Option>
+                ))}
               </Select>
             </div>
           </Col>
@@ -145,15 +148,15 @@ const LearningProfile = () => {
             <div className='ad-form-group'>
               <label>Age range</label>
               <Select
-                value={data.gender}
+                value={data.age_range}
                 placeholder='Please select'
-                onChange={(val) => onSelect('gender', val)}
+                onChange={(val) => onSelect('age_range', val)}
               >
-                {/* {genderOption.map((item: string) => (
-                <Option value={item} key={item}>
-                  {item}
-                </Option>
-              ))} */}
+                {options[4]?.map((item: string) => (
+                  <Option value={item} key={item}>
+                    {item}
+                  </Option>
+                ))}
               </Select>
             </div>
           </Col>
@@ -163,8 +166,8 @@ const LearningProfile = () => {
               <Input
                 placeholder='Please input'
                 maxLength={50}
-                value={data.name}
-                onChange={(e) => onChange('name', e)}
+                value={data.location}
+                onChange={(e) => onChange('location', e)}
               />
             </div>
           </Col>
@@ -179,15 +182,15 @@ const LearningProfile = () => {
             <div className='ad-form-group'>
               <label className='required'>Industry</label>
               <Select
-                value={data.gender}
+                value={data.industry}
                 placeholder='Please select'
-                onChange={(val) => onSelect('gender', val)}
+                onChange={(val) => onSelect('industry', val)}
               >
-                {/* {genderOption.map((item: string) => (
-                <Option value={item} key={item}>
-                  {item}
-                </Option>
-              ))} */}
+                {options[2]?.map((item: string) => (
+                  <Option value={item} key={item}>
+                    {item}
+                  </Option>
+                ))}
               </Select>
             </div>
           </Col>
@@ -197,8 +200,8 @@ const LearningProfile = () => {
               <Input
                 placeholder='Please input'
                 maxLength={50}
-                value={data.name}
-                onChange={(e) => onChange('name', e)}
+                value={data.position}
+                onChange={(e) => onChange('position', e)}
               />
             </div>
           </Col>
@@ -206,15 +209,15 @@ const LearningProfile = () => {
             <div className='ad-form-group'>
               <label className='required'>Experience level</label>
               <Select
-                value={data.gender}
+                value={data.experience_level}
                 placeholder='Please select'
-                onChange={(val) => onSelect('gender', val)}
+                onChange={(val) => onSelect('experience_level', val)}
               >
-                {/* {genderOption.map((item: string) => (
-                <Option value={item} key={item}>
-                  {item}
-                </Option>
-              ))} */}
+                {options[1]?.map((item: string) => (
+                  <Option value={item} key={item}>
+                    {item}
+                  </Option>
+                ))}
               </Select>
             </div>
           </Col>
@@ -224,8 +227,8 @@ const LearningProfile = () => {
               <Input
                 placeholder='Please input'
                 maxLength={50}
-                value={data.name}
-                onChange={(e) => onChange('name', e)}
+                value={data.current_company}
+                onChange={(e) => onChange('current_company', e)}
               />
             </div>
           </Col>
@@ -235,20 +238,18 @@ const LearningProfile = () => {
                 What is your experience regarding to AIR? (multiple choices)
               </label>
               <Checkbox.Group
-                // value={[data.support_type]}
+                value={data.experience}
                 className='ad-checkbox-btn-group'
-                onChange={(checkedValue) =>
-                  onChecks('support_type', checkedValue)
-                }
+                onChange={(checkedValue) => onChecks(checkedValue)}
               >
                 <Row gutter={[10, 10]}>
-                  {/* {supportTypeOption.map((item: string, index: number) => (
-                    <Col span={12} key={item}>
+                  {options[0]?.map((item: string) => (
+                    <Col span={6} key={item}>
                       <Checkbox className='ad-checkbox-btn' value={item}>
                         {item}
                       </Checkbox>
                     </Col>
-                  ))} */}
+                  ))}
                 </Row>
               </Checkbox.Group>
             </div>
@@ -264,15 +265,15 @@ const LearningProfile = () => {
             <div className='ad-form-group'>
               <label>Highest degree</label>
               <Select
-                value={data.gender}
+                value={data.highest_degree}
                 placeholder='Please select'
-                onChange={(val) => onSelect('gender', val)}
+                onChange={(val) => onSelect('highest_degree', val)}
               >
-                {/* {genderOption.map((item: string) => (
-                <Option value={item} key={item}>
-                  {item}
-                </Option>
-              ))} */}
+                {options[5]?.map((item: string) => (
+                  <Option value={item} key={item}>
+                    {item}
+                  </Option>
+                ))}
               </Select>
             </div>
           </Col>
@@ -282,8 +283,8 @@ const LearningProfile = () => {
               <Input
                 placeholder='Please input'
                 maxLength={50}
-                value={data.name}
-                onChange={(e) => onChange('name', e)}
+                value={data.university}
+                onChange={(e) => onChange('university', e)}
               />
             </div>
           </Col>
@@ -293,8 +294,8 @@ const LearningProfile = () => {
               <Input
                 placeholder='Please input'
                 maxLength={50}
-                value={data.name}
-                onChange={(e) => onChange('name', e)}
+                value={data.field_or_major}
+                onChange={(e) => onChange('field_or_major', e)}
               />
             </div>
           </Col>
@@ -317,41 +318,20 @@ const LearningProfile = () => {
               <div className='ad-page-container-footer'>
                 <div className='ad-btn-group'>
                   <Btn
-                    // disabled={
-                    // !data.support_type ||
-                    // !data.subject ||
-                    // !data.description ||
-                    // !data.contry_code ||
-                    // !data.phone_number ||
-                    // (data.support_type === 'Operation questions' &&
-                    //   (!data.product ||
-                    //     !data.issue_happen_time ||
-                    //     !data.frequency)) ||
-                    // data.prefered_way_of_contact.length === 0 ||
-                    // (data.prefered_way_of_contact.includes('Email') &&
-                    //   !data.email)
-                    // }
+                    disabled={
+                      !data.name ||
+                      !data.industry ||
+                      !data.position ||
+                      !data.experience_level ||
+                      data.experience.length === 0
+                    }
                     feature='action'
                     key='Submit'
-                    // onClick={() => submit()}
+                    onClick={() => update()}
                   >
                     Submit
                   </Btn>
                   <Btn
-                    // disabled={
-                    // !data.support_type ||
-                    // !data.subject ||
-                    // !data.description ||
-                    // !data.contry_code ||
-                    // !data.phone_number ||
-                    // (data.support_type === 'Operation questions' &&
-                    //   (!data.product ||
-                    //     !data.issue_happen_time ||
-                    //     !data.frequency)) ||
-                    // data.prefered_way_of_contact.length === 0 ||
-                    // (data.prefered_way_of_contact.includes('Email') &&
-                    //   !data.email)
-                    // }
                     feature='primary'
                     key='Cancel'
                     // onClick={() => submit()}
