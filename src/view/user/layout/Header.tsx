@@ -17,7 +17,6 @@ const Header = () => {
   const location = useLocation()
 
   const logout = () => {
-    browserStorage.removeStorage('AUTH')
     history.push('/login/successfully/loggedOut')
   }
 

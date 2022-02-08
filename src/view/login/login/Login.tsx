@@ -51,8 +51,6 @@ const Login = () => {
 
   const [isKeep, setIsKeep] = useState<boolean>(false)
   useEffect(() => {
-    browserStorage.removeStorage('AUTH')
-
     const keepUsername = browserStorage.getStorage('LOGIN_USERNAME')
     if (keepUsername) {
       setIsKeep(true)

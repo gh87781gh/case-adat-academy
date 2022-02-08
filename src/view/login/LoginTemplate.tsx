@@ -1,4 +1,6 @@
+import { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
+import { BrowserStorage } from 'storage'
 
 import { IconADAT } from 'utility/icon'
 import { Btn } from 'utility/component'
@@ -6,6 +8,11 @@ import { Row, Col } from 'antd'
 
 const LoginTemplate = (props: any) => {
   const history = useHistory()
+  const browserStorage = new BrowserStorage()
+
+  useEffect(() => {
+    browserStorage.removeStorage('AUTH')
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Row className='ad-login-bg'>
