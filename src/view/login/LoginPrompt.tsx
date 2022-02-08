@@ -14,7 +14,7 @@ const LoginPrompt = (props: IProps) => {
     >
       {props.type === 'success' ? (
         <IconSuccessfully />
-      ) : props.type === 'success' ? (
+      ) : props.type === 'error' ? (
         <IconInfor />
       ) : null}
       {props.text}&nbsp;

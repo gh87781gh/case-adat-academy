@@ -114,6 +114,9 @@ const Login = () => {
             maxLength={100}
             value={data.password}
             onChange={(e) => onChange('password', e)}
+            onPressEnter={() => {
+              if (data.account && data.password && !isEmail) login()
+            }}
           />
         </div>
         <Btn
