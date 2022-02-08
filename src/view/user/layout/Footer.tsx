@@ -31,7 +31,9 @@ const Footer = () => {
               FAX / +886-6-505-7625
               <br />
               <br />
-              <Btn feature='link'>Privacy policy</Btn>
+              <Btn feature='link' className='ad-mode-dark'>
+                Privacy policy
+              </Btn>
             </p>
           </Col>
         </Row>
