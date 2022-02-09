@@ -5,6 +5,10 @@
   background-color: @color-white;
   position: relative;
   border-bottom: 1px solid @color-gray02;
+  z-index: @z-index-header;
+  position: fixed;
+  top: 0;
+  left: 0;
 
   &::before {
     .size(100%, 6px);
@@ -35,6 +39,14 @@
   cursor: pointer;
   .anticon {
     .size(auto,48px);
+  }
+  &.scroll-mode {
+    background-color: @color-white;
+    padding: unset;
+    color: @color-primary;
+    position: relative;
+    top: -5px;
+    cursor: pointer;
   }
 }
 .ad-header-searchBar {

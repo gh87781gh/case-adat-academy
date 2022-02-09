@@ -1,7 +1,9 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, useRef, useEffect } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
+import { version } from '../../../../package.json'
 import { MyContext, BrowserStorage } from '../../../storage'
 
+import useScrolling from 'utility/hook/useScrolling'
 import { Btn } from 'utility/component'
 import { IconSearch, IconArrowDown, IconADATFull } from '../../../utility/icon'
 import { Input, Menu, Dropdown } from 'antd'
@@ -12,9 +14,9 @@ interface IState {
 
 const Header = () => {
   const context = useContext(MyContext)
-  const browserStorage = new BrowserStorage()
   const history = useHistory()
   const location = useLocation()
+  const { scrollY } = useScrolling()
 
   const logout = () => {
     history.push('/login/successfully/loggedOut')
@@ -36,6 +38,14 @@ const Header = () => {
     // }
     setData({ ...data, [key]: value })
   }
+  const [isScrolling, setIsScrolling] = useState<boolean>(false)
+  useEffect(() => {
+    if (scrollY === 0) {
+      setIsScrolling(false)
+    } else {
+      setIsScrolling(!(scrollY <= -50))
+    }
+  }, [scrollY]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const renderMenu = () => {
     return (
@@ -77,14 +87,15 @@ const Header = () => {
       </Menu>
     )
   }
-
   return (
     <header className='ad-header'>
       <div className='ad-layout-container ad-header-container'>
         {/* TODO switch logo */}
         {/* <div className='ad-header-container-logo'> */}
         <div
-          className='ad-header-container-logo-primary'
+          className={`ad-header-container-logo-primary ${
+            isScrolling ? 'scroll-mode' : ''
+          }`}
           onClick={() => history.push('/course')}
         >
           <IconADATFull />
@@ -128,6 +139,7 @@ const Header = () => {
           </div>
         </Dropdown>
       </div>
+      <span className='ad-layout-version'>v{version}</span>
     </header>
   )
 }

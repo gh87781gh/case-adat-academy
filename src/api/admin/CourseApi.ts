@@ -147,7 +147,6 @@ export default class CourseApi {
     for (const item of data) {
       delete item.key
     }
-    console.log('data:', data)
     return this.restAPI.request(
       'post',
       `/course/${courseId}/${sectionId}`,

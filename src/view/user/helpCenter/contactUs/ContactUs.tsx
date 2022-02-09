@@ -92,7 +92,6 @@ const ContactUs = () => {
     setData({ ...data, [key]: value })
   }
   const onChecks = (key: string, checkedValues: any) => {
-    console.log(key, checkedValues)
     switch (key) {
       case 'support_type':
         setData({ ...data, support_type: '' })

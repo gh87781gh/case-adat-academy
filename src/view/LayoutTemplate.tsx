@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom'
-import { version } from '../../package.json'
 import { MyContext, BrowserStorage } from '../storage'
 import GlobalApi from '../api/GlobalApi'
 
@@ -69,15 +68,15 @@ const LayoutTemplate = () => {
   }
 
   return (
-    <>
-      <MyContext.Provider
-        value={{
-          setIsLoading,
-          auth,
-          getAuth
-        }}
-      >
-        <Spin className='ad-spin-global' spinning={isLoading} size='large'>
+    <MyContext.Provider
+      value={{
+        setIsLoading,
+        auth,
+        getAuth
+      }}
+    >
+      <Spin className='ad-spin-global' spinning={isLoading} size='large'>
+        <div className='main'>
           <HashRouter>
             <Switch>
               {process.env.REACT_APP_ENV === 'LOCAL' ? (
@@ -232,10 +231,9 @@ const LayoutTemplate = () => {
               <Redirect to='/login' />
             </Switch>
           </HashRouter>
-          <span className='ad-layout-version'>v{version}</span>
-        </Spin>
-      </MyContext.Provider>
-    </>
+        </div>
+      </Spin>
+    </MyContext.Provider>
   )
 }
 export default LayoutTemplate
