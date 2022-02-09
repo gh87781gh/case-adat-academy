@@ -76,70 +76,70 @@ const LayoutTemplate = () => {
       }}
     >
       <Spin className='ad-spin-global' spinning={isLoading} size='large'>
-        <div className='main'>
-          <HashRouter>
-            <Switch>
-              {process.env.REACT_APP_ENV === 'LOCAL' ? (
-                <Route
-                  exact={true}
-                  path='/demo'
-                  render={() => componentPage(DemoPage)}
-                />
-              ) : null}
+        <HashRouter>
+          <Switch>
+            {process.env.REACT_APP_ENV === 'LOCAL' ? (
+              <Route
+                exact={true}
+                path='/demo'
+                render={() => componentPage(DemoPage)}
+              />
+            ) : null}
 
-              {/* NOTE LOGIN */}
-              <Route
-                // exact={false}
-                path='/redirect/:target/:verify'
-                render={() => componentPage(RedirectPage)}
-              />
-              <Route
-                exact={true}
-                path='/login'
-                render={() => componentPage(Login, 'LOGIN')}
-              />
-              <Route
-                exact={true}
-                path='/login/signUp1'
-                render={() => componentPage(SignUp1, 'LOGIN')}
-              />
-              <Route
-                exact={true}
-                path='/login/signUp2'
-                render={() => componentPage(SignUp2, 'LOGIN')}
-              />
-              <Route
-                exact={true}
-                path='/login/signUpConfirm'
-                render={() => componentPage(SignUpConfirm, 'LOGIN')}
-              />
-              <Route
-                exact={true}
-                path='/login/passwordRecover1'
-                render={() => componentPage(PasswordRecover1, 'LOGIN')}
-              />
-              <Route
-                exact={true}
-                path='/login/passwordRecover2'
-                render={() => componentPage(PasswordRecover2, 'LOGIN')}
-              />
-              <Route
-                exact={true}
-                path='/login/passwordRecover3'
-                render={() => componentPage(PasswordRecover3, 'LOGIN')}
-              />
-              <Route
-                exact={true}
-                path='/login/contact'
-                render={() => componentPage(Contact, 'LOGIN')}
-              />
-              <Route
-                exact={true}
-                path='/login/successfully/:type'
-                render={() => componentPage(Successfully, 'LOGIN')}
-              />
+            {/* NOTE LOGIN */}
+            <Route
+              // exact={false}
+              path='/redirect/:target/:verify'
+              render={() => componentPage(RedirectPage)}
+            />
+            <Route
+              exact={true}
+              path='/login'
+              render={() => componentPage(Login, 'LOGIN')}
+            />
+            <Route
+              exact={true}
+              path='/login/signUp1'
+              render={() => componentPage(SignUp1, 'LOGIN')}
+            />
+            <Route
+              exact={true}
+              path='/login/signUp2'
+              render={() => componentPage(SignUp2, 'LOGIN')}
+            />
+            <Route
+              exact={true}
+              path='/login/signUpConfirm'
+              render={() => componentPage(SignUpConfirm, 'LOGIN')}
+            />
+            <Route
+              exact={true}
+              path='/login/passwordRecover1'
+              render={() => componentPage(PasswordRecover1, 'LOGIN')}
+            />
+            <Route
+              exact={true}
+              path='/login/passwordRecover2'
+              render={() => componentPage(PasswordRecover2, 'LOGIN')}
+            />
+            <Route
+              exact={true}
+              path='/login/passwordRecover3'
+              render={() => componentPage(PasswordRecover3, 'LOGIN')}
+            />
+            <Route
+              exact={true}
+              path='/login/contact'
+              render={() => componentPage(Contact, 'LOGIN')}
+            />
+            <Route
+              exact={true}
+              path='/login/successfully/:type'
+              render={() => componentPage(Successfully, 'LOGIN')}
+            />
 
-              {/* NOTE USER */}
+            {/* NOTE USER */}
+            <div className='main'>
               <Route
                 exact={true}
                 path='/course'
@@ -228,10 +228,10 @@ const LayoutTemplate = () => {
                 path='/admin/admin'
                 render={() => componentPage(AdminAdmin, 'ADMIN')}
               />
-              <Redirect to='/login' />
-            </Switch>
-          </HashRouter>
-        </div>
+              {/* <Redirect to='/login' /> */}
+            </div>
+          </Switch>
+        </HashRouter>
       </Spin>
     </MyContext.Provider>
   )
