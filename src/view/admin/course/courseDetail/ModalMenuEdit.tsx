@@ -29,16 +29,16 @@ const ModalMenuEdit = (props: IProps) => {
     menu.forEach((item: any, index: number, ary: any) => {
       const levelPrev = ary[index - 1]?.level
       const levelNow = item.level
-      const levelNext = ary[index + 1]?.level
+      // const levelNext = ary[index + 1]?.level
       switch (levelNow) {
-        case 1:
-          if (!levelNext || levelNext !== 2) levelRight = false
-          break
-        case 2:
-          if (!levelNext || levelNext !== 3) levelRight = false
-          break
+        // case 1:
+        //   if (!levelNext || levelNext !== 2) levelRight = false
+        //   break
+        // case 2:
+        //   if (!levelPrev) levelRight = false
+        //   break
         case 3:
-          if (!levelPrev) levelRight = false
+          if (!levelPrev || levelPrev === 1) levelRight = false
           break
       }
     })
@@ -71,55 +71,83 @@ const ModalMenuEdit = (props: IProps) => {
     }
   }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  const [isModalConfirmShow, setIsModalConfirmShow] = useState<boolean>(false)
+
+  const deleteItem = (item: any) => {
+    console.log('deleteItem', item)
+    setIsModalConfirmShow(true)
+    // switch (item.level) {
+    //   case 1:
+    //   case 2:
+    //     const isHasChildren = props.sections.find((el: any) => {
+    //       let checkPrefix: string =
+    //         item.level === 1
+    //           ? el.key.split('-')[0]
+    //           : `${el.key.split('-')[0]}-${el.key.split('-')[1]}`
+    //       return item.level === 1
+    //         ? checkPrefix === item.key && el.level === 2
+    //         : checkPrefix === item.key && el.level === 3
+    //     })
+    //     isHasChildren ? setDeleteItemCache(item) : deleteItem(item)
+    //     break
+    //   case 3:
+    //     deleteItem(item)
+    //     break
+    //   default:
+    // }
+  }
+
   return (
-    <Modal
-      zIndex={1001}
-      title='Edit course menu'
-      visible={props.isShow}
-      onCancel={() => props.onCancel()}
-      width={720}
-      footer={[
-        <Btn
-          key='Save'
-          feature='action'
-          disabled={!isLevelRight}
-          onClick={() => save()}
-        >
-          Save
-        </Btn>,
-        <Btn key='Cancel' feature='primary' onClick={() => props.onCancel()}>
-          Cancel
-        </Btn>
-      ]}
-    >
-      <div style={{ maxWidth: '500px' }}>
-        <div style={{ border: isLevelRight ? 'unset' : '1px solid red' }}>
-          <DndProvider backend={HTML5Backend}>
-            <CourseDetailMenu
-              type='COURSE_MENU'
-              menu={menu}
-              setMenu={(menu: any) => setMenu(menu)}
-              addLevel1Count={addLevel1Count}
-            />
-          </DndProvider>
+    <>
+      <Modal
+        // zIndex={1001}
+        title='Edit course menu'
+        visible={props.isShow}
+        onCancel={() => props.onCancel()}
+        width={720}
+        footer={[
+          <Btn
+            key='Save'
+            feature='action'
+            disabled={!isLevelRight}
+            onClick={() => save()}
+          >
+            Save
+          </Btn>,
+          <Btn key='Cancel' feature='primary' onClick={() => props.onCancel()}>
+            Cancel
+          </Btn>
+        ]}
+      >
+        <div style={{ maxWidth: '500px' }}>
+          <div style={{ border: isLevelRight ? 'unset' : '1px solid red' }}>
+            <DndProvider backend={HTML5Backend}>
+              <CourseDetailMenu
+                type='COURSE_MENU'
+                menu={menu}
+                setMenu={(menu: any) => setMenu(menu)}
+                addLevel1Count={addLevel1Count}
+              />
+            </DndProvider>
+          </div>
+          <div
+            className='ad-course-menu-addGroup'
+            onClick={() => setAddLevelACount(addLevel1Count + 1)}
+          >
+            <span>
+              <em></em>
+              <em></em>
+            </span>
+          </div>
         </div>
-        <div
-          className='ad-course-menu-addGroup'
-          onClick={() => setAddLevelACount(addLevel1Count + 1)}
-        >
-          <span>
-            <em></em>
-            <em></em>
-          </span>
-        </div>
-      </div>
-      <FormGroupMsg
-        isShow={!isLevelRight}
-        isShowIcon={true}
-        type='error'
-        msg='The level of items have something wrong!'
-      />
-    </Modal>
+        <FormGroupMsg
+          isShow={!isLevelRight}
+          isShowIcon={true}
+          type='error'
+          msg='Child item should belong to a parent item.'
+        />
+      </Modal>
+    </>
   )
 }
 export default ModalMenuEdit

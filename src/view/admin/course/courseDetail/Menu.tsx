@@ -1,8 +1,10 @@
 import { useCallback, useState, useEffect } from 'react'
-import MenuItem from './MenuItem'
 import update from 'immutability-helper'
-import { Button, Modal } from 'antd'
-import { useForm } from 'antd/lib/form/Form'
+
+import MenuItem from './MenuItem'
+
+import { Btn, FormGroupMsg } from 'utility/component'
+import { Modal } from 'antd'
 
 interface IProps {
   type: string // COURSE_MENU , LEARNING_PATH
@@ -20,6 +22,7 @@ const Menu = (props: IProps) => {
   const [deleteItemCache, setDeleteItemCache] = useState<any>(null)
   const [isModalConfirmShow, setIsModalConfirmShow] = useState<boolean>(false)
 
+  // drag & drop
   const moveCard = useCallback(
     (dragIndex: number, hoverIndex: number) => {
       // console.warn('moveCard:', dragIndex, hoverIndex)
@@ -120,6 +123,8 @@ const Menu = (props: IProps) => {
     })
     return array
   }
+
+  // expand and rename
   const expandChildren = (item: any) => {
     const ary = [...props.menu]
     ary[item.index].isShowChildren = !ary[item.index].isShowChildren
@@ -142,67 +147,8 @@ const Menu = (props: IProps) => {
     newMenu[index].name = value
     props.setMenu(newMenu)
   }
-  const handleDeleteItem = (item: any) => {
-    switch (item.level) {
-      case 1:
-      case 2:
-        const isHasChildren = props.menu.find((el: any) => {
-          let checkPrefix: string =
-            item.level === 1
-              ? el.key.split('-')[0]
-              : `${el.key.split('-')[0]}-${el.key.split('-')[1]}`
-          return item.level === 1
-            ? checkPrefix === item.key && el.level === 2
-            : checkPrefix === item.key && el.level === 3
-        })
-        isHasChildren ? setDeleteItemCache(item) : deleteItem(item)
-        break
-      case 3:
-        deleteItem(item)
-        break
-      default:
-    }
-  }
-  const deleteItem = (item: any) => {
-    const level: number = item.level
 
-    // create new menu without deleted item
-    const ary: any = props.menu.filter((el: any) => {
-      const prefix: string =
-        level === 1
-          ? el.key.split('-')[0]
-          : level === 2
-          ? `${el.key.split('-')[0]}-${el.key.split('-')[1]}`
-          : el.key
-      if (prefix !== item.key) {
-        return el
-      } else {
-        return false //TOCHECK
-      }
-    })
-
-    // handle parent item's expanding arrow
-    if (level === 2 || level === 3) {
-      const parentId: string =
-        level === 2
-          ? item.key.split('-')[0]
-          : `${item.key.split('-')[0]}-${item.key.split('-')[1]}`
-      const isHasChildren = ary.find((el: any) => {
-        const prefix: string =
-          level === 2
-            ? el.key.split('-')[0]
-            : `${el.key.split('-')[0]}-${el.key.split('-')[1]}`
-        return el.level === level && prefix === parentId
-      })
-      if (!isHasChildren) {
-        const parentIndex = ary.findIndex((el: any) => el.key === parentId)
-        ary[parentIndex].isShowChildren = null
-      }
-    }
-
-    setDeleteItemCache(null)
-    props.setMenu(resortKeys(ary))
-  }
+  // add item
   const addChild = (clickItem?: any, course?: any) => {
     const ary: any = [...props.menu]
     let lastDownLevelChildId: string = ''
@@ -302,11 +248,54 @@ const Menu = (props: IProps) => {
     props.setMenu(ary)
   }
   useEffect(() => {
-    if (deleteItemCache) setIsModalConfirmShow(true)
-  }, [deleteItemCache]) // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => {
     if (props.addLevel1Count !== 0) addChild()
   }, [props.addLevel1Count]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // delete item
+  const deleteItem = (item: any) => {
+    const level: number = item.level
+
+    // create new menu without deleted item
+    const ary: any = props.menu.filter((el: any) => {
+      const prefix: string =
+        level === 1
+          ? el.key.split('-')[0]
+          : level === 2
+          ? `${el.key.split('-')[0]}-${el.key.split('-')[1]}`
+          : el.key
+      if (prefix !== item.key) {
+        return el
+      } else {
+        return false //TOCHECK
+      }
+    })
+
+    // handle parent item's expanding arrow
+    if (level === 2 || level === 3) {
+      const parentId: string =
+        level === 2
+          ? item.key.split('-')[0]
+          : `${item.key.split('-')[0]}-${item.key.split('-')[1]}`
+      const isHasChildren = ary.find((el: any) => {
+        const prefix: string =
+          level === 2
+            ? el.key.split('-')[0]
+            : `${el.key.split('-')[0]}-${el.key.split('-')[1]}`
+        return el.level === level && prefix === parentId
+      })
+      if (!isHasChildren) {
+        const parentIndex = ary.findIndex((el: any) => el.key === parentId)
+        ary[parentIndex].isShowChildren = null
+      }
+    }
+
+    setDeleteItemCache(null)
+    props.setMenu(resortKeys(ary))
+    setIsModalConfirmShow(false)
+  }
+  useEffect(() => {
+    if (deleteItemCache) setIsModalConfirmShow(true)
+  }, [deleteItemCache]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
@@ -331,35 +320,37 @@ const Menu = (props: IProps) => {
                 endDragging={() => endDragging()}
                 expandChildren={(item: any) => expandChildren(item)}
                 rename={(index: number, value: string) => rename(index, value)}
-                handleDeleteItem={(item: any) => handleDeleteItem(item)}
+                handleDeleteItem={(item: any) => setDeleteItemCache(item)}
               />
             </div>
           )
         })}
       </div>
       <Modal
+        zIndex={1001}
         title='Are you sure?'
         visible={isModalConfirmShow}
         onCancel={() => setIsModalConfirmShow(false)}
         footer={[
-          <Button
+          <Btn
             key='Create'
-            type='primary'
-            onClick={() => {
-              deleteItem(deleteItemCache)
-              setIsModalConfirmShow(false)
-            }}
+            feature='action'
+            onClick={() => deleteItem(deleteItemCache)}
           >
             Yes. Delete it.
-          </Button>,
-          <Button key='Cancel' onClick={() => setIsModalConfirmShow(false)}>
+          </Btn>,
+          <Btn
+            key='Cancel'
+            feature='primary'
+            onClick={() => setIsModalConfirmShow(false)}
+          >
             No
-          </Button>
+          </Btn>
         ]}
         width={720}
       >
-        There are {deleteItemCache?.level === 1 ? 'chapters' : 'secitons'} in
-        the folders. Are you sure you want to delete all the content?
+        Are you sure you want to delete all the content? If you delete chapter
+        or group, the including sections will be deleted as well.
       </Modal>
     </>
   )

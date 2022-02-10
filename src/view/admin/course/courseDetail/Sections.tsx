@@ -309,6 +309,7 @@ const Sections = (props: IProps) => {
         })}
       </div>
       <Modal
+        // zIndex={1001}
         title='Are you sure?'
         visible={isModalConfirmShow}
         onCancel={() => setIsModalConfirmShow(false)}
