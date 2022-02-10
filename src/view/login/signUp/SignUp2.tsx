@@ -63,14 +63,14 @@ const SignUp2 = () => {
   })
   const onChange = (key: string, e: any) => {
     let value = e.target.value
-    if (value) {
-      switch (key) {
-        case 'position':
-        case 'current_company':
-          if (value && ValidateStr('isSymbol', value)) return false
-          break
-      }
-    }
+    // if (value) {
+    //   switch (key) {
+    //     case 'position':
+    //     case 'current_company':
+    //       if (value && ValidateStr('isSymbol', value)) return false
+    //       break
+    //   }
+    // }
     setData({ ...data, [key]: value })
   }
   const onSelect = (key: string, value: any) => {

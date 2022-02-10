@@ -28,8 +28,8 @@ const PasswordRecover1 = () => {
     if (value) {
       switch (key) {
         case 'account':
-          if (value && !ValidateStr('isUserName', value)) return false
-          value = value.toLowerCase()
+          // if (value && !ValidateStr('isUserName', value)) return false
+          // value = value.toLowerCase()
           setIsEmail(
             value.match('@') ? ValidateStr('isEmail', value) : undefined
           )

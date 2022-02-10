@@ -36,16 +36,16 @@ const SignUp1 = () => {
     if (value) {
       switch (key) {
         case 'user_id':
-          if (value && !ValidateStr('isEngInt', value)) return false
-          value = value.toLowerCase()
+          // if (value && !ValidateStr('isEngInt', value)) return false
+          // value = value.toLowerCase()
           break
         case 'email':
-          if (value && !ValidateStr('isUserName', value)) return false
+          // if (value && !ValidateStr('isUserName', value)) return false
           setIsEmail(ValidateStr('isEmail', value))
           break
         case 'password':
         case 'passwordAgain':
-          if (value && !ValidateStr('isEngInt', value)) return false
+          // if (value && !ValidateStr('isEngInt', value)) return false
           break
       }
     }

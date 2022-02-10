@@ -32,11 +32,11 @@ const Login = () => {
     if (value) {
       switch (key) {
         case 'account':
-          if (value && !ValidateStr('isUserName', value)) return false
+          // if (value && !ValidateStr('isUserName', value)) return false
           setIsEmail(
             value.match('@') ? ValidateStr('isEmail', value) : undefined
           )
-          value = value.toLowerCase()
+          // value = value.toLowerCase()
           break
           // case 'password':
           //   if (value && !ValidateStr('isEngInt', value)) return false

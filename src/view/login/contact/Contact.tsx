@@ -53,23 +53,23 @@ const Contact = () => {
     const value = e.target.value
     if (value) {
       switch (key) {
-        case 'name':
-          if (
-            value &&
-            (ValidateStr('isInt', value) || ValidateStr('isSymbol', value))
-          )
-            return false
-          break
+        // case 'name':
+        //   if (
+        //     value &&
+        //     (ValidateStr('isInt', value) || ValidateStr('isSymbol', value))
+        //   )
+        //     return false
+        //   break
         case 'email':
-          if (value && !ValidateStr('isUserName', value)) return false
+          // if (value && !ValidateStr('isUserName', value)) return false
           setIsEmail(ValidateStr('isEmail', value))
           break
-        case 'account':
-          if (value && !ValidateStr('isEngInt', value)) return false
-          break
-        case 'desc':
-          if (value && ValidateStr('isSymbol', value)) return false
-          break
+        // case 'account':
+        //   if (value && !ValidateStr('isEngInt', value)) return false
+        //   break
+        // case 'desc':
+        //   if (value && ValidateStr('isSymbol', value)) return false
+        //   break
       }
     }
     setData({ ...data, [key]: value })

@@ -61,14 +61,14 @@ const ModalCreate = (props: IProps) => {
   }
   const onChange = (key: string, e: any) => {
     const value = e.target.value
-    if (value) {
-      switch (key) {
-        case 'purchase_number':
-        case 'remark':
-          if (value && ValidateStr('isSymbol', value)) return false
-          break
-      }
-    }
+    // if (value) {
+    //   switch (key) {
+    //     case 'purchase_number':
+    //     case 'remark':
+    //       if (value && ValidateStr('isSymbol', value)) return false
+    //       break
+    //   }
+    // }
     setData({ ...data, [key]: value })
   }
   const onCount = (key: string, value: number) => {

@@ -31,14 +31,14 @@ const ModalCreate = (props: IProps) => {
   const [data, setData] = useState<IState>({ ...initData })
   const onChange = (key: string, e: any) => {
     const value = e.target.value
-    if (value) {
-      switch (key) {
-        case 'email':
-          if (value && !ValidateStr('isUserName', value)) return false
-          setIsEmail(ValidateStr('isEmail', value))
-          break
-      }
-    }
+    // if (value) {
+    //   switch (key) {
+    //     case 'email':
+    //       if (value && !ValidateStr('isUserName', value)) return false
+    //       setIsEmail(ValidateStr('isEmail', value))
+    //       break
+    //   }
+    // }
     setData({ ...data, [key]: value })
   }
   const onSelect = (key: string, value: any) => {
