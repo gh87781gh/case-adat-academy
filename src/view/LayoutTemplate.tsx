@@ -63,7 +63,15 @@ const LayoutTemplate = () => {
     } else if (pageType === 'ADMIN' && auth.is_admin === false) {
       return <Redirect to='/course' />
     } else {
-      return <Component {...props} />
+      if (pageType === 'USER' || pageType === 'ADMIN') {
+        return (
+          <div className='main'>
+            <Component {...props} />
+          </div>
+        )
+      } else {
+        return <Component {...props} />
+      }
     }
   }
 
@@ -139,97 +147,95 @@ const LayoutTemplate = () => {
             />
 
             {/* NOTE USER */}
-            <div className='main'>
-              <Route
-                exact={true}
-                path='/course'
-                render={() => componentPage(Course, 'USER')}
-              />
-              <Route
-                exact={true}
-                path='/courseDetail/:courseId/:sectionId?'
-                render={() => componentPage(CourseDetail, 'USER')}
-              />
-              <Route
-                exact={true}
-                path='/bookmark'
-                render={() => componentPage(Bookmark, 'USER')}
-              />
-              <Route
-                exact={true}
-                path='/search/:text'
-                render={() => componentPage(Search, 'USER')}
-              />
-              <Route
-                exact={true}
-                path='/helpCenter'
-                render={() => componentPage(HelpCenter, 'USER')}
-              />
-              <Route
-                exact={true}
-                path='/contactUs'
-                render={() => componentPage(ContactUs, 'USER')}
-              />
-              <Route
-                exact={true}
-                path='/account/learningProfile'
-                render={() => componentPage(LearningProfile, 'USER')}
-              />
-              <Route
-                exact={true}
-                path='/account/purchaseDetail'
-                render={() => componentPage(PurchaseDetail, 'USER')}
-              />
-              <Route
-                exact={true}
-                path='/account/changePassword'
-                render={() => componentPage(ChangePassword, 'USER')}
-              />
+            <Route
+              exact={true}
+              path='/course'
+              render={() => componentPage(Course, 'USER')}
+            />
+            <Route
+              exact={true}
+              path='/courseDetail/:courseId/:sectionId?'
+              render={() => componentPage(CourseDetail, 'USER')}
+            />
+            <Route
+              exact={true}
+              path='/bookmark'
+              render={() => componentPage(Bookmark, 'USER')}
+            />
+            <Route
+              exact={true}
+              path='/search/:text'
+              render={() => componentPage(Search, 'USER')}
+            />
+            <Route
+              exact={true}
+              path='/helpCenter'
+              render={() => componentPage(HelpCenter, 'USER')}
+            />
+            <Route
+              exact={true}
+              path='/contactUs'
+              render={() => componentPage(ContactUs, 'USER')}
+            />
+            <Route
+              exact={true}
+              path='/account/learningProfile'
+              render={() => componentPage(LearningProfile, 'USER')}
+            />
+            <Route
+              exact={true}
+              path='/account/purchaseDetail'
+              render={() => componentPage(PurchaseDetail, 'USER')}
+            />
+            <Route
+              exact={true}
+              path='/account/changePassword'
+              render={() => componentPage(ChangePassword, 'USER')}
+            />
 
-              <Route
-                exact={true}
-                path='/noResult'
-                render={() => componentPage(NoResult, 'USER')}
-              />
-              <Route
-                exact={true}
-                path='/noAccess'
-                render={() => componentPage(NoAccess, 'USER')}
-              />
+            <Route
+              exact={true}
+              path='/noResult'
+              render={() => componentPage(NoResult, 'USER')}
+            />
+            <Route
+              exact={true}
+              path='/noAccess'
+              render={() => componentPage(NoAccess, 'USER')}
+            />
 
-              {/* NOTE ADMIN */}
-              <Route
-                exact={true}
-                path='/admin/purchase/:id?'
-                render={() => componentPage(AdminPurchase, 'ADMIN')}
-              />
-              <Route
-                exact={true}
-                path='/admin/account'
-                render={() => componentPage(AdminAccount, 'ADMIN')}
-              />
-              <Route
-                exact={true}
-                path='/admin/course'
-                render={() => componentPage(AdminCourse, 'ADMIN')}
-              />
-              <Route
-                exact={true}
-                path='/admin/courseDetail/:courseId/:sectionId?'
-                render={() => componentPage(AdminCourseDetail, 'ADMIN')}
-              />
-              <Route
-                exact={true}
-                path='/admin/course/learningPath'
-                render={() => componentPage(AdminCourseLearningPath, 'ADMIN')}
-              />
-              <Route
-                exact={true}
-                path='/admin/admin'
-                render={() => componentPage(AdminAdmin, 'ADMIN')}
-              />
-              {/* <Redirect to='/login' /> */}
-            </div>
+            {/* NOTE ADMIN */}
+            <Route
+              exact={true}
+              path='/admin/purchase/:id?'
+              render={() => componentPage(AdminPurchase, 'ADMIN')}
+            />
+            <Route
+              exact={true}
+              path='/admin/account'
+              render={() => componentPage(AdminAccount, 'ADMIN')}
+            />
+            <Route
+              exact={true}
+              path='/admin/course'
+              render={() => componentPage(AdminCourse, 'ADMIN')}
+            />
+            <Route
+              exact={true}
+              path='/admin/courseDetail/:courseId/:sectionId?'
+              render={() => componentPage(AdminCourseDetail, 'ADMIN')}
+            />
+            <Route
+              exact={true}
+              path='/admin/course/learningPath'
+              render={() => componentPage(AdminCourseLearningPath, 'ADMIN')}
+            />
+            <Route
+              exact={true}
+              path='/admin/admin'
+              render={() => componentPage(AdminAdmin, 'ADMIN')}
+            />
+            <Redirect to='/login' />
           </Switch>
         </HashRouter>
       </Spin>
