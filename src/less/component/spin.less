@@ -1,10 +1,19 @@
-.ad-spin-global {
-  min-height: 100vh;
+body {
+  height: calc(100vh - @global-header-height);
+  overflow-y: auto;
+  background-color: @color-primary;
 }
-#root > .ant-spin-nested-loading {
-  height: 100vh;
+.ad-spin-global {
+  min-height: 100%;
+}
+#root {
+  height: 100%;
 
-  & > .ant-spin-container {
+  & > .ant-spin-nested-loading {
     height: 100%;
+
+    & > .ant-spin-container {
+      height: 100%;
+    }
   }
 }
