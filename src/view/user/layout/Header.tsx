@@ -64,7 +64,7 @@ const Header = () => {
           key='course management'
           onClick={() => history.push('/account/purchaseDetail')}
         >
-          course management
+          purchase detail
         </Menu.Item>
         <Menu.Item
           className='ad-header-profile-menu-bd'
