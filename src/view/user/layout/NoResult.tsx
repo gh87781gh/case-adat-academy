@@ -1,8 +1,13 @@
+import { useHistory } from 'react-router-dom'
+
 import Header from 'view/user/layout/Header'
 import Footer from 'view/user/layout/Footer'
+
 import { Btn } from 'utility/component'
 
 const NoResult = () => {
+  const history = useHistory()
+
   return (
     <>
       <Header />
@@ -13,7 +18,10 @@ const NoResult = () => {
             Can’t find solutions? Please visit help center, and contact us for
             more information
           </p>
-          <Btn feature='primary'>Go to help center</Btn>
+
+          <Btn feature='primary' onClick={() => history.push('/helpCenter')}>
+            Go to help center
+          </Btn>
         </div>
       </article>
       <Footer />
