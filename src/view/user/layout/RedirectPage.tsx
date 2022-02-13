@@ -24,17 +24,12 @@ const RedirectPage = () => {
             .catch(() => history.push('/login'))
           break
         case 'passwordRecover3':
-          api
-            .recoverPasswordVerify(verify)
-            .then((res: any) => {
-              history.push({
-                pathname: '/login/passwordRecover3',
-                state: {
-                  tempPassword: res.data.key
-                }
-              })
-            })
-            .finally(() => context.setIsLoading(false))
+          history.push({
+            pathname: '/login/passwordRecover3',
+            state: {
+              tempPassword: verify
+            }
+          })
           break
       }
     }

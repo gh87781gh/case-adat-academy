@@ -3,7 +3,7 @@ import { IconInfor } from 'utility/icon'
 interface IProps {
   type?: string
   isShowIcon?: boolean
-  isShow: boolean
+  isShow: boolean | string
   msg: string
 }
 

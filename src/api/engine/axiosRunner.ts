@@ -51,7 +51,16 @@ export class ApiEngine {
     )
   }
 }
+
 export class RestAPI extends ApiEngine {
+  /**
+   * 物件資料格式的請求方法
+   * @param method post/get/delete
+   * @param url api網址
+   * @param body request data
+   * @param boolean (非必要)是否經過 interceptors.response 的全局報錯提示，否->回傳整包錯誤物件
+   *
+   */
   request = (
     method: string,
     url: string,

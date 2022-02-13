@@ -82,12 +82,7 @@ const CourseDetail = () => {
       api
         .getCurrentSectionContent(courseId, sectionId)
         .then((res: any) => {
-          // TOCHECK
-          const fakeDetail = {
-            name: 'fake name',
-            statue: 'fake status'
-          }
-          setCurrentSectionDetail(fakeDetail)
+          setCurrentSectionDetail({ name: res.section_name })
           setCurrentSectionContent(res.data)
         })
         .finally(() => context.setIsLoading(false))

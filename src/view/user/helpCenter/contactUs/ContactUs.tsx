@@ -12,7 +12,16 @@ import { UploadImg } from 'utility/component'
 import CS from 'assets/img/temp-cs.jpeg'
 
 import { Btn } from 'utility/component'
-import { Row, Col, Breadcrumb, Checkbox, Select, Input, message } from 'antd'
+import {
+  Row,
+  Col,
+  Breadcrumb,
+  Checkbox,
+  Select,
+  Input,
+  message,
+  DatePicker
+} from 'antd'
 const { Option } = Select
 const { TextArea } = Input
 
@@ -105,6 +114,12 @@ const ContactUs = () => {
         break
     }
   }
+  const onDatePick = (date: any, dateStr: string) => {
+    setData({ ...data, issue_happen_time: dateStr })
+  }
+  const onUpload = (key: string, value: string) => {
+    setData({ ...data, [key]: value })
+  }
 
   const submit = () => {
     context.setIsLoading(true)
@@ -169,24 +184,13 @@ const ContactUs = () => {
             </Select>
           </div>
         </Col>
-        <Col span={24}>
+        <Col span={12}>
           <div className='ad-form-group'>
             <label className='required'>Issue happen time</label>
-            <Select
-              value={data.issue_happen_time}
-              placeholder='Please select'
-              onChange={(val) => onSelect('industry', val)}
-            >
-              {/* TOCHECK 少這個 api 參數 */}
-              {/* {frequencyOption.map((item: string) => (
-                <Option value={item} key={item}>
-                  {item}
-                </Option>
-              ))} */}
-            </Select>
+            <DatePicker onChange={onDatePick} />
           </div>
         </Col>
-        <Col span={24}>
+        <Col span={12}>
           <div className='ad-form-group'>
             <label className='required'>Issue happen frequency</label>
             <Select
@@ -205,7 +209,6 @@ const ContactUs = () => {
         <Col span={24}>
           <div className='ad-form-group'>
             <label className='required'>Product version</label>
-            {/* TOCHECK 建議改用 select */}
             <Input
               placeholder='Please input'
               maxLength={50}
@@ -234,10 +237,8 @@ const ContactUs = () => {
               desc='Browse file'
               system='temp'
               systemId=''
-              imgId={''}
-              // imgId={data.logo_image_id}
-              // setUploadId={(id: string) => onUpload('logo_image_id', id)}
-              setUploadId={(id: string) => console.log('onUpload')}
+              imgId={data.attachment_image_id}
+              setUploadId={(id: string) => onUpload('attachment_image_id', id)}
             />
             <p className='ad-upload-info'>This is the description area</p>
           </div>

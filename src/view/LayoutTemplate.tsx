@@ -7,6 +7,7 @@ import GlobalApi from '../api/GlobalApi'
 import DemoPage from './DemoPage' // only for local
 import RedirectPage from './user/layout/RedirectPage'
 import Login from './login/login/Login'
+import LoginConfirm from './login/login/Confirmation'
 import SignUp1 from './login/signUp/SignUp1'
 import SignUp2 from './login/signUp/SignUp2'
 import SignUpConfirm from './login/signUp/SignUpConfirm'
@@ -107,6 +108,11 @@ const LayoutTemplate = () => {
             />
             <Route
               exact={true}
+              path='/login/loginConfirm/:type'
+              render={() => componentPage(LoginConfirm, 'LOGIN')}
+            />
+            <Route
+              exact={true}
               path='/login/signUp1'
               render={() => componentPage(SignUp1, 'LOGIN')}
             />
@@ -132,7 +138,7 @@ const LayoutTemplate = () => {
             />
             <Route
               exact={true}
-              path='/login/passwordRecover3'
+              path='/login/passwordRecover3/:tempPassword?'
               render={() => componentPage(PasswordRecover3, 'LOGIN')}
             />
             <Route
@@ -235,7 +241,7 @@ const LayoutTemplate = () => {
               path='/admin/admin'
               render={() => componentPage(AdminAdmin, 'ADMIN')}
             />
-            <Redirect to='/login' />
+            {/* <Redirect to='/login' /> */}
           </Switch>
         </HashRouter>
       </Spin>
