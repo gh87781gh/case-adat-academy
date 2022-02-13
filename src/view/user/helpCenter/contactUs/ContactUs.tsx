@@ -7,6 +7,7 @@ import HelpCenterApi from 'api/user/HelpCenter'
 import Header from 'view/user/layout/Header'
 import Footer from 'view/user/layout/Footer'
 import { UploadImg } from 'utility/component'
+import { ValidateStr } from 'utility/validate'
 
 // TODO
 import CS from 'assets/img/temp-cs.jpeg'
@@ -86,13 +87,11 @@ const ContactUs = () => {
   const onChange = (key: string, e: any) => {
     let value = e.target.value
     if (value) {
-      switch (
-        key
-        // case 'position':
-        // case 'current_company':
-        //   if (value && ValidateStr('isSymbol', value)) return false
-        //   break
-      ) {
+      switch (key) {
+        case 'position':
+        case 'phone_number':
+          if (!ValidateStr('isInt', value)) return false
+          break
       }
     }
     setData({ ...data, [key]: value })
@@ -283,7 +282,6 @@ const ContactUs = () => {
                   placeholder='Please select'
                   onChange={(val) => onSelect('contry_code', val)}
                 >
-                  {/* TOCHECK 國碼？ */}
                   {StaticService.countryCodeOption.map((country: any) => (
                     <Option value={country.code} key={country.code}>
                       {country.country} {country.code}

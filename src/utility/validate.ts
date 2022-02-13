@@ -1,5 +1,5 @@
 const isEngInt = /^[A-Za-z0-9]+$/
-const isInt = /[0-9]/
+const isInt = /^[0-9]+$/
 const isSymbol = /[-=/()_+{}[\]`~|:;*&^%$#@<>$\\]/
 const isUserName = /^[A-Za-z0-9@.]+$/
 const isEmail = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/

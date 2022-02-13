@@ -18,7 +18,10 @@ export default class StaticService {
     paragraph: 'paragraph'
   }
   static countryCodeOption: any = [
-    { country: 'Taiwan', code: '+886' },
-    { country: 'Chinese', code: '+250' }
+    { country: '台灣', code: '+886' },
+    { country: '英國', code: '+44' },
+    { country: '芬蘭', code: '+358' },
+    { country: '荷蘭', code: '+31' },
+    { country: '挪威', code: '+47' }
   ]
 }

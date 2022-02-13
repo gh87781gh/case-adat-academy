@@ -329,12 +329,12 @@ const LearningProfile = () => {
                     key='Submit'
                     onClick={() => update()}
                   >
-                    Submit
+                    Save
                   </Btn>
                   <Btn
                     feature='primary'
                     key='Cancel'
-                    // onClick={() => submit()}
+                    onClick={() => getLearningProfile()}
                   >
                     Cancel
                   </Btn>
