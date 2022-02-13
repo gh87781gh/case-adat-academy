@@ -90,22 +90,22 @@ const LearningProfile = () => {
     }
     setData({ ...data, experience: checkedValues })
   }
-  const getLearningProfile = () => {
+  const getUserProfile = () => {
     context.setIsLoading(true)
     api
-      .getLearningProfile()
+      .getUserProfile()
       .then((res: any) => setData(res.data))
       .finally(() => context.setIsLoading(false))
   }
   const update = () => {
     context.setIsLoading(true)
     api
-      .updateLearningProfile(data)
+      .updateUserProfile(data)
       .then(() => message.success('Saved'))
       .finally(() => context.setIsLoading(false))
   }
   useEffect(() => {
-    getLearningProfile()
+    getUserProfile()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const renderForm = () => {
@@ -334,7 +334,7 @@ const LearningProfile = () => {
                   <Btn
                     feature='primary'
                     key='Cancel'
-                    onClick={() => getLearningProfile()}
+                    onClick={() => getUserProfile()}
                   >
                     Cancel
                   </Btn>

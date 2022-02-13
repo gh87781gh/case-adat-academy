@@ -4,6 +4,7 @@ import GlobalApi from 'api/GlobalApi'
 import AdminApi from 'api/admin/AdminApi'
 import { FormGroupMsg, Btn } from 'utility/component'
 import { ValidateStr } from 'utility/validate'
+import { formatDate } from 'utility/format'
 import { Row, Col, Input, Select, Modal, Checkbox } from 'antd'
 const { Option } = Select
 
@@ -49,6 +50,16 @@ const ModalUpdate = (props: IProps) => {
           onChange={onChecks}
         >
           <Row gutter={[10, 10]}>
+            {/* <Col span={12} key={item}>
+              <Checkbox className='ad-checkbox-btn' value={item}>
+                {item}
+              </Checkbox>
+            </Col>
+            <Col span={12} key={item}>
+              <Checkbox className='ad-checkbox-btn' value={item}>
+                {item}
+              </Checkbox>
+            </Col> */}
             {/* {experienceOption.map((item: string, index: number) => (
               <Col span={12} key={item}>
                 <Checkbox className='ad-checkbox-btn' value={item}>

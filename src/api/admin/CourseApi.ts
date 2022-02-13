@@ -153,6 +153,23 @@ export default class CourseApi {
       data
     )
   }
+  uploadLearn = (name: string, data: any) => {
+    const ary: any = []
+    const item1Ary: any = data.filter((item: any) => item.level === 1)
+    const item2Ary: any = data.filter((item: any) => item.level === 2)
+    item1Ary.forEach((item1: any, index: number) => {
+      ary.push({
+        name: item1.name,
+        courses: []
+      })
+      for (const item2 of item2Ary) {
+        if (item1.key === item2.key.split('-')[0]) {
+          ary[index].courses.push({ id: item2.id })
+        }
+      }
+    })
+    return this.restAPI.request('post', `/learn/${name}`, ary)
+  }
 
   // NOTE 確認到以上
 
@@ -252,28 +269,5 @@ export default class CourseApi {
           reject(false)
         })
     })
-  }
-  uploadLearn = (name: string, data: any) => {
-    const ary: any = [...data]
-    for (const item of data) {
-      if (item.level === 1) item.courses = []
-      if (item.level === 'B') {
-      }
-    }
-    ary.forEach((item: any, index: number, array: any) => {
-      if (item.level === 1) item.courses = []
-      if (item.level === 'B') {
-        const parentIndex: number = array.findIndex(
-          (el: any) => el.key === item.key.split('-')[0]
-        )
-        array[parentIndex].courses.push({ id: item.id })
-      }
-    })
-    const sendData: any = []
-    for (const item of ary) {
-      if (item.level === 1)
-        sendData.push({ name: item.name, courses: item.courses })
-    }
-    return this.restAPI.request('post', `/learn/${name}`, sendData)
   }
 }

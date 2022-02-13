@@ -241,7 +241,7 @@ const LayoutTemplate = () => {
               path='/admin/admin'
               render={() => componentPage(AdminAdmin, 'ADMIN')}
             />
-            {/* <Redirect to='/login' /> */}
+            <Redirect to='/login' />
           </Switch>
         </HashRouter>
       </Spin>

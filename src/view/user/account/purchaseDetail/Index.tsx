@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import { MyContext, StaticService } from 'storage'
 import { useHistory } from 'react-router-dom'
-import GlobalApi from 'api/GlobalApi'
+// import GlobalApi from 'api/GlobalApi'
 import AccountApi from 'api/user/AccountApi'
 
 import Header from 'view/user/layout/Header'
@@ -9,72 +9,51 @@ import Footer from 'view/user/layout/Footer'
 import AccountSideBar from '../AccountSideBar'
 import ModalUpdate from './ModalUpdate'
 
+import Empty from 'assets/img/empty.png'
 import { Btn } from 'utility/component'
-import CS from 'assets/img/temp-cs.jpeg'
+import { formatDate } from 'utility/format'
 import { Row, Col, Breadcrumb, Checkbox, Select, Input, message } from 'antd'
 const { Option } = Select
 const { TextArea } = Input
 
 interface IState {
-  name: string
-  industry: string
-  position: string
-  current_company: string
-  experience_level: string
-  experience: string[]
-  gender: string
-  age_range: string
-  location: string
-  highest_degree: string
-  university: string
-  field_or_major: string
+  user_id: string
+  status: string
+  current_email: string
+  purchase_number: string
+  company: string
+  purchase_status: string
+  duration_start: string
+  duration_end: string
+  course_access: string
 }
 
 const Index = () => {
   const context = useContext(MyContext)
-  const api_global = new GlobalApi()
+  // const api_global = new GlobalApi()
   const api = new AccountApi()
   const history = useHistory()
 
-  const [options, setOptions] = useState<any>([])
-  useEffect(() => {
-    context.setIsLoading(true)
-    api_global
-      .getOptions([
-        'learning_profile_experiences',
-        'learning_profile_experience_levels',
-        'learning_profile_industries',
-        'learning_profile_genders',
-        'learning_profile_age_ranges',
-        'learning_profile_highest_degrees'
-      ])
-      .then((res: any) => setOptions(res.data))
-      .finally(() => context.setIsLoading(false))
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
   const [data, setData] = useState<IState>({
-    name: '',
-    gender: '',
-    age_range: '',
-    location: '',
-    industry: '',
-    position: '',
-    experience_level: '',
-    current_company: '',
-    experience: [],
-    highest_degree: '',
-    university: '',
-    field_or_major: ''
+    user_id: '',
+    status: '',
+    current_email: '',
+    purchase_number: '',
+    company: '',
+    purchase_status: '',
+    duration_start: '',
+    duration_end: '',
+    course_access: ''
   })
-  const getLearningProfile = () => {
+  const getUserProfile = () => {
     context.setIsLoading(true)
     api
-      .getLearningProfile()
+      .getUserProfile()
       .then((res: any) => setData(res.data))
       .finally(() => context.setIsLoading(false))
   }
   useEffect(() => {
-    getLearningProfile()
+    getUserProfile()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [isUpdateModalShow, setIsUpdateModalShow] = useState<boolean>(true) //TODO
@@ -99,13 +78,12 @@ const Index = () => {
                   Update email
                 </Btn>
               </h1>
-
               <Row gutter={20}>
                 <Col span={6}>
                   <div className='ad-form-group ad-form-group-horizontal'>
                     <label style={{ minWidth: '90px' }}>Full name</label>
                     <div className='ad-form-group-value'>
-                      <b>sdfghj</b>
+                      <b>{data.user_id}</b>
                     </div>
                   </div>
                 </Col>
@@ -113,7 +91,7 @@ const Index = () => {
                   <div className='ad-form-group ad-form-group-horizontal'>
                     <label style={{ minWidth: '70px' }}>Status</label>
                     <div className='ad-form-group-value'>
-                      <b>sdfghj</b>
+                      <b>{data.status}</b>
                     </div>
                   </div>
                 </Col>
@@ -121,44 +99,62 @@ const Index = () => {
                   <div className='ad-form-group ad-form-group-horizontal'>
                     <label style={{ minWidth: '120px' }}>Current email</label>
                     <div className='ad-form-group-value'>
-                      <b>sdfghj</b>
+                      <b>{data.current_email}</b>
                     </div>
                   </div>
                 </Col>
               </Row>
               <div className='ad-layout-article-contentCard'>
-                <Row gutter={20}>
-                  <Col span={8}>
-                    <div className='ad-form-group'>
-                      <label>Purchase number</label>
-                      <div className='ad-form-group-value'>sdfghj</div>
-                    </div>
-                  </Col>
-                  <Col span={8}>
-                    <div className='ad-form-group'>
-                      <label>Company</label>
-                      <div className='ad-form-group-value'>sdfghj</div>
-                    </div>
-                  </Col>
-                  <Col span={8}>
-                    <div className='ad-form-group'>
-                      <label>Status</label>
-                      <div className='ad-form-group-value'>sdfghj</div>
-                    </div>
-                  </Col>
-                  <Col span={8}>
-                    <div className='ad-form-group'>
-                      <label>Duration</label>
-                      <div className='ad-form-group-value'>sdfghj</div>
-                    </div>
-                  </Col>
-                  <Col span={8}>
-                    <div className='ad-form-group'>
-                      <label>Course access</label>
-                      <div className='ad-form-group-value'>sdfghj</div>
-                    </div>
-                  </Col>
-                </Row>
+                {data.purchase_number ? (
+                  <Row gutter={20}>
+                    <Col span={8}>
+                      <div className='ad-form-group'>
+                        <label>Purchase number</label>
+                        <div className='ad-form-group-value'>
+                          {data.purchase_number}
+                        </div>
+                      </div>
+                    </Col>
+                    <Col span={8}>
+                      <div className='ad-form-group'>
+                        <label>Company</label>
+                        <div className='ad-form-group-value'>
+                          {data.company}
+                        </div>
+                      </div>
+                    </Col>
+                    <Col span={8}>
+                      <div className='ad-form-group'>
+                        <label>Status</label>
+                        <div className='ad-form-group-value'>
+                          {data.purchase_status}
+                        </div>
+                      </div>
+                    </Col>
+                    <Col span={8}>
+                      <div className='ad-form-group'>
+                        <label>Duration</label>
+                        <div className='ad-form-group-value'>
+                          {formatDate(data.duration_start)}-
+                          {formatDate(data.duration_end)}
+                        </div>
+                      </div>
+                    </Col>
+                    <Col span={8}>
+                      <div className='ad-form-group'>
+                        <label>Course access</label>
+                        <div className='ad-form-group-value'>
+                          {data.course_access}
+                        </div>
+                      </div>
+                    </Col>
+                  </Row>
+                ) : (
+                  <div className='ad-layout-article-contentCard-empty'>
+                    <img src={Empty} alt='' />
+                    <p>No data</p>
+                  </div>
+                )}
               </div>
             </article>
           </Col>

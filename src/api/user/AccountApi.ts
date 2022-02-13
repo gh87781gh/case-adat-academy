@@ -2,10 +2,10 @@ import { RestAPI } from '../engine/axiosRunner'
 
 export default class AccountApi {
   restAPI: any = new RestAPI()
-  getLearningProfile = () => {
-    return this.restAPI.request('get', '/user/profile', {})
+  getUserProfile = () => {
+    return this.restAPI.request('get', '/user/purchase', {})
   }
-  updateLearningProfile = (data: any) => {
+  updateUserProfile = (data: any) => {
     return this.restAPI.request('get', '/user/profile', data)
   }
   changePassword = (data: any) => {
@@ -13,3 +13,11 @@ export default class AccountApi {
     return this.restAPI.request('post', '/user/password', data)
   }
 }
+// "user_id": "",
+// "status": "",
+// "current_email": "",
+// "purchase_number": "",
+// "company": "",
+// "duration_start": "",
+// "duration_end": "",
+// "course_access": ""
