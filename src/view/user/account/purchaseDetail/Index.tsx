@@ -12,9 +12,7 @@ import ModalUpdate from './ModalUpdate'
 import Empty from 'assets/img/empty.png'
 import { Btn } from 'utility/component'
 import { formatDate } from 'utility/format'
-import { Row, Col, Breadcrumb, Checkbox, Select, Input, message } from 'antd'
-const { Option } = Select
-const { TextArea } = Input
+import { Row, Col } from 'antd'
 
 interface IState {
   user_id: string
@@ -56,7 +54,7 @@ const Index = () => {
     getUserProfile()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const [isUpdateModalShow, setIsUpdateModalShow] = useState<boolean>(true) //TODO
+  const [isUpdateModalShow, setIsUpdateModalShow] = useState<boolean>(false)
 
   return (
     <>
