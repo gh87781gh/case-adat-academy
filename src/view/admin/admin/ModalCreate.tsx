@@ -133,7 +133,7 @@ const ModalCreate = (props: IProps) => {
         >
           {props.adminId ? 'Save' : 'Create'}
         </Btn>,
-        <Btn key='Cancel' onClick={props.onCancel}>
+        <Btn feature='primary' key='Cancel' onClick={() => props.onCancel()}>
           Cancel
         </Btn>
       ]}
