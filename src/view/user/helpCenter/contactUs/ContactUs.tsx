@@ -64,6 +64,7 @@ const ContactUs = () => {
         setFrequencyOption(res.data[2])
         setData({
           ...data,
+          support_type: res.data[0][0],
           contry_code: StaticService.countryCodeOption[0].code
         })
       })
@@ -167,55 +168,65 @@ const ContactUs = () => {
             />
           </div>
         </Col>
-        <Col span={24}>
-          <div className='ad-form-group'>
-            <label className='required'>Product</label>
-            <Select
-              value={data.product}
-              placeholder='Please select'
-              onChange={(val) => onSelect('product', val)}
-            >
-              {productOption.map((item: string) => (
-                <Option value={item} key={item}>
-                  {item}
-                </Option>
-              ))}
-            </Select>
-          </div>
-        </Col>
-        <Col span={12}>
-          <div className='ad-form-group'>
-            <label className='required'>Issue happen time</label>
-            <DatePicker onChange={onDatePick} />
-          </div>
-        </Col>
-        <Col span={12}>
-          <div className='ad-form-group'>
-            <label className='required'>Issue happen frequency</label>
-            <Select
-              value={data.frequency}
-              placeholder='Please select'
-              onChange={(val) => onSelect('frequency', val)}
-            >
-              {frequencyOption.map((item: string) => (
-                <Option value={item} key={item}>
-                  {item}
-                </Option>
-              ))}
-            </Select>
-          </div>
-        </Col>
-        <Col span={24}>
-          <div className='ad-form-group'>
-            <label className='required'>Product version</label>
-            <Input
-              placeholder='Please input'
-              maxLength={50}
-              value={data.product_version}
-              onChange={(e) => onChange('product_version', e)}
-            />
-          </div>
-        </Col>
+        {/* TODO */}
+        {/* TODO */}
+        {/* TODO */}
+        {/* TODO */}
+        {/* TODO */}
+        {/* TODO */}
+        {data.support_type === 'Operation questions' ? (
+          <>
+            <Col span={24}>
+              <div className='ad-form-group'>
+                <label className='required'>Product</label>
+                <Select
+                  value={data.product}
+                  placeholder='Please select'
+                  onChange={(val) => onSelect('product', val)}
+                >
+                  {productOption.map((item: string) => (
+                    <Option value={item} key={item}>
+                      {item}
+                    </Option>
+                  ))}
+                </Select>
+              </div>
+            </Col>
+            <Col span={12}>
+              <div className='ad-form-group'>
+                <label className='required'>Issue happen time</label>
+                <DatePicker onChange={onDatePick} />
+              </div>
+            </Col>
+            <Col span={12}>
+              <div className='ad-form-group'>
+                <label className='required'>Issue happen frequency</label>
+                <Select
+                  value={data.frequency}
+                  placeholder='Please select'
+                  onChange={(val) => onSelect('frequency', val)}
+                >
+                  {frequencyOption.map((item: string) => (
+                    <Option value={item} key={item}>
+                      {item}
+                    </Option>
+                  ))}
+                </Select>
+              </div>
+            </Col>
+            <Col span={24}>
+              <div className='ad-form-group'>
+                <label className='required'>Product version</label>
+                <Input
+                  placeholder='Please input'
+                  maxLength={50}
+                  value={data.product_version}
+                  onChange={(e) => onChange('product_version', e)}
+                />
+              </div>
+            </Col>
+          </>
+        ) : null}
         <Col span={24}>
           <div className='ad-form-group'>
             <label className='required'>
