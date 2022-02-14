@@ -56,8 +56,14 @@ const Index = () => {
       <div className='ad-course-banner'>
         <div className='ad-layout-container'>
           <p className='desc'>
-            Based on your <Btn feature='link'>learning profile</Btn>, we
-            recommend this
+            Based on your{' '}
+            <Btn
+              feature='link'
+              onClick={() => history.push('/account/learningProfile')}
+            >
+              learning profile
+            </Btn>
+            , we recommend this
           </p>
           <h1 className='title'>
             <span>LEARNING</span> <span>PATH</span>

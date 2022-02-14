@@ -43,15 +43,15 @@ const Index = () => {
     duration_end: '',
     course_access: ''
   })
-  const getUserProfile = () => {
+  const getUserPurchase = () => {
     context.setIsLoading(true)
     api
-      .getUserProfile()
+      .getUserPurchase()
       .then((res: any) => setData(res.data))
       .finally(() => context.setIsLoading(false))
   }
   useEffect(() => {
-    getUserProfile()
+    getUserPurchase()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [isUpdateModalShow, setIsUpdateModalShow] = useState<boolean>(false)
