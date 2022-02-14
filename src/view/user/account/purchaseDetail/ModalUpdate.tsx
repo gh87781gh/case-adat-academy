@@ -29,7 +29,6 @@ const ModalUpdate = (props: IProps) => {
     password: ''
   })
   const onChecks = (checkedValues: any) => {
-    console.log(checkedValues)
     if (checkedValues.length > 1) checkedValues.shift()
     setData({ ...data, have_purchase_number: checkedValues[0] })
   }
@@ -51,7 +50,7 @@ const ModalUpdate = (props: IProps) => {
       api
         .getUserEmail()
         .then((res: any) => {
-          console.log(res)
+          console.log(res) //TOCHECK
         })
         .finally(() => context.setIsLoading(false))
     }

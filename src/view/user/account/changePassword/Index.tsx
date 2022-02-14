@@ -83,7 +83,10 @@ const Index = () => {
                     onChange={(e) => onChange('change_password', e)}
                   />
                   <FormGroupMsg
-                    isShow={data.password === data.change_password}
+                    isShow={
+                      data.change_password &&
+                      data.password === data.change_password
+                    }
                     type='error'
                     isShowIcon={true}
                     msg='New password must be different'
@@ -98,7 +101,10 @@ const Index = () => {
                     onChange={(e) => onChange('change_password2', e)}
                   />
                   <FormGroupMsg
-                    isShow={isPassword2Correct === false}
+                    isShow={
+                      data.change_password2 &&
+                      data.change_password !== data.change_password2
+                    }
                     type='error'
                     isShowIcon={true}
                     msg='Passwords do not match.'

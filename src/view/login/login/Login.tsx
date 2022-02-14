@@ -73,7 +73,7 @@ const Login = () => {
         history.push('/course')
       })
       .catch((err: any) => {
-        console.log(err)
+        // console.log(err)
         /* 
           1. 帳號或密碼錯誤，直接報錯 
             101 欄位驗證錯誤
