@@ -7,7 +7,7 @@ import msg from 'api/engine/msg'
 import LoginTemplate from 'view/login/LoginTemplate'
 import LoginPrompt from '../LoginPrompt'
 
-import { ValidateStr } from 'utility/validate'
+import schema from 'utility/validate'
 import { Btn, FormGroupMsg } from 'utility/component'
 import { IconArrowNext } from 'utility/icon'
 import { Input } from 'antd'
@@ -15,7 +15,7 @@ import { Input } from 'antd'
 interface IState {
   user_id: string
   password: string
-  passwordAgain: string
+  password2: string
   email: string
 }
 
@@ -27,7 +27,7 @@ const SignUp1 = () => {
   const [data, setData] = useState<IState>({
     user_id: '',
     password: '',
-    passwordAgain: '',
+    password2: '',
     email: ''
   })
   const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
@@ -36,16 +36,15 @@ const SignUp1 = () => {
     if (value) {
       switch (key) {
         case 'user_id':
-          // if (value && !ValidateStr('isEngInt', value)) return false
-          // value = value.toLowerCase()
-          break
-        case 'email':
-          // if (value && !ValidateStr('isUserName', value)) return false
-          setIsEmail(ValidateStr('isEmail', value))
+          if (schema.user_id.validateStr(value)) return false
           break
         case 'password':
-        case 'passwordAgain':
-          // if (value && !ValidateStr('isEngInt', value)) return false
+        case 'password2':
+          if (schema.password.validateStr(value)) return false
+          break
+        case 'email':
+          if (schema.email.validateStr(value)) return false
+          setIsEmail(schema.email.validateFormat(value))
           break
       }
     }
@@ -93,7 +92,7 @@ const SignUp1 = () => {
           <label className='required'>User ID</label>
           <Input
             placeholder='Clear hint for the input'
-            maxLength={200}
+            maxLength={schema.user_id.max}
             value={data.user_id}
             onChange={(e) => onChange('user_id', e)}
           />
@@ -106,6 +105,7 @@ const SignUp1 = () => {
           <label className='required'>Password</label>
           <Input.Password
             placeholder='Clear hint for the input'
+            minLength={8}
             maxLength={16}
             value={data.password}
             onChange={(e) => onChange('password', e)}
@@ -125,14 +125,14 @@ const SignUp1 = () => {
           <label className='required'>Password again</label>
           <Input.Password
             className={
-              data.passwordAgain && data.password !== data.passwordAgain
+              data.password2 && data.password !== data.password2
                 ? 'ad-input-error'
                 : ''
             }
             placeholder='Clear hint for the input'
             maxLength={16}
-            value={data.passwordAgain}
-            onChange={(e) => onChange('passwordAgain', e)}
+            value={data.password2}
+            onChange={(e) => onChange('password2', e)}
           />
           <FormGroupMsg
             isShow={true}
@@ -140,9 +140,7 @@ const SignUp1 = () => {
           />
           <FormGroupMsg
             isShow={
-              data.passwordAgain && data.password !== data.passwordAgain
-                ? true
-                : false
+              data.password2 && data.password !== data.password2 ? true : false
             }
             type='error'
             isShowIcon={true}
@@ -153,7 +151,7 @@ const SignUp1 = () => {
           <label className='required'>Email</label>
           <Input
             value={data.email}
-            maxLength={200}
+            maxLength={schema.email.max}
             placeholder='Clear hint for the input'
             onChange={(e) => onChange('email', e)}
           />
@@ -176,9 +174,9 @@ const SignUp1 = () => {
             !data.user_id ||
             !data.password ||
             data.password.length < 8 ||
-            !data.passwordAgain ||
+            !data.password2 ||
+            data.password !== data.password2 ||
             !data.email ||
-            data.password !== data.passwordAgain ||
             isEmail !== true
           }
           className='ad-login-content-actionBtn'
