@@ -16,8 +16,8 @@ export function ValidateStr(type: string, value: string) {
       return isEmail.test(value)
     // case 'isInt':
     //   return isInt.test(value)
-    // case 'isSymbol':
-    //   return isSymbol.test(value)
+    case 'isNoSymbol':
+      return isSymbol.test(value)
     // case 'isUserName':
     //   return isUserName.test(value)
     default:
@@ -39,6 +39,21 @@ export const schema: any = {
     max: 200,
     validateStr: (val: any) => ValidateStr('isEmailEngIntSymbol', val),
     validateFormat: (val: any) => ValidateStr('isEmail', val)
+  },
+  name: {
+    validateStr: (val: any) => ValidateStr('isNoSymbol', val)
+  },
+  position: {
+    validateStr: (val: any) => ValidateStr('isNoSymbol', val)
+  },
+  current_company: {
+    validateStr: (val: any) => ValidateStr('isNoSymbol', val)
+  },
+  xxx1: {
+    validateStr: (val: any) => ValidateStr('isNoSymbol', val)
+  },
+  xxx2: {
+    validateStr: (val: any) => ValidateStr('isNoSymbol', val)
   }
 }
 export default schema

@@ -7,19 +7,18 @@ import LoginApi from 'api/LoginApi'
 
 import LoginTemplate from 'view/login/LoginTemplate'
 
-import { ValidateStr } from 'utility/validate'
-import { Btn } from 'utility/component'
+import schema from 'utility/validate'
+import { Btn, Input, Select, Option } from 'utility/component'
 import { IconArrowPrev } from 'utility/icon'
-import { Row, Col, Input, Checkbox, Select } from 'antd'
-const { Option } = Select
+import { Row, Col, Checkbox } from 'antd'
 
 interface IState {
   name: string
-  industry: string
+  industry: string | null
   position: string
   current_company: string
   experience: string[]
-  experience_level: string
+  experience_level: string | null
 }
 
 const SignUp2 = () => {
@@ -29,6 +28,7 @@ const SignUp2 = () => {
   const history = useHistory()
   const location = useLocation()
   const { state }: any = location
+  // state is come from signUp1
 
   const [industryOption, setIndustryOption] = useState<string[]>([])
   const [experienceLevelOption, setExperienceLevelOption] = useState<string[]>(
@@ -55,22 +55,23 @@ const SignUp2 = () => {
 
   const [data, setData] = useState<IState>({
     name: '',
-    industry: '',
+    industry: null,
     position: '',
     current_company: '',
     experience: [],
-    experience_level: ''
+    experience_level: null
   })
   const onChange = (key: string, e: any) => {
     let value = e.target.value
-    // if (value) {
-    //   switch (key) {
-    //     case 'position':
-    //     case 'current_company':
-    //       if (value && ValidateStr('isSymbol', value)) return false
-    //       break
-    //   }
-    // }
+    if (value) {
+      switch (key) {
+        case 'name':
+        case 'position':
+        case 'current_company':
+          if (schema[key].validateStr(value)) return false
+          break
+      }
+    }
     setData({ ...data, [key]: value })
   }
   const onSelect = (key: string, value: any) => {
@@ -84,6 +85,7 @@ const SignUp2 = () => {
     }
     setData({ ...data, experience: checkedValues })
   }
+
   const signUp = () => {
     context.setIsLoading(true)
 
@@ -117,10 +119,9 @@ const SignUp2 = () => {
             <div className='ad-form-group'>
               <label className='required'>Full name</label>
               <Input
-                placeholder='Please input'
                 maxLength={50}
                 value={data.name}
-                onChange={(e) => onChange('name', e)}
+                onChange={(e: any) => onChange('name', e)}
               />
             </div>
           </Col>
@@ -129,8 +130,7 @@ const SignUp2 = () => {
               <label className='required'>Industry</label>
               <Select
                 value={data.industry}
-                placeholder='Please select'
-                onChange={(val) => onSelect('industry', val)}
+                onChange={(val: any) => onSelect('industry', val)}
               >
                 {industryOption.map((item: string) => (
                   <Option value={item} key={item}>
@@ -144,10 +144,9 @@ const SignUp2 = () => {
             <div className='ad-form-group'>
               <label className='required'>Position</label>
               <Input
-                placeholder='Clear hint for the input'
                 maxLength={50}
                 value={data.position}
-                onChange={(e) => onChange('position', e)}
+                onChange={(e: any) => onChange('position', e)}
               />
             </div>
           </Col>
@@ -155,10 +154,9 @@ const SignUp2 = () => {
             <div className='ad-form-group'>
               <label className='required'>Experience level</label>
               <Select
-                placeholder='Please select'
                 maxLength={50}
                 value={data.experience_level}
-                onChange={(val) => onSelect('experience_level', val)}
+                onChange={(val: any) => onSelect('experience_level', val)}
               >
                 {experienceLevelOption.map((item: string) => (
                   <Option value={item} key={item}>
@@ -173,8 +171,7 @@ const SignUp2 = () => {
               <label>Current Company</label>
               <Input
                 value={data.current_company}
-                placeholder='Clear hint for the input'
-                onChange={(e) => onChange('current_company', e)}
+                onChange={(e: any) => onChange('current_company', e)}
               />
             </div>
           </Col>
@@ -201,7 +198,7 @@ const SignUp2 = () => {
         </div>
       </div>
       <div className='ad-login-content-footer'>
-        <p className=''>By signning up, you agree with our terms & policy.</p>
+        <p className=''>By signing up, you agree with our terms & policy.</p>
         <Btn
           feature='action'
           disabled={

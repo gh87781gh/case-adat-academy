@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import { MyContext } from 'storage'
+import { MyContext, StaticService } from 'storage'
 import LoginApi from 'api/LoginApi'
 import msg from 'api/engine/msg'
 
@@ -8,9 +8,8 @@ import LoginTemplate from 'view/login/LoginTemplate'
 import LoginPrompt from '../LoginPrompt'
 
 import schema from 'utility/validate'
-import { Btn, FormGroupMsg } from 'utility/component'
+import { Btn, FormGroupMsg, Input, InputPassword } from 'utility/component'
 import { IconArrowNext } from 'utility/icon'
-import { Input } from 'antd'
 
 interface IState {
   user_id: string
@@ -61,7 +60,7 @@ const SignUp1 = () => {
       .checkAccount(data)
       .then((res: any) =>
         res.data.is_exist
-          ? setErrMsg(msg.checkAccount)
+          ? setErrMsg(StaticService.msgAfterAPI.checkAccount)
           : history.push({
               pathname: '/login/signUp2',
               state: {
@@ -91,10 +90,9 @@ const SignUp1 = () => {
         <div className='ad-form-group'>
           <label className='required'>User ID</label>
           <Input
-            placeholder='Clear hint for the input'
             maxLength={schema.user_id.max}
             value={data.user_id}
-            onChange={(e) => onChange('user_id', e)}
+            onChange={(e: any) => onChange('user_id', e)}
           />
           <FormGroupMsg
             isShow={true}
@@ -103,12 +101,11 @@ const SignUp1 = () => {
         </div>
         <div className='ad-form-group'>
           <label className='required'>Password</label>
-          <Input.Password
-            placeholder='Clear hint for the input'
+          <InputPassword
             minLength={8}
             maxLength={16}
             value={data.password}
-            onChange={(e) => onChange('password', e)}
+            onChange={(e: any) => onChange('password', e)}
           />
           <FormGroupMsg
             isShow={true}
@@ -123,16 +120,11 @@ const SignUp1 = () => {
         </div>
         <div className='ad-form-group'>
           <label className='required'>Password again</label>
-          <Input.Password
-            className={
-              data.password2 && data.password !== data.password2
-                ? 'ad-input-error'
-                : ''
-            }
-            placeholder='Clear hint for the input'
+          <InputPassword
+            className={data.password2 && data.password !== data.password2}
             maxLength={16}
             value={data.password2}
-            onChange={(e) => onChange('password2', e)}
+            onChange={(e: any) => onChange('password2', e)}
           />
           <FormGroupMsg
             isShow={true}
@@ -153,7 +145,7 @@ const SignUp1 = () => {
             value={data.email}
             maxLength={schema.email.max}
             placeholder='Clear hint for the input'
-            onChange={(e) => onChange('email', e)}
+            onChange={(e: any) => onChange('email', e)}
           />
           <FormGroupMsg
             isShow={true}
