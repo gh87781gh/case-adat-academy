@@ -1,15 +1,15 @@
 import { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import { MyContext, BrowserStorage } from 'storage'
+import { MyContext, BrowserStorage, StaticService } from 'storage'
 import LoginApi from 'api/LoginApi'
 
 import LoginTemplate from '../LoginTemplate'
 import LoginPrompt from '../LoginPrompt'
 
 import { Btn, FormGroupMsg } from 'utility/component'
-import { ValidateStr } from 'utility/validate'
+import schema from 'utility/validate'
 import { IconArrowNext } from 'utility/icon'
-import { Input, Checkbox } from 'antd'
+import { Checkbox, Input } from 'antd'
 
 interface IState {
   account: string
@@ -22,24 +22,25 @@ const Login = () => {
   const browserStorage = new BrowserStorage()
   const history = useHistory()
 
+  // data
   const [data, setData] = useState<IState>({
-    account: '',
+    account: '', // account = user_id/email
     password: ''
   })
-  const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
+  const [isEmail, setIsEmail] = useState<boolean | null>(null)
   const onChange = (key: string, e: any) => {
     let value = e.target.value
     if (value) {
       switch (key) {
         case 'account':
-          // if (value && !ValidateStr('isUserName', value)) return false
+          // 這裡可輸入 user_id 或 email，所以使用 email 的 validateStr
+          if (schema.email.validateStr(value)) return false
           setIsEmail(
-            value.match('@') ? ValidateStr('isEmail', value) : undefined
+            value.match('@') ? schema.email.validateFormat(value) : null
           )
-          // value = value.toLowerCase()
           break
-          // case 'password':
-          //   if (value && !ValidateStr('isEngInt', value)) return false
+        case 'password':
+          if (schema.password.validateStr(value)) return false
           break
       }
     }
@@ -49,6 +50,7 @@ const Login = () => {
     setErrMsg('')
   }, [data])
 
+  // remember login account
   const [isKeep, setIsKeep] = useState<boolean>(false)
   useEffect(() => {
     const keepUsername = browserStorage.getStorage('LOGIN_USERNAME')
@@ -58,6 +60,7 @@ const Login = () => {
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // api
   const [errMsg, setErrMsg] = useState<string>('')
   const login = () => {
     isKeep
@@ -100,7 +103,7 @@ const Login = () => {
 
   return (
     <LoginTemplate>
-      <LoginPrompt type='error' text={errMsg} />
+      <LoginPrompt text={errMsg} />
       <div className='ad-login-content-header'>
         LOG IN
         <Btn
@@ -115,24 +118,25 @@ const Login = () => {
         <div className='ad-form-group'>
           <label>User ID or Email</label>
           <Input
-            placeholder='Clear hint for the input'
-            maxLength={200}
+            placeholder={StaticService.placeholder.input}
+            maxLength={schema.email.max}
             value={data.account}
-            onChange={(e) => onChange('account', e)}
+            onChange={(e: any) => onChange('account', e)}
           />
           <FormGroupMsg
             isShow={isEmail === false}
             type='error'
-            msg='The Email format is not correct.'
+            msg={schema.email.errFormat}
           />
         </div>
         <div className='ad-form-group'>
           <label>Password</label>
           <Input.Password
-            placeholder='Clear hint for the input'
-            maxLength={100}
+            placeholder={StaticService.placeholder.password}
+            minLength={schema.password.min}
+            maxLength={schema.password.max}
             value={data.password}
-            onChange={(e) => onChange('password', e)}
+            onChange={(e: any) => onChange('password', e)}
             onPressEnter={() => {
               if (data.account && data.password && !isEmail) login()
             }}

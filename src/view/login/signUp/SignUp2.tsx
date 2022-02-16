@@ -1,24 +1,24 @@
 import { useState, useContext, useEffect } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
-import { MyContext } from 'storage'
+import { MyContext, StaticService } from 'storage'
 import GlobalApi from 'api/GlobalApi'
 import LoginApi from 'api/LoginApi'
-// import msg from 'api/engine/msg'
 
 import LoginTemplate from 'view/login/LoginTemplate'
 
 import schema from 'utility/validate'
-import { Btn, Input, Select, Option } from 'utility/component'
+import { Btn } from 'utility/component'
 import { IconArrowPrev } from 'utility/icon'
-import { Row, Col, Checkbox } from 'antd'
+import { Row, Col, Checkbox, Select, Input } from 'antd'
+const { Option } = Select
 
 interface IState {
   name: string
-  industry: string | null
+  industry: string
   position: string
   current_company: string
   experience: string[]
-  experience_level: string | null
+  experience_level: string
 }
 
 const SignUp2 = () => {
@@ -55,11 +55,11 @@ const SignUp2 = () => {
 
   const [data, setData] = useState<IState>({
     name: '',
-    industry: null,
+    industry: '',
     position: '',
     current_company: '',
     experience: [],
-    experience_level: null
+    experience_level: ''
   })
   const onChange = (key: string, e: any) => {
     let value = e.target.value
@@ -119,7 +119,8 @@ const SignUp2 = () => {
             <div className='ad-form-group'>
               <label className='required'>Full name</label>
               <Input
-                maxLength={50}
+                placeholder={StaticService.placeholder.input}
+                maxLength={schema.name.max}
                 value={data.name}
                 onChange={(e: any) => onChange('name', e)}
               />
@@ -129,7 +130,8 @@ const SignUp2 = () => {
             <div className='ad-form-group'>
               <label className='required'>Industry</label>
               <Select
-                value={data.industry}
+                placeholder={StaticService.placeholder.select}
+                value={data.industry || undefined}
                 onChange={(val: any) => onSelect('industry', val)}
               >
                 {industryOption.map((item: string) => (
@@ -144,7 +146,8 @@ const SignUp2 = () => {
             <div className='ad-form-group'>
               <label className='required'>Position</label>
               <Input
-                maxLength={50}
+                placeholder={StaticService.placeholder.input}
+                maxLength={schema.position.max}
                 value={data.position}
                 onChange={(e: any) => onChange('position', e)}
               />
@@ -154,8 +157,8 @@ const SignUp2 = () => {
             <div className='ad-form-group'>
               <label className='required'>Experience level</label>
               <Select
-                maxLength={50}
-                value={data.experience_level}
+                placeholder={StaticService.placeholder.select}
+                value={data.experience_level || undefined}
                 onChange={(val: any) => onSelect('experience_level', val)}
               >
                 {experienceLevelOption.map((item: string) => (
@@ -170,6 +173,8 @@ const SignUp2 = () => {
             <div className='ad-form-group'>
               <label>Current Company</label>
               <Input
+                placeholder={StaticService.placeholder.input}
+                maxLength={schema.current_company.max}
                 value={data.current_company}
                 onChange={(e: any) => onChange('current_company', e)}
               />

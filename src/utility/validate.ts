@@ -27,26 +27,36 @@ export function ValidateStr(type: string, value: string) {
 
 export const schema: any = {
   user_id: {
+    info: 'User ID is your unique identifier as a member in AIR academy',
     max: 50,
     validateStr: (val: any) => ValidateStr('isEngInt', val)
   },
   password: {
+    info: 'At least 8 characters. A mixture of letters and numbers.',
+    info2: 'Please confirm by typing password again.',
     min: 8,
     max: 16,
-    validateStr: (val: any) => ValidateStr('isEngInt', val)
+    validateStr: (val: any) => ValidateStr('isEngInt', val),
+    errTooShort: 'Password is too short',
+    errNotMatch: 'Passwords do not match.'
   },
   email: {
+    info: 'Please enter the authorized email.',
     max: 200,
     validateStr: (val: any) => ValidateStr('isEmailEngIntSymbol', val),
-    validateFormat: (val: any) => ValidateStr('isEmail', val)
+    validateFormat: (val: any) => ValidateStr('isEmail', val),
+    errFormat: 'The Email format is not correct.'
   },
   name: {
+    max: 100,
     validateStr: (val: any) => ValidateStr('isNoSymbol', val)
   },
   position: {
+    max: 200,
     validateStr: (val: any) => ValidateStr('isNoSymbol', val)
   },
   current_company: {
+    max: 200,
     validateStr: (val: any) => ValidateStr('isNoSymbol', val)
   },
   xxx1: {

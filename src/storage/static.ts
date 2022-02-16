@@ -18,6 +18,12 @@ export default class StaticService {
     checkAccount: 'The User ID or Email is exist.'
   }
 
+  static placeholder: any = {
+    input: 'Please input',
+    password: '****************',
+    select: 'Please select'
+  }
+
   // TODO 等著拿掉
   static tablePageSize: number = 10
   static uploadImgMaxSize: number = 5000000

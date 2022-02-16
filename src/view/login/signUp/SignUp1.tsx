@@ -8,8 +8,9 @@ import LoginTemplate from 'view/login/LoginTemplate'
 import LoginPrompt from '../LoginPrompt'
 
 import schema from 'utility/validate'
-import { Btn, FormGroupMsg, Input, InputPassword } from 'utility/component'
+import { Btn, FormGroupMsg } from 'utility/component'
 import { IconArrowNext } from 'utility/icon'
+import { Input } from 'antd'
 
 interface IState {
   user_id: string
@@ -90,72 +91,61 @@ const SignUp1 = () => {
         <div className='ad-form-group'>
           <label className='required'>User ID</label>
           <Input
+            placeholder={StaticService.placeholder.input}
             maxLength={schema.user_id.max}
             value={data.user_id}
             onChange={(e: any) => onChange('user_id', e)}
           />
-          <FormGroupMsg
-            isShow={true}
-            msg='User ID is your unique identifier as a member in AIR academy'
-          />
+          <FormGroupMsg isShow={true} msg={schema.user_id.info} />
         </div>
         <div className='ad-form-group'>
           <label className='required'>Password</label>
-          <InputPassword
-            minLength={8}
-            maxLength={16}
+          <Input.Password
+            placeholder={StaticService.placeholder.password}
+            minLength={schema.password.min}
+            maxLength={schema.password.max}
             value={data.password}
             onChange={(e: any) => onChange('password', e)}
           />
-          <FormGroupMsg
-            isShow={true}
-            msg='At least 8 characters. A mixture of letters and numbers.'
-          />
+          <FormGroupMsg isShow={true} msg={schema.password.info} />
           <FormGroupMsg
             isShow={data.password.length > 0 && data.password.length < 8}
             type='error'
             isShowIcon={true}
-            msg='Password is too short'
+            msg={schema.password.errTooShort}
           />
         </div>
         <div className='ad-form-group'>
           <label className='required'>Password again</label>
-          <InputPassword
-            className={data.password2 && data.password !== data.password2}
-            maxLength={16}
+          <Input.Password
+            placeholder={StaticService.placeholder.password}
+            minLength={schema.password.min}
+            maxLength={schema.password.max}
             value={data.password2}
             onChange={(e: any) => onChange('password2', e)}
           />
+          <FormGroupMsg isShow={true} msg={schema.password.info2} />
           <FormGroupMsg
-            isShow={true}
-            msg='Please confirm by typing password again.'
-          />
-          <FormGroupMsg
-            isShow={
-              data.password2 && data.password !== data.password2 ? true : false
-            }
+            isShow={data.password2 && data.password !== data.password2}
             type='error'
             isShowIcon={true}
-            msg='Passwords do not match.'
+            msg={schema.password.errNotMatch}
           />
         </div>
         <div className='ad-form-group'>
           <label className='required'>Email</label>
           <Input
+            placeholder={StaticService.placeholder.input}
             value={data.email}
             maxLength={schema.email.max}
-            placeholder='Clear hint for the input'
             onChange={(e: any) => onChange('email', e)}
           />
-          <FormGroupMsg
-            isShow={true}
-            msg='Please enter the authorized email.'
-          />
+          <FormGroupMsg isShow={true} msg={schema.email.info} />
           <FormGroupMsg
             isShow={isEmail === false}
             type='error'
             isShowIcon={true}
-            msg='The Email format is not correct.'
+            msg={schema.email.errFormat}
           />
         </div>
       </div>
