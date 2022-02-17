@@ -44,6 +44,7 @@ export class ApiEngine {
           } else if (err.response.status === 401) {
             message.error('Unauthorized')
             history.push('/login')
+            window.location.reload() //TODO
           }
         }
         return Promise.reject(err.response.data)

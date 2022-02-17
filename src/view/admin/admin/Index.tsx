@@ -144,13 +144,13 @@ const Index = () => {
           </h1>
           <div className='ad-layout-admin-article-toolBar'>
             <Row gutter={20}>
-              <Col span={6}>
+              <Col span={8}>
                 <div className='ad-form-group ad-form-group-horizontal'>
                   <label style={{ minWidth: '50px' }}>Role</label>
                   <Select
-                    value={data.role}
-                    placeholder='Please select'
-                    onChange={(val) => onSelect('role', val)}
+                    value={data.role || undefined}
+                    placeholder={StaticService.placeholder.select}
+                    onChange={(val: any) => onSelect('role', val)}
                     allowClear={true}
                   >
                     {roleOption.map((item: string) => (
@@ -161,10 +161,10 @@ const Index = () => {
                   </Select>
                 </div>
               </Col>
-              <Col span={8} offset={10}>
+              <Col span={8} offset={8}>
                 <Input
                   value={data.search}
-                  placeholder='Search User ID'
+                  placeholder={StaticService.placeholder.SearchUserID}
                   prefix={<IconSearch onClick={() => getList()} />}
                   onPressEnter={() => getList()}
                   onChange={(e) => onChange('search', e)}

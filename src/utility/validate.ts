@@ -1,8 +1,8 @@
 const isEngInt = /^[A-Za-z0-9]+$/
 const isEmailEngIntSymbol = /^[A-Za-z0-9.@]+$/
 const isEmail = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
-
 const isInt = /^[0-9]+$/
+
 const isSymbol = /[-=/()_+{}[\]`~|:;*&^%$#@<>$\\]/
 const isUserName = /^[A-Za-z0-9@.]+$/
 
@@ -14,8 +14,8 @@ export function ValidateStr(type: string, value: string) {
       return !isEmailEngIntSymbol.test(value)
     case 'isEmail':
       return isEmail.test(value)
-    // case 'isInt':
-    //   return isInt.test(value)
+    case 'isInt':
+      return isInt.test(value)
     case 'isNoSymbol':
       return isSymbol.test(value)
     // case 'isUserName':
@@ -58,6 +58,15 @@ export const schema: any = {
   current_company: {
     max: 200,
     validateStr: (val: any) => ValidateStr('isNoSymbol', val)
+  },
+  purchase_number: {
+    max: 50,
+    validateStr: (val: any) => ValidateStr('isNoSymbol', val)
+  },
+  quata: {
+    min: 1,
+    max: 100,
+    validateStr: (val: any) => ValidateStr('isInt', val)
   },
   xxx1: {
     validateStr: (val: any) => ValidateStr('isNoSymbol', val)

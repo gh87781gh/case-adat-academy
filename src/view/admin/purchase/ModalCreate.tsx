@@ -1,9 +1,10 @@
 import { useState, useEffect, useContext } from 'react'
 import moment from 'moment'
-import { MyContext } from 'storage'
+import { MyContext, StaticService } from 'storage'
 import GlobalApi from 'api/GlobalApi'
 import PurchaseApi from 'api/admin/PurchaseApi'
-import { ValidateStr } from 'utility/validate'
+
+import schema from 'utility/validate'
 import {
   DatePicker,
   Row,
@@ -42,7 +43,25 @@ const ModalCreate = (props: IProps) => {
   const api = new PurchaseApi()
   const api_global = new GlobalApi()
 
+  // option
   const [companyOption, setCompanyOption] = useState<any>([])
+  const [courseAccessOption, setCourseAccessOption] = useState<any>([])
+  useEffect(() => {
+    if (props.isShow) {
+      api_global
+        .getOptions([
+          'purchase_management_company',
+          'purchase_management_course_access'
+        ])
+        .then((res: any) => {
+          setCompanyOption(res.data[0])
+          setCourseAccessOption(res.data[1])
+        })
+        .finally(() => context.setIsLoading(false))
+    }
+  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // data
   const initData = {
     purchase_number: '',
     status: '',
@@ -56,19 +75,21 @@ const ModalCreate = (props: IProps) => {
   const [data, setData] = useState<IState>({
     ...initData
   })
-  const onSelect = (key: string, value: any) => {
-    setData({ ...data, [key]: value })
-  }
   const onChange = (key: string, e: any) => {
     const value = e.target.value
-    // if (value) {
-    //   switch (key) {
-    //     case 'purchase_number':
-    //     case 'remark':
-    //       if (value && ValidateStr('isSymbol', value)) return false
-    //       break
-    //   }
-    // }
+    if (value) {
+      switch (key) {
+        // TODO
+        case 'name':
+        case 'position':
+        case 'current_company':
+          if (schema[key].validateStr(value)) return false
+          break
+      }
+    }
+    setData({ ...data, [key]: value })
+  }
+  const onSelect = (key: string, value: any) => {
     setData({ ...data, [key]: value })
   }
   const onCount = (key: string, value: number) => {
@@ -87,13 +108,8 @@ const ModalCreate = (props: IProps) => {
   }
   useEffect(() => {
     if (props.isShow) {
-      api_global
-        .getOptions(['purchase_management_company'])
-        .then((res: any) => {
-          setCompanyOption(res.data[0])
-        })
-        .finally(() => context.setIsLoading(false))
-
+      // 開啟 modal 時設定初始資料
+      // TODO purchaseDetail 改從這裡抓
       setData(
         props.mode === 'CREATE' ? { ...initData } : { ...props.purchaseDetail }
       )
@@ -161,10 +177,10 @@ const ModalCreate = (props: IProps) => {
             <label>Purchase number</label>
             {props.mode === 'CREATE' ? (
               <Input
-                placeholder='Clear hint for the input'
-                maxLength={50}
+                placeholder={StaticService.placeholder.input}
+                maxLength={schema.purchase_number.max}
                 value={data.purchase_number}
-                onChange={(e) => onChange('purchase_number', e)}
+                onChange={(e: any) => onChange('purchase_number', e)}
               />
             ) : props.mode === 'UPDATE' ? (
               <div className='ad-form-group-value'>{data.purchase_number}</div>
@@ -182,10 +198,12 @@ const ModalCreate = (props: IProps) => {
         <Col span={12}>
           <div className='ad-form-group'>
             <label className='required'>Company</label>
+            {/* TODO autocompleted */}
+            {/* TOCHECK */}
             <Select
-              value={data.company}
-              placeholder='Please select'
-              onChange={(val) => onSelect('company', val)}
+              placeholder={StaticService.placeholder.select}
+              value={data.company || undefined}
+              onChange={(val: any) => onSelect('company', val)}
             >
               {companyOption.map((item: string) => (
                 <Option value={item} key={item}>
@@ -204,7 +222,7 @@ const ModalCreate = (props: IProps) => {
                 data.duration_end ? moment(data.duration_end) : null
               ]}
               onChange={onPick}
-              format='YYYY/MM/DD'
+              format={StaticService.format.date}
               disabledDate={disabledDate}
             />
           </div>
@@ -214,21 +232,15 @@ const ModalCreate = (props: IProps) => {
             <label className='required'>Course access</label>
             <Select
               mode='multiple'
-              value={data.course_access}
-              placeholder='Please select'
-              onChange={(val) => onSelect('course_access', val)}
+              value={data.course_access || undefined}
+              onChange={(val: any) => onSelect('course_access', val)}
             >
-              <Option value={'access_1'}>Access 1</Option>
-              <Option value={'access_2'}>Access 2</Option>
-              <Option value={'access_3'}>Access 3</Option>
-              <Option value={'access_4'}>Access 4</Option>
-              <Option value={'access_5'}>Access 5</Option>
-              {/* TODO */}
-              {/* {optionIndustry.map((item: any) => (
-                  <Option value={item.value} key={item.value}>
-                    {item.name}
-                  </Option>
-                ))} */}
+              {/* TOCHECK */}
+              {courseAccessOption.map((item: any) => (
+                <Option value={item} key={item}>
+                  item
+                </Option>
+              ))}
             </Select>
           </div>
         </Col>
@@ -237,9 +249,13 @@ const ModalCreate = (props: IProps) => {
             <label className='required'>Quota</label>
             <InputNumber
               value={data.quata}
-              min={props.mode === 'UPDATE' ? props.purchaseDetail.usage : 0}
-              max={100}
-              onChange={(val) => onCount('quata', val)}
+              min={
+                props.mode === 'UPDATE'
+                  ? props.purchaseDetail.usage
+                  : schema.quata.min
+              }
+              max={schema.quata.max}
+              onChange={(val: any) => onCount('quata', val)}
             />
           </div>
         </Col>

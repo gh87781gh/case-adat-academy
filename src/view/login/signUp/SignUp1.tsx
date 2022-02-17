@@ -24,6 +24,7 @@ const SignUp1 = () => {
   const api = new LoginApi()
   const history = useHistory()
 
+  // data
   const [data, setData] = useState<IState>({
     user_id: '',
     password: '',
@@ -54,29 +55,34 @@ const SignUp1 = () => {
     setErrMsg('')
   }, [data])
 
+  // api
   const [errMsg, setErrMsg] = useState<string>('')
   const checkAccount = () => {
     context.setIsLoading(true)
     api
       .checkAccount(data)
-      .then((res: any) =>
-        res.data.is_exist
-          ? setErrMsg(StaticService.msgAfterAPI.checkAccount)
-          : history.push({
-              pathname: '/login/signUp2',
-              state: {
-                user_id: data.user_id,
-                password: data.password,
-                email: data.email
-              }
-            })
-      )
+      .then((res: any) => {
+        if (res.data.user_id_is_exist) {
+          setErrMsg(StaticService.msgAfterAPI.signUpCheckUserId)
+        } else if (res.data.email_is_exist) {
+          setErrMsg(StaticService.msgAfterAPI.signUpCheckEmail)
+        } else {
+          history.push({
+            pathname: '/login/signUp2',
+            state: {
+              user_id: data.user_id,
+              password: data.password,
+              email: data.email
+            }
+          })
+        }
+      })
       .finally(() => context.setIsLoading(false))
   }
 
   return (
     <LoginTemplate>
-      <LoginPrompt type='error' text={errMsg} />
+      <LoginPrompt text={errMsg} />
       <div className='ad-login-content-header'>
         SIGN UP
         <Btn

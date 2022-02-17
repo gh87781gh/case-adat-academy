@@ -11,7 +11,7 @@ interface IProps {
   isShow: boolean
   onCancel: () => void
   getList: (keepPage?: boolean) => void
-  adminId?: string
+  adminId?: string // if exist ->
 }
 interface IState {
   user_id: string

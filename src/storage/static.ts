@@ -15,13 +15,19 @@ export default class StaticService {
   ]
 
   static msgAfterAPI: any = {
-    checkAccount: 'The User ID or Email is exist.'
+    signUpCheckUserId: 'User ID existed. Please try another one.',
+    signUpCheckEmail: 'Email existed. Please try to login.'
   }
 
   static placeholder: any = {
     input: 'Please input',
     password: '****************',
-    select: 'Please select'
+    select: 'Please select',
+    SearchUserID: 'Search User ID'
+  }
+
+  static format: any = {
+    date: 'YYYY/MM/DD'
   }
 
   // TODO 等著拿掉
