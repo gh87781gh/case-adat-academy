@@ -3,7 +3,8 @@ import { MyContext } from 'storage'
 
 import PurchaseApi from 'api/admin/PurchaseApi'
 
-import { Row, Col, Button, Modal } from 'antd'
+import { Btn } from 'utility/component'
+import { Row, Col, Modal } from 'antd'
 
 interface IProps {
   isShow: boolean
@@ -41,12 +42,16 @@ const ModalDetail = (props: IProps) => {
       visible={isModalConfirmShow}
       onCancel={() => setIsModalConfirmShow(false)}
       footer={[
-        <Button key='Create' type='primary' onClick={deletePurchase}>
+        <Btn key='Create' feature='action' onClick={deletePurchase}>
           Yes. Delete it.
-        </Button>,
-        <Button key='Cancel' onClick={() => setIsModalConfirmShow(false)}>
+        </Btn>,
+        <Btn
+          key='Cancel'
+          feature='primary'
+          onClick={() => setIsModalConfirmShow(false)}
+        >
           No
-        </Button>
+        </Btn>
       ]}
       width={720}
     >
@@ -76,22 +81,27 @@ const ModalDetail = (props: IProps) => {
           <>
             Purchase details
             <div className='ad-btn-group ad-float-right'>
-              <Button
+              <Btn
                 key='Edit'
-                type='primary'
+                feature='action'
                 onClick={() => props.setIsModalEditShow(true)}
               >
                 Edit
-              </Button>
-              <Button
+              </Btn>
+              <Btn
                 key='View'
+                feature='primary'
                 onClick={() => props.setIsModalRecordShow(true)}
               >
                 View records
-              </Button>
-              <Button key='Delete' onClick={() => setIsModalConfirmShow(true)}>
+              </Btn>
+              <Btn
+                key='Delete'
+                feature='primary'
+                onClick={() => setIsModalConfirmShow(true)}
+              >
                 Delete
-              </Button>
+              </Btn>
             </div>
           </>
         }
