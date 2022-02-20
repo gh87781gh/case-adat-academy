@@ -32,6 +32,7 @@ import NoAccess from './user/layout/NoAccess'
 
 // admin console
 import AdminPurchase from './admin/purchase/Index'
+import AdminPurchaseAccount from './admin/purchase/purchaseAccount/PurchaseAccount'
 import AdminAccount from './admin/account/Index'
 import AdminCourse from './admin/course/Index'
 import AdminCourseDetail from './admin/course/courseDetail/CourseDetail'
@@ -216,6 +217,11 @@ const LayoutTemplate = () => {
               path='/admin/purchase/:id?'
               render={() => componentPage(AdminPurchase, 'ADMIN')}
             />
+            {/* <Route
+              exact={true}
+              path='/admin/purchaseAccount/:id?'
+              render={() => componentPage(AdminPurchaseAccount, 'ADMIN')}
+            /> */}
             <Route
               exact={true}
               path='/admin/account'

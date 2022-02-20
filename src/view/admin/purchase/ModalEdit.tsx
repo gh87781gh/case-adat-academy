@@ -5,6 +5,7 @@ import GlobalApi from 'api/GlobalApi'
 import PurchaseApi from 'api/admin/PurchaseApi'
 
 import schema from 'utility/validate'
+import { DisabledMoment } from 'utility/moment'
 import {
   DatePicker,
   Row,
@@ -25,12 +26,13 @@ interface IProps {
   onCancel: () => void
   getList: () => void
   getPurchaseDetail?: () => void // only UPDATE
-  purchaseDetail?: any // only UPDATE
+  purchaseId?: string // only UPDATE
+  isModalEditShow?: boolean // only UPDATE
 }
 interface IState {
   purchase_number: string
   status: string
-  company: string
+  company: string[]
   course_access: string[]
   quata: number
   duration_start: string
@@ -65,9 +67,9 @@ const ModalCreate = (props: IProps) => {
   const initData = {
     purchase_number: '',
     status: '',
-    company: '',
+    company: [],
     course_access: [],
-    quata: 0,
+    quata: 1, // 最少是 1
     duration_start: '',
     duration_end: '',
     remark: ''
@@ -76,20 +78,24 @@ const ModalCreate = (props: IProps) => {
     ...initData
   })
   const onChange = (key: string, e: any) => {
-    const value = e.target.value
+    let value = e.target.value
     if (value) {
       switch (key) {
-        // TODO
-        case 'name':
-        case 'position':
-        case 'current_company':
-          if (schema[key].validateStr(value)) return false
+        case 'purchase_number':
+          if (schema.purchase_number.validateStr(value)) return false
+          value = value.toLowerCase()
           break
       }
     }
     setData({ ...data, [key]: value })
   }
   const onSelect = (key: string, value: any) => {
+    setData({ ...data, [key]: value })
+  }
+  const onAutoCompleteSelect = (key: string, value: any) => {
+    if (value.length > 1) {
+      value.shift()
+    }
     setData({ ...data, [key]: value })
   }
   const onCount = (key: string, value: number) => {
@@ -103,29 +109,41 @@ const ModalCreate = (props: IProps) => {
         duration_end: dateStrings[1]
       })
   }
-  const disabledDate = (current: any) => {
-    return current < moment().endOf('day')
-  }
+
+  // init data
   useEffect(() => {
     if (props.isShow) {
-      // 開啟 modal 時設定初始資料
-      // TODO purchaseDetail 改從這裡抓
-      setData(
-        props.mode === 'CREATE' ? { ...initData } : { ...props.purchaseDetail }
-      )
+      if (props.mode === 'CREATE') {
+        setData({ ...initData })
+      } else if (props.mode === 'UPDATE' && props.purchaseId) {
+        context.setIsLoading(true)
+        api
+          .getPurchaseDetail(props.purchaseId)
+          .then((res: any) => setData(res.data))
+          .finally(() => context.setIsLoading(false))
+      }
     } else {
       setData({ ...initData })
     }
   }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // api
   const submit = () => {
     context.setIsLoading(true)
     api
-      .editPurchase(props.mode, data)
+      .createPurchase(data)
       .then(() => {
-        if (props.mode === 'UPDATE' && props.getPurchaseDetail)
-          props.getPurchaseDetail()
-
+        props.getList()
+        props.onCancel()
+      })
+      .finally(() => context.setIsLoading(false))
+  }
+  const update = () => {
+    context.setIsLoading(true)
+    api
+      .updatePurchase(data)
+      .then(() => {
+        if (props.getPurchaseDetail) props.getPurchaseDetail()
         props.getList()
         props.onCancel()
       })
@@ -153,12 +171,17 @@ const ModalCreate = (props: IProps) => {
           disabled={
             !data.purchase_number ||
             !data.company ||
-            data.course_access.length === 0 ||
             !data.quata ||
             !data.duration_start ||
             !data.duration_end
           }
-          onClick={() => submit()}
+          onClick={() =>
+            props.mode === 'CREATE'
+              ? submit()
+              : props.mode === 'UPDATE'
+              ? update()
+              : null
+          }
         >
           {props.mode === 'CREATE'
             ? 'Create'
@@ -172,38 +195,45 @@ const ModalCreate = (props: IProps) => {
       ]}
     >
       <Row gutter={20}>
-        <Col span={props.mode === 'UPDATE' ? 12 : 24}>
-          <div className='ad-form-group'>
-            <label>Purchase number</label>
-            {props.mode === 'CREATE' ? (
+        {props.mode === 'CREATE' ? (
+          <Col span={24}>
+            <div className='ad-form-group'>
+              <label className='required'>Purchase number</label>
               <Input
                 placeholder={StaticService.placeholder.input}
                 maxLength={schema.purchase_number.max}
                 value={data.purchase_number}
                 onChange={(e: any) => onChange('purchase_number', e)}
               />
-            ) : props.mode === 'UPDATE' ? (
-              <div className='ad-form-group-value'>{data.purchase_number}</div>
-            ) : null}
-          </div>
-        </Col>
-        {props.mode === 'UPDATE' ? (
-          <Col span={12}>
-            <div className='ad-form-group'>
-              <label>Status</label>
-              <div className='ad-form-group-value'>{data.status}</div>
             </div>
           </Col>
+        ) : props.mode === 'UPDATE' ? (
+          <>
+            <Col span={12}>
+              <div className='ad-form-group'>
+                <label>Purchase number</label>
+                <div className='ad-form-group-value'>
+                  {data.purchase_number}
+                </div>
+              </div>
+            </Col>
+            <Col span={12}>
+              <div className='ad-form-group'>
+                <label>Status</label>
+                <div className='ad-form-group-value'>{data.status}</div>
+              </div>
+            </Col>
+          </>
         ) : null}
+
         <Col span={12}>
           <div className='ad-form-group'>
             <label className='required'>Company</label>
-            {/* TODO autocompleted */}
-            {/* TOCHECK */}
             <Select
+              mode='tags'
               placeholder={StaticService.placeholder.select}
               value={data.company || undefined}
-              onChange={(val: any) => onSelect('company', val)}
+              onChange={(val: any) => onAutoCompleteSelect('company', val)}
             >
               {companyOption.map((item: string) => (
                 <Option value={item} key={item}>
@@ -223,22 +253,26 @@ const ModalCreate = (props: IProps) => {
               ]}
               onChange={onPick}
               format={StaticService.format.date}
-              disabledDate={disabledDate}
+              disabledDate={(current: any) =>
+                DisabledMoment('isAfterToday', current)
+              }
             />
           </div>
         </Col>
         <Col span={12}>
           <div className='ad-form-group'>
-            <label className='required'>Course access</label>
+            <label className={props.mode === 'EDIT' ? 'required' : ''}>
+              Course access (multiple choice)
+            </label>
             <Select
               mode='multiple'
+              placeholder={StaticService.placeholder.select}
               value={data.course_access || undefined}
               onChange={(val: any) => onSelect('course_access', val)}
             >
-              {/* TOCHECK */}
               {courseAccessOption.map((item: any) => (
-                <Option value={item} key={item}>
-                  item
+                <Option value={item.id} key={item.id}>
+                  {item.name}
                 </Option>
               ))}
             </Select>
@@ -249,21 +283,19 @@ const ModalCreate = (props: IProps) => {
             <label className='required'>Quota</label>
             <InputNumber
               value={data.quata}
-              min={
-                props.mode === 'UPDATE'
-                  ? props.purchaseDetail.usage
-                  : schema.quata.min
-              }
+              min={schema.quata.min}
               max={schema.quata.max}
               onChange={(val: any) => onCount('quata', val)}
             />
           </div>
         </Col>
+
         {props.mode === 'UPDATE' ? (
           <Col span={24}>
             <div className='ad-form-group'>
               <label>Remarks</label>
               <TextArea
+                placeholder={StaticService.placeholder.input}
                 rows={4}
                 value={data.remark}
                 onChange={(e) => onChange('remark', e)}

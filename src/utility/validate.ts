@@ -24,7 +24,6 @@ export function ValidateStr(type: string, value: string) {
       return false
   }
 }
-
 export const schema: any = {
   user_id: {
     info: 'User ID is your unique identifier as a member in AIR academy',
@@ -61,7 +60,7 @@ export const schema: any = {
   },
   purchase_number: {
     max: 50,
-    validateStr: (val: any) => ValidateStr('isNoSymbol', val)
+    validateStr: (val: any) => ValidateStr('isEngInt', val)
   },
   quata: {
     min: 1,

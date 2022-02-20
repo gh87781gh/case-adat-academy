@@ -1,8 +1,8 @@
 import { useState, useContext, useEffect } from 'react'
 import { MyContext } from 'storage'
+
 import PurchaseApi from 'api/admin/PurchaseApi'
-import ModalCreate from './ModalCreate'
-import ModalRecord from './ModalRecord'
+
 import { Row, Col, Button, Modal } from 'antd'
 
 interface IProps {
@@ -10,12 +10,16 @@ interface IProps {
   onCancel: () => void
   getList: (keepPage?: boolean) => void
   purchaseId: string
+  isModalEditShow: boolean
+  setIsModalEditShow: (isShow: boolean) => void
+  setIsModalRecordShow: (isShow: boolean) => void
 }
 
 const ModalDetail = (props: IProps) => {
   const api = new PurchaseApi()
   const context = useContext(MyContext)
 
+  // init purchase detail
   const [purchaseDetail, setPurchaseDetail] = useState<any>({})
   const getPurchaseDetail = () => {
     context.setIsLoading(true)
@@ -25,9 +29,12 @@ const ModalDetail = (props: IProps) => {
       .finally(() => context.setIsLoading(false))
   }
   useEffect(() => {
-    if (props.isShow && props.purchaseId) getPurchaseDetail()
-  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
+    if (props.isShow && (props.purchaseId || !props.isModalEditShow))
+      getPurchaseDetail()
+  }, [props.isShow, props.isModalEditShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // delete
+  const [isModalConfirmShow, setIsModalConfirmShow] = useState<boolean>(false)
   const renderConfirmModal = () => (
     <Modal
       title='Are you sure?'
@@ -61,10 +68,6 @@ const ModalDetail = (props: IProps) => {
       })
   }
 
-  const [isModalEditShow, setIsModalEditShow] = useState<boolean>(false)
-  const [isModalRecordShow, setIsModalRecordShow] = useState<boolean>(false)
-  const [isModalConfirmShow, setIsModalConfirmShow] = useState<boolean>(false)
-
   return (
     <>
       <Modal
@@ -76,11 +79,14 @@ const ModalDetail = (props: IProps) => {
               <Button
                 key='Edit'
                 type='primary'
-                onClick={() => setIsModalEditShow(true)}
+                onClick={() => props.setIsModalEditShow(true)}
               >
                 Edit
               </Button>
-              <Button key='View' onClick={() => setIsModalRecordShow(true)}>
+              <Button
+                key='View'
+                onClick={() => props.setIsModalRecordShow(true)}
+              >
                 View records
               </Button>
               <Button key='Delete' onClick={() => setIsModalConfirmShow(true)}>
@@ -143,19 +149,6 @@ const ModalDetail = (props: IProps) => {
           </Col>
         </Row>
       </Modal>
-      <ModalCreate
-        mode='UPDATE'
-        isShow={isModalEditShow}
-        onCancel={() => setIsModalEditShow(false)}
-        getList={() => props.getList()}
-        getPurchaseDetail={() => getPurchaseDetail()}
-        purchaseDetail={purchaseDetail}
-      />
-      <ModalRecord
-        isShow={isModalRecordShow}
-        onCancel={() => setIsModalRecordShow(false)}
-        purchaseDetail={purchaseDetail}
-      />
       {renderConfirmModal()}
     </>
   )

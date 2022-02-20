@@ -30,8 +30,12 @@ export default class PurchaseApi {
       this.restAPI
         .request('get', `/purchase/${id}`, {})
         .then((res: any) => {
+          res.data.company = [res.data.company]
+          res.data.quata = res.data.quata
+          res.data.course_access = res.data.course_access
           res.data.duration_start = formatDate(res.data.duration_start)
           res.data.duration_end = formatDate(res.data.duration_end)
+          res.data.remark = res.data.remark ?? ''
           resolve(res)
         })
         .catch(() => {
@@ -76,33 +80,27 @@ export default class PurchaseApi {
         })
     })
   }
-  editPurchase = (mode: string, data: any) => {
-    const postData =
-      mode === 'CREATE'
-        ? {
-            purchase_number: data.purchase_number,
-            company: data.company,
-            quata: data.quata,
-            // course_access: data.course_access.join(','), //TOCHECK
-            duration_start: formatDate(data.duration_start),
-            duration_end: formatDate(data.duration_end)
-          }
-        : mode === 'UPDATE'
-        ? {
-            company: data.company,
-            quata: data.quata,
-            // course_access: data.course_access.join(','), //TOCHECK
-            duration_start: formatDate(data.duration_start),
-            duration_end: formatDate(data.duration_end),
-            remark: data.remark ?? ''
-          }
-        : null
-
-    return this.restAPI.request(
-      'post',
-      `/purchase${mode === 'UPDATE' ? `/${data.id}` : ''}`,
-      postData
-    )
+  createPurchase = (data: any) => {
+    const postData = {
+      purchase_number: data.purchase_number,
+      company: data.company[0],
+      quata: data.quata,
+      course_access: data.course_access,
+      duration_start: formatDate(data.duration_start),
+      duration_end: formatDate(data.duration_end)
+    }
+    return this.restAPI.request('post', '/purchase', postData)
+  }
+  updatePurchase = (data: any) => {
+    const postData = {
+      company: data.company[0],
+      quata: data.quata,
+      course_access: data.course_access,
+      duration_start: formatDate(data.duration_start),
+      duration_end: formatDate(data.duration_end),
+      remark: data.remark ?? ''
+    }
+    return this.restAPI.request('post', `/purchase/${data.id}`, postData)
   }
   deletePurchase = (id: string) => {
     return this.restAPI.request('delete', `/purchase/${id}`, {})

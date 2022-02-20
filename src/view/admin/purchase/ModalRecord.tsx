@@ -1,18 +1,34 @@
 import { useState, useEffect, useContext } from 'react'
 import { MyContext, StaticService } from 'storage'
 import PurchaseApi from 'api/admin/PurchaseApi'
+
 import { Table, Modal } from 'antd'
 
 interface IProps {
   isShow: boolean
   onCancel: () => void
-  purchaseDetail: any
+  purchaseId: string
+  setIsModalRecordShow: (isShow: boolean) => void
 }
 
 const ModalRecord = (props: IProps) => {
   const context = useContext(MyContext)
   const api = new PurchaseApi()
 
+  // init purchase detail
+  const [purchaseDetail, setPurchaseDetail] = useState<any>({})
+  const getPurchaseDetail = () => {
+    context.setIsLoading(true)
+    api
+      .getPurchaseDetail(props.purchaseId)
+      .then((res: any) => setPurchaseDetail(res.data))
+      .finally(() => context.setIsLoading(false))
+  }
+  useEffect(() => {
+    if (props.isShow && props.purchaseId) getPurchaseDetail()
+  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // table
   const [list, setList] = useState([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
@@ -44,7 +60,7 @@ const ModalRecord = (props: IProps) => {
 
     context.setIsLoading(true)
     api
-      .getPurchaseRecord(props.purchaseDetail.id, page)
+      .getPurchaseRecord(props.purchaseId, page)
       .then((res: any) => {
         setList(res.data)
         setTotal(res.total)
@@ -52,7 +68,7 @@ const ModalRecord = (props: IProps) => {
       .finally(() => context.setIsLoading(false))
   }
   useEffect(() => {
-    if (props.isShow && props.purchaseDetail.id) getList()
+    if (props.isShow && props.purchaseId) getList()
   }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -66,7 +82,7 @@ const ModalRecord = (props: IProps) => {
             <div className='ad-form-group ad-form-group-horizontal'>
               <label>purchase number</label>
               <div className='ad-form-group-value'>
-                {props.purchaseDetail.purchase_number}
+                {purchaseDetail.purchase_number}
               </div>
             </div>
           </div>
