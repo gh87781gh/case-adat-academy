@@ -217,11 +217,11 @@ const LayoutTemplate = () => {
               path='/admin/purchase/:id?'
               render={() => componentPage(AdminPurchase, 'ADMIN')}
             />
-            {/* <Route
+            <Route
               exact={true}
-              path='/admin/purchaseAccount/:id?'
+              path='/admin/purchaseAccount/:purchaseId?'
               render={() => componentPage(AdminPurchaseAccount, 'ADMIN')}
-            /> */}
+            />
             <Route
               exact={true}
               path='/admin/account'

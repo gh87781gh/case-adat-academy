@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext, useRef } from 'react'
+import { useHistory } from 'react-router-dom'
 import { MyContext, StaticService } from 'storage'
 import GlobalApi from 'api/GlobalApi'
 import PurchaseApi from 'api/admin/PurchaseApi'
@@ -29,6 +30,7 @@ const Index = (props: IProps) => {
   const context = useContext(MyContext)
   const api_global = new GlobalApi()
   const api = new PurchaseApi()
+  const history = useHistory()
 
   const [companyOption, setCompanyOption] = useState<any>([])
   const [statusOption, setStatusOption] = useState<any>([])
@@ -131,9 +133,7 @@ const Index = (props: IProps) => {
             key='account'
             size='small'
             onClick={() => {
-              // TODO 改成 history
-              props.setPurchaseId(record.id)
-              props.next()
+              history.push(`/admin/purchaseAccount/${record.id}`)
             }}
           >
             View Account

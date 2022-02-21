@@ -1,12 +1,13 @@
 import { useState, useEffect, useContext } from 'react'
+import { useHistory, useParams } from 'react-router-dom'
 import { MyContext, StaticService } from 'storage'
 import PurchaseApi from 'api/admin/PurchaseApi'
 
-import Header from '../../../user/layout/Header'
-import AdminSideBar from '../../AdminSideBar'
-import ModalCreate from '../../account/ModalCreate'
-import ModalDetail from '../../account/ModalDetail'
-import ModalRecord from '../../account/ModalRecord'
+import Header from 'view/user/layout/Header'
+import AdminSideBar from 'view/admin/AdminSideBar'
+import ModalCreate from 'view/admin/account/ModalCreate'
+import ModalDetail from 'view/admin/account/ModalDetail'
+import ModalRecord from 'view/admin/account/ModalRecord'
 
 import { Row, Col, Button, Table, Breadcrumb } from 'antd'
 
@@ -19,13 +20,34 @@ interface IProps {
 const PurchaseAccount = (props: IProps) => {
   const context = useContext(MyContext)
   const api = new PurchaseApi()
+  const { purchaseId } = useParams<{ purchaseId: string }>()
 
+  // init page data
   const [purchaseDetail, setPurchaseDetail] = useState<any>({})
+  const getList = async (toPage?: number) => {
+    const page = toPage ?? 1
+    setPage(page)
+
+    context.setIsLoading(true)
+    await api
+      .getPurchaseDetail(purchaseId)
+      .then((res: any) => setPurchaseDetail(res.data))
+    await api
+      .getPurchaseAccount(purchaseId, page)
+      .then((res: any) => {
+        setList(res.data)
+        setTotal(res.total)
+      })
+      .finally(() => context.setIsLoading(false))
+  }
+  useEffect(() => {
+    getList()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // table
   const [list, setList] = useState<any>([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
-  const [accountId, setAccountId] = useState<string>('')
-  const [userId, setUserId] = useState<string>('')
   const columns = [
     {
       title: 'User ID',
@@ -80,26 +102,10 @@ const PurchaseAccount = (props: IProps) => {
       )
     }
   ]
-  const getList = async (toPage?: number) => {
-    const page = toPage ?? 1
-    setPage(page)
 
-    context.setIsLoading(true)
-    await api
-      .getPurchaseDetail(props.purchaseId)
-      .then((res: any) => setPurchaseDetail(res.data))
-    await api
-      .getPurchaseAccount(props.purchaseId, page)
-      .then((res: any) => {
-        setList(res.data)
-        setTotal(res.total)
-      })
-      .finally(() => context.setIsLoading(false))
-  }
-  useEffect(() => {
-    getList()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
+  // modal
+  const [accountId, setAccountId] = useState<string>('')
+  const [userId, setUserId] = useState<string>('')
   const [isModalCreateShow, setIsModalCreateShow] = useState<boolean>(false)
   const [isModalDetailShow, setIsModalDetailShow] = useState<boolean>(false)
   const [isModalRecordShow, setIsModalRecordShow] = useState<boolean>(false)
@@ -168,28 +174,28 @@ const PurchaseAccount = (props: IProps) => {
                 onChange: (page: number) => getList(page)
               }}
             />
-            <ModalCreate
-              isShow={isModalCreateShow}
-              onCancel={() => setIsModalCreateShow(false)}
-              getList={() => getList()}
-              purchaseDetail={purchaseDetail}
-            />
-            <ModalDetail
-              isShow={isModalDetailShow}
-              onCancel={() => setIsModalDetailShow(false)}
-              accountId={accountId}
-              getList={() => getList(page)}
-              showModalRecord={() => setIsModalRecordShow(true)}
-            />
-            <ModalRecord
-              isShow={isModalRecordShow}
-              onCancel={() => setIsModalRecordShow(false)}
-              accountId={accountId}
-              userId={userId}
-            />
           </>
         </article>
       </div>
+      <ModalCreate
+        isShow={isModalCreateShow}
+        onCancel={() => setIsModalCreateShow(false)}
+        getList={() => getList()}
+        purchaseDetail={purchaseDetail}
+      />
+      <ModalDetail
+        isShow={isModalDetailShow}
+        onCancel={() => setIsModalDetailShow(false)}
+        accountId={accountId}
+        getList={() => getList(page)}
+        showModalRecord={() => setIsModalRecordShow(true)}
+      />
+      <ModalRecord
+        isShow={isModalRecordShow}
+        onCancel={() => setIsModalRecordShow(false)}
+        accountId={accountId}
+        userId={userId}
+      />
     </>
   )
 }

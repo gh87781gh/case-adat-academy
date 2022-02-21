@@ -1,9 +1,10 @@
 import { useState, useContext, useEffect } from 'react'
-import { MyContext } from 'storage'
+import { MyContext, StaticService } from 'storage'
 import AccountApi from 'api/admin/AccountApi'
 import PurchaseApi from 'api/admin/PurchaseApi'
+
 import { FormGroupMsg } from 'utility/component'
-import { ValidateStr } from 'utility/validate'
+import schema from 'utility/validate'
 import { Row, Col, Button, Input, Select, Modal } from 'antd'
 const { Option } = Select
 
@@ -23,22 +24,23 @@ const ModalCreate = (props: IProps) => {
   const api = new AccountApi()
   const api_purchase = new PurchaseApi()
 
-  const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
+  // data
   const initData = {
     purchase_id: '',
     email: ''
   }
   const [data, setData] = useState<IState>({ ...initData })
+  const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
   const onChange = (key: string, e: any) => {
     const value = e.target.value
-    // if (value) {
-    //   switch (key) {
-    //     case 'email':
-    //       if (value && !ValidateStr('isUserName', value)) return false
-    //       setIsEmail(ValidateStr('isEmail', value))
-    //       break
-    //   }
-    // }
+    if (value) {
+      switch (key) {
+        case 'email':
+          if (schema.email.validateStr(value)) return false
+          setIsEmail(schema.email.validateFormat(value))
+          break
+      }
+    }
     setData({ ...data, [key]: value })
   }
   const onSelect = (key: string, value: any) => {
@@ -216,15 +218,16 @@ const ModalCreate = (props: IProps) => {
                 Please input the account’s email
               </label>
               <Input
+                placeholder={StaticService.placeholder.input}
                 value={data.email}
-                maxLength={200}
-                placeholder='Clear hint for the input'
-                onChange={(e) => onChange('email', e)}
+                maxLength={schema.email.max}
+                onChange={(e: any) => onChange('email', e)}
               />
               <FormGroupMsg
                 isShow={isEmail === false}
                 type='error'
-                msg='The Email format is not correct.'
+                isShowIcon={true}
+                msg={schema.email.errFormat}
               />
             </div>
           </Col>
