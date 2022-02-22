@@ -1,6 +1,6 @@
 {
   "name": "adat-academy",
-  "version": "0.8.1",
+  "version": "0.8.3",
   "private": true,
   "homepage": ".",
   "dependencies": {
@@ -31,7 +31,7 @@
     "web-vitals": "1.0.1"
   },
   "scripts": {
-    "start": "sh -ac '. ./.env; craco start'",
+    "start": "sh -ac '. ./.env;craco start'",
     "start:dev": "sh -ac '. ./.env.dev; craco start'",
     "build:dev": "sh -ac '. ./.env.dev ; craco build'",
     "build": "craco build",

@@ -1,9 +1,9 @@
 // Globally but updated only once time
 export default class StaticService {
   static apiUrl: string = `${
-    process.env.REACT_APP_ENV === 'DEV'
-      ? process.env.REACT_APP_API_URL
-      : window.location.origin // TODO local
+    process.env.REACT_APP_ENV === 'PROD'
+      ? window.location.origin
+      : process.env.REACT_APP_API_URL // TODO local?
   }${process.env.REACT_APP_API_VERSION}`
 
   static countryCodeOption: any = [
