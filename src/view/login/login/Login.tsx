@@ -73,7 +73,6 @@ const Login = () => {
       .then((res: any) => {
         browserStorage.setStorage('AUTH', res.data.token)
         context.getAuth()
-        message.success('Login successfully')
         history.push('/course')
       })
       .catch((err: any) => {

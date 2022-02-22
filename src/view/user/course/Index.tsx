@@ -10,7 +10,7 @@ import NoCourse from 'view/user/layout/NoCourse'
 
 import { IconArrowDown, IconBookmark } from 'utility/icon'
 import { Btn } from 'utility/component'
-import { Row, Col, Select, Pagination } from 'antd'
+import { Row, Col, Select, Pagination, message } from 'antd'
 const { Option } = Select
 
 interface IState {
@@ -22,6 +22,16 @@ const Index = () => {
   const api = new CourseApi()
   const history = useHistory()
 
+  // init page
+  useEffect(() => {
+    if (context.auth) {
+      message.success('Login successfully')
+    } else {
+      history.push('/login')
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // data
   const [data, setData] = useState<IState>({
     coursesType: 'courseA'
   })
@@ -29,6 +39,7 @@ const Index = () => {
     setData({ ...data, [key]: value })
   }
 
+  // list
   const [list, setList] = useState([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
@@ -45,7 +56,6 @@ const Index = () => {
       })
       .finally(() => context.setIsLoading(false))
   }
-
   useEffect(() => {
     getCoursesByLearningPath()
   }, [data.coursesType]) // eslint-disable-line react-hooks/exhaustive-deps

@@ -51,7 +51,7 @@ const Header = () => {
     return (
       <Menu className='ad-header-profile-menu'>
         <Menu.Item className='ad-header-profile-menu-text' key='user' disabled>
-          {context.auth.user_id} <br />
+          {context.auth?.user_id} <br />
           <span className='ad-header-profile-menu-decs'>user ID</span>
         </Menu.Item>
         <Menu.Item
@@ -73,7 +73,7 @@ const Header = () => {
         >
           change password
         </Menu.Item>
-        {context.auth.is_admin ? (
+        {context.auth?.is_admin ? (
           <Menu.Item
             key='admin'
             onClick={() => history.push('/admin/purchase')}
@@ -134,7 +134,7 @@ const Header = () => {
         </div>
         <Dropdown overlay={renderMenu()} trigger={['click']}>
           <div className='ad-header-btn'>
-            {context.auth.user_id}
+            {context.auth?.user_id}
             <IconArrowDown />
           </div>
         </Dropdown>
