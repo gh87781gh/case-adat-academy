@@ -7,7 +7,6 @@ import Header from 'view/user/layout/Header'
 import AdminSideBar from '../AdminSideBar'
 import ModalCreate from './ModalCreate'
 
-import { ValidateStr } from 'utility/validate'
 import { IconSearch } from 'utility/icon'
 import { Btn } from 'utility/component'
 import { Row, Col, Input, Select, Table } from 'antd'
@@ -184,16 +183,16 @@ const Index = () => {
               onChange: (page: number) => getList(page)
             }}
           />
-          <ModalCreate
-            isShow={isModalCreateShow}
-            onCancel={() => setIsModalCreateShow(false)}
-            getList={(keepPage?: boolean) => {
-              keepPage ? getList(page) : getList()
-            }}
-            adminId={adminId}
-          />
         </article>
       </div>
+      <ModalCreate
+        isShow={isModalCreateShow}
+        onCancel={() => setIsModalCreateShow(false)}
+        getList={(keepPage?: boolean) => {
+          keepPage ? getList(page) : getList()
+        }}
+        adminId={adminId}
+      />
     </>
   )
 }

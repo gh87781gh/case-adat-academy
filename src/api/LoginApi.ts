@@ -4,6 +4,7 @@ export default class LoginApi {
   restAPI: any = new RestAPI()
 
   login = (data: any) => {
+    data.account = data.account.trim() //TODO 等著拿掉
     return this.restAPI.request('post', '/auth/login', data, true)
   }
   checkAccount = (data: any) => {

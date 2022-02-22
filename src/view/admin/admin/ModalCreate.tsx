@@ -2,8 +2,9 @@ import { useState, useContext, useEffect } from 'react'
 import { MyContext } from 'storage'
 import GlobalApi from 'api/GlobalApi'
 import AdminApi from 'api/admin/AdminApi'
+
+import schema from 'utility/validate'
 import { FormGroupMsg, Btn } from 'utility/component'
-import { ValidateStr } from 'utility/validate'
 import { Row, Col, Input, Select, Modal } from 'antd'
 const { Option } = Select
 
@@ -38,19 +39,27 @@ const ModalCreate = (props: IProps) => {
   }
   const onChange = (key: string, e: any) => {
     const value = e.target.value
-    // if (value) {
-    //   switch (key) {
-    //     case 'email':
-    //       if (value && !ValidateStr('isUserName', value)) return false
-    //       break
-    //   }
-    // }
+    if (value) {
+      switch (key) {
+        case 'user_id':
+          if (schema.user_id.validateStr(value)) return false
+          break
+        case 'password':
+        case 'password2':
+          if (schema.password.validateStr(value)) return false
+          break
+        case 'email':
+          if (schema.email.validateStr(value)) return false
+          setIsEmail(schema.email.validateFormat(value))
+          break
+      }
+    }
     setData({ ...data, [key]: value })
   }
   useEffect(() => {
-    data.email
-      ? setIsEmail(ValidateStr('isEmail', data.email))
-      : setIsEmail(undefined)
+    // data.email
+    //   ? setIsEmail(ValidateStr('isEmail', data.email))
+    //   : setIsEmail(undefined)
   }, [data.email]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [roleOption, setRoleOption] = useState<any>([])
