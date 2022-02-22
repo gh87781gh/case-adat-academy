@@ -9,7 +9,7 @@ import LoginPrompt from '../LoginPrompt'
 import { Btn, FormGroupMsg } from 'utility/component'
 import schema from 'utility/validate'
 import { IconArrowNext } from 'utility/icon'
-import { Checkbox, Input } from 'antd'
+import { Checkbox, Input, message } from 'antd'
 
 interface IState {
   account: string
@@ -73,6 +73,7 @@ const Login = () => {
       .then((res: any) => {
         browserStorage.setStorage('AUTH', res.data.token)
         context.getAuth()
+        message.success('Login successfully')
         history.push('/course')
       })
       .catch((err: any) => {
