@@ -5,8 +5,9 @@ import LoginApi from 'api/LoginApi'
 
 import LoginTemplate from 'view/login/LoginTemplate'
 
+import schema from 'utility/validate'
 import { Btn, FormGroupMsg } from 'utility/component'
-import { Input, Checkbox } from 'antd'
+import { Input } from 'antd'
 
 interface IState {
   password: string
@@ -28,65 +29,54 @@ const PasswordRecover3 = () => {
   const onChange = (key: string, e: any) => {
     let value = e.target.value
     if (value) {
-      // switch (key) {
-      //   case 'account':
-      //     // if (value && !ValidateStr('isUserName', value)) return false
-      //     setIsEmail(
-      //       value.match('@') ? ValidateStr('isEmail', value) : undefined
-      //     )
-      //     // value = value.toLowerCase()
-      //     break
-      //     // case 'password':
-      //     //   if (value && !ValidateStr('isEngInt', value)) return false
-      //     break
-      // }
+      switch (key) {
+        case 'password':
+        case 'password2':
+          if (schema.password.validateStr(value)) return false
+          break
+      }
     }
     setData({ ...data, [key]: value })
   }
 
   const loginWithNewPassword = () => {
     context.setIsLoading(true)
-    if (state)
-      api
-        .recoverPasswordVerify(state.tempPassword)
-        .then((res: any) => {
-          const sendData = {
-            account: res.data.key, //TOCHECK
-            password: data.password
-          }
-          api
-            .login(sendData)
-            .then((res: any) => {
-              browserStorage.setStorage('AUTH', res.data.token)
-              context.getAuth()
-              history.push('/course')
-            })
-            .catch((err: any) => {
-              // console.log(err)
-              /*
-              1. 帳號或密碼錯誤，直接報錯
-                101 欄位驗證錯誤
-                202 使用者不存在
-                200 密碼錯誤  (訊息會顯示帳號或密碼錯誤 以防有心人try)
-                203 使用者未啟用 (以後有停用帳戶的保留功能)
-              2. 沒有去email點驗證，需轉址 → Login successfully after without email confirmation
-                207 使用者email未驗證
-            */
-              // switch (err.code) {
-              //   case 100:
-              //   case 200:
-              //   case 202:
-              //   case 203:
-              //   // return setErrMsg('Your user ID or password is incorrect.')
-              //   case 207:
-              //     history.push('/login/loginConfirm/afterUpdateEmail') //TODO
-              // }
-              // if (err.status === '400 Bad Request')
-              //   setErrMsg('Your user ID or password is incorrect.')
-            })
-            .finally(() => context.setIsLoading(false))
-        })
-        .finally(() => context.setIsLoading(false))
+    const sendData = {
+      key: state.key,
+      password: data.password
+    }
+    api
+      .changePassword(sendData)
+      .then((res: any) => {
+        browserStorage.setStorage('AUTH', res.data.token)
+        context.getAuth()
+        history.push('/course')
+      })
+      .catch((err: any) => {
+        // console.log('err', err)
+        // history.push('/login')
+        /*
+          1. 帳號或密碼錯誤，直接報錯
+            101 欄位驗證錯誤
+            202 使用者不存在
+            200 密碼錯誤  (訊息會顯示帳號或密碼錯誤 以防有心人try)
+            203 使用者未啟用 (以後有停用帳戶的保留功能)
+          2. 沒有去email點驗證，需轉址 → Login successfully after without email confirmation
+            207 使用者email未驗證
+        */
+        // switch (err.code) {
+        //   case 100:
+        //   case 200:
+        //   case 202:
+        //   case 203:
+        //   // return setErrMsg('Your user ID or password is incorrect.')
+        //   case 207:
+        //     history.push('/login/loginConfirm/afterUpdateEmail') //TODO
+        // }
+        // if (err.status === '400 Bad Request')
+        //   setErrMsg('Your user ID or password is incorrect.')
+      })
+      .finally(() => context.setIsLoading(false))
   }
 
   useEffect(() => {
@@ -144,7 +134,9 @@ const PasswordRecover3 = () => {
           feature='action'
           className='ad-login-content-actionBtn'
           block
-          onClick={() => loginWithNewPassword()}
+          onClick={() => {
+            if (state) loginWithNewPassword()
+          }}
         >
           Log in
         </Btn>

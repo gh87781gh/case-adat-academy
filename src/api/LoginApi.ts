@@ -30,6 +30,9 @@ export default class LoginApi {
       temporary_password
     })
   }
+  changePassword = (data: any) => {
+    return this.restAPI.request('post', '/recovery/change', data)
+  }
   contact = (data: any) => {
     return this.restAPI.request('post', '/contact', data)
   }

@@ -2,7 +2,6 @@ import { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { MyContext, StaticService } from 'storage'
 import LoginApi from 'api/LoginApi'
-import msg from 'api/engine/msg'
 
 import LoginTemplate from 'view/login/LoginTemplate'
 import LoginPrompt from '../LoginPrompt'

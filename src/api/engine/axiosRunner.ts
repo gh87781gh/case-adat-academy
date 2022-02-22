@@ -38,13 +38,15 @@ export class ApiEngine {
         return res
       },
       (err: any) => {
+        // console.log(err.response)
+        // console.log(err.response.data)
         if (!isCustomizeErr) {
-          if (err.response.status === 404) {
-            message.error('404 Not Found')
-          } else if (err.response.status === 401) {
+          if (err.response.status === 401) {
             message.error('Unauthorized')
             history.push('/login')
             window.location.reload() //TODO
+          } else {
+            message.error(err.response.data.message)
           }
         }
         return Promise.reject(err.response.data)

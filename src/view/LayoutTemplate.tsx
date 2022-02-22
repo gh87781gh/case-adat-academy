@@ -39,7 +39,7 @@ import AdminCourseDetail from './admin/course/courseDetail/CourseDetail'
 import AdminCourseLearningPath from './admin/course/learningPath/LearningPath'
 import AdminAdmin from './admin/admin/Index'
 
-import { Spin, message } from 'antd'
+import { Spin } from 'antd'
 
 const LayoutTemplate = () => {
   const browserStorage = new BrowserStorage()
@@ -51,9 +51,7 @@ const LayoutTemplate = () => {
     setIsLoading(true)
     api
       .getAuth()
-      .then((res: any) => {
-        setAuth(res.data)
-      })
+      .then((res: any) => setAuth(res.data))
       .finally(() => setIsLoading(false))
   }
   useEffect(() => {

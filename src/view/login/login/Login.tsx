@@ -9,7 +9,7 @@ import LoginPrompt from '../LoginPrompt'
 import { Btn, FormGroupMsg } from 'utility/component'
 import schema from 'utility/validate'
 import { IconArrowNext } from 'utility/icon'
-import { Checkbox, Input, message } from 'antd'
+import { Checkbox, Input } from 'antd'
 
 interface IState {
   account: string
