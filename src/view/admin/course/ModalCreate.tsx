@@ -25,6 +25,7 @@ const ModalCreate = (props: IProps) => {
   const context = useContext(MyContext)
   const api = new CourseApi()
 
+  // data
   const initData = {
     name: '',
     description: '',
@@ -37,10 +38,8 @@ const ModalCreate = (props: IProps) => {
     if (value) {
       switch (key) {
         case 'name':
-          if (schema.course_name.validateStr(value)) return false
-          break
         case 'description':
-          if (schema.description.validateStr(value)) return false
+          if (schema[key].validateStr(value)) return false
           break
       }
     }
@@ -50,9 +49,20 @@ const ModalCreate = (props: IProps) => {
     setData({ ...data, [key]: value })
   }
 
-  const submit = () => {
+  // api
+  const create = () => {
     context.setIsLoading(true)
+    api
+      .createCourse(data)
+      .then(() => {
+        props.getList()
+        props.onCancel()
+      })
+      .finally(() => context.setIsLoading(false))
+  }
+  const update = () => {
     if (props.courseId) {
+      context.setIsLoading(true)
       api
         .editCourse(props.courseId, data)
         .then(() => {
@@ -60,16 +70,10 @@ const ModalCreate = (props: IProps) => {
           props.onCancel()
         })
         .finally(() => context.setIsLoading(false))
-    } else {
-      api
-        .createCourse(data)
-        .then(() => {
-          props.getList()
-          props.onCancel()
-        })
-        .finally(() => context.setIsLoading(false))
     }
   }
+
+  // init
   useEffect(() => {
     if (props.isShow) {
       if (props.courseId) {
@@ -103,7 +107,7 @@ const ModalCreate = (props: IProps) => {
           key='Create'
           type='primary'
           disabled={!data.name || !data.description}
-          onClick={() => submit()}
+          onClick={() => (props.courseId ? update() : create())}
         >
           {props.courseId ? 'Save' : 'Create'}
         </Button>,

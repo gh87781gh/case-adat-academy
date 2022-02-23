@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext, useRef } from 'react'
 import { MyContext, StaticService } from 'storage'
-import { useLocation, useHistory, useParams } from 'react-router-dom'
+import { useLocation, useHistory } from 'react-router-dom'
 import GlobalApi from 'api/GlobalApi'
 import CourseApi from 'api/admin/CourseApi'
 
@@ -9,7 +9,7 @@ import AdminSideBar from '../AdminSideBar'
 import ModalCreate from './ModalCreate'
 // import ModalDetail from './ModalDetail'
 
-import { ValidateStr } from 'utility/validate'
+import schema from 'utility/validate'
 import { IconSearch } from 'utility/icon'
 import { Btn } from 'utility/component'
 import { Row, Col, Input, Select, Table } from 'antd'
@@ -29,16 +29,18 @@ const Index = (props: IProps) => {
   const context = useContext(MyContext)
   const api_global = new GlobalApi()
   const api = new CourseApi()
-  const { courseId } = useParams<{ courseId: string }>()
 
+  // options
   const [statusOption, setStatusOption] = useState<any>([])
   useEffect(() => {
+    context.setIsLoading(true)
     api_global
       .getOptions(['course_management_status'])
       .then((res: any) => setStatusOption(res.data[0]))
       .finally(() => context.setIsLoading(false))
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // data
   const [data, setData] = useState<IState>({
     status: '',
     search: ''
@@ -48,20 +50,21 @@ const Index = (props: IProps) => {
   }
   const onChange = (key: string, e: any) => {
     const value = e.target.value
-    // if (value) {
-    //   switch (key) {
-    //     case 'search':
-    //       if (value && ValidateStr('isSymbol', value)) return false
-    //       break
-    //   }
-    // }
+    if (value) {
+      switch (key) {
+        case 'search':
+          if (schema.course_name.validateStr(value)) return false
+          break
+      }
+    }
     setData({ ...data, [key]: value })
   }
 
+  // list
   const [list, setList] = useState<any>([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
-  // const [courseId, setCourseId] = useState('')
+  const [courseId, setCourseId] = useState('')
   const columns = [
     {
       title: 'Course name',
@@ -120,7 +123,7 @@ const Index = (props: IProps) => {
             key='editCourse'
             size='small'
             onClick={() => {
-              // setCourseId(record.id)
+              setCourseId(record.id)
               setIsModalCreateShow(true)
             }}
           >
@@ -151,6 +154,7 @@ const Index = (props: IProps) => {
       .finally(() => context.setIsLoading(false))
   }
 
+  // init
   const isInitMount = useRef(true)
   useEffect(() => {
     if (isInitMount.current) {
@@ -191,8 +195,8 @@ const Index = (props: IProps) => {
                 <div className='ad-form-group ad-form-group-horizontal'>
                   <label style={{ minWidth: '50px' }}>Status</label>
                   <Select
-                    value={data.status}
-                    placeholder='Please select'
+                    value={data.status || undefined}
+                    placeholder={StaticService.placeholder.select}
                     onChange={(val) => onSelect('status', val)}
                     allowClear={true}
                   >
@@ -227,16 +231,16 @@ const Index = (props: IProps) => {
               onChange: (page: number) => getList(page)
             }}
           />
-          <ModalCreate
-            isShow={isModalCreateShow}
-            onCancel={() => setIsModalCreateShow(false)}
-            getList={(keepPage?: boolean) => {
-              keepPage ? getList(page) : getList()
-            }}
-            courseId={courseId}
-          />
         </article>
       </div>
+      <ModalCreate
+        isShow={isModalCreateShow}
+        onCancel={() => setIsModalCreateShow(false)}
+        getList={(keepPage?: boolean) => {
+          keepPage ? getList(page) : getList()
+        }}
+        courseId={courseId}
+      />
     </>
   )
 }
