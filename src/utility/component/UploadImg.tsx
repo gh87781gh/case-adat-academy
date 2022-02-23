@@ -5,6 +5,7 @@ import GlobalApi from 'api/GlobalApi'
 import { Button } from 'antd'
 
 interface IProps {
+  theme?: string
   type: string
   desc: string
   system: string
@@ -40,7 +41,7 @@ const UploadImg = (props: IProps) => {
   }, [props.replaceCount]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className={`ad-upload ${props.type}`}>
+    <div className={`ad-upload ${props.type} ${props.theme || ''}`}>
       <label>
         {props.imgId ? (
           <img

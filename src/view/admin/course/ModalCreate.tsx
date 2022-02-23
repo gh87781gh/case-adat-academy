@@ -1,8 +1,10 @@
 import { useState, useContext, useEffect } from 'react'
-import { MyContext } from 'storage'
+import { MyContext, StaticService } from 'storage'
 import CourseApi from 'api/admin/CourseApi'
-import { ValidateStr } from 'utility/validate'
+
 import UploadImg from 'utility/component/UploadImg'
+
+import schema from 'utility/validate'
 import { Row, Col, Button, Input, Modal } from 'antd'
 const { TextArea } = Input
 
@@ -31,15 +33,17 @@ const ModalCreate = (props: IProps) => {
   }
   const [data, setData] = useState<IState>({ ...initData })
   const onChange = (key: string, e: any) => {
-    const value = e.target.value
-    // if (value) {
-    //   switch (key) {
-    //     case 'name':
-    //     case 'description':
-    //       if (value && ValidateStr('isSymbol', value)) return false
-    //       break
-    //   }
-    // }
+    let value = e.target.value
+    if (value) {
+      switch (key) {
+        case 'name':
+          if (schema.course_name.validateStr(value)) return false
+          break
+        case 'description':
+          if (schema.description.validateStr(value)) return false
+          break
+      }
+    }
     setData({ ...data, [key]: value })
   }
   const onUpload = (key: string, value: string) => {
@@ -111,6 +115,7 @@ const ModalCreate = (props: IProps) => {
       <Row gutter={20}>
         <Col span={6}>
           <UploadImg
+            theme='dark'
             type='circle'
             desc='Upload logo'
             system='temp'
@@ -128,8 +133,8 @@ const ModalCreate = (props: IProps) => {
             <label className='required'>Course name</label>
             <Input
               value={data.name}
-              maxLength={200}
-              placeholder='Clear hint for the input'
+              maxLength={schema.course_name.max}
+              placeholder={StaticService.placeholder.input}
               onChange={(e) => onChange('name', e)}
             />
           </div>
@@ -137,8 +142,9 @@ const ModalCreate = (props: IProps) => {
             <label className='required'>Course description</label>
             <TextArea
               value={data.description}
+              maxLength={schema.description.max}
               rows={4}
-              placeholder='Clear hint for the input'
+              placeholder={StaticService.placeholder.input}
               onChange={(e) => onChange('description', e)}
             />
           </div>
@@ -148,6 +154,7 @@ const ModalCreate = (props: IProps) => {
             <label>Background image</label>
             <div className='ad-form-group-value'>
               <UploadImg
+                theme='dark'
                 type='rectangle'
                 desc='Upload logo'
                 system='temp'
