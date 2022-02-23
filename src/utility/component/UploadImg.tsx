@@ -9,7 +9,7 @@ interface IProps {
   type: string
   desc: string
   system: string
-  systemId: string
+  systemId: string | undefined
   imgId: string
   setUploadId: (id: string) => void
   replaceCount?: number
@@ -21,11 +21,10 @@ const UploadImg = (props: IProps) => {
   const inputEl = useRef<HTMLInputElement>(null)
 
   const upload = (event: any) => {
-    // console.log('event.target.files[0]:', event.target.files[0])
     if (event.target.files[0]) {
       context.setIsLoading(true)
       api
-        .uploadImg(event.target.files[0], props.system, props.systemId)
+        .uploadImgNew(event.target.files[0], props.system, props.systemId)
         .then((res: any) => {
           props.setUploadId(res.data.id)
           event.target.value = ''

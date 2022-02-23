@@ -28,6 +28,14 @@ export default class GlobalApi {
     formData.append('system_id', system_id)
     return this.restAPIUpload.request('post', '/archive/image', formData)
   }
+  // TODO 用 uploadImgNew 取代 uploadImg
+  uploadImgNew = (file: any, system: string, system_id: string | undefined) => {
+    var formData = new FormData()
+    formData.append('file', file)
+    formData.append('system', system_id ? system : 'temp')
+    formData.append('system_id', system_id ?? '')
+    return this.restAPIUpload.request('post', '/archive/image', formData)
+  }
   uploadVideo = (file: any, system: string, system_id: string) => {
     var formData = new FormData()
     formData.append('file', file)

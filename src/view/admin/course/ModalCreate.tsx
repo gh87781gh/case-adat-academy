@@ -122,8 +122,8 @@ const ModalCreate = (props: IProps) => {
             theme='dark'
             type='circle'
             desc='Upload logo'
-            system='temp'
-            systemId=''
+            system='course'
+            systemId={props.courseId}
             imgId={data.logo_image_id}
             setUploadId={(id: string) => onUpload('logo_image_id', id)}
           />
@@ -161,8 +161,8 @@ const ModalCreate = (props: IProps) => {
                 theme='dark'
                 type='rectangle'
                 desc='Upload logo'
-                system='temp'
-                systemId=''
+                system='course'
+                systemId={props.courseId}
                 imgId={data.background_image_id}
                 setUploadId={(id: string) =>
                   onUpload('background_image_id', id)
