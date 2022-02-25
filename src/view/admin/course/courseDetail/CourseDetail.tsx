@@ -66,12 +66,6 @@ const CourseDetail = () => {
       })
       .finally(() => context.setIsLoading(false))
   }
-  useEffect(() => {
-    if (courseId) {
-      getCourseDetail(courseId)
-      getCourseDetailMenu()
-    }
-  }, [courseId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // current section
   const [currentSectionDetail, setCurrentSectionDetail] = useState<any>({})
@@ -113,22 +107,37 @@ const CourseDetail = () => {
         .finally(() => context.setIsLoading(false))
     }
   }
+
+  // init page
   useEffect(() => {
+    // init course detail data
+    if (courseId) {
+      getCourseDetail(courseId)
+      getCourseDetailMenu()
+    }
+  }, [courseId]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    // init course detail menu data
     if (menu.length > 0 && !sectionId) {
       // 若網址無 sectionId ，則抓第一個做為預設的
       let firstSectionId: string = ''
       for (const group of menu) {
         for (const chapter of group.children) {
           for (const section of chapter.children) {
-            if (section.level === 3) firstSectionId = section.id
+            if (section.level === 3) {
+              firstSectionId = section.id
+              break
+            }
             break
           }
+          break
         }
       }
       history.push(`/admin/courseDetail/${courseId}/${firstSectionId}`)
     }
   }, [menu]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
+    // init current section data
     if (courseId && sectionId) {
       setCurrentSectionContent([])
       getCurrentSectionContent()
