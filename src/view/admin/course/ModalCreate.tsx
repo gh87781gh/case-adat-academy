@@ -75,22 +75,20 @@ const ModalCreate = (props: IProps) => {
 
   // init
   useEffect(() => {
-    if (props.isShow) {
-      if (props.courseId) {
-        api
-          .getCourseDetail(props.courseId)
-          .then((res: any) => {
-            const keys = Object.keys(data)
-            const newData: any = {}
-            for (const key of keys) {
-              newData[key] = res.data[key]
-            }
-            setData(newData)
-          })
-          .finally(() => context.setIsLoading(false))
-      } else {
-        setData({ ...initData })
-      }
+    if (props.isShow && props.courseId) {
+      api
+        .getCourseDetail(props.courseId)
+        .then((res: any) => {
+          const keys = Object.keys(data)
+          const newData: any = {}
+          for (const key of keys) {
+            newData[key] = res.data[key]
+          }
+          setData(newData)
+        })
+        .finally(() => context.setIsLoading(false))
+    } else {
+      setData({ ...initData })
     }
   }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 

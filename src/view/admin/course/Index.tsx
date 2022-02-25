@@ -235,7 +235,10 @@ const Index = (props: IProps) => {
       </div>
       <ModalCreate
         isShow={isModalCreateShow}
-        onCancel={() => setIsModalCreateShow(false)}
+        onCancel={() => {
+          setCourseId('')
+          setIsModalCreateShow(false)
+        }}
         getList={(keepPage?: boolean) => {
           keepPage ? getList(page) : getList()
         }}
