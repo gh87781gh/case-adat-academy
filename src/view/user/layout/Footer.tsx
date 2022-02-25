@@ -40,11 +40,11 @@ const Footer = () => {
               EMAIL / adatservice@micb2b.com <br />
               TEL / +886-6-505-7624 <br />
               FAX / +886-6-505-7625
-              <br />
+              {/* <br />
               <br />
               <Btn feature='link' className='ad-mode-dark'>
                 Privacy policy
-              </Btn>
+              </Btn> */}
             </p>
           </Col>
         </Row>

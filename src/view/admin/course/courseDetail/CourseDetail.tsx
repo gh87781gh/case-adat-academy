@@ -9,6 +9,7 @@ import Header from 'view/user/layout/Header'
 import AdminSideBar from '../../AdminSideBar'
 import Sections from './Sections'
 import ModalMenuEdit from './ModalMenuEdit'
+import { itemVideo } from './ItemObject'
 
 import { IconLevels } from 'utility/icon'
 import { Btn, UploadVideo } from 'utility/component'
@@ -39,13 +40,12 @@ const CourseDetail = () => {
     setMenuOpenKeys(menuOpenKeys)
   }
   const parseItemIdToKey = (sectionId: string) => {
-    for (const chapter of menu) {
-      if (chapter.id === sectionId) {
-        return chapter.key
-      }
-      for (const section of chapter.children) {
-        if (section.id === sectionId) {
-          return section.key
+    for (const group of menu) {
+      for (const chapter of group.children) {
+        for (const section of chapter.children) {
+          if (section.id === sectionId) {
+            return section.key
+          }
         }
       }
     }
@@ -76,6 +76,9 @@ const CourseDetail = () => {
       api
         .getCurrentSectionContent(courseId, sectionId)
         .then((res: any) => {
+          if (res.data.length === 0) {
+            res.data.push(itemVideo)
+          }
           setCurrentSectionDetail({ name: res.section_name })
           setCurrentSectionContent(res.data)
         })
@@ -141,6 +144,7 @@ const CourseDetail = () => {
     if (courseId && sectionId) {
       setCurrentSectionContent([])
       getCurrentSectionContent()
+      // TODO add active menu item
     }
   }, [sectionId]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -183,35 +187,32 @@ const CourseDetail = () => {
     return (
       <>
         <h2>{currentSectionDetail.name}</h2>
-        {currentSectionContent.length > 0 ? (
-          <div className='ad-layout-admin-article-content'>
-            <UploadVideo
-              type='video'
-              desc='Upload section video'
-              system='course'
-              systemId={courseId}
-              archiveId={currentSectionContent[0].archive_id}
-              setUploadId={(id: string) => {
-                updateCurrentSectionContent(0, 'video', id)
-              }}
+        <div className='ad-layout-admin-article-content'>
+          <UploadVideo
+            type='video'
+            desc='Upload section video'
+            system='course'
+            systemId={courseId}
+            archiveId={currentSectionContent[0]?.archive_id}
+            setUploadId={(id: string) => {
+              updateCurrentSectionContent(0, 'video', id)
+            }}
+          />
+          <p className='ad-upload-info'>
+            Format should be .mp4 The file size limit is 300mb.
+            <br /> This section video is required, and will be fixed on the top
+          </p>
+          <DndProvider backend={HTML5Backend}>
+            <Sections
+              sections={currentSectionContent}
+              setMenu={(content: any) => setCurrentSectionContent(content)}
+              updateSection={(index: number, type: string, value: string) =>
+                updateCurrentSectionContent(index, type, value)
+              }
+              courseId={courseId}
             />
-            <p className='ad-upload-info'>
-              Format should be .mp4 The file size limit is 300mb.
-              <br /> This section video is required, and will be fixed on the
-              top
-            </p>
-            <DndProvider backend={HTML5Backend}>
-              <Sections
-                sections={currentSectionContent}
-                setMenu={(content: any) => setCurrentSectionContent(content)}
-                updateSection={(index: number, type: string, value: string) =>
-                  updateCurrentSectionContent(index, type, value)
-                }
-                courseId={courseId}
-              />
-            </DndProvider>
-          </div>
-        ) : null}
+          </DndProvider>
+        </div>
       </>
     )
   }

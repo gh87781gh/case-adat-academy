@@ -278,7 +278,7 @@ const Sections = (props: IProps) => {
     <>
       <div className='ad-course-sections'>
         {props.sections.map((item: any, index: number) => {
-          // the first video is fixed on the top
+          // the first video is fixed on the top, other contents render here and can be dragged and dropped.
           if (item.key !== 0) {
             return (
               <div key={item.key}>
@@ -303,8 +303,6 @@ const Sections = (props: IProps) => {
                 />
               </div>
             )
-          } else {
-            return false
           }
         })}
       </div>

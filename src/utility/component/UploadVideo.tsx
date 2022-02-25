@@ -34,7 +34,7 @@ const UploadVideo = (props: IProps) => {
   }
 
   return (
-    <div className={`ad-upload ${props.type}`}>
+    <div className={`ad-upload ${props.type} dark`}>
       <label>
         {props.archiveId ? (
           <VideoPlayer id={props.archiveId} />
