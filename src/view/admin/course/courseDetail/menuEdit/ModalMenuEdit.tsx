@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { MyContext } from 'storage'
 import CourseApi from 'api/admin/CourseApi'
 import { DndProvider } from 'react-dnd'
@@ -66,32 +66,6 @@ const ModalMenuEdit = (props: IProps) => {
         .finally(() => context.setIsLoading(false))
     }
   }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  const [isModalConfirmShow, setIsModalConfirmShow] = useState<boolean>(false)
-
-  const deleteItem = (item: any) => {
-    console.log('deleteItem', item)
-    setIsModalConfirmShow(true)
-    // switch (item.level) {
-    //   case 1:
-    //   case 2:
-    //     const isHasChildren = props.sections.find((el: any) => {
-    //       let checkPrefix: string =
-    //         item.level === 1
-    //           ? el.key.split('-')[0]
-    //           : `${el.key.split('-')[0]}-${el.key.split('-')[1]}`
-    //       return item.level === 1
-    //         ? checkPrefix === item.key && el.level === 2
-    //         : checkPrefix === item.key && el.level === 3
-    //     })
-    //     isHasChildren ? setDeleteItemCache(item) : deleteItem(item)
-    //     break
-    //   case 3:
-    //     deleteItem(item)
-    //     break
-    //   default:
-    // }
-  }
 
   return (
     <>

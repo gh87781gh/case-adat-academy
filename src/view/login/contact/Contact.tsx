@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import { MyContext } from 'storage'
+import { MyContext, StaticService } from 'storage'
 import GlobalApi from 'api/GlobalApi'
 import LoginApi from 'api/LoginApi'
 
@@ -181,16 +181,15 @@ const Contact = () => {
               <Col span={6}>
                 <div className='ad-form-group'>
                   <Select
-                    value={data.contry_code}
-                    placeholder='Please select'
+                    value={data.contry_code || undefined}
+                    placeholder={StaticService.placeholder.Select}
                     onChange={(val) => onSelect('contry_code', val)}
                   >
-                    {/* TODO 國碼？ */}
-                    {/* {contryOption.map((item: string) => (
+                    {StaticService.countryCodeOption.map((item: string) => (
                       <Option value={item} key={item}>
                         {item}
                       </Option>
-                    ))} */}
+                    ))}
                   </Select>
                 </div>
               </Col>

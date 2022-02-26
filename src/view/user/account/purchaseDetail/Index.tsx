@@ -1,7 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
-import { MyContext, StaticService } from 'storage'
-import { useHistory } from 'react-router-dom'
-// import GlobalApi from 'api/GlobalApi'
+import { MyContext } from 'storage'
 import AccountApi from 'api/user/AccountApi'
 
 import Header from 'view/user/layout/Header'
@@ -28,9 +26,7 @@ interface IState {
 
 const Index = () => {
   const context = useContext(MyContext)
-  // const api_global = new GlobalApi()
   const api = new AccountApi()
-  const history = useHistory()
 
   const [data, setData] = useState<IState>({
     user_id: '',

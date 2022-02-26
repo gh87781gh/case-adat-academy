@@ -1,11 +1,9 @@
 import { useState, useContext, useEffect } from 'react'
 import { MyContext } from 'storage'
 import AccountApi from 'api/user/AccountApi'
-import { FormGroupMsg, Btn } from 'utility/component'
-import { ValidateStr } from 'utility/validate'
-import { formatDate } from 'utility/format'
-import { Row, Col, Input, Select, Modal, Checkbox } from 'antd'
-const { Option } = Select
+
+import { Btn } from 'utility/component'
+import { Row, Col, Input, Modal, Checkbox } from 'antd'
 
 interface IProps {
   isShow: boolean
@@ -50,7 +48,7 @@ const ModalUpdate = (props: IProps) => {
       api
         .getUserEmail()
         .then((res: any) => {
-          console.log(res) //TOCHECK
+          // console.log(res) //TOCHECK
         })
         .finally(() => context.setIsLoading(false))
     }

@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useRef } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { MyContext, StaticService } from 'storage'
 import { useHistory, useParams, useLocation } from 'react-router-dom'
 import CourseApi from 'api/user/CourseApi'
@@ -15,10 +15,6 @@ import {
 import { Btn, VideoPlayer } from 'utility/component'
 import { Row, Col, Breadcrumb, Menu, message } from 'antd'
 const { SubMenu } = Menu
-
-interface IState {
-  coursesType: string
-}
 
 const CourseDetail = () => {
   const context = useContext(MyContext)

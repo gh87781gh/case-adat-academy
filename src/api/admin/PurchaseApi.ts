@@ -31,8 +31,6 @@ export default class PurchaseApi {
         .request('get', `/purchase/${id}`, {})
         .then((res: any) => {
           res.data.company = [res.data.company]
-          res.data.quata = res.data.quata
-          res.data.course_access = res.data.course_access
           res.data.duration_start = formatDate(res.data.duration_start)
           res.data.duration_end = formatDate(res.data.duration_end)
           res.data.remark = res.data.remark ?? ''

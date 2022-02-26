@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext, useRef } from 'react'
 import { MyContext, StaticService } from 'storage'
-import { useLocation, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import GlobalApi from 'api/GlobalApi'
 import CourseApi from 'api/admin/CourseApi'
 
@@ -24,7 +24,6 @@ interface IState {
 }
 
 const Index = (props: IProps) => {
-  const location = useLocation()
   const history = useHistory()
   const context = useContext(MyContext)
   const api_global = new GlobalApi()

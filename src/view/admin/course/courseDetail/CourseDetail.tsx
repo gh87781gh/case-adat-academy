@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import { MyContext } from 'storage'
-import { useParams, useHistory, useLocation } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import CourseApi from 'api/admin/CourseApi'
 
 import Header from 'view/user/layout/Header'
@@ -9,17 +9,14 @@ import Section from './section/Section'
 import ModalMenuEdit from './menuEdit/ModalMenuEdit'
 import MenuShow from './menu/MenuShow'
 
-import { IconLevels } from 'utility/icon'
-import { Btn, UploadVideo } from 'utility/component'
-import { Row, Col, Breadcrumb, message } from 'antd'
+import { Btn } from 'utility/component'
+import { Row, Col, Breadcrumb } from 'antd'
 
 const CourseDetail = () => {
   const context = useContext(MyContext)
   const api = new CourseApi()
   const history = useHistory()
-  const location = useLocation()
-  const { courseId, sectionId } =
-    useParams<{ courseId: string; sectionId?: string }>()
+  const { courseId } = useParams<{ courseId: string; sectionId?: string }>()
 
   // course detail
   const [courseDetail, setCourseDetail] = useState<any>({})

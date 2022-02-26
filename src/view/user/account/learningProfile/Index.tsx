@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
-import { MyContext, StaticService } from 'storage'
-import { useHistory } from 'react-router-dom'
+import { MyContext } from 'storage'
 import GlobalApi from 'api/GlobalApi'
 import AccountApi from 'api/user/AccountApi'
 
@@ -9,10 +8,8 @@ import Footer from 'view/user/layout/Footer'
 import AccountSideBar from '../AccountSideBar'
 
 import { Btn } from 'utility/component'
-import CS from 'assets/img/temp-cs.jpeg'
-import { Row, Col, Breadcrumb, Checkbox, Select, Input, message } from 'antd'
+import { Row, Col, Checkbox, Select, Input, message } from 'antd'
 const { Option } = Select
-const { TextArea } = Input
 
 interface IState {
   name: string
@@ -33,7 +30,6 @@ const LearningProfile = () => {
   const context = useContext(MyContext)
   const api_global = new GlobalApi()
   const api = new AccountApi()
-  const history = useHistory()
 
   const [options, setOptions] = useState<any>([])
   useEffect(() => {

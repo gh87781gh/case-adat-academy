@@ -9,7 +9,6 @@ import ModalCreate from './ModalCreate'
 import ModalDetail from './ModalDetail'
 import ModalRecord from './ModalRecord'
 
-import { ValidateStr } from 'utility/validate'
 import { IconSearch } from 'utility/icon'
 import { Btn } from 'utility/component'
 import { Row, Col, Input, Select, Table } from 'antd'

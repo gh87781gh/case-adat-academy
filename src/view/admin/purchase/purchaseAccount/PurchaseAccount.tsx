@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
-import { useHistory, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { MyContext, StaticService } from 'storage'
 import PurchaseApi from 'api/admin/PurchaseApi'
 

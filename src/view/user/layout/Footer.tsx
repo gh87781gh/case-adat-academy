@@ -1,18 +1,10 @@
-import { useContext, useRef, useEffect } from 'react'
+import { useRef } from 'react'
 
-import { Btn } from 'utility/component'
 import { IconADATFull, IconLinkedin, IconWeb } from 'utility/icon'
-import { Button, Row, Col } from 'antd'
+import { Row, Col } from 'antd'
 
 const Footer = () => {
   const inputEl = useRef<HTMLInputElement>(null)
-  // window.addEventListener('scroll', function () {
-  //   console.log(inputEl.current?.scrollTop)
-  // })
-
-  // useEffect(() => {
-  //   console.log(inputEl.current?.scrollTop)
-  // }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <footer ref={inputEl} className='ad-footer'>

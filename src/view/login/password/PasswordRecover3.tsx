@@ -22,6 +22,7 @@ const PasswordRecover3 = () => {
   const location = useLocation()
   const { state }: any = location
 
+  // data
   const [data, setData] = useState<IState>({
     password: '',
     password2: ''
@@ -39,6 +40,7 @@ const PasswordRecover3 = () => {
     setData({ ...data, [key]: value })
   }
 
+  // api
   const loginWithNewPassword = () => {
     context.setIsLoading(true)
     const sendData = {
@@ -54,34 +56,13 @@ const PasswordRecover3 = () => {
       })
       .catch((err: any) => {
         // console.log('err', err)
-        // history.push('/login')
-        /*
-          1. 帳號或密碼錯誤，直接報錯
-            101 欄位驗證錯誤
-            202 使用者不存在
-            200 密碼錯誤  (訊息會顯示帳號或密碼錯誤 以防有心人try)
-            203 使用者未啟用 (以後有停用帳戶的保留功能)
-          2. 沒有去email點驗證，需轉址 → Login successfully after without email confirmation
-            207 使用者email未驗證
-        */
-        // switch (err.code) {
-        //   case 100:
-        //   case 200:
-        //   case 202:
-        //   case 203:
-        //   // return setErrMsg('Your user ID or password is incorrect.')
-        //   case 207:
-        //     history.push('/login/loginConfirm/afterUpdateEmail') //TODO
-        // }
-        // if (err.status === '400 Bad Request')
-        //   setErrMsg('Your user ID or password is incorrect.')
       })
       .finally(() => context.setIsLoading(false))
   }
 
   useEffect(() => {
     if (!state) history.push('/login')
-  }, [state])
+  }, [state]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <LoginTemplate>

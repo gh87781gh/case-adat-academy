@@ -1,43 +1,15 @@
-import { useState, useEffect, useContext } from 'react'
-import { MyContext, StaticService } from 'storage'
 import { useHistory } from 'react-router-dom'
-import CourseApi from 'api/user/CourseApi'
+
 import Header from 'view/user/layout/Header'
 import Footer from 'view/user/layout/Footer'
-import { Btn } from 'utility/component'
 import CS from 'assets/img/temp-cs.jpeg'
-import Card from '../component/Card'
-import { Row, Col, Breadcrumb, Pagination } from 'antd'
 
-interface IState {
-  coursesType: string
-}
+import { Btn } from 'utility/component'
+import { Row, Col } from 'antd'
 
 const HelpCenter = () => {
-  const context = useContext(MyContext)
-  const api = new CourseApi()
   const history = useHistory()
 
-  const [list, setList] = useState([])
-  const [total, setTotal] = useState(0)
-  const [page, setPage] = useState(1)
-  const getCoursesByLearningPath = (toPage?: number) => {
-    const page = toPage ?? 1
-    setPage(page)
-
-    // context.setIsLoading(true)
-    // api
-    //   .getCoursesByLearningPath(data.coursesType, { page })
-    //   .then((res: any) => {
-    //     setList(res.data)
-    //     setTotal(res.total)
-    //   })
-    //   .finally(() => context.setIsLoading(false))
-  }
-
-  // useEffect(() => {
-  //   getCoursesByLearningPath()
-  // }, [data.coursesType]) // eslint-disable-line react-hooks/exhaustive-deps
   const renderHelpCenterDesc = () => {
     return (
       <div className='ad-helpCenter-desc'>

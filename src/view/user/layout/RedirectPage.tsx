@@ -1,5 +1,5 @@
 import { useEffect, useContext } from 'react'
-import { useHistory, useParams, useLocation } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { MyContext, BrowserStorage } from 'storage'
 import LoginApi from 'api/LoginApi'
 
@@ -8,7 +8,6 @@ const RedirectPage = () => {
   const api = new LoginApi()
   const browserStorage = new BrowserStorage()
   const history = useHistory()
-  const location = useLocation()
   const { target, verify } = useParams<{ target: string; verify: string }>()
 
   useEffect(() => {

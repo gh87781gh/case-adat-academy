@@ -1,10 +1,6 @@
 import { useHistory, useLocation } from 'react-router-dom'
 import { Menu } from 'antd'
 
-interface IState {
-  coursesType: string
-}
-
 const AccountSideBar = () => {
   const history = useHistory()
   const location = useLocation()

@@ -6,7 +6,6 @@ import {
   IconArrowUp,
   IconPlus,
   IconDelete,
-  IconArrowRight,
   IconDanger
 } from 'utility/icon'
 import { Menu, Dropdown } from 'antd'

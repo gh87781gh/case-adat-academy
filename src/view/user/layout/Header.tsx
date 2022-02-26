@@ -1,7 +1,7 @@
-import { useContext, useState, useRef, useEffect } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { version } from '../../../../package.json'
-import { MyContext, BrowserStorage } from '../../../storage'
+import { MyContext } from '../../../storage'
 
 import useScrolling from 'utility/hook/useScrolling'
 import { Btn } from 'utility/component'

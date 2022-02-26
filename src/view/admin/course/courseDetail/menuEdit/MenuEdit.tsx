@@ -3,7 +3,7 @@ import update from 'immutability-helper'
 
 import MenuEditItem from './MenuEditItem'
 
-import { Btn, FormGroupMsg } from 'utility/component'
+import { Btn } from 'utility/component'
 import { Modal } from 'antd'
 
 interface IProps {

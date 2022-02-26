@@ -239,6 +239,8 @@ const Section = () => {
                 />
               </div>
             )
+          } else {
+            return null
           }
         })}
       </div>

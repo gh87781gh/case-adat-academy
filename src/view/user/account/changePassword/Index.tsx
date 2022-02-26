@@ -43,7 +43,7 @@ const Index = () => {
   }
   useEffect(() => {
     setIsPassword2Correct(data.change_password === data.change_password2)
-  }, [data.change_password2])
+  }, [data.change_password2]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const changePassword = () => {
     context.setIsLoading(true)

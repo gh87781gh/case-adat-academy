@@ -1,16 +1,10 @@
 import { useState, useEffect, useContext } from 'react'
 import { MyContext } from 'storage'
-import { useParams, useHistory, useLocation } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import CourseApi from 'api/admin/CourseApi'
 
-import Header from 'view/user/layout/Header'
-import AdminSideBar from '../../../AdminSideBar'
-import Section from '../section/Section'
-import ModalMenuEdit from '../menuEdit/ModalMenuEdit'
-
 import { IconLevels } from 'utility/icon'
-import { Btn, UploadVideo } from 'utility/component'
-import { Row, Col, Breadcrumb, message, Menu } from 'antd'
+import { Menu } from 'antd'
 const { SubMenu } = Menu
 
 interface IProps {

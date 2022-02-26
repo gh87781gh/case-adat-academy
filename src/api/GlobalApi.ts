@@ -1,5 +1,4 @@
 import { RestAPI, RestAPIUpload } from './engine/axiosRunner'
-import { message } from 'antd'
 
 export default class GlobalApi {
   restAPI: any = new RestAPI()
@@ -16,7 +15,6 @@ export default class GlobalApi {
           reject(false)
         })
     })
-    return this.restAPI.request('get', '/auth', {})
   }
   getOptions = (keys: string[]) => {
     return this.restAPI.request('post', '/option', { type: keys })
