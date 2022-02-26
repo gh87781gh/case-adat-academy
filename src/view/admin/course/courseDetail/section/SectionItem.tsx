@@ -1,10 +1,12 @@
 import { useRef, useState } from 'react'
+import { StaticService } from 'storage'
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd'
 import { XYCoord } from 'dnd-core'
-import { StaticService } from 'storage'
-import { IconMenu, IconMore } from 'utility/icon'
+
 import UploadImg from 'utility/component/UploadImg'
 import UploadVideo from 'utility/component/UploadVideo'
+
+import { IconMenu, IconMore, IconArrowUp, IconDelete } from 'utility/icon'
 import { Menu, Dropdown, Input } from 'antd'
 const { TextArea } = Input
 
@@ -12,7 +14,7 @@ interface IProps {
   menu: any
   item: any
   moveCard: (dragIndex: number, hoverIndex: number) => void
-  addChild: (clickItem: any, course?: any) => void
+  // addChild: () => void
   startDragging: (item: any) => void
   isInDragging: boolean
   endDragging: () => void
@@ -132,17 +134,6 @@ const SectionItem = (props: IProps) => {
   })
   drag(drop(ref))
 
-  const renderMoreList = () => {
-    return (
-      <Menu>
-        <Menu.Item key={0} onClick={() => setReplaceCount(replaceCount + 1)}>
-          Replace
-        </Menu.Item>
-        <Menu.Item key={1}>Delete</Menu.Item>
-      </Menu>
-    )
-  }
-
   const onChange = (type: string, e: any) => {
     const value = e.target.value
     // if (value) {
@@ -159,7 +150,44 @@ const SectionItem = (props: IProps) => {
     props.updateSection(props.item.index, type, value)
   }
 
-  const { chapterContentType } = StaticService
+  const renderContentDetail = () => {
+    return props.item.type === 'title' ? (
+      <TextArea
+        className='item-content-textarea title'
+        autoSize={true}
+        value={props.item.content}
+        onChange={(e) => onChange(props.item.type, e)}
+      />
+    ) : props.item.type === 'paragraph' ? (
+      <TextArea
+        style={{ minHeight: '100px' }}
+        className='item-content-textarea paragraph'
+        autoSize={true}
+        value={props.item.content}
+        onChange={(e) => onChange(props.item.type, e)}
+      />
+    ) : props.item.type === 'picture' ? (
+      <UploadImg
+        theme='dark'
+        type='rectangle'
+        desc='Upload picture'
+        system='course'
+        systemId={props.courseId}
+        imgId={props.item.archive_id}
+        setUploadId={(id: string) => onUpload(props.item.type, id)}
+        replaceCount={replaceCount}
+      />
+    ) : props.item.type === 'video' ? (
+      <UploadVideo
+        type='video'
+        desc='Upload video'
+        system='course'
+        systemId={props.courseId}
+        archiveId={props.item.archive_id}
+        setUploadId={(id: string) => onUpload(props.item.type, id)}
+      />
+    ) : null
+  }
   return (
     <>
       <div
@@ -174,76 +202,53 @@ const SectionItem = (props: IProps) => {
       >
         <div className='item-grab' ref={ref} data-handler-id={handlerId}>
           <IconMenu className='item-icon-grab' />
-          {props.item.type === 'picture' || props.item.type === 'video' ? (
-            <Dropdown
-              overlay={renderMoreList}
-              trigger={['click']}
-              placement='bottomRight'
-            >
-              <IconMore className='item-icon-more' />
-            </Dropdown>
-          ) : null}
+          <span className='item-content-type'>{props.item.type}</span>
+          <Dropdown
+            overlay={
+              <Menu>
+                {props.item.type === 'picture' ||
+                props.item.type === 'video' ? (
+                  <Menu.Item
+                    key={0}
+                    onClick={() => setReplaceCount(replaceCount + 1)}
+                  >
+                    Replace
+                  </Menu.Item>
+                ) : null}
+                <Menu.Item key={1}>Delete</Menu.Item>
+              </Menu>
+            }
+            trigger={['click']}
+            placement='bottomRight'
+          >
+            <IconMore className='item-icon-more' />
+          </Dropdown>
         </div>
         <div className={`item-content item-content-${props.item.type}`}>
-          {props.item.type === chapterContentType.title ? (
-            <TextArea
-              className='item-content-textarea title'
-              autoSize={true}
-              value={props.item.content}
-              onChange={(e) => onChange(props.item.type, e)}
-            />
-          ) : props.item.type === chapterContentType.paragraph ? (
-            <TextArea
-              className='item-content-textarea paragraph'
-              autoSize={true}
-              value={props.item.content}
-              onChange={(e) => onChange(props.item.type, e)}
-            />
-          ) : props.item.type === chapterContentType.picture ? (
-            <UploadImg
-              type='rectangle'
-              desc='Upload picture'
-              system='course'
-              systemId={props.courseId}
-              imgId={props.item.archive_id}
-              setUploadId={(id: string) => onUpload(props.item.type, id)}
-              replaceCount={replaceCount}
-            />
-          ) : props.item.type === chapterContentType.video ? (
-            <UploadVideo
-              type='video'
-              desc='Upload video'
-              system='course'
-              systemId={props.courseId}
-              archiveId={props.item.archive_id}
-              setUploadId={(id: string) => onUpload(props.item.type, id)}
-            />
-          ) : null}
+          {renderContentDetail()}
         </div>
-        {/* {props.type === 'COURSE_MENU' ? (
-          <div
-            className='item-btn-arrow'
-            style={{
-              visibility:
-                props.item.isShowChildren === null ? 'hidden' : 'visible',
-              transform: props.item.isShowChildren
-                ? 'rotate(0deg)'
-                : 'rotate(180deg)'
-            }}
-            onClick={() => props.expandChildren(props.item)}
-          >
-            <IconArrowUp />
-          </div>
-        ) : null} */}
+        {/* <div
+          className='item-btn-arrow'
+          style={{
+            visibility:
+              props.item.isShowChildren === null ? 'hidden' : 'visible',
+            transform: props.item.isShowChildren
+              ? 'rotate(0deg)'
+              : 'rotate(180deg)'
+          }}
+          onClick={() => props.expandChildren(props.item)}
+        >
+          <IconArrowUp />
+        </div> */}
         {/* <div className='item-extra'>
-          {props.type === 'COURSE_MENU' && props.item.level !== 3 ? (
+          {/* {props.type === 'COURSE_MENU' && props.item.level !== 3 ? (
             <IconMore
               onClick={() =>
                 props.addChild ? props.addChild(props.item) : null
               }
             />
-          ) : null}
-          {props.type === 'LEARNING_PATH' && props.item.level === 1 ? (
+          ) : null} */}
+        {/*{props.item.level === 1 ? (
             <Dropdown
               overlay={renderMoreList}
               trigger={['click']}

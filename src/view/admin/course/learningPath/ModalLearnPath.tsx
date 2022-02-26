@@ -4,7 +4,7 @@ import CourseApi from 'api/admin/CourseApi'
 import { FormGroupMsg } from 'utility/component'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import Menu from '../courseDetail/Menu'
+import Menu from '../courseDetail/menuEdit/MenuEdit'
 import { Button, Modal } from 'antd'
 
 interface IProps {

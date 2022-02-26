@@ -4,7 +4,7 @@ import CourseApi from 'api/admin/CourseApi'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
-import CourseDetailMenu from './Menu'
+import CourseDetailMenu from './MenuEdit'
 
 import { Btn, FormGroupMsg } from 'utility/component'
 import { Modal } from 'antd'
@@ -13,7 +13,6 @@ interface IProps {
   isShow: boolean
   onCancel: () => void
   courseId: string
-  getCourseDetailMenu: () => void
 }
 
 const ModalMenuEdit = (props: IProps) => {
@@ -52,10 +51,7 @@ const ModalMenuEdit = (props: IProps) => {
     context.setIsLoading(true)
     api
       .editCourseDetailMenu(props.courseId, menu)
-      .then(() => {
-        props.onCancel()
-        props.getCourseDetailMenu()
-      })
+      .then(() => props.onCancel())
       .finally(() => context.setIsLoading(false))
   }
 

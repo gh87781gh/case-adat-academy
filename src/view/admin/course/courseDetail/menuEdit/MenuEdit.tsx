@@ -1,7 +1,7 @@
 import { useCallback, useState, useEffect } from 'react'
 import update from 'immutability-helper'
 
-import MenuItem from './MenuItem'
+import MenuEditItem from './MenuEditItem'
 
 import { Btn, FormGroupMsg } from 'utility/component'
 import { Modal } from 'antd'
@@ -16,7 +16,7 @@ interface IProps {
   goToSection?: (index: number) => void
 }
 
-const Menu = (props: IProps) => {
+const MenuEdit = (props: IProps) => {
   const [draggingItem, setDraggingItem] = useState<any>(null)
   const [dropTargetItem, setDropTargetItem] = useState<any>(null)
   const [deleteItemCache, setDeleteItemCache] = useState<any>(null)
@@ -303,7 +303,7 @@ const Menu = (props: IProps) => {
         {props.menu.map((item: any, index: number) => {
           return (
             <div key={item.key}>
-              <MenuItem
+              <MenuEditItem
                 type={props.type}
                 menu={props.menu}
                 courseMenu={props.courseMenu}
@@ -355,4 +355,4 @@ const Menu = (props: IProps) => {
     </>
   )
 }
-export default Menu
+export default MenuEdit

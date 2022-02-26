@@ -27,7 +27,7 @@ interface IProps {
   handleDeleteItem: (item: any) => void
 }
 
-const MenuItem = (props: IProps) => {
+const MenuEditItem = (props: IProps) => {
   const ref = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const [isEditing, setIsEditing] = useState<boolean>(false)
@@ -252,4 +252,4 @@ const MenuItem = (props: IProps) => {
     </>
   )
 }
-export default MenuItem
+export default MenuEditItem
