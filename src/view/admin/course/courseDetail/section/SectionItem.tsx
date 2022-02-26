@@ -1,12 +1,9 @@
 import { useRef, useState } from 'react'
-import { StaticService } from 'storage'
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd'
 import { XYCoord } from 'dnd-core'
 
-import UploadImg from 'utility/component/UploadImg'
-import UploadVideo from 'utility/component/UploadVideo'
-
-import { IconMenu, IconMore, IconArrowUp, IconDelete } from 'utility/icon'
+import { IconMenu, IconMore } from 'utility/icon'
+import { UploadVideo, UploadImg } from 'utility/component'
 import { Menu, Dropdown, Input } from 'antd'
 const { TextArea } = Input
 
@@ -14,27 +11,19 @@ interface IProps {
   menu: any
   item: any
   moveCard: (dragIndex: number, hoverIndex: number) => void
-  // addChild: () => void
   startDragging: (item: any) => void
   isInDragging: boolean
   endDragging: () => void
-  expandChildren: (item: any) => void
   updateSection: (index: number, type: string, value: string) => void
   courseId: string
-  handleDeleteItem: (item: any) => void
+  deleteItem: (index: number) => void
 }
 
 const SectionItem = (props: IProps) => {
   const ref = useRef<HTMLDivElement>(null)
-  // const inputRef = useRef<HTMLInputElement>(null)
-  // const [isEditing, setIsEditing] = useState<boolean>(false) //TOCHECK
+
+  // drag and drop
   const [replaceCount, setReplaceCount] = useState<number>(0)
-
-  // useEffect(() => {
-  //   if (isEditing) inputRef.current?.focus()
-  // }, [isEditing])
-
-  // const [{ handlerId, isCanDrop }, drop] = useDrop({
   const [{ handlerId }, drop] = useDrop({
     accept: 'card',
     collect(monitor) {
@@ -133,23 +122,14 @@ const SectionItem = (props: IProps) => {
     }
   })
   drag(drop(ref))
-
   const onChange = (type: string, e: any) => {
-    const value = e.target.value
-    // if (value) {
-    //   switch (key) {
-    //     case 'email':
-    //       if (value && !ValidateStr('isUserName', value)) return false
-    //       break
-    //   }
-    // }
-    props.updateSection(props.item.index, type, value)
-    // setData({ ...data, [key]: value })
+    props.updateSection(props.item.index, type, e.target.value)
   }
   const onUpload = (type: string, value: string) => {
     props.updateSection(props.item.index, type, value)
   }
 
+  // render
   const renderContentDetail = () => {
     return props.item.type === 'title' ? (
       <TextArea
@@ -190,16 +170,7 @@ const SectionItem = (props: IProps) => {
   }
   return (
     <>
-      <div
-        ref={preview}
-        // style={{
-        //   display:
-        //     props.item.level !== 1 && !props.item.isShow ? 'none' : 'flex',
-        //   opacity: !props.isInDragging ? 1 : 1
-        //   // opacity: !props.isInDragging ? 1 : isCanDrop ? 1 : 0.1
-        // }}
-        className={`${isDragging ? 'isDragging' : ''} item`}
-      >
+      <div ref={preview} className={`${isDragging ? 'isDragging' : ''} item`}>
         <div className='item-grab' ref={ref} data-handler-id={handlerId}>
           <IconMenu className='item-icon-grab' />
           <span className='item-content-type'>{props.item.type}</span>
@@ -215,7 +186,12 @@ const SectionItem = (props: IProps) => {
                     Replace
                   </Menu.Item>
                 ) : null}
-                <Menu.Item key={1}>Delete</Menu.Item>
+                <Menu.Item
+                  key={1}
+                  onClick={() => props.deleteItem(props.item.index)}
+                >
+                  Delete
+                </Menu.Item>
               </Menu>
             }
             trigger={['click']}
@@ -227,38 +203,6 @@ const SectionItem = (props: IProps) => {
         <div className={`item-content item-content-${props.item.type}`}>
           {renderContentDetail()}
         </div>
-        {/* <div
-          className='item-btn-arrow'
-          style={{
-            visibility:
-              props.item.isShowChildren === null ? 'hidden' : 'visible',
-            transform: props.item.isShowChildren
-              ? 'rotate(0deg)'
-              : 'rotate(180deg)'
-          }}
-          onClick={() => props.expandChildren(props.item)}
-        >
-          <IconArrowUp />
-        </div> */}
-        {/* <div className='item-extra'>
-          {/* {props.type === 'COURSE_MENU' && props.item.level !== 3 ? (
-            <IconMore
-              onClick={() =>
-                props.addChild ? props.addChild(props.item) : null
-              }
-            />
-          ) : null} */}
-        {/*{props.item.level === 1 ? (
-            <Dropdown
-              overlay={renderMoreList}
-              trigger={['click']}
-              placement='bottomRight'
-            >
-              <IconMore />
-            </Dropdown>
-          ) : null}
-          <IconDelete onClick={() => props.handleDeleteItem(props.item)} />
-        </div> */}
       </div>
     </>
   )

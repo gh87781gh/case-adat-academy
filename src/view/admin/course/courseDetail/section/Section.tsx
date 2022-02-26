@@ -1,17 +1,15 @@
 import { useCallback, useState, useEffect, useContext } from 'react'
 import { MyContext } from 'storage'
-import { useParams, useHistory, useLocation } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import CourseApi from 'api/admin/CourseApi'
 import update from 'immutability-helper'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import SectionItem from './SectionItem'
-import { itemVideo } from '../ItemObject'
 
-import { IconPlus } from 'utility/icon'
 import { Btn, UploadVideo } from 'utility/component'
-import { Button, Modal, message, Dropdown, Menu } from 'antd'
+import { message, Dropdown, Menu } from 'antd'
 
 const contentInitItem: any = {
   video: {
@@ -36,23 +34,17 @@ const contentInitItem: any = {
   }
 }
 
-interface IProps {
-  // sections: any
-  // setMenu: (menu: any) => void
-  // updateSection: (index: number, type: string, value: string) => void
-  // courseId: string
-}
-
-const Section = (props: IProps) => {
+const Section = () => {
   const context = useContext(MyContext)
   const api = new CourseApi()
   const { courseId, sectionId } =
     useParams<{ courseId: string; sectionId?: string }>()
 
-  // current section
+  // data
   const [currentSectionDetail, setCurrentSectionDetail] = useState<any>({})
   const [currentSectionContent, setCurrentSectionContent] = useState<any>([])
   const getCurrentSectionContent = () => {
+    setCurrentSectionContent([])
     context.setIsLoading(true)
     if (courseId && sectionId) {
       api
@@ -85,31 +77,15 @@ const Section = (props: IProps) => {
     }
     setCurrentSectionContent(newContent)
   }
-  const save = () => {
-    if (courseId && sectionId) {
-      api
-        .saveCurrentSectionContent(courseId, sectionId, currentSectionContent)
-        .then((res: any) => {
-          setCurrentSectionContent([])
-          message.success('Saved')
-          getCurrentSectionContent()
-        })
-        .finally(() => context.setIsLoading(false))
-    }
-  }
   useEffect(() => {
-    // init current section data
     if (sectionId) {
-      setCurrentSectionContent([])
       getCurrentSectionContent()
     }
   }, [sectionId]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // drag and drop
   const [draggingItem, setDraggingItem] = useState<any>(null)
   const [dropTargetItem, setDropTargetItem] = useState<any>(null)
-  const [deleteItemCache, setDeleteItemCache] = useState<any>(null)
-  const [isModalConfirmShow, setIsModalConfirmShow] = useState<boolean>(false)
-
   const moveCard = useCallback(
     (dragIndex: number, hoverIndex: number) => {
       // console.warn('moveCard:', dragIndex, hoverIndex)
@@ -210,100 +186,31 @@ const Section = (props: IProps) => {
     })
     return array
   }
-  const expandChildren = (item: any) => {
+  const deleteItem = (index: number) => {
     const ary = [...currentSectionContent]
-    ary[item.index].isShowChildren = !ary[item.index].isShowChildren
-    for (const el of ary) {
-      const parentId: string =
-        item.level === 1
-          ? el.key.split('-')[0]
-          : `${el.key.split('-')[0]}-${el.key.split('-')[1]}`
-
-      if (
-        (item.level === 1 && item.key === parentId) ||
-        (item.level === 2 && el.key !== parentId && parentId === item.key)
-      )
-        el.isShow = !item.isShowChildren
-    }
+    ary.splice(index, 1)
     setCurrentSectionContent(ary)
   }
-  // const rename = (index: number, value: string) => {
-  //   const newMenu = [...currentSectionContent]
-  //   newMenu[index].name = value
-  //   setCurrentSectionContent(newMenu)
-  // }
-  const handleDeleteItem = (item: any) => {
-    switch (item.level) {
-      case 1:
-      case 2:
-        const isHasChildren = currentSectionContent.find((el: any) => {
-          let checkPrefix: string =
-            item.level === 1
-              ? el.key.split('-')[0]
-              : `${el.key.split('-')[0]}-${el.key.split('-')[1]}`
-          return item.level === 1
-            ? checkPrefix === item.key && el.level === 2
-            : checkPrefix === item.key && el.level === 3
-        })
-        isHasChildren ? setDeleteItemCache(item) : deleteItem(item)
-        break
-      case 3:
-        deleteItem(item)
-        break
-      default:
-    }
-  }
-  const deleteItem = (item: any) => {
-    const level: number = item.level
-
-    // create new menu without deleted item
-    const ary: any = currentSectionContent.filter((el: any) => {
-      const prefix: string =
-        level === 1
-          ? el.key.split('-')[0]
-          : level === 2
-          ? `${el.key.split('-')[0]}-${el.key.split('-')[1]}`
-          : el.key
-      if (prefix !== item.key) {
-        return el
-      } else {
-        return false
-      }
-    })
-
-    // handle parent item's expanding arrow
-    if (level === 2 || level === 3) {
-      const parentId: string =
-        level === 2
-          ? item.key.split('-')[0]
-          : `${item.key.split('-')[0]}-${item.key.split('-')[1]}`
-      const isHasChildren = ary.find((el: any) => {
-        const prefix: string =
-          level === 2
-            ? el.key.split('-')[0]
-            : `${el.key.split('-')[0]}-${el.key.split('-')[1]}`
-        return el.level === level && prefix === parentId
-      })
-      if (!isHasChildren) {
-        const parentIndex = ary.findIndex((el: any) => el.key === parentId)
-        ary[parentIndex].isShowChildren = null
-      }
-    }
-
-    setDeleteItemCache(null)
-    setCurrentSectionContent(resortKeys(ary))
-  }
-  useEffect(() => {
-    if (deleteItemCache) setIsModalConfirmShow(true)
-  }, [deleteItemCache])
-
-  // add content
   const addChild = (type: string) => {
     const ary: any = [...currentSectionContent]
     ary.push({ ...contentInitItem[type], key: currentSectionContent.length })
     setCurrentSectionContent(ary)
   }
 
+  // api
+  const save = () => {
+    if (courseId && sectionId) {
+      api
+        .saveCurrentSectionContent(courseId, sectionId, currentSectionContent)
+        .then(() => {
+          message.success('Saved')
+          getCurrentSectionContent()
+        })
+        .finally(() => context.setIsLoading(false))
+    }
+  }
+
+  // render
   const renderSectionItem = () => {
     return (
       <div className='ad-course-sections'>
@@ -324,12 +231,11 @@ const Section = (props: IProps) => {
                   startDragging={(item: any) => startDragging(item)}
                   isInDragging={draggingItem !== null}
                   endDragging={() => endDragging()}
-                  expandChildren={(item: any) => expandChildren(item)}
                   updateSection={(index: number, type: string, value: string) =>
                     updateCurrentSectionContent(index, type, value)
                   }
                   courseId={courseId}
-                  handleDeleteItem={(item: any) => handleDeleteItem(item)}
+                  deleteItem={(index: number) => deleteItem(index)}
                 />
               </div>
             )
@@ -362,14 +268,6 @@ const Section = (props: IProps) => {
             </p>
             <DndProvider backend={HTML5Backend}>
               {renderSectionItem()}
-              {/* <Section
-            sections={currentSectionContent}
-            setMenu={(content: any) => setCurrentSectionContent(content)}
-            updateSection={(index: number, type: string, value: string) =>
-              updateCurrentSectionContent(index, type, value)
-            }
-            courseId={courseId}
-          /> */}
             </DndProvider>
             <div className='ad-course-menu-addGroup'>
               <Dropdown
@@ -392,7 +290,6 @@ const Section = (props: IProps) => {
                 trigger={['click']}
                 placement='bottomLeft'
               >
-                {/* <IconPlus /> */}
                 <span>
                   <em></em>
                   <em></em>
@@ -415,31 +312,6 @@ const Section = (props: IProps) => {
           </>
         ) : null}
       </div>
-      <Modal
-        // zIndex={1001}
-        title='Are you sure?'
-        visible={isModalConfirmShow}
-        onCancel={() => setIsModalConfirmShow(false)}
-        footer={[
-          <Button
-            key='Create'
-            type='primary'
-            onClick={() => {
-              deleteItem(deleteItemCache)
-              setIsModalConfirmShow(false)
-            }}
-          >
-            Yes. Delete it.
-          </Button>,
-          <Button key='Cancel' onClick={() => setIsModalConfirmShow(false)}>
-            No
-          </Button>
-        ]}
-        width={720}
-      >
-        There are {deleteItemCache?.level === 1 ? 'chapters' : 'secitons'} in
-        the folders. Are you sure you want to delete all the content?
-      </Modal>
     </>
   )
 }
