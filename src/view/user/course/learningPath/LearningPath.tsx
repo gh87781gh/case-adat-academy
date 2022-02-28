@@ -146,7 +146,10 @@ const LearningPath = () => {
     context.setIsLoading(true)
     api
       .getBannerLearningPath()
-      .then((res: any) => setData(res.data))
+      .then((res: any) => {
+        console.log('test:', res.data)
+        setData(res.data)
+      })
       .finally(() => context.setIsLoading(false))
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 

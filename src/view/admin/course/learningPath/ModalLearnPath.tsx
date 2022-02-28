@@ -1,11 +1,13 @@
 import { useState, useContext, useEffect } from 'react'
 import { MyContext } from 'storage'
 import CourseApi from 'api/admin/CourseApi'
-import { FormGroupMsg } from 'utility/component'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import Menu from '../courseDetail/menuEdit/MenuEdit'
-import { Button, Modal } from 'antd'
+
+import Path from './Path'
+
+import { FormGroupMsg, Btn } from 'utility/component'
+import { Modal } from 'antd'
 
 interface IProps {
   isShow: boolean
@@ -13,46 +15,82 @@ interface IProps {
   getList: () => void
   learningGoal: string
 }
+interface IPath {
+  level: number
+  key: string
+  name: string
+  index: number
+  id?: string
+  enable?: boolean
+}
 
 const ModalLearnPath = (props: IProps) => {
   const context = useContext(MyContext)
   const api = new CourseApi()
 
-  const [courseMenu, setCourseMenu] = useState<any>([])
-  const [selectedCourseMenu, setSelectedCourseMenu] = useState<any>([])
-  const [menu, setMenu] = useState<any>([])
-  let [addLevel1Count, setAddLevelACount] = useState<number>(0)
-  const getData = async () => {
+  // earning path info
+  // const getLearningPathInfo = () => {
+  //   context.setIsLoading(true)
+  //   api
+  //     .getLearningPathInfo(props.learningGoal)
+  //     .then((ary: any) => console.log('getLearnGoalDetail:', ary))
+  //     .finally(() => context.setIsLoading(false))
+  // }
+
+  // earning path detail
+  const [path, setPath] = useState<IPath[]>([]) //TODO 待研究
+  const getLearningPathDetail = () => {
     context.setIsLoading(true)
-    await api
-      .getLearnGoalDetail(props.learningGoal)
-      .then((ary: any) => setMenu(ary))
-    await api
-      .getLearnCourses()
-      .then((ary: any) => {
-        setCourseMenu(ary)
-      })
+    api
+      .getLearningPathDetail(props.learningGoal)
+      .then((ary: any) => setPath(ary))
       .finally(() => context.setIsLoading(false))
   }
-  useEffect(() => {
-    const selectedCourses: any = []
-    for (const el of menu) {
-      if (el.level === 2) selectedCourses.push(el)
-    }
-    setSelectedCourseMenu(selectedCourses)
-  }, [menu]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // course list
+  const [courseMenu, setCourseMenu] = useState<any>([])
+  const getLearningPathCourseList = () => {
+    context.setIsLoading(true)
+    api
+      .getLearningPathCourseList()
+      .then((res: any) => setCourseMenu(res.data))
+      .finally(() => context.setIsLoading(false))
+  }
+
+  // add level 1
+  let [addLevel1Count, setAddLevelACount] = useState<number>(0)
+
+  // const getLearningPathDetail = () => {
+  //   context.setIsLoading(true)
+  //   api
+  //     .getLearnPathGoalCourses(props.learningGoal)
+  //     .then((ary: any) => setCourseMenu(ary))
+  //     .finally(() => context.setIsLoading(false))
+  // }
+
+  // const [selectedCourseMenu, setSelectedCourseMenu] = useState<any>([])
+  // useEffect(() => {
+  //   const selectedCourses: any = []
+  //   for (const el of path) {
+  //     if (el.level === 2) selectedCourses.push(el)
+  //   }
+  //   setSelectedCourseMenu(selectedCourses)
+  // }, [path]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // init modal
   useEffect(() => {
     if (props.isShow && props.learningGoal) {
-      getData()
+      getLearningPathDetail()
+      getLearningPathCourseList()
     } else {
-      setMenu([])
+      setPath([])
     }
   }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const upload = () => {
     context.setIsLoading(true)
     api
-      .uploadLearn(props.learningGoal, menu)
+      .uploadLearningPathGoalPath(props.learningGoal, path)
       .then(() => props.onCancel())
       .finally(() => context.setIsLoading(false))
   }
@@ -64,12 +102,12 @@ const ModalLearnPath = (props: IProps) => {
       onCancel={props.onCancel}
       width={1100}
       footer={[
-        <Button key='Upload' type='primary' onClick={() => upload()}>
+        <Btn key='Upload' feature='action' onClick={() => upload()}>
           Upload
-        </Button>,
-        <Button key='Reset' onClick={props.onCancel}>
+        </Btn>,
+        <Btn key='Reset' feature='primary' onClick={props.onCancel}>
           Reset
-        </Button>
+        </Btn>
       ]}
     >
       <div className='ad-form-group ad-form-group-horizontal'>
@@ -83,12 +121,12 @@ const ModalLearnPath = (props: IProps) => {
         msg='Course is in inactive status, so user won’t see it'
       />
       <DndProvider backend={HTML5Backend}>
-        <Menu
+        <Path
           type='LEARNING_PATH'
-          menu={menu}
+          path={path}
           courseMenu={courseMenu}
-          selectedCourseMenu={selectedCourseMenu}
-          setMenu={(menu: any) => setMenu(menu)}
+          // selectedCourseMenu={selectedCourseMenu}
+          setPath={(path: any) => setPath(path)}
           addLevel1Count={addLevel1Count}
         />
       </DndProvider>

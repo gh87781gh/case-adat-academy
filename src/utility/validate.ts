@@ -4,6 +4,7 @@ const isEmail = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
 const isInt = /^[0-9]+$/
 
 const isSymbol = /[-=/()_+{}[\]`~|:;*&^%$#@<>$\\.]/
+const isSymbolStrict = /[-=/()_+{}[\]`~|*&^%$#@<>$]/
 // const isUserName = /^[A-Za-z0-9@.]+$/
 
 export function ValidateStr(type: string, value: string) {
@@ -18,6 +19,8 @@ export function ValidateStr(type: string, value: string) {
       return isInt.test(value)
     case 'isNoSymbol':
       return isSymbol.test(value)
+    case 'isSymbolStrict':
+      return isSymbolStrict.test(value)
     // case 'isUserName':
     //   return isUserName.test(value)
     default:
@@ -72,8 +75,8 @@ export const schema: any = {
     validateStr: (val: any) => ValidateStr('isNoSymbol', val)
   },
   description: {
-    max: 50,
-    validateStr: (val: any) => ValidateStr('isNoSymbol', val)
+    max: 200,
+    validateStr: (val: any) => ValidateStr('isSymbolStrict', val)
   },
   xxx1: {
     validateStr: (val: any) => ValidateStr('isNoSymbol', val)

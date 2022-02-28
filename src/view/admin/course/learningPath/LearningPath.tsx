@@ -46,7 +46,7 @@ const LearningPath = () => {
   const getList = () => {
     context.setIsLoading(true)
     api
-      .getLearnGoals()
+      .getLearningPathGoals()
       .then((res: any) => setList(res.data))
       .finally(() => context.setIsLoading(false))
   }

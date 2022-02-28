@@ -153,7 +153,59 @@ export default class CourseApi {
       data
     )
   }
-  uploadLearn = (name: string, data: any) => {
+
+  getLearningPathGoals = () => {
+    return new Promise((resolve, reject) => {
+      this.restAPI
+        .request('get', '/learn', {})
+        .then((res: any) => {
+          res.data = res.data.map((item: any, index: number) => {
+            return { goal: item, key: index }
+          })
+          resolve(res)
+        })
+        .catch(() => {
+          reject(false)
+        })
+    })
+  }
+  getLearningPathDetail = (goal: string) => {
+    return new Promise((resolve, reject) => {
+      this.restAPI
+        .request('get', `/learn/${goal}`, {})
+        .then((res: any) => {
+          const ary: any = []
+          let index: number = 0
+          res.data.forEach((stage: any, stageIndex: number) => {
+            ary.push({
+              level: 1,
+              key: `${stageIndex}`,
+              name: stage.name,
+              courses: stage.courses,
+              index
+            })
+            index++
+            stage.courses.forEach((course: any, courseIndex: number) => {
+              ary.push({
+                level: 2,
+                key: `${stageIndex}-${courseIndex}`,
+                name: course.name,
+                id: course.id,
+                enable: course.enable,
+                index
+              })
+              index++
+            })
+          })
+          resolve(ary)
+        })
+        .catch(() => {
+          reject(false)
+        })
+    })
+  }
+  uploadLearningPathGoalPath = (name: string, data: any) => {
+    // console.log('test:', name, data)
     const ary: any = []
     const item1Ary: any = data.filter((item: any) => item.level === 1)
     const item2Ary: any = data.filter((item: any) => item.level === 2)
@@ -170,7 +222,18 @@ export default class CourseApi {
     })
     return this.restAPI.request('post', `/learn/${name}`, ary)
   }
-
+  getLearningPathCourseList = () => {
+    return new Promise((resolve, reject) => {
+      this.restAPI
+        .request('get', '/learn/course', {})
+        .then((res: any) => {
+          resolve(res)
+        })
+        .catch(() => {
+          reject(false)
+        })
+    })
+  }
   // NOTE 確認到以上
 
   createCourse = (data: any) => {
@@ -182,92 +245,5 @@ export default class CourseApi {
   switchCourse = (id: string, enable: boolean) => {
     // TOCHECK activate 後端檢查還沒做
     return this.restAPI.request('post', `/course/${id}/active`, { enable })
-  }
-
-  // TOCHECK
-  getCourseMenu = () => {
-    return new Promise((resolve, reject) => {
-      this.restAPI
-        .request('get', '/learn', {})
-        .then((res: any) => {
-          // res.data.forEach((item: any, index: number) => {
-          //   item.last_update_time = formatDateTime(item.last_update_time)
-          //   item.key = index
-          // })
-          resolve(res)
-        })
-        .catch(() => {
-          reject(false)
-        })
-    })
-  }
-
-  getLearnCourses = () => {
-    return new Promise((resolve, reject) => {
-      this.restAPI
-        .request('get', '/course', {})
-        .then((res: any) => {
-          const ary = res.data.map((item: any, index: number) => {
-            return {
-              key: index,
-              id: item.id,
-              name: item.name,
-              enable: item.enable
-            }
-          })
-          resolve(ary)
-        })
-        .catch(() => {
-          reject(false)
-        })
-    })
-  }
-  getLearnGoals = () => {
-    return new Promise((resolve, reject) => {
-      this.restAPI
-        .request('get', '/learn', {})
-        .then((res: any) => {
-          res.data = res.data.map((item: any, index: number) => {
-            return { goal: item, key: index }
-          })
-          resolve(res)
-        })
-        .catch(() => {
-          reject(false)
-        })
-    })
-  }
-  getLearnGoalDetail = (goal: string) => {
-    return new Promise((resolve, reject) => {
-      this.restAPI
-        .request('get', `/learn/${goal}`, {})
-        .then((res: any) => {
-          const ary: any = []
-          res.data.forEach((stage: any, stageIndex: number) => {
-            ary.push({
-              level: 1,
-              key: `${stageIndex}`,
-              name: stage.name,
-              isShowChildren: stage.courses.length > 0 ? true : null,
-              isShow: true
-            })
-            stage.courses.forEach((course: any, courseIndex: number) => {
-              ary.push({
-                level: 'B',
-                key: `${stageIndex}-${courseIndex}`,
-                name: course.name,
-                isShowChildren: null,
-                isShow: true,
-                id: course.id,
-                enable: course.enable
-              })
-            })
-          })
-          resolve(ary)
-        })
-        .catch(() => {
-          reject(false)
-        })
-    })
   }
 }
