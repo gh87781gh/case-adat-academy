@@ -250,7 +250,7 @@ const Section = () => {
     <>
       <h2>{currentSectionDetail.name}</h2>
       <div className='ad-layout-admin-article-content'>
-        {currentSectionContent ? (
+        {currentSectionContent.length > 0 ? (
           <>
             {/* the first video is fixed on the top */}
             <UploadVideo
