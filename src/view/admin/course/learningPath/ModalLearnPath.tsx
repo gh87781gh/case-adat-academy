@@ -47,7 +47,10 @@ const ModalLearnPath = (props: IProps) => {
       .finally(() => context.setIsLoading(false))
   }
 
-  // course list
+  // add level 1
+  let [addLevel1Count, setAddLevelACount] = useState<number>(0)
+
+  // add level 2 / course list
   const [courseMenu, setCourseMenu] = useState<any>([])
   const [selectedCourseMenu, setSelectedCourseMenu] = useState<any>([])
   const getLearningPathCourseList = () => {
@@ -57,25 +60,19 @@ const ModalLearnPath = (props: IProps) => {
       .then((res: any) => setCourseMenu(res.data))
       .finally(() => context.setIsLoading(false))
   }
-
-  // add level 1
-  let [addLevel1Count, setAddLevelACount] = useState<number>(0)
-
-  // const getLearningPathDetail = () => {
-  //   context.setIsLoading(true)
-  //   api
-  //     .getLearnPathGoalCourses(props.learningGoal)
-  //     .then((ary: any) => setCourseMenu(ary))
-  //     .finally(() => context.setIsLoading(false))
-  // }
-
-  // useEffect(() => {
-  //   const selectedCourses: any = []
-  //   for (const el of path) {
-  //     if (el.level === 2) selectedCourses.push(el)
-  //   }
-  //   setSelectedCourseMenu(selectedCourses)
-  // }, [path]) // eslint-disable-line react-hooks/exhaustive-deps
+  const handleSelectedCourseMenu = () => {
+    const ary: any = [...path]
+    const menu: any = []
+    for (const item of ary) {
+      if (item.level === 2) {
+        menu.push(item)
+      }
+    }
+    setSelectedCourseMenu(menu)
+  }
+  useEffect(() => {
+    handleSelectedCourseMenu()
+  }, [path]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // init modal
   useEffect(() => {
@@ -87,6 +84,7 @@ const ModalLearnPath = (props: IProps) => {
     }
   }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // api
   const upload = () => {
     context.setIsLoading(true)
     api
@@ -127,7 +125,6 @@ const ModalLearnPath = (props: IProps) => {
           setPath={(path: any) => setPath(path)}
           courseMenu={courseMenu}
           selectedCourseMenu={selectedCourseMenu}
-          setSelectedCourseMenu={(maenu: any) => setSelectedCourseMenu(maenu)}
           addLevel1Count={addLevel1Count}
         />
       </DndProvider>

@@ -12,7 +12,6 @@ interface IProps {
   setPath: (path: any) => void
   courseMenu: any
   selectedCourseMenu: any
-  setSelectedCourseMenu: (menu: any) => void
   addLevel1Count: number
 }
 
@@ -148,7 +147,7 @@ const Path = (props: IProps) => {
     props.setPath(newMenu)
   }
 
-  // add item
+  // add item level 1
   const addChildLevel1 = () => {
     const ary = [...props.path]
     const item1s = props.path.filter((item: any) => {
@@ -167,47 +166,43 @@ const Path = (props: IProps) => {
   useEffect(() => {
     if (props.addLevel1Count !== 0) addChildLevel1()
   }, [props.addLevel1Count]) // eslint-disable-line react-hooks/exhaustive-deps
-  const addChildLevel2 = (clickItem: any, course: any) => {
-    // 儲存已選擇的 course
-    const newSelectedCourseMenu: any = [...props.selectedCourseMenu]
-    newSelectedCourseMenu.push(course)
-    props.setSelectedCourseMenu(newSelectedCourseMenu)
 
+  // add item level 2
+  const addChildLevel2 = (clickItem: any, course: any) => {
+    console.log(clickItem, course, clickItem.key)
     // path 新增 course 進去
     const ary = [...props.path]
-    props.setPath([])
+    let childrenCount: number = 0
+    for (const item of ary) {
+      if (item.level === 2 && item.key.split('-')[0] === clickItem.key)
+        childrenCount++
+    }
+    console.log('childrenCount:', childrenCount)
+    // props.setPath([])
     const itemLevel2 = {
       level: 2,
-      key: `${clickItem.key}-${clickItem.courses.length + 1}`,
+      key: `${clickItem.key}-${childrenCount + 1}`,
       name: course.name,
       id: course.id,
       enable: course.enable
     }
-    for (const stage of ary) {
-      if (stage.id === clickItem.id) {
-        stage.courses.push(itemLevel2)
-      }
-    }
-    ary.splice(1, 0, itemLevel2)
+    // for (const stage of ary) {
+    //   if (stage.id === clickItem.id) {
+    //     stage.courses.push(itemLevel2)
+    //   }
+    // }
+    ary.splice(clickItem.index + childrenCount + 1, 0, itemLevel2)
 
-    // 重新整理全部的 index
+    // // 重新整理全部的 index
     ary.forEach((item: any, index: number) => {
       item.index = index
     })
     props.setPath(ary)
   }
 
-  // delete item
+  // delete item level 1&2
   const deleteItem = (item: any) => {
     const level: number = item.level
-
-    // 自已儲存的 course 中刪除 course
-    if (level === 2) {
-      const list: any = [...props.selectedCourseMenu]
-      const index = list.findIndex((el: any) => el.id === item.id)
-      list.splice(index, 1)
-      props.setSelectedCourseMenu(list)
-    }
 
     // create new path without deleted item
     const ary: any = props.path.filter((el: any) => {
