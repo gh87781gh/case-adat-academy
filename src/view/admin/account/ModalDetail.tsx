@@ -28,6 +28,8 @@ const ModalDetail = (props: IProps) => {
   useEffect(() => {
     if (props.isShow) {
       getAccountDetail()
+    } else {
+      props.getList()
     }
   }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 

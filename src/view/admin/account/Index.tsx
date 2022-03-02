@@ -229,26 +229,26 @@ const Index = () => {
               onChange: (page: number) => getList(page)
             }}
           />
-          <ModalCreate
-            isShow={isModalCreateShow}
-            onCancel={() => setIsModalCreateShow(false)}
-            getList={() => getList()}
-          />
-          <ModalDetail
-            isShow={isModalDetailShow}
-            onCancel={() => setIsModalDetailShow(false)}
-            accountId={accountId}
-            getList={() => getList(page)}
-            showModalRecord={() => setIsModalRecordShow(true)}
-          />
-          <ModalRecord
-            isShow={isModalRecordShow}
-            onCancel={() => setIsModalRecordShow(false)}
-            accountId={accountId}
-            userId={userId}
-          />
         </article>
       </div>
+      <ModalCreate
+        isShow={isModalCreateShow}
+        onCancel={() => setIsModalCreateShow(false)}
+        getList={() => getList()}
+      />
+      <ModalDetail
+        isShow={isModalDetailShow}
+        onCancel={() => setIsModalDetailShow(false)}
+        accountId={accountId}
+        getList={() => getList(page)}
+        showModalRecord={() => setIsModalRecordShow(true)}
+      />
+      <ModalRecord
+        isShow={isModalRecordShow}
+        onCancel={() => setIsModalRecordShow(false)}
+        accountId={accountId}
+        userId={userId}
+      />
     </>
   )
 }
