@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from 'react'
 import { MyContext } from 'storage'
-
+import GlobalApi from 'api/GlobalApi'
 import PurchaseApi from 'api/admin/PurchaseApi'
 
 import { Btn } from 'utility/component'
@@ -17,11 +17,24 @@ interface IProps {
 }
 
 const ModalDetail = (props: IProps) => {
-  const api = new PurchaseApi()
   const context = useContext(MyContext)
+  const api = new PurchaseApi()
+  const api_global = new GlobalApi()
+
+  // option
+  const [courseAccessOption, setCourseAccessOption] = useState<any>([])
+  useEffect(() => {
+    if (props.isShow) {
+      api_global
+        .getOptions(['purchase_management_course_access'])
+        .then((res: any) => setCourseAccessOption(res.data[0]))
+        .finally(() => context.setIsLoading(false))
+    }
+  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // init purchase detail
   const [purchaseDetail, setPurchaseDetail] = useState<any>({})
+  const [courseAccessNameList, setCourseAccessNameList] = useState<any>('')
   const getPurchaseDetail = () => {
     context.setIsLoading(true)
     api
@@ -33,6 +46,13 @@ const ModalDetail = (props: IProps) => {
     if (props.isShow && (props.purchaseId || !props.isModalEditShow))
       getPurchaseDetail()
   }, [props.isShow, props.isModalEditShow]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    const ary: any = courseAccessOption.filter((item: any) => {
+      return purchaseDetail.course_access.includes(item.id)
+    })
+    const nameList = ary.map((item: any) => item.name)
+    setCourseAccessNameList(nameList.join(', ') ?? '')
+  }, [purchaseDetail]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // delete
   const [isModalConfirmShow, setIsModalConfirmShow] = useState<boolean>(false)
@@ -144,9 +164,7 @@ const ModalDetail = (props: IProps) => {
           <Col span={12}>
             <div className='ad-form-group'>
               <label>Course access</label>
-              <div className='ad-form-group-value'>
-                {purchaseDetail.course_access}
-              </div>
+              <div className='ad-form-group-value'>{courseAccessNameList}</div>
             </div>
           </Col>
           <Col span={12}>
