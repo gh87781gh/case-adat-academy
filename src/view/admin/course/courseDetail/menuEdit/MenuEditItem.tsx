@@ -154,7 +154,6 @@ const MenuEditItem = (props: IProps) => {
       </Menu>
     )
   }
-  const renderText = () => <>{}</>
 
   return (
     <>

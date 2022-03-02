@@ -28,6 +28,7 @@ const CourseDetail = () => {
   const [courseName, setCourseName] = useState<string>('')
   const [courseLogoImage, setCourseLogoImage] = useState<string>('')
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
+  const [lastReadSectionId, setLastReadSectionId] = useState<string>('')
   const switchIsBookmarked = () => {
     if (sectionId) {
       context.setIsLoading(true)
@@ -101,7 +102,7 @@ const CourseDetail = () => {
     context.setIsLoading(true)
     api
       .markAsRead(courseId, sectionId || '')
-      .then(() => {})
+      .then(() => getInitData(courseId, sectionId))
       .finally(() => context.setIsLoading(false))
   }
 
@@ -116,33 +117,46 @@ const CourseDetail = () => {
         setIsBookmarked(res.is_bookmarked)
         setMenu(res.data)
         openAllMenuItems(res.data)
-
-        // 設置 currentSection
-        if (sectionId) {
-          // 1. 判斷網址是否有 params: sectionId？
-          // 有 sectionId -> 設置 currentSection & prev/next sectionId
-          getCurrentSection(courseId, sectionId)
-          setPrevAndNextSection(res.data, sectionId)
-        } else {
-          // 無 sectionId ->
-          // 2. 判斷是否有前次閱讀紀錄？
-          if (res.last_read_section_id) {
-            // 有 last_read_section_id -> 將 last_read_section_id 設成 params
-            history.push(`${location.pathname}/${res.last_read_section_id}`)
-          } else {
-            // 無 last_read_section_id -> 將第一個 section 設成 params
-            let firstSection: string = ''
-            for (const chapter of menu) {
-              for (const section of chapter.children) {
-                firstSection = section.id
-              }
-            }
-            history.push(`${location.pathname}/${firstSection}`)
-          }
-        }
+        setLastReadSectionId(res.last_read_section_id)
       })
       .finally(() => context.setIsLoading(false))
   }
+  useEffect(() => {
+    if (menu) {
+      // 設置 currentSection
+      if (sectionId) {
+        console.log('1')
+        // 1. 判斷網址是否有 params: sectionId？
+        // 有 sectionId -> 設置 currentSection & prev/next sectionId
+        getCurrentSection(courseId, sectionId)
+        setPrevAndNextSection(menu, sectionId)
+      } else {
+        // 無 sectionId ->
+        // 2. 判斷是否有前次閱讀紀錄？
+        if (lastReadSectionId) {
+          // 有 lastReadSectionId -> 將 lastReadSectionId 設成 params
+          history.push(`${location.pathname}${lastReadSectionId}`)
+        } else {
+          // 無 lastReadSectionId -> 將第一個 section 設成 params
+          let firstSection: string = ''
+          for (const group of menu) {
+            for (const chapter of group.children) {
+              for (const section of chapter.children) {
+                console.log(section)
+                if (section) {
+                  firstSection = section.id
+                  break
+                }
+                break
+              }
+              break
+            }
+          }
+          history.push(`${location.pathname}/${firstSection}`)
+        }
+      }
+    }
+  }, [menu, lastReadSectionId]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (courseId) {
       getInitData(courseId, sectionId)

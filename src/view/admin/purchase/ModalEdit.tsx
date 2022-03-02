@@ -254,7 +254,7 @@ const ModalCreate = (props: IProps) => {
               onChange={onPick}
               format={StaticService.format.date}
               disabledDate={(current: any) =>
-                DisabledMoment('isAfterToday', current)
+                DisabledMoment('isStartFromToday', current)
               }
             />
           </div>
