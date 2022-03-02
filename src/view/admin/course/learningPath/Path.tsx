@@ -7,7 +7,6 @@ import { Btn } from 'utility/component'
 import { Modal } from 'antd'
 
 interface IProps {
-  type: string
   path: any
   setPath: (path: any) => void
   courseMenu: any
@@ -177,8 +176,6 @@ const Path = (props: IProps) => {
       if (item.level === 2 && item.key.split('-')[0] === clickItem.key)
         childrenCount++
     }
-    console.log('childrenCount:', childrenCount)
-    // props.setPath([])
     const itemLevel2 = {
       level: 2,
       key: `${clickItem.key}-${childrenCount + 1}`,
@@ -186,14 +183,9 @@ const Path = (props: IProps) => {
       id: course.id,
       enable: course.enable
     }
-    // for (const stage of ary) {
-    //   if (stage.id === clickItem.id) {
-    //     stage.courses.push(itemLevel2)
-    //   }
-    // }
     ary.splice(clickItem.index + childrenCount + 1, 0, itemLevel2)
 
-    // // 重新整理全部的 index
+    // 重新整理全部的 index
     ary.forEach((item: any, index: number) => {
       item.index = index
     })
@@ -253,7 +245,6 @@ const Path = (props: IProps) => {
           return (
             <div key={item.key}>
               <PathItem
-                type={props.type}
                 path={props.path}
                 courseMenu={props.courseMenu}
                 selectedCourseMenu={props.selectedCourseMenu}

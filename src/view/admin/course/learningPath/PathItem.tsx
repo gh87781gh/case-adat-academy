@@ -11,7 +11,6 @@ import {
 import { Menu, Dropdown } from 'antd'
 
 interface IProps {
-  type: string
   path: any
   courseMenu: any
   selectedCourseMenu: any
@@ -182,12 +181,7 @@ const PathItem = (props: IProps) => {
       ) : (
         <div
           onClick={() => {
-            if (
-              props.type === 'COURSE_MENU' ||
-              (props.type === 'LEARNING_PATH' && props.item.level === 1)
-            ) {
-              setIsEditing(true)
-            }
+            if (props.item.level === 1) setIsEditing(true)
           }}
         >
           {props.item.name}{' '}

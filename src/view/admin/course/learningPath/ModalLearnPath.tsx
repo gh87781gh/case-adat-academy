@@ -120,7 +120,6 @@ const ModalLearnPath = (props: IProps) => {
       />
       <DndProvider backend={HTML5Backend}>
         <Path
-          type='LEARNING_PATH'
           path={path}
           setPath={(path: any) => setPath(path)}
           courseMenu={courseMenu}
