@@ -125,7 +125,6 @@ const CourseDetail = () => {
     if (menu) {
       // 設置 currentSection
       if (sectionId) {
-        console.log('1')
         // 1. 判斷網址是否有 params: sectionId？
         // 有 sectionId -> 設置 currentSection & prev/next sectionId
         getCurrentSection(courseId, sectionId)
@@ -152,7 +151,7 @@ const CourseDetail = () => {
               break
             }
           }
-          history.push(`${location.pathname}/${firstSection}`)
+          if (firstSection) history.push(`${location.pathname}/${firstSection}`)
         }
       }
     }
