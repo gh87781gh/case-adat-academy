@@ -154,37 +154,7 @@ const MenuEditItem = (props: IProps) => {
       </Menu>
     )
   }
-  const renderText = () => (
-    <>
-      {isEditing ? (
-        <input
-          ref={inputRef}
-          type='text'
-          defaultValue={props.item.name}
-          onBlur={(e) => {
-            setIsEditing(false)
-            props.rename(props.item.index, e.target.value)
-          }}
-        />
-      ) : (
-        <div
-          onClick={() => {
-            if (
-              props.type === 'COURSE_MENU' ||
-              (props.type === 'LEARNING_PATH' && props.item.level === 1)
-            ) {
-              setIsEditing(true)
-            }
-          }}
-        >
-          {props.item.name}{' '}
-          {props.item.level === 2 && props.item.enable === false ? (
-            <IconDanger className='ad-color-danger' />
-          ) : null}
-        </div>
-      )}
-    </>
-  )
+  const renderText = () => <>{}</>
 
   return (
     <>
@@ -222,7 +192,36 @@ const MenuEditItem = (props: IProps) => {
             <IconArrowUp />
           </div>
         ) : null}
-        <div className='item-text'>{renderText()}</div>
+        <div className='item-text'>
+          {isEditing ? (
+            <input
+              ref={inputRef}
+              type='text'
+              defaultValue={props.item.name}
+              onBlur={(e) => {
+                setIsEditing(false)
+                props.rename(props.item.index, e.target.value)
+              }}
+            />
+          ) : (
+            <div
+              style={{ height: '100%' }}
+              onClick={() => {
+                if (
+                  props.type === 'COURSE_MENU' ||
+                  (props.type === 'LEARNING_PATH' && props.item.level === 1)
+                ) {
+                  setIsEditing(true)
+                }
+              }}
+            >
+              {props.item.name}{' '}
+              {props.item.level === 2 && props.item.enable === false ? (
+                <IconDanger className='ad-color-danger' />
+              ) : null}
+            </div>
+          )}
+        </div>
         <div className='item-extra'>
           {props.type === 'COURSE_MENU' && props.item.level !== 3 ? (
             <IconPlus
