@@ -135,25 +135,35 @@ const PathItem = (props: IProps) => {
   }, [isEditing])
 
   const renderCourseList = () => {
+    const isAllSelected: boolean =
+      props.courseMenu.length === props.selectedCourseMenu.length
     return (
       <Menu>
-        {props.courseMenu.map((course: any) => {
-          const isSelected: boolean = props.selectedCourseMenu.find(
-            (el: any) => el.id === course.id
-          )
-          return (
-            <Menu.Item
-              key={course.key}
-              disabled={isSelected}
-              onClick={() =>
-                // props.addChildLevel2(props.item, course)
-                console.log('test')
-              }
-            >
-              <div>{course.name}</div>
-            </Menu.Item>
-          )
-        })}
+        {isAllSelected ? (
+          <Menu.Item key='none'>
+            <div className='item-extra-emptyList'>
+              <IconDanger />
+              Course are all selected
+            </div>
+          </Menu.Item>
+        ) : (
+          props.courseMenu.map((course: any) => {
+            // 濾掉已被選擇的 course
+            const isSelected: boolean = props.selectedCourseMenu.find(
+              (el: any) => el.id === course.id
+            )
+            return (
+              <Menu.Item
+                key={course.id}
+                disabled={isSelected}
+                style={{ display: isSelected ? 'none' : 'block' }}
+                onClick={() => props.addChildLevel2(props.item, course)}
+              >
+                <div>{course.name}</div>
+              </Menu.Item>
+            )
+          })
+        )}
       </Menu>
     )
   }
@@ -204,19 +214,7 @@ const PathItem = (props: IProps) => {
         <div className='item-extra'>
           {props.item.level === 1 ? (
             <Dropdown
-              overlay={
-                <Menu>
-                  {props.courseMenu.map((course: any) => (
-                    <Menu.Item
-                      key={course.id}
-                      disabled={!course.enable}
-                      onClick={() => props.addChildLevel2(props.item, course)}
-                    >
-                      {course.name}
-                    </Menu.Item>
-                  ))}
-                </Menu>
-              }
+              overlay={renderCourseList}
               trigger={['click']}
               placement='bottomRight'
             >

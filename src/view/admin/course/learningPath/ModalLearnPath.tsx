@@ -49,6 +49,7 @@ const ModalLearnPath = (props: IProps) => {
 
   // course list
   const [courseMenu, setCourseMenu] = useState<any>([])
+  const [selectedCourseMenu, setSelectedCourseMenu] = useState<any>([])
   const getLearningPathCourseList = () => {
     context.setIsLoading(true)
     api
@@ -68,7 +69,6 @@ const ModalLearnPath = (props: IProps) => {
   //     .finally(() => context.setIsLoading(false))
   // }
 
-  // const [selectedCourseMenu, setSelectedCourseMenu] = useState<any>([])
   // useEffect(() => {
   //   const selectedCourses: any = []
   //   for (const el of path) {
@@ -124,9 +124,10 @@ const ModalLearnPath = (props: IProps) => {
         <Path
           type='LEARNING_PATH'
           path={path}
-          courseMenu={courseMenu}
-          // selectedCourseMenu={selectedCourseMenu}
           setPath={(path: any) => setPath(path)}
+          courseMenu={courseMenu}
+          selectedCourseMenu={selectedCourseMenu}
+          setSelectedCourseMenu={(maenu: any) => setSelectedCourseMenu(maenu)}
           addLevel1Count={addLevel1Count}
         />
       </DndProvider>

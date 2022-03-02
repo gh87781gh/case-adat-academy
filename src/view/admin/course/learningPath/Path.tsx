@@ -9,11 +9,11 @@ import { Modal } from 'antd'
 interface IProps {
   type: string
   path: any
-  courseMenu?: any
-  selectedCourseMenu?: any
   setPath: (path: any) => void
+  courseMenu: any
+  selectedCourseMenu: any
+  setSelectedCourseMenu: (menu: any) => void
   addLevel1Count: number
-  goToSection?: (index: number) => void
 }
 
 const Path = (props: IProps) => {
@@ -168,10 +168,14 @@ const Path = (props: IProps) => {
     if (props.addLevel1Count !== 0) addChildLevel1()
   }, [props.addLevel1Count]) // eslint-disable-line react-hooks/exhaustive-deps
   const addChildLevel2 = (clickItem: any, course: any) => {
-    // console.log('addChildLevel2:', clickItem, course)
+    // 儲存已選擇的 course
+    const newSelectedCourseMenu: any = [...props.selectedCourseMenu]
+    newSelectedCourseMenu.push(course)
+    props.setSelectedCourseMenu(newSelectedCourseMenu)
+
+    // path 新增 course 進去
     const ary = [...props.path]
     props.setPath([])
-
     const itemLevel2 = {
       level: 2,
       key: `${clickItem.key}-${clickItem.courses.length + 1}`,
@@ -196,6 +200,14 @@ const Path = (props: IProps) => {
   // delete item
   const deleteItem = (item: any) => {
     const level: number = item.level
+
+    // 自已儲存的 course 中刪除 course
+    if (level === 2) {
+      const list: any = [...props.selectedCourseMenu]
+      const index = list.findIndex((el: any) => el.id === item.id)
+      list.splice(index, 1)
+      props.setSelectedCourseMenu(list)
+    }
 
     // create new path without deleted item
     const ary: any = props.path.filter((el: any) => {
