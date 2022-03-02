@@ -166,7 +166,7 @@ const Index = () => {
               <Row gutter={20}>
                 <Col span={10}>
                   <div className='ad-section-list-result'>
-                    <span>24</span> courses
+                    <span>{total}</span> courses
                   </div>
                 </Col>
                 <Col span={14} className='ad-text-right'>
