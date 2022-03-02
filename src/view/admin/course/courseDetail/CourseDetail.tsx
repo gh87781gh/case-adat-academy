@@ -67,23 +67,7 @@ const CourseDetail = () => {
                 <MenuShow isModalMenuEditShow={isModalMenuEditShow} />
               </Col>
               <Col span={17} className='ad-layout-admin-article-row-section'>
-                <Section />
-                {/* {renderCurrentSection()}
-                {currentSectionContent.length > 0 ? (
-                  <div className='ad-layout-admin-article-row-section-footer'>
-                    <div className='ad-btn-group'>
-                      <Btn feature='action' onClick={() => save()}>
-                        Save
-                      </Btn>
-                      <Btn
-                        feature='primary'
-                        onClick={() => getCurrentSectionContent()}
-                      >
-                        Reset
-                      </Btn>
-                    </div>
-                  </div>
-                ) : null} */}
+                <Section isModalMenuEditShow={isModalMenuEditShow} />
               </Col>
             </Row>
           </div>

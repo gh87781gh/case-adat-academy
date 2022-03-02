@@ -11,6 +11,10 @@ import SectionItem from './SectionItem'
 import { Btn, UploadVideo } from 'utility/component'
 import { message, Dropdown, Menu } from 'antd'
 
+interface IProps {
+  isModalMenuEditShow: boolean
+}
+
 const contentInitItem: any = {
   video: {
     type: 'video',
@@ -34,7 +38,7 @@ const contentInitItem: any = {
   }
 }
 
-const Section = () => {
+const Section = (props: IProps) => {
   const context = useContext(MyContext)
   const api = new CourseApi()
   const { courseId, sectionId } =
@@ -78,10 +82,10 @@ const Section = () => {
     setCurrentSectionContent(newContent)
   }
   useEffect(() => {
-    if (sectionId) {
+    if (sectionId || !props.isModalMenuEditShow) {
       getCurrentSectionContent()
     }
-  }, [sectionId]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [sectionId, props.isModalMenuEditShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // drag and drop
   const [draggingItem, setDraggingItem] = useState<any>(null)
