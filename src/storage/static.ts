@@ -14,7 +14,8 @@ export default class StaticService {
     { country: '挪威', code: '+47' }
   ]
 
-  static msgAfterAPI: any = {
+  static msgFrontend: any = {
+    loginSuccessfully: 'Login successfully',
     signUpCheckUserId: 'User ID existed. Please try another one.',
     signUpCheckEmail: 'Email existed. Please try to login.'
   }

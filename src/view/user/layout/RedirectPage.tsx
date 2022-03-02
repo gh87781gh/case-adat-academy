@@ -1,7 +1,9 @@
 import { useEffect, useContext } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
-import { MyContext, BrowserStorage } from 'storage'
+import { MyContext, BrowserStorage, StaticService } from 'storage'
 import LoginApi from 'api/LoginApi'
+
+import { message } from 'antd'
 
 const RedirectPage = () => {
   const context = useContext(MyContext)
@@ -18,6 +20,7 @@ const RedirectPage = () => {
             .signUpEmailVerify(verify)
             .then((res: any) => {
               browserStorage.setStorage('AUTH', res.data.token)
+              message.success(StaticService.msgFrontend.loginSuccessfully)
               history.push('/course')
             })
             .catch(() => history.push('/login'))

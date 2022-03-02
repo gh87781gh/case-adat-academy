@@ -62,9 +62,9 @@ const SignUp1 = () => {
       .checkAccount(data)
       .then((res: any) => {
         if (res.data.user_id_is_exist) {
-          setErrMsg(StaticService.msgAfterAPI.signUpCheckUserId)
+          setErrMsg(StaticService.msgFrontend.signUpCheckUserId)
         } else if (res.data.email_is_exist) {
-          setErrMsg(StaticService.msgAfterAPI.signUpCheckEmail)
+          setErrMsg(StaticService.msgFrontend.signUpCheckEmail)
         } else {
           history.push({
             pathname: '/login/signUp2',

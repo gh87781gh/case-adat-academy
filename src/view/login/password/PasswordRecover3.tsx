@@ -1,13 +1,13 @@
 import { useState, useContext, useEffect } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
-import { MyContext, BrowserStorage } from 'storage'
+import { MyContext, BrowserStorage, StaticService } from 'storage'
 import LoginApi from 'api/LoginApi'
 
 import LoginTemplate from 'view/login/LoginTemplate'
 
 import schema from 'utility/validate'
 import { Btn, FormGroupMsg } from 'utility/component'
-import { Input } from 'antd'
+import { Input, message } from 'antd'
 
 interface IState {
   password: string
@@ -52,6 +52,7 @@ const PasswordRecover3 = () => {
       .then((res: any) => {
         browserStorage.setStorage('AUTH', res.data.token)
         context.getAuth()
+        message.success(StaticService.msgFrontend.loginSuccessfully)
         history.push('/course')
       })
       .catch((err: any) => {

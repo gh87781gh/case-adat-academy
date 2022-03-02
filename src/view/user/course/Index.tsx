@@ -10,7 +10,7 @@ import NoCourse from 'view/user/layout/NoCourse'
 
 import { IconArrowDown, IconBookmark } from 'utility/icon'
 import { Btn } from 'utility/component'
-import { Row, Col, Select, Pagination, message } from 'antd'
+import { Row, Col, Select, Pagination } from 'antd'
 const { Option } = Select
 
 interface IState {
@@ -24,11 +24,7 @@ const Index = () => {
 
   // init page
   useEffect(() => {
-    if (context.auth) {
-      message.success('Login successfully')
-    } else {
-      history.push('/login')
-    }
+    if (!context.auth) history.push('/login')
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // data
