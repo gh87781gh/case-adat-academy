@@ -18,15 +18,13 @@ const Header = () => {
   const location = useLocation()
   const { scrollY } = useScrolling()
 
-  const logout = () => {
-    history.push('/login/successfully/loggedOut')
-  }
-
+  // data
   const [data, setData] = useState<IState>({
     text: ''
   })
   const onChange = (key: string, e: any) => {
     let value = e.target.value
+    // TODO
     // if (value) {
     //   switch (key) {
     //     case 'text':
@@ -38,12 +36,24 @@ const Header = () => {
     // }
     setData({ ...data, [key]: value })
   }
+
+  // api
+  const logout = () => {
+    history.push('/login/successfully/loggedOut')
+  }
+
+  // scrolling style change
   const [isScrolling, setIsScrolling] = useState<boolean>(false)
   useEffect(() => {
-    if (scrollY === 0) {
-      setIsScrolling(false)
+    const page = location.pathname.split('/')[1]
+    if (page === 'course' || page === 'courseDetail') {
+      if (scrollY === 0 || scrollY === 90) {
+        setIsScrolling(false)
+      } else {
+        setIsScrolling(!(scrollY <= 0))
+      }
     } else {
-      setIsScrolling(!(scrollY <= -50))
+      setIsScrolling(true)
     }
   }, [scrollY]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -90,8 +100,6 @@ const Header = () => {
   return (
     <header className='ad-header'>
       <div className='ad-layout-container ad-header-container'>
-        {/* TODO switch logo */}
-        {/* <div className='ad-header-container-logo'> */}
         <div
           className={`ad-header-container-logo-primary ${
             isScrolling ? 'scroll-mode' : ''
