@@ -74,7 +74,7 @@ export const schema: any = {
     max: 50,
     validateStr: (val: any) => ValidateStr('isNoSymbol', val)
   },
-  section_name: {
+  courseDetail_menu_item_name: {
     max: 50,
     validateStr: (val: any) => ValidateStr('isNoSymbol', val)
   },

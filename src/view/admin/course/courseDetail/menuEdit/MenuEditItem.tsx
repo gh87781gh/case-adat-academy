@@ -203,7 +203,8 @@ const MenuEditItem = (props: IProps) => {
                 setIsEditing(false)
                 const value = e.target.value
                 if (value) {
-                  if (schema.section_name.validateStr(value)) return false
+                  if (schema.courseDetail_menu_item_name.validateStr(value))
+                    return false
                   props.rename(props.item.index, value)
                 }
               }}
