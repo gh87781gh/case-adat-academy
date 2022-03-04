@@ -82,9 +82,12 @@ export const schema: any = {
     max: 200,
     validateStr: (val: any) => ValidateStr('isSymbolStrict', val)
   },
-
   xxx1: {
     validateStr: (val: any) => ValidateStr('isNoSymbol', val)
+  },
+  search: {
+    max: 50,
+    validateStr: (val: any) => ValidateStr('isSymbolStrict', val)
   },
   xxx2: {
     validateStr: (val: any) => ValidateStr('isNoSymbol', val)

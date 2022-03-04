@@ -198,6 +198,7 @@ const MenuEditItem = (props: IProps) => {
             <input
               ref={inputRef}
               type='text'
+              maxLength={schema.courseDetail_menu_item_name.max}
               defaultValue={props.item.name}
               onBlur={(e) => {
                 setIsEditing(false)

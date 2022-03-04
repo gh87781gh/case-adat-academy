@@ -3,6 +3,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { version } from '../../../../package.json'
 import { MyContext } from '../../../storage'
 
+import schema from 'utility/validate'
 import useScrolling from 'utility/hook/useScrolling'
 import { Btn } from 'utility/component'
 import { IconSearch, IconArrowDown, IconADATFull } from 'utility/icon'
@@ -24,16 +25,13 @@ const Header = () => {
   })
   const onChange = (key: string, e: any) => {
     let value = e.target.value
-    // TODO
-    // if (value) {
-    //   switch (key) {
-    //     case 'text':
-    //       if (value && !ValidateStr('isEngInt', value)) return false
-    //       value = value.toLowerCase()
-    //       break
-    //     case 'email':
-    //   }
-    // }
+    if (value) {
+      switch (key) {
+        case 'text':
+          if (schema.search.validateStr(value)) return false
+          break
+      }
+    }
     setData({ ...data, [key]: value })
   }
 
@@ -130,6 +128,7 @@ const Header = () => {
           <Input
             placeholder='Search course content'
             value={data.text}
+            maxLength={schema.search.max}
             onChange={(e) => onChange('text', e)}
           />
           <Btn
