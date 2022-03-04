@@ -13,7 +13,7 @@ import {
   IconSuccessfully
 } from 'utility/icon'
 import { Btn, VideoPlayer } from 'utility/component'
-import { Row, Col, Breadcrumb, Menu, message } from 'antd'
+import { Row, Col, Breadcrumb, Menu, message, Tooltip } from 'antd'
 const { SubMenu } = Menu
 
 const CourseDetail = () => {
@@ -190,12 +190,16 @@ const CourseDetail = () => {
                       history.push(`/courseDetail/${courseId}/${section.id}`)
                     }
                   >
-                    <div>{section.name}</div>
-                    <div className='ad-menu-user-course-section-icon'>
-                      {section.status === 'All read' ? (
-                        <IconSuccessfully className='icon-success' />
-                      ) : null}
-                    </div>
+                    <Tooltip placement='right' title={section.name}>
+                      <div>
+                        <div>{section.name}</div>
+                        <div className='ad-menu-user-course-section-icon'>
+                          {section.status === 'All read' ? (
+                            <IconSuccessfully className='icon-success' />
+                          ) : null}
+                        </div>
+                      </div>
+                    </Tooltip>
                   </Menu.Item>
                 ))}
               </SubMenu>
