@@ -31,6 +31,7 @@ export default class StaticService {
     date: 'YYYY/MM/DD'
   }
 
+  static uploadFailedMsg: string = 'Upload failed.'
   static uploadImgMaxSize: number = 5000000 //bytes
   static uploadImgTimeout: number = 60000 //ms
   static uploadVideoMaxSize: number = 300000000 //bytes

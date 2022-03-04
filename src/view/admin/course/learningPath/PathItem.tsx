@@ -1,13 +1,7 @@
 import { useRef, useState, useEffect } from 'react'
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd'
 import { XYCoord } from 'dnd-core'
-import {
-  IconMenu,
-  IconArrowUp,
-  IconPlus,
-  IconDelete,
-  IconDanger
-} from 'utility/icon'
+import { IconMenu, IconPlus, IconDelete, IconDanger } from 'utility/icon'
 import { Menu, Dropdown } from 'antd'
 
 interface IProps {

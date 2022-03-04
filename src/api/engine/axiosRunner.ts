@@ -95,17 +95,10 @@ export class RestAPI extends ApiEngine {
   }
 }
 export class RestAPIUploadImg extends ApiEngine {
-  request = (
-    method: string,
-    url: string,
-    body: any,
-    isCustomizeErr?: boolean
-  ): Promise<any> => {
+  request = (method: string, url: string, body: any): Promise<any> => {
     this.setToken()
-    // this.setInterceptor(url, isCustomizeErr)
     const config = this.config
     config.headers['Content-Type'] = 'multipart/form-data'
-    // config.headers.Accept = 'application/json'
     config.url = StaticService.apiUrl + url
     config.method = method
     config[method === 'get' ? 'params' : 'data'] = body
@@ -117,23 +110,17 @@ export class RestAPIUploadImg extends ApiEngine {
           resolve(res.data)
         })
         .catch(() => {
+          message.error(StaticService.uploadFailedMsg)
           reject(false)
         })
     })
   }
 }
 export class RestAPIUploadVideo extends ApiEngine {
-  request = (
-    method: string,
-    url: string,
-    body: any,
-    isCustomizeErr?: boolean
-  ): Promise<any> => {
+  request = (method: string, url: string, body: any): Promise<any> => {
     this.setToken()
-    // this.setInterceptor(url, isCustomizeErr)
     const config = this.config
     config.headers['Content-Type'] = 'multipart/form-data'
-    // config.headers.Accept = 'application/json'
     config.url = StaticService.apiUrl + url
     config.method = method
     config[method === 'get' ? 'params' : 'data'] = body
@@ -145,6 +132,7 @@ export class RestAPIUploadVideo extends ApiEngine {
           resolve(res.data)
         })
         .catch(() => {
+          message.error(StaticService.uploadFailedMsg)
           reject(false)
         })
     })
