@@ -168,7 +168,7 @@ const Path = (props: IProps) => {
 
   // add item level 2
   const addChildLevel2 = (clickItem: any, course: any) => {
-    console.log(clickItem, course, clickItem.key)
+    // console.log(clickItem, course, clickItem.key)
     // path 新增 course 進去
     const ary = [...props.path]
     let childrenCount: number = 0

@@ -1,9 +1,9 @@
 import { useContext, useRef } from 'react'
-import { MyContext } from 'storage'
+import { MyContext, StaticService } from 'storage'
 import { IconUploadVideo } from 'utility/icon'
 import VideoPlayer from './VideoPlayer'
 import GlobalApi from 'api/GlobalApi'
-import { Button } from 'antd'
+import { Button, message } from 'antd'
 
 interface IProps {
   type: string
@@ -20,8 +20,13 @@ const UploadVideo = (props: IProps) => {
   const inputEl = useRef<HTMLInputElement>(null)
 
   const upload = (event: any) => {
-    // console.log('event.target.files[0]:', event.target.files[0])
-    if (event.target.files[0]) {
+    // console.log('event.target.files[0]:', event.target.files[0].size, 'bytes')
+    if (
+      event.target.files[0] &&
+      event.target.files[0].size > StaticService.uploadVideoMaxSize
+    ) {
+      message.error('The file size exceeds 300mb. Please use another one.')
+    } else {
       context.setIsLoading(true)
       api
         .uploadVideo(event.target.files[0], props.system, props.systemId)

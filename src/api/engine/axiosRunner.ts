@@ -94,7 +94,7 @@ export class RestAPI extends ApiEngine {
     })
   }
 }
-export class RestAPIUpload extends ApiEngine {
+export class RestAPIUploadImg extends ApiEngine {
   request = (
     method: string,
     url: string,
@@ -102,20 +102,51 @@ export class RestAPIUpload extends ApiEngine {
     isCustomizeErr?: boolean
   ): Promise<any> => {
     this.setToken()
-    this.setInterceptor(url, isCustomizeErr)
+    // this.setInterceptor(url, isCustomizeErr)
     const config = this.config
     config.headers['Content-Type'] = 'multipart/form-data'
     // config.headers.Accept = 'application/json'
     config.url = StaticService.apiUrl + url
     config.method = method
     config[method === 'get' ? 'params' : 'data'] = body
+    config.timeout = StaticService.uploadImgTimeout
     return new Promise((resolve, reject) => {
       this.instance
         .request(config)
         .then((res: any) => {
           resolve(res.data)
         })
-        .catch(() => reject(false))
+        .catch(() => {
+          reject(false)
+        })
+    })
+  }
+}
+export class RestAPIUploadVideo extends ApiEngine {
+  request = (
+    method: string,
+    url: string,
+    body: any,
+    isCustomizeErr?: boolean
+  ): Promise<any> => {
+    this.setToken()
+    // this.setInterceptor(url, isCustomizeErr)
+    const config = this.config
+    config.headers['Content-Type'] = 'multipart/form-data'
+    // config.headers.Accept = 'application/json'
+    config.url = StaticService.apiUrl + url
+    config.method = method
+    config[method === 'get' ? 'params' : 'data'] = body
+    config.timeout = StaticService.uploadVideoTimeout
+    return new Promise((resolve, reject) => {
+      this.instance
+        .request(config)
+        .then((res: any) => {
+          resolve(res.data)
+        })
+        .catch(() => {
+          reject(false)
+        })
     })
   }
 }

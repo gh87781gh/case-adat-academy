@@ -31,9 +31,13 @@ export default class StaticService {
     date: 'YYYY/MM/DD'
   }
 
+  static uploadImgMaxSize: number = 5000000 //bytes
+  static uploadImgTimeout: number = 60000 //ms
+  static uploadVideoMaxSize: number = 300000000 //bytes
+  static uploadVideoTimeout: number = 120000 //ms
+
   // TODO 等著拿掉
   static tablePageSize: number = 10
-  static uploadImgMaxSize: number = 5000000
   static deviceType: { A: string; B: string } = {
     A: 'textA',
     B: 'textB'

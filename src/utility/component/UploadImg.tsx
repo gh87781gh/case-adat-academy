@@ -1,8 +1,10 @@
 import { useContext, useRef, useEffect } from 'react'
 import { MyContext, StaticService } from 'storage'
-import { IconImg } from 'utility/icon'
 import GlobalApi from 'api/GlobalApi'
-import { Button } from 'antd'
+
+import { Btn } from 'utility/component'
+import { IconImg } from 'utility/icon'
+import { message } from 'antd'
 
 interface IProps {
   theme?: string
@@ -21,10 +23,15 @@ const UploadImg = (props: IProps) => {
   const inputEl = useRef<HTMLInputElement>(null)
 
   const upload = (event: any) => {
-    if (event.target.files[0]) {
+    if (
+      event.target.files[0] &&
+      event.target.files[0].size > StaticService.uploadImgMaxSize
+    ) {
+      message.error('The file size exceeds 5mb. Please use another one.')
+    } else {
       context.setIsLoading(true)
       api
-        .uploadImgNew(event.target.files[0], props.system, props.systemId)
+        .uploadImg(event.target.files[0], props.system, props.systemId)
         .then((res: any) => {
           props.setUploadId(res.data.id)
           event.target.value = ''
@@ -65,12 +72,12 @@ const UploadImg = (props: IProps) => {
       </label>
       {props.imgId ? (
         <div className='ad-btn-group'>
-          <Button type='link' onClick={() => inputEl.current?.click()}>
+          <Btn feature='link' onClick={() => inputEl.current?.click()}>
             Replace
-          </Button>
-          <Button type='link' onClick={() => props.setUploadId('')}>
+          </Btn>
+          <Btn feature='link' onClick={() => props.setUploadId('')}>
             Remove
-          </Button>
+          </Btn>
         </div>
       ) : null}
     </div>

@@ -1,8 +1,13 @@
-import { RestAPI, RestAPIUpload } from './engine/axiosRunner'
+import {
+  RestAPI,
+  RestAPIUploadImg,
+  RestAPIUploadVideo
+} from './engine/axiosRunner'
 
 export default class GlobalApi {
   restAPI: any = new RestAPI()
-  restAPIUpload: any = new RestAPIUpload()
+  restAPIUploadImg: any = new RestAPIUploadImg()
+  restAPIUploadVideo: any = new RestAPIUploadVideo()
 
   getAuth = () => {
     return new Promise((resolve, reject) => {
@@ -19,26 +24,18 @@ export default class GlobalApi {
   getOptions = (keys: string[]) => {
     return this.restAPI.request('post', '/option', { type: keys })
   }
-  uploadImg = (file: any, system: string, system_id: string) => {
-    var formData = new FormData()
-    formData.append('file', file)
-    formData.append('system', system)
-    formData.append('system_id', system_id)
-    return this.restAPIUpload.request('post', '/archive/image', formData)
-  }
-  // TODO 用 uploadImgNew 取代 uploadImg
-  uploadImgNew = (file: any, system: string, system_id: string | undefined) => {
+  uploadImg = (file: any, system: string, system_id: string | undefined) => {
     var formData = new FormData()
     formData.append('file', file)
     formData.append('system', system_id ? system : 'temp')
     formData.append('system_id', system_id ?? '')
-    return this.restAPIUpload.request('post', '/archive/image', formData)
+    return this.restAPIUploadImg.request('post', '/archive/image', formData)
   }
   uploadVideo = (file: any, system: string, system_id: string) => {
     var formData = new FormData()
     formData.append('file', file)
     formData.append('system', system)
     formData.append('system_id', system_id)
-    return this.restAPIUpload.request('post', '/archive/video', formData)
+    return this.restAPIUploadVideo.request('post', '/archive/video', formData)
   }
 }
