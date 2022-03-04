@@ -249,7 +249,7 @@ const LayoutTemplate = () => {
             />
 
             {/* TODO */}
-            {/* <Redirect to='/login' /> */}
+            <Redirect to='/login' />
           </Switch>
         </HashRouter>
       </Spin>

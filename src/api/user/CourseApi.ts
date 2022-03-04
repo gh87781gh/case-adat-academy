@@ -45,9 +45,6 @@ export default class CourseApi {
           let newIndexA: number | null = null
           let newIndexB: number | null = null
 
-          // let selectedKeys: any = [] // current section
-          // let menuOpenKeys: any = [] // all open group and chapter keys
-
           res.data.forEach((item: any, index: number) => {
             switch (item.level) {
               case 1:
@@ -76,7 +73,6 @@ export default class CourseApi {
                 if (newIndexA !== null && newIndexB !== null) {
                   newAry[newIndexA].children[newIndexB].children.push(item)
                 }
-
                 break
             }
           })
@@ -92,6 +88,13 @@ export default class CourseApi {
     return this.restAPI.request(
       'get',
       `/user/course/${courseId}/${sectionId}`,
+      {}
+    )
+  }
+  getIsBookmarked = (courseId: string, sectionId: string) => {
+    return this.restAPI.request(
+      'get',
+      `/user/bookmark/${courseId}/${sectionId}`,
       {}
     )
   }

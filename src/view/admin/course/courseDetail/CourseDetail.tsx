@@ -29,11 +29,22 @@ const CourseDetail = () => {
       .finally(() => context.setIsLoading(false))
   }
 
+  // course menu show
+  const [menu, setMenu] = useState<any>([])
+  const getCourseDetailMenu = () => {
+    api
+      .getCourseDetailMenu('MENU', courseId)
+      .then((res: any) => setMenu(res.data))
+      .finally(() => context.setIsLoading(false))
+  }
+
   // init page
   useEffect(() => {
-    // init course detail data
-    if (courseId) getCourseDetail(courseId)
-  }, [courseId]) // eslint-disable-line react-hooks/exhaustive-deps
+    if (courseId || !isModalMenuEditShow) {
+      getCourseDetail(courseId)
+      getCourseDetailMenu()
+    }
+  }, [courseId, isModalMenuEditShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // render
   return (
@@ -62,14 +73,27 @@ const CourseDetail = () => {
                 Edit course menu
               </Btn>
             </h1>
-            <Row gutter={20} className='ad-layout-admin-article-row'>
-              <Col span={7} className='ad-layout-admin-article-row-menu'>
-                <MenuShow isModalMenuEditShow={isModalMenuEditShow} />
-              </Col>
-              <Col span={17} className='ad-layout-admin-article-row-section'>
-                <Section isModalMenuEditShow={isModalMenuEditShow} />
-              </Col>
-            </Row>
+            {menu.length === 0 ? (
+              <article className='ad-layout-container ad-layout-container-prompt'>
+                <div className=' ad-layout-container-prompt-content'>
+                  <h1 className='ad-title'>No content yet</h1>
+                  <p>
+                    Please start by editing course menu
+                    <br />
+                    with button “Edit course menu”
+                  </p>
+                </div>
+              </article>
+            ) : (
+              <Row gutter={20} className='ad-layout-admin-article-row'>
+                <Col span={7} className='ad-layout-admin-article-row-menu'>
+                  <MenuShow isModalMenuEditShow={isModalMenuEditShow} />
+                </Col>
+                <Col span={17} className='ad-layout-admin-article-row-section'>
+                  <Section isModalMenuEditShow={isModalMenuEditShow} />
+                </Col>
+              </Row>
+            )}
           </div>
         </article>
       </div>

@@ -24,24 +24,6 @@ const CourseDetail = () => {
   const { courseId, sectionId } =
     useParams<{ courseId: string; sectionId?: string }>()
 
-  // course detail setting
-  const [courseName, setCourseName] = useState<string>('')
-  const [courseLogoImage, setCourseLogoImage] = useState<string>('')
-  const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
-  const [lastReadSectionId, setLastReadSectionId] = useState<string>('')
-  const switchIsBookmarked = () => {
-    if (sectionId) {
-      context.setIsLoading(true)
-      api
-        .switchIsBookmarked(courseId, sectionId, isBookmarked)
-        .then(() => {
-          message.success(!isBookmarked ? 'Bookmarked' : 'No Bookmarked')
-          setIsBookmarked(!isBookmarked)
-        })
-        .finally(() => context.setIsLoading(false))
-    }
-  }
-
   // course menu
   const [menu, setMenu] = useState<any>([])
   const [menuOpenKeys, setMenuOpenKeys] = useState<any>([])
@@ -75,10 +57,7 @@ const CourseDetail = () => {
     context.setIsLoading(true)
     api
       .getCurrentSection(courseId, sectionId)
-      .then((res: any) => {
-        // if(lastReadSectionId)
-        setCurrentSection(res.data)
-      })
+      .then((res: any) => setCurrentSection(res.data))
       .finally(() => context.setIsLoading(false))
   }
   const setPrevAndNextSection = (menu: any, sectionId: string) => {
@@ -106,7 +85,37 @@ const CourseDetail = () => {
       .finally(() => context.setIsLoading(false))
   }
 
-  // init page
+  // handle bookmark of this section
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
+  const [lastReadSectionId, setLastReadSectionId] = useState<string>('')
+  const switchIsBookmarked = () => {
+    if (sectionId) {
+      context.setIsLoading(true)
+      api
+        .switchIsBookmarked(courseId, sectionId, isBookmarked)
+        .then(() => {
+          message.success(!isBookmarked ? 'Bookmarked' : 'No Bookmarked')
+          setIsBookmarked(!isBookmarked)
+        })
+        .finally(() => context.setIsLoading(false))
+    }
+  }
+  const getDefaultIsBookmark = () => {
+    if (courseId && sectionId) {
+      context.setIsLoading(true)
+      api
+        .getIsBookmarked(courseId, sectionId)
+        .then((res: any) => setIsBookmarked(res.data.result))
+        .finally(() => context.setIsLoading(false))
+    }
+  }
+  useEffect(() => {
+    if (courseId && sectionId) getDefaultIsBookmark()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // init page / course detail setting
+  const [courseName, setCourseName] = useState<string>('')
+  const [courseLogoImage, setCourseLogoImage] = useState<string>('')
   const getInitData = (courseId: string, sectionId?: string) => {
     context.setIsLoading(true)
     api
@@ -114,13 +123,17 @@ const CourseDetail = () => {
       .then((res: any) => {
         setCourseName(res.name)
         setCourseLogoImage(res.logo_image_id)
-        setIsBookmarked(res.is_bookmarked)
         setMenu(res.data)
         openAllMenuItems(res.data)
         setLastReadSectionId(res.last_read_section_id)
       })
       .finally(() => context.setIsLoading(false))
   }
+  useEffect(() => {
+    if (courseId) {
+      getInitData(courseId, sectionId)
+    }
+  }, [courseId, sectionId]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (menu) {
       // 設置 currentSection
@@ -141,7 +154,6 @@ const CourseDetail = () => {
           for (const group of menu) {
             for (const chapter of group.children) {
               for (const section of chapter.children) {
-                console.log(section)
                 if (section) {
                   firstSection = section.id
                   break
@@ -156,11 +168,6 @@ const CourseDetail = () => {
       }
     }
   }, [menu, lastReadSectionId]) // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    if (courseId) {
-      getInitData(courseId, sectionId)
-    }
-  }, [courseId, sectionId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // render
   const renderMenu = () => {
