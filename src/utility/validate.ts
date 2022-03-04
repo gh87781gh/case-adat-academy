@@ -74,10 +74,15 @@ export const schema: any = {
     max: 50,
     validateStr: (val: any) => ValidateStr('isNoSymbol', val)
   },
+  section_name: {
+    max: 50,
+    validateStr: (val: any) => ValidateStr('isNoSymbol', val)
+  },
   description: {
     max: 200,
     validateStr: (val: any) => ValidateStr('isSymbolStrict', val)
   },
+
   xxx1: {
     validateStr: (val: any) => ValidateStr('isNoSymbol', val)
   },

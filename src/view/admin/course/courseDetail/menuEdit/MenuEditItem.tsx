@@ -1,6 +1,8 @@
 import { useRef, useState, useEffect } from 'react'
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd'
 import { XYCoord } from 'dnd-core'
+
+import schema from 'utility/validate'
 import {
   IconMenu,
   IconArrowUp,
@@ -199,7 +201,11 @@ const MenuEditItem = (props: IProps) => {
               defaultValue={props.item.name}
               onBlur={(e) => {
                 setIsEditing(false)
-                props.rename(props.item.index, e.target.value)
+                const value = e.target.value
+                if (value) {
+                  if (schema.section_name.validateStr(value)) return false
+                  props.rename(props.item.index, value)
+                }
               }}
             />
           ) : (
