@@ -113,6 +113,38 @@ const CourseDetail = () => {
     if (courseId && sectionId) getDefaultIsBookmark()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // handle scroll to title
+  const scrollToTitle = (index: number) => {
+    // handle active status
+    const els: any = document.getElementsByClassName(
+      'ad-course-detail-chapterNav-item'
+    )
+    for (const el of els) {
+      el.classList.remove('active')
+    }
+    document
+      .getElementById(`ad-course-detail-chapterNav-item-${index}`)
+      ?.classList.add('active')
+
+    //scroll to y value of target title
+    const y = findPos(
+      document.getElementById(
+        `ad-course-detail-current-section-content-${index}`
+      )
+    )
+    if (y) window.scroll(0, y - 200)
+
+    function findPos(obj: any | undefined | number[] | number) {
+      let targetTop = 0
+      if (obj.offsetParent) {
+        do {
+          targetTop += obj.offsetTop
+        } while ((obj = obj.offsetParent))
+        return targetTop
+      }
+    }
+  }
+
   // init page / course detail setting
   const [courseName, setCourseName] = useState<string>('')
   const [courseLogoImage, setCourseLogoImage] = useState<string>('')
@@ -224,7 +256,9 @@ const CourseDetail = () => {
                 ) : content.type === chapterContentType.picture ? (
                   <img src={`${apiUrl}/archive/${content.archive_id}`} alt='' />
                 ) : content.type === chapterContentType.title ? (
-                  <h3>{content.content}</h3>
+                  <h3 id={`ad-course-detail-current-section-content-${index}`}>
+                    {content.content}
+                  </h3>
                 ) : content.type === chapterContentType.paragraph ? (
                   <p>{content.content}</p>
                 ) : null}
@@ -268,22 +302,37 @@ const CourseDetail = () => {
       </div>
     )
   }
-  const renderPrevAndNextSectionBtn = () => {
+  const renderScrollToTitleBtn = () => {
     return (
       <div className='ad-course-detail-chapterNav'>
         <h3>In section</h3>
         {currentSection
-          ? currentSection.sections?.map((chapter: any, index: number) =>
-              chapter.type === 'title' ? (
-                <div
-                  // TODO 點擊滾動到這
-                  id={`ad-course-detail-chapterNav-item-${index}`}
-                  className='ad-course-detail-chapterNav-item active'
-                  key={index}
-                >
-                  {chapter.content}
-                </div>
-              ) : null
+          ? currentSection.sections?.map(
+              (content: any, index: number, ary: any) => {
+                const id: string = `ad-course-detail-chapterNav-item-${index}`
+                let firstTitleContentIndexs: number[] = []
+                ary.forEach((item: any, index: number) => {
+                  if (item.type === 'title') {
+                    firstTitleContentIndexs.push(index)
+                  }
+                })
+                const firstTitleContentIndex = firstTitleContentIndexs.shift()
+
+                return content.type === 'title' ? (
+                  <div
+                    id={id}
+                    className={
+                      index === firstTitleContentIndex
+                        ? 'ad-course-detail-chapterNav-item active'
+                        : 'ad-course-detail-chapterNav-item'
+                    }
+                    key={index}
+                    onClick={() => scrollToTitle(index)}
+                  >
+                    {content.content}
+                  </div>
+                ) : null
+              }
             )
           : null}
       </div>
@@ -327,7 +376,7 @@ const CourseDetail = () => {
                   {isBookmarked ? <IconBookmarked /> : <IconBookmark />}
                 </Btn>
               </div>
-              {renderPrevAndNextSectionBtn()}
+              {renderScrollToTitleBtn()}
             </Col>
           </Row>
         </section>
