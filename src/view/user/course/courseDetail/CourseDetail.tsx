@@ -85,34 +85,6 @@ const CourseDetail = () => {
       .finally(() => context.setIsLoading(false))
   }
 
-  // handle bookmark of this section
-  const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
-  const [lastReadSectionId, setLastReadSectionId] = useState<string>('')
-  const switchIsBookmarked = () => {
-    if (sectionId) {
-      context.setIsLoading(true)
-      api
-        .switchIsBookmarked(courseId, sectionId, isBookmarked)
-        .then(() => {
-          message.success(!isBookmarked ? 'Bookmarked' : 'No Bookmarked')
-          setIsBookmarked(!isBookmarked)
-        })
-        .finally(() => context.setIsLoading(false))
-    }
-  }
-  const getDefaultIsBookmark = () => {
-    if (courseId && sectionId) {
-      context.setIsLoading(true)
-      api
-        .getIsBookmarked(courseId, sectionId)
-        .then((res: any) => setIsBookmarked(res.data.result))
-        .finally(() => context.setIsLoading(false))
-    }
-  }
-  useEffect(() => {
-    if (courseId && sectionId) getDefaultIsBookmark()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
   // handle scroll to title
   const scrollToTitle = (index: number) => {
     // handle active status
@@ -145,6 +117,34 @@ const CourseDetail = () => {
     }
   }
 
+  // handle bookmark of this section
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
+  const [lastReadSectionId, setLastReadSectionId] = useState<string>('')
+  const switchIsBookmarked = () => {
+    if (sectionId) {
+      context.setIsLoading(true)
+      api
+        .switchIsBookmarked(courseId, sectionId, isBookmarked)
+        .then(() => {
+          message.success(!isBookmarked ? 'Bookmarked' : 'No Bookmarked')
+          setIsBookmarked(!isBookmarked)
+        })
+        .finally(() => context.setIsLoading(false))
+    }
+  }
+  const getDefaultIsBookmark = () => {
+    if (courseId && sectionId) {
+      context.setIsLoading(true)
+      api
+        .getIsBookmarked(courseId, sectionId)
+        .then((res: any) => {
+          console.log(res)
+          setIsBookmarked(res.data.result)
+        })
+        .finally(() => context.setIsLoading(false))
+    }
+  }
+
   // init page / course detail setting
   const [courseName, setCourseName] = useState<string>('')
   const [courseLogoImage, setCourseLogoImage] = useState<string>('')
@@ -161,11 +161,6 @@ const CourseDetail = () => {
       })
       .finally(() => context.setIsLoading(false))
   }
-  useEffect(() => {
-    if (courseId) {
-      getInitData(courseId, sectionId)
-    }
-  }, [courseId, sectionId]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (menu) {
       // 設置 currentSection
@@ -200,6 +195,10 @@ const CourseDetail = () => {
       }
     }
   }, [menu, lastReadSectionId]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (courseId) getInitData(courseId, sectionId)
+    if (courseId && sectionId) getDefaultIsBookmark()
+  }, [courseId, sectionId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // render
   const renderMenu = () => {
@@ -372,7 +371,7 @@ const CourseDetail = () => {
             <Col span={15}>{renderCurrentSection()}</Col>
             <Col span={3}>
               <div className='ad-course-detail-bookmark'>
-                <Btn feature='secondary' onClick={switchIsBookmarked}>
+                <Btn feature='secondary' onClick={() => switchIsBookmarked()}>
                   {isBookmarked ? <IconBookmarked /> : <IconBookmark />}
                 </Btn>
               </div>
