@@ -236,7 +236,7 @@ const CourseDetail = () => {
             <Btn feature='primary' onClick={markAsRead}>
               Mark as read
             </Btn>
-          ) : currentSection.status === 'Finished' ? (
+          ) : currentSection.status === 'All read' ? (
             <div className='success'>
               <IconSuccessfully />
               Section completed
