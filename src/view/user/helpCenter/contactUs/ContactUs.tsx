@@ -9,10 +9,11 @@ import Footer from 'view/user/layout/Footer'
 import { UploadImg } from 'utility/component'
 import { ValidateStr } from 'utility/validate'
 
-// TODO
+// TODO 等真正的照片
 import CS from 'assets/img/temp-cs.jpeg'
 
-import { Btn } from 'utility/component'
+import schema from 'utility/validate'
+import { Btn, FormGroupMsg } from 'utility/component'
 import {
   Row,
   Col,
@@ -47,6 +48,7 @@ const ContactUs = () => {
   const api = new HelpCenterApi()
   const history = useHistory()
 
+  // option
   const [supportTypeOption, setSupportTypeOption] = useState<any>([])
   const [productOption, setProductOption] = useState<any>([])
   const [frequencyOption, setFrequencyOption] = useState<any>([])
@@ -71,6 +73,7 @@ const ContactUs = () => {
       .finally(() => context.setIsLoading(false))
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // data
   const [data, setData] = useState<IState>({
     support_type: '',
     subject: '',
@@ -80,18 +83,25 @@ const ContactUs = () => {
     product_version: '',
     description: '',
     attachment_image_id: '',
-    prefered_way_of_contact: [],
+    prefered_way_of_contact: ['Phone number'],
     contry_code: '',
     phone_number: '',
     email: '' //TOCHECK 少了這個參數
   })
+  const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
   const onChange = (key: string, e: any) => {
     let value = e.target.value
     if (value) {
       switch (key) {
-        case 'position':
+        case 'subject':
+        case 'product_version':
+        case 'description':
         case 'phone_number':
-          if (!ValidateStr('isInt', value)) return false
+          if (schema[key].validateStr(value)) return false
+          break
+        case 'email':
+          if (schema.email.validateStr(value)) return false
+          setIsEmail(schema.email.validateFormat(value))
           break
       }
     }
@@ -121,6 +131,7 @@ const ContactUs = () => {
     setData({ ...data, [key]: value })
   }
 
+  // api
   const submit = () => {
     context.setIsLoading(true)
     api
@@ -161,27 +172,21 @@ const ContactUs = () => {
           <div className='ad-form-group'>
             <label className='required'>Subject</label>
             <Input
-              placeholder='Please input'
-              maxLength={50}
+              placeholder={StaticService.placeholder.input}
+              maxLength={schema.subject.max}
               value={data.subject}
               onChange={(e) => onChange('subject', e)}
             />
           </div>
         </Col>
-        {/* TODO */}
-        {/* TODO */}
-        {/* TODO */}
-        {/* TODO */}
-        {/* TODO */}
-        {/* TODO */}
         {data.support_type === 'Operation questions' ? (
           <>
             <Col span={24}>
               <div className='ad-form-group'>
                 <label className='required'>Product</label>
                 <Select
-                  value={data.product}
-                  placeholder='Please select'
+                  value={data.product || undefined}
+                  placeholder={StaticService.placeholder.select}
                   onChange={(val) => onSelect('product', val)}
                 >
                   {productOption.map((item: string) => (
@@ -202,8 +207,8 @@ const ContactUs = () => {
               <div className='ad-form-group'>
                 <label className='required'>Issue happen frequency</label>
                 <Select
-                  value={data.frequency}
-                  placeholder='Please select'
+                  value={data.frequency || undefined}
+                  placeholder={StaticService.placeholder.select}
                   onChange={(val) => onSelect('frequency', val)}
                 >
                   {frequencyOption.map((item: string) => (
@@ -218,8 +223,8 @@ const ContactUs = () => {
               <div className='ad-form-group'>
                 <label className='required'>Product version</label>
                 <Input
-                  placeholder='Please input'
-                  maxLength={50}
+                  placeholder={StaticService.placeholder.input}
+                  maxLength={schema.product_version.max}
                   value={data.product_version}
                   onChange={(e) => onChange('product_version', e)}
                 />
@@ -233,6 +238,8 @@ const ContactUs = () => {
               Descriptions (operation process, issue details,etc)
             </label>
             <TextArea
+              placeholder={StaticService.placeholder.input}
+              maxLength={schema.description.max}
               autoSize={true}
               value={data.description}
               onChange={(e) => onChange('description', e)}
@@ -245,8 +252,8 @@ const ContactUs = () => {
             <UploadImg
               type='rectangle'
               desc='Browse file'
-              system='temp'
-              systemId=''
+              system='help_center'
+              systemId='' //TOCHECK 這邊是不用 id 的對吧？
               imgId={data.attachment_image_id}
               setUploadId={(id: string) => onUpload('attachment_image_id', id)}
             />
@@ -288,9 +295,8 @@ const ContactUs = () => {
             <Col span={6}>
               <div className='ad-form-group'>
                 <Select
-                  value={data.contry_code}
-                  maxLength={10}
-                  placeholder='Please select'
+                  value={data.contry_code || undefined}
+                  placeholder={StaticService.placeholder.select}
                   onChange={(val) => onSelect('contry_code', val)}
                 >
                   {StaticService.countryCodeOption.map((country: any) => (
@@ -304,8 +310,8 @@ const ContactUs = () => {
             <Col span={18}>
               <div className='ad-form-group'>
                 <Input
-                  placeholder='Please input'
-                  maxLength={15}
+                  placeholder={StaticService.placeholder.input}
+                  maxLength={schema.phone_number.max}
                   value={data.phone_number}
                   onChange={(e) => onChange('phone_number', e)}
                 />
@@ -318,10 +324,16 @@ const ContactUs = () => {
             <div className='ad-form-group'>
               <label className='required'>Email</label>
               <Input
-                placeholder='Please input'
+                placeholder={StaticService.placeholder.input}
                 maxLength={50}
                 value={data.email}
                 onChange={(e) => onChange('email', e)}
+              />
+              <FormGroupMsg
+                isShow={isEmail === false}
+                type='error'
+                isShowIcon={true}
+                msg={schema.email.errFormat}
               />
             </div>
           </Col>
@@ -364,7 +376,7 @@ const ContactUs = () => {
           </Breadcrumb.Item>
         </Breadcrumb>
       </div>
-      <article className='ad-page-container'>
+      <article className='ad-page-container ad-page-container-contactUs'>
         <h1 className='ad-title'>Dedicated team, On-time help</h1>
         <Row gutter={20}>
           <Col span={16}>
@@ -383,7 +395,8 @@ const ContactUs = () => {
                       !data.frequency)) ||
                   data.prefered_way_of_contact.length === 0 ||
                   (data.prefered_way_of_contact.includes('Email') &&
-                    !data.email)
+                    !data.email) ||
+                  isEmail !== true
                 }
                 feature='action'
                 block

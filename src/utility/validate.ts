@@ -16,7 +16,7 @@ export function ValidateStr(type: string, value: string) {
     case 'isEmail':
       return isEmail.test(value)
     case 'isInt':
-      return isInt.test(value)
+      return !isInt.test(value)
     case 'isNoSymbol':
       return isSymbol.test(value)
     case 'isSymbolStrict':
@@ -82,12 +82,24 @@ export const schema: any = {
     max: 200,
     validateStr: (val: any) => ValidateStr('isSymbolStrict', val)
   },
-  xxx1: {
-    validateStr: (val: any) => ValidateStr('isNoSymbol', val)
-  },
   search: {
     max: 50,
     validateStr: (val: any) => ValidateStr('isSymbolStrict', val)
+  },
+  subject: {
+    max: 50,
+    validateStr: (val: any) => ValidateStr('isNoSymbol', val)
+  },
+  product_version: {
+    max: 50,
+    validateStr: (val: any) => ValidateStr('isSymbolStrict', val)
+  },
+  phone_number: {
+    max: 15,
+    validateStr: (val: any) => ValidateStr('isInt', val)
+  },
+  xxx1: {
+    validateStr: (val: any) => ValidateStr('isNoSymbol', val)
   },
   xxx2: {
     validateStr: (val: any) => ValidateStr('isNoSymbol', val)
