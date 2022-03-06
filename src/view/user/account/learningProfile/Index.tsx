@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
-import { MyContext } from 'storage'
+import { MyContext, StaticService } from 'storage'
 import GlobalApi from 'api/GlobalApi'
 import AccountApi from 'api/user/AccountApi'
 
@@ -7,6 +7,7 @@ import Header from 'view/user/layout/Header'
 import Footer from 'view/user/layout/Footer'
 import AccountSideBar from '../AccountSideBar'
 
+import schema from 'utility/validate'
 import { Btn } from 'utility/component'
 import { Row, Col, Checkbox, Select, Input, message } from 'antd'
 const { Option } = Select
@@ -64,13 +65,15 @@ const LearningProfile = () => {
   const onChange = (key: string, e: any) => {
     let value = e.target.value
     if (value) {
-      switch (
-        key
-        // case 'position':
-        // case 'current_company':
-        //   if (value && ValidateStr('isSymbol', value)) return false
-        //   break
-      ) {
+      switch (key) {
+        case 'name':
+        case 'location':
+        case 'position':
+        case 'current_company':
+        case 'university':
+        case 'field_or_major':
+          if (schema[key].validateStr(value)) return false
+          break
       }
     }
     setData({ ...data, [key]: value })
@@ -117,7 +120,7 @@ const LearningProfile = () => {
             <div className='ad-form-group'>
               <label className='required'>Full name</label>
               <Input
-                placeholder='Please input'
+                placeholder={StaticService.placeholder.input}
                 maxLength={50}
                 value={data.name}
                 onChange={(e) => onChange('name', e)}
@@ -128,8 +131,8 @@ const LearningProfile = () => {
             <div className='ad-form-group'>
               <label>Gender</label>
               <Select
-                value={data.gender}
-                placeholder='Please select'
+                value={data.gender || undefined}
+                placeholder={StaticService.placeholder.select}
                 onChange={(val) => onSelect('gender', val)}
               >
                 {options[3]?.map((item: string) => (
@@ -144,8 +147,8 @@ const LearningProfile = () => {
             <div className='ad-form-group'>
               <label>Age range</label>
               <Select
-                value={data.age_range}
-                placeholder='Please select'
+                value={data.age_range || undefined}
+                placeholder={StaticService.placeholder.select}
                 onChange={(val) => onSelect('age_range', val)}
               >
                 {options[4]?.map((item: string) => (
@@ -160,8 +163,8 @@ const LearningProfile = () => {
             <div className='ad-form-group'>
               <label>Location</label>
               <Input
-                placeholder='Please input'
-                maxLength={50}
+                placeholder={StaticService.placeholder.input}
+                maxLength={schema.location.max}
                 value={data.location}
                 onChange={(e) => onChange('location', e)}
               />
@@ -178,8 +181,8 @@ const LearningProfile = () => {
             <div className='ad-form-group'>
               <label className='required'>Industry</label>
               <Select
-                value={data.industry}
-                placeholder='Please select'
+                value={data.industry || undefined}
+                placeholder={StaticService.placeholder.select}
                 onChange={(val) => onSelect('industry', val)}
               >
                 {options[2]?.map((item: string) => (
@@ -194,8 +197,8 @@ const LearningProfile = () => {
             <div className='ad-form-group'>
               <label className='required'>Position</label>
               <Input
-                placeholder='Please input'
-                maxLength={50}
+                placeholder={StaticService.placeholder.input}
+                maxLength={schema.position.max}
                 value={data.position}
                 onChange={(e) => onChange('position', e)}
               />
@@ -205,8 +208,8 @@ const LearningProfile = () => {
             <div className='ad-form-group'>
               <label className='required'>Experience level</label>
               <Select
-                value={data.experience_level}
-                placeholder='Please select'
+                value={data.experience_level || undefined}
+                placeholder={StaticService.placeholder.select}
                 onChange={(val) => onSelect('experience_level', val)}
               >
                 {options[1]?.map((item: string) => (
@@ -221,8 +224,8 @@ const LearningProfile = () => {
             <div className='ad-form-group'>
               <label>Current company</label>
               <Input
-                placeholder='Please input'
-                maxLength={50}
+                placeholder={StaticService.placeholder.input}
+                maxLength={schema.current_company.max}
                 value={data.current_company}
                 onChange={(e) => onChange('current_company', e)}
               />
@@ -261,8 +264,8 @@ const LearningProfile = () => {
             <div className='ad-form-group'>
               <label>Highest degree</label>
               <Select
-                value={data.highest_degree}
-                placeholder='Please select'
+                value={data.highest_degree || undefined}
+                placeholder={StaticService.placeholder.select}
                 onChange={(val) => onSelect('highest_degree', val)}
               >
                 {options[5]?.map((item: string) => (
@@ -277,8 +280,8 @@ const LearningProfile = () => {
             <div className='ad-form-group'>
               <label>University</label>
               <Input
-                placeholder='Please input'
-                maxLength={50}
+                placeholder={StaticService.placeholder.input}
+                maxLength={schema.university.max}
                 value={data.university}
                 onChange={(e) => onChange('university', e)}
               />
@@ -288,8 +291,8 @@ const LearningProfile = () => {
             <div className='ad-form-group'>
               <label>Field or major</label>
               <Input
-                placeholder='Please input'
-                maxLength={50}
+                placeholder={StaticService.placeholder.input}
+                maxLength={schema.field_or_major.max}
                 value={data.field_or_major}
                 onChange={(e) => onChange('field_or_major', e)}
               />

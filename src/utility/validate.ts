@@ -98,6 +98,18 @@ export const schema: any = {
     max: 15,
     validateStr: (val: any) => ValidateStr('isInt', val)
   },
+  location: {
+    max: 100,
+    validateStr: (val: any) => ValidateStr('isNoSymbol', val)
+  },
+  university: {
+    max: 100,
+    validateStr: (val: any) => ValidateStr('isNoSymbol', val)
+  },
+  field_or_major: {
+    max: 100,
+    validateStr: (val: any) => ValidateStr('isNoSymbol', val)
+  },
   xxx1: {
     validateStr: (val: any) => ValidateStr('isNoSymbol', val)
   },
