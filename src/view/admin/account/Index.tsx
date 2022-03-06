@@ -9,6 +9,7 @@ import ModalCreate from './ModalCreate'
 import ModalDetail from './ModalDetail'
 import ModalRecord from './ModalRecord'
 
+import schema from 'utility/validate'
 import { IconSearch } from 'utility/icon'
 import { Btn } from 'utility/component'
 import { Row, Col, Input, Select, Table } from 'antd'
@@ -50,13 +51,13 @@ const Index = () => {
   }
   const onChange = (key: string, e: any) => {
     const value = e.target.value
-    // if (value) {
-    //   switch (key) {
-    //     case 'search':
-    //       if (value && ValidateStr('isSymbol', value)) return false
-    //       break
-    //   }
-    // }
+    if (value) {
+      switch (key) {
+        case 'search':
+          if (schema.search.validateStr(value)) return false
+          break
+      }
+    }
     setData({ ...data, [key]: value })
   }
 
@@ -209,6 +210,7 @@ const Index = () => {
               <Col span={8}>
                 <Input
                   value={data.search}
+                  maxLength={schema.search.max}
                   placeholder='Search User ID or Current email'
                   prefix={<IconSearch onClick={() => getList()} />}
                   onPressEnter={() => getList()}

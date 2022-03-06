@@ -7,6 +7,7 @@ import Header from 'view/user/layout/Header'
 import AdminSideBar from '../AdminSideBar'
 import ModalCreate from './ModalCreate'
 
+import schema from 'utility/validate'
 import { IconSearch } from 'utility/icon'
 import { Btn } from 'utility/component'
 import { Row, Col, Input, Select, Table } from 'antd'
@@ -41,13 +42,13 @@ const Index = () => {
   }
   const onChange = (key: string, e: any) => {
     const value = e.target.value
-    // if (value) {
-    //   switch (key) {
-    //     case 'search':
-    //       if (value && ValidateStr('isSymbol', value)) return false
-    //       break
-    //   }
-    // }
+    if (value) {
+      switch (key) {
+        case 'search':
+          if (schema.search.validateStr(value)) return false
+          break
+      }
+    }
     setData({ ...data, [key]: value })
   }
 
@@ -163,7 +164,8 @@ const Index = () => {
               <Col span={8} offset={8}>
                 <Input
                   value={data.search}
-                  placeholder={StaticService.placeholder.SearchUserID}
+                  maxLength={schema.search.max}
+                  placeholder='Search User ID'
                   prefix={<IconSearch onClick={() => getList()} />}
                   onPressEnter={() => getList()}
                   onChange={(e) => onChange('search', e)}

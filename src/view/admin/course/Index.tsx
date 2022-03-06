@@ -7,7 +7,6 @@ import CourseApi from 'api/admin/CourseApi'
 import Header from '../../user/layout/Header'
 import AdminSideBar from '../AdminSideBar'
 import ModalCreate from './ModalCreate'
-// import ModalDetail from './ModalDetail'
 
 import schema from 'utility/validate'
 import { IconSearch } from 'utility/icon'
@@ -52,7 +51,7 @@ const Index = (props: IProps) => {
     if (value) {
       switch (key) {
         case 'search':
-          if (schema.course_name.validateStr(value)) return false
+          if (schema.search.validateStr(value)) return false
           break
       }
     }
@@ -210,6 +209,7 @@ const Index = (props: IProps) => {
               <Col span={8} offset={10}>
                 <Input
                   value={data.search}
+                  maxLength={schema.search.max}
                   placeholder='Search course name'
                   prefix={<IconSearch onClick={() => getList()} />}
                   onPressEnter={() => getList()}

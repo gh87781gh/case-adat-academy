@@ -22,9 +22,8 @@ export default class StaticService {
 
   static placeholder: any = {
     input: 'Please input',
-    password: '****************',
     select: 'Please select',
-    SearchUserID: 'Search User ID'
+    password: '****************'
   }
 
   static format: any = {
