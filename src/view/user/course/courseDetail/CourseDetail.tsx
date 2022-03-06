@@ -1,9 +1,12 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, useRef } from 'react'
 import { MyContext, StaticService } from 'storage'
 import { useHistory, useParams, useLocation } from 'react-router-dom'
 import CourseApi from 'api/user/CourseApi'
+
 import Header from 'view/user/layout/Header'
 import Footer from 'view/user/layout/Footer'
+
+import useScrolling from 'utility/hook/useScrolling'
 import {
   IconArrowPrev,
   IconArrowNext,
@@ -23,6 +26,18 @@ const CourseDetail = () => {
   const location = useLocation()
   const { courseId, sectionId } =
     useParams<{ courseId: string; sectionId?: string }>()
+  const { scrollY } = useScrolling()
+  const breadcrumbRef = useRef<HTMLInputElement>(null)
+
+  // scrolling style change
+  const [isScrolling, setIsScrolling] = useState<boolean>(false)
+  useEffect(() => {
+    if (scrollY === 0 || scrollY === 500) {
+      setIsScrolling(false)
+    } else {
+      setIsScrolling(!(scrollY <= 0))
+    }
+  }, [scrollY]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // course menu
   const [menu, setMenu] = useState<any>([])
@@ -137,10 +152,7 @@ const CourseDetail = () => {
       context.setIsLoading(true)
       api
         .getIsBookmarked(courseId, sectionId)
-        .then((res: any) => {
-          console.log(res)
-          setIsBookmarked(res.data.result)
-        })
+        .then((res: any) => setIsBookmarked(res.data.result))
         .finally(() => context.setIsLoading(false))
     }
   }
@@ -340,9 +352,8 @@ const CourseDetail = () => {
   return (
     <>
       <Header />
-      <div className='ad-layout-banner'></div>
-      <article className='ad-layout-container'>
-        <section className='ad-section ad-section-course-detail-breadcrumb ad-breadcrumb'>
+      {isScrolling ? (
+        <div className='ad-breadcrumb'>
           <Breadcrumb separator='|'>
             <Breadcrumb.Item onClick={() => history.push('/course')}>
               <Btn feature='link'>Course</Btn>
@@ -351,7 +362,22 @@ const CourseDetail = () => {
               <b>{courseName}</b>
             </Breadcrumb.Item>
           </Breadcrumb>
-        </section>
+        </div>
+      ) : null}
+      <div className='ad-layout-banner'></div>
+      <article className='ad-layout-container'>
+        {!isScrolling ? (
+          <section className='ad-section ad-section-course-detail-breadcrumb ad-breadcrumb'>
+            <Breadcrumb separator='|'>
+              <Breadcrumb.Item onClick={() => history.push('/course')}>
+                <Btn feature='link'>Course</Btn>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>
+                <b>{courseName}</b>
+              </Breadcrumb.Item>
+            </Breadcrumb>
+          </section>
+        ) : null}
         <section className='ad-section ad-section-course-detail-title'>
           <div className='ad-course-detail-title'>
             {courseLogoImage ? (
