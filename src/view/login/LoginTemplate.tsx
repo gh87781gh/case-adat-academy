@@ -36,7 +36,7 @@ const LoginTemplate = (props: any) => {
             <Btn
               feature='link'
               className='ad-mode-dark'
-              onClick={() => history.push('/login/terms&privacyt')}
+              onClick={() => history.push('/login/termsPolicy')}
             >
               Terms & policy
             </Btn>

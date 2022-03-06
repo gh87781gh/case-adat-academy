@@ -69,6 +69,33 @@
   & > *:not(:last-child) {
     margin-bottom: 32px;
   }
+  &.ad-login-content-body-termsPolicy {
+    max-height: 500px;
+    overflow-y: auto;
+    b {
+      .typo-bodyBold();
+      color: @color-primary;
+      margin-bottom: 32px;
+      display: block;
+    }
+    h3 {
+      .typo-bodyDefault();
+      color: @color-primary;
+      margin-bottom: 24px;
+    }
+    h4 {
+      .typo-bodyDefault();
+      margin-bottom: 12px;
+    }
+    p {
+      .typo-small();
+      color: @color-black;
+      margin-bottom: 24px;
+    }
+    ul {
+      padding-left: 20px;
+    }
+  }
 }
 .ad-login-content-footer {
   color: @color-primary;

@@ -15,6 +15,7 @@ import PasswordRecover1 from './login/password/PasswordRecover1'
 import PasswordRecover2 from './login/password/PasswordRecover2'
 import PasswordRecover3 from './login/password/PasswordRecover3'
 import Contact from './login/contact/Contact'
+import TermsPolicy from './login/termsPolicy/TermsPolicy'
 import Successfully from './login/Successfully'
 
 // user console
@@ -146,6 +147,11 @@ const LayoutTemplate = () => {
               exact={true}
               path='/login/contact'
               render={() => componentPage(Contact, 'LOGIN')}
+            />
+            <Route
+              exact={true}
+              path='/login/termsPolicy'
+              render={() => componentPage(TermsPolicy, 'LOGIN')}
             />
             <Route
               exact={true}
