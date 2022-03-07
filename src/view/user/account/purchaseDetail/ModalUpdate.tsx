@@ -2,7 +2,8 @@ import { useState, useContext, useEffect } from 'react'
 import { MyContext } from 'storage'
 import AccountApi from 'api/user/AccountApi'
 
-import { Btn } from 'utility/component'
+import schema from 'utility/validate'
+import { Btn, FormGroupMsg } from 'utility/component'
 import { Row, Col, Input, Modal, Checkbox } from 'antd'
 
 interface IProps {
@@ -21,26 +22,31 @@ const ModalUpdate = (props: IProps) => {
   const api = new AccountApi()
 
   const [data, setData] = useState<IState>({
-    have_purchase_number: '',
+    have_purchase_number: 'true',
     email: '',
     purchase_number: '',
     password: ''
   })
+  const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
+  const onChange = (key: string, e: any) => {
+    const value = e.target.value
+    if (value) {
+      switch (key) {
+        case 'password':
+        case 'purchase_number':
+          if (schema[key].validateStr(value)) return false
+          break
+        case 'email':
+          if (schema.email.validateStr(value)) return false
+          setIsEmail(schema.email.validateFormat(value))
+          break
+      }
+    }
+    setData({ ...data, [key]: value })
+  }
   const onChecks = (checkedValues: any) => {
     if (checkedValues.length > 1) checkedValues.shift()
     setData({ ...data, have_purchase_number: checkedValues[0] })
-  }
-  const onChange = (key: string, e: any) => {
-    const value = e.target.value
-    // if (value) {
-    //   switch (key) {
-    //     case 'email':
-    //       if (value && !ValidateStr('isUserName', value)) return false
-    //       setIsEmail(ValidateStr('isEmail', value))
-    //       break
-    //   }
-    // }
-    setData({ ...data, [key]: value })
   }
 
   useEffect(() => {
@@ -94,22 +100,33 @@ const ModalUpdate = (props: IProps) => {
               value={data.email}
               onChange={(e) => onChange('email', e)}
             />
-          </div>
-        </Col>
-        <Col span={12}>
-          <div className='ad-form-group'>
-            <label className='required'>New purchase number</label>
-            <Input
-              placeholder='Please input'
-              maxLength={50}
-              value={data.purchase_number}
-              onChange={(e) => onChange('purchase_number', e)}
+            <FormGroupMsg
+              isShow={isEmail === false}
+              type='error'
+              isShowIcon={true}
+              msg={schema.email.errFormat}
             />
           </div>
         </Col>
+        {data.have_purchase_number === 'true' ? (
+          <Col span={12}>
+            <div className='ad-form-group'>
+              <label className='required'>New purchase number</label>
+              <Input
+                placeholder='Please input'
+                maxLength={50}
+                value={data.purchase_number}
+                onChange={(e) => onChange('purchase_number', e)}
+              />
+            </div>
+          </Col>
+        ) : null}
+
         <Col span={12}>
           <div className='ad-form-group'>
-            <label className='required'>Password</label>
+            <label className='required'>
+              Pleas enter your password for security purpose
+            </label>
             <Input.Password
               placeholder='Clear hint for the input'
               maxLength={100}
