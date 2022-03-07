@@ -372,8 +372,8 @@ const ContactUs = () => {
                   !data.support_type ||
                   !data.subject ||
                   !data.description ||
-                  !data.contry_code ||
-                  !data.phone_number ||
+                  (data.prefered_way_of_contact.includes('Phone number') &&
+                    (!data.contry_code || !data.phone_number)) ||
                   (data.support_type === 'Operation questions' &&
                     (!data.product ||
                       !data.issue_happen_time ||
