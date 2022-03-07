@@ -39,7 +39,6 @@ interface IState {
   prefered_way_of_contact: string[]
   contry_code: string
   phone_number: string
-  email: string
 }
 
 const ContactUs = () => {
@@ -66,8 +65,7 @@ const ContactUs = () => {
         setFrequencyOption(res.data[2])
         setData({
           ...data,
-          support_type: res.data[0][0],
-          contry_code: StaticService.countryCodeOption[0].code
+          support_type: res.data[0][0]
         })
       })
       .finally(() => context.setIsLoading(false))
@@ -84,11 +82,9 @@ const ContactUs = () => {
     description: '',
     attachment_image_id: '',
     prefered_way_of_contact: ['Phone number'],
-    contry_code: '',
-    phone_number: '',
-    email: '' //TOCHECK 少了這個參數
+    contry_code: StaticService.countryCodeOption[0].code,
+    phone_number: ''
   })
-  const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
   const onChange = (key: string, e: any) => {
     let value = e.target.value
     if (value) {
@@ -98,10 +94,6 @@ const ContactUs = () => {
         case 'description':
         case 'phone_number':
           if (schema[key].validateStr(value)) return false
-          break
-        case 'email':
-          if (schema.email.validateStr(value)) return false
-          setIsEmail(schema.email.validateFormat(value))
           break
       }
     }
@@ -130,6 +122,15 @@ const ContactUs = () => {
   const onUpload = (key: string, value: string) => {
     setData({ ...data, [key]: value })
   }
+  useEffect(() => {
+    if (!data.prefered_way_of_contact.includes('Phone number')) {
+      setData({
+        ...data,
+        contry_code: StaticService.countryCodeOption[0].code,
+        phone_number: ''
+      })
+    }
+  }, [data.prefered_way_of_contact]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // api
   const submit = () => {
@@ -143,6 +144,7 @@ const ContactUs = () => {
       .finally(() => context.setIsLoading(false))
   }
 
+  // render
   const renderContactUsForm = () => {
     return (
       <Row gutter={20}>
@@ -287,55 +289,38 @@ const ContactUs = () => {
             </Checkbox.Group>
           </div>
         </Col>
-        <Col span={24}>
-          <div className='ad-form-group' style={{ marginBottom: '0' }}>
-            <label className='required'>Phone number</label>
-          </div>
-          <Row gutter={20}>
-            <Col span={6}>
-              <div className='ad-form-group'>
-                <Select
-                  value={data.contry_code || undefined}
-                  placeholder={StaticService.placeholder.select}
-                  onChange={(val) => onSelect('contry_code', val)}
-                >
-                  {StaticService.countryCodeOption.map((country: any) => (
-                    <Option value={country.code} key={country.code}>
-                      {country.country} {country.code}
-                    </Option>
-                  ))}
-                </Select>
-              </div>
-            </Col>
-            <Col span={18}>
-              <div className='ad-form-group'>
-                <Input
-                  placeholder={StaticService.placeholder.input}
-                  maxLength={schema.phone_number.max}
-                  value={data.phone_number}
-                  onChange={(e) => onChange('phone_number', e)}
-                />
-              </div>
-            </Col>
-          </Row>
-        </Col>
-        {data.prefered_way_of_contact.includes('Email') ? (
+        {data.prefered_way_of_contact.includes('Phone number') ? (
           <Col span={24}>
-            <div className='ad-form-group'>
-              <label className='required'>Email</label>
-              <Input
-                placeholder={StaticService.placeholder.input}
-                maxLength={50}
-                value={data.email}
-                onChange={(e) => onChange('email', e)}
-              />
-              <FormGroupMsg
-                isShow={isEmail === false}
-                type='error'
-                isShowIcon={true}
-                msg={schema.email.errFormat}
-              />
+            <div className='ad-form-group' style={{ marginBottom: '0' }}>
+              <label className='required'>Phone number</label>
             </div>
+            <Row gutter={20}>
+              <Col span={6}>
+                <div className='ad-form-group'>
+                  <Select
+                    value={data.contry_code || undefined}
+                    placeholder={StaticService.placeholder.select}
+                    onChange={(val) => onSelect('contry_code', val)}
+                  >
+                    {StaticService.countryCodeOption.map((country: any) => (
+                      <Option value={country.code} key={country.code}>
+                        {country.country} {country.code}
+                      </Option>
+                    ))}
+                  </Select>
+                </div>
+              </Col>
+              <Col span={18}>
+                <div className='ad-form-group'>
+                  <Input
+                    placeholder={StaticService.placeholder.input}
+                    maxLength={schema.phone_number.max}
+                    value={data.phone_number}
+                    onChange={(e) => onChange('phone_number', e)}
+                  />
+                </div>
+              </Col>
+            </Row>
           </Col>
         ) : null}
       </Row>
@@ -393,10 +378,7 @@ const ContactUs = () => {
                     (!data.product ||
                       !data.issue_happen_time ||
                       !data.frequency)) ||
-                  data.prefered_way_of_contact.length === 0 ||
-                  (data.prefered_way_of_contact.includes('Email') &&
-                    !data.email) ||
-                  isEmail !== true
+                  data.prefered_way_of_contact.length === 0
                 }
                 feature='action'
                 block
