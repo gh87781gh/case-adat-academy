@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import { MyContext } from 'storage'
 import AccountApi from 'api/user/AccountApi'
 
@@ -20,13 +21,16 @@ interface IState {
 const ModalUpdate = (props: IProps) => {
   const context = useContext(MyContext)
   const api = new AccountApi()
+  const history = useHistory()
 
-  const [data, setData] = useState<IState>({
+  // data
+  const initData = {
     have_purchase_number: 'true',
     email: '',
     purchase_number: '',
     password: ''
-  })
+  }
+  const [data, setData] = useState<IState>({ ...initData })
   const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
   const onChange = (key: string, e: any) => {
     const value = e.target.value
@@ -34,11 +38,8 @@ const ModalUpdate = (props: IProps) => {
       switch (key) {
         case 'password':
         case 'purchase_number':
-          if (schema[key].validateStr(value)) return false
-          break
         case 'email':
-          if (schema.email.validateStr(value)) return false
-          setIsEmail(schema.email.validateFormat(value))
+          if (schema[key].validateStr(value)) return false
           break
       }
     }
@@ -48,15 +49,33 @@ const ModalUpdate = (props: IProps) => {
     if (checkedValues.length > 1) checkedValues.shift()
     setData({ ...data, have_purchase_number: checkedValues[0] })
   }
+  useEffect(() => {
+    setIsEmail(data.email ? schema.email.validateFormat(data.email) : null)
+  }, [data.email]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // api
+  const submit = () => {
+    context.setIsLoading(true)
+    api
+      .updateUserEmail(data)
+      .then(() => {
+        props.onCancel()
+        history.push('/login/successfully/updated')
+      })
+      .finally(() => context.setIsLoading(false))
+  }
 
   useEffect(() => {
+    // TODO
     if (props.isShow) {
-      api
-        .getUserEmail()
-        .then((res: any) => {
-          // console.log(res) //TOCHECK
-        })
-        .finally(() => context.setIsLoading(false))
+      // api
+      //   .getUserEmail()
+      //   .then((res: any) => {
+      //     // console.log(res)
+      //   })
+      //   .finally(() => context.setIsLoading(false))
+    } else {
+      setData({ ...initData })
     }
   }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -121,7 +140,6 @@ const ModalUpdate = (props: IProps) => {
             </div>
           </Col>
         ) : null}
-
         <Col span={12}>
           <div className='ad-form-group'>
             <label className='required'>
@@ -140,24 +158,19 @@ const ModalUpdate = (props: IProps) => {
         <p>Please note that updating email requires re-login.</p>
         <div className='ad-btn-group'>
           <Btn
-            // disabled={
-            //   !data.name ||
-            //   !data.industry ||
-            //   !data.position ||
-            //   !data.experience_level ||
-            //   data.experience.length === 0
-            // }
+            disabled={
+              !data.have_purchase_number ||
+              !data.email ||
+              (data.have_purchase_number === 'true' && !data.purchase_number) ||
+              !data.password
+            }
             feature='action'
             key='Submit'
-            // onClick={() => update()}
+            onClick={() => submit()}
           >
             Submit
           </Btn>
-          <Btn
-            feature='primary'
-            key='Cancel'
-            // onClick={() => submit()}
-          >
+          <Btn feature='primary' key='Cancel' onClick={() => props.onCancel()}>
             Cancel
           </Btn>
         </div>

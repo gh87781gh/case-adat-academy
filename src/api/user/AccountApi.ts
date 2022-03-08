@@ -11,6 +11,21 @@ export default class AccountApi {
   getUserPurchase = () => {
     return this.restAPI.request('get', '/user/purchase', {})
   }
+  updateUserEmail = (data: any) => {
+    const sendData: any = {
+      have_purchase_number:
+        data.have_purchase_number === 'true'
+          ? true
+          : data.have_purchase_number === 'false'
+          ? false
+          : null,
+      email: data.email,
+      purchase_number:
+        data.have_purchase_number === 'true' ? data.purchase_number : null,
+      password: data.password
+    }
+    return this.restAPI.request('get', '/user/email', sendData)
+  }
   getUserEmail = () => {
     return this.restAPI.request('get', '/user/email', {})
   }

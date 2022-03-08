@@ -14,7 +14,7 @@ const Successfully = () => {
         Successfully{' '}
         {type === 'submitted'
           ? 'submitted!'
-          : type === 'submitted'
+          : type === 'updated'
           ? 'updated'
           : type === 'loggedOut'
           ? 'logged out'
