@@ -55,7 +55,9 @@ const Index = () => {
                 style={{ marginBottom: '24px' }}
               >
                 Can’t find the solutions? Please visit{' '}
-                <Btn feature='link'>help center</Btn>
+                <Btn feature='link' onClick={() => history.push('/helpCenter')}>
+                  help center
+                </Btn>
               </div>
               {list.map((card: any, index: number) => (
                 <div key={index}>
