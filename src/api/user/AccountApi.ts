@@ -24,7 +24,7 @@ export default class AccountApi {
         data.have_purchase_number === 'true' ? data.purchase_number : null,
       password: data.password
     }
-    return this.restAPI.request('get', '/user/email', sendData)
+    return this.restAPI.request('post', '/user/email', sendData)
   }
   getUserEmail = () => {
     return this.restAPI.request('get', '/user/email', {})
