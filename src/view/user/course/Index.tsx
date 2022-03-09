@@ -134,9 +134,7 @@ const Index = () => {
                       <Btn
                         className='w-100'
                         feature='primary'
-                        disabled={
-                          !course.available || course.status === 'Not available'
-                        }
+                        disabled={!course.available}
                         onClick={() =>
                           history.push(`/courseDetail/${course.id}`)
                         }
@@ -144,16 +142,21 @@ const Index = () => {
                         Take class
                       </Btn>
                       <small>
-                        {course.status === 'Not started' ||
-                        course.status === 'Not available' ||
-                        course.status === 'All read' ? (
+                        {course.available ? (
+                          course.status === 'Not started yet' ||
+                          course.status === 'All read' ? (
+                            <>{course.status}</>
+                          ) : course.status === 'In progress' ? (
+                            <>
+                              <span>{course.last_read_day} DAYS AGO</span> LAST
+                              READ
+                            </>
+                          ) : null
+                        ) : course.status === 'Not available' ? (
                           <>{course.status}</>
-                        ) : course.status === 'In progress' ? (
-                          <>
-                            <span>{course.last_read_day} DAYS AGO</span> LAST
-                            READ
-                          </>
-                        ) : null}
+                        ) : (
+                          ''
+                        )}
                       </small>
                     </div>
                   </li>
