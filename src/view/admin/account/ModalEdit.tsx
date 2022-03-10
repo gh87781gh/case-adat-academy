@@ -1,7 +1,9 @@
 import { useState, useContext, useEffect } from 'react'
 import moment from 'moment'
 import { MyContext } from 'storage'
+import GlobalApi from 'api/GlobalApi'
 import AccountApi from 'api/admin/AccountApi'
+
 import { FormGroupMsg } from 'utility/component'
 import { ValidateStr } from 'utility/validate'
 import { Row, Col, Button, Input, Select, Modal } from 'antd'
@@ -21,16 +23,29 @@ interface IState {
 }
 
 const ModalEdit = (props: IProps) => {
-  const api = new AccountApi()
   const context = useContext(MyContext)
+  const api_global = new GlobalApi()
+  const api = new AccountApi()
 
-  const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
+  // option
+  const [courseAccessOption, setCourseAccessOption] = useState<any>([])
+  useEffect(() => {
+    if (props.isShow) {
+      api_global
+        .getOptions(['purchase_management_course_access'])
+        .then((res: any) => setCourseAccessOption(res.data[0]))
+        .finally(() => context.setIsLoading(false))
+    }
+  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // data
   const initData = {
     purchase_id: '',
     email: '',
     remark: ''
   }
   const [data, setData] = useState<IState>({ ...initData })
+  const [isEmail, setIsEmail] = useState<boolean | undefined>(undefined)
   const onSelect = (key: string, value: any) => {
     if (key === 'purchase_id') {
       setPurchaseDetail(purchaseList.find((item: any) => item.id === value))
@@ -54,8 +69,31 @@ const ModalEdit = (props: IProps) => {
       : setIsEmail(undefined)
   }, [data.email]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // purchase detail
   const [purchaseList, setPurchaseList] = useState<any>([])
   const [purchaseDetail, setPurchaseDetail] = useState<any>(null)
+  const [formatCourseAccess, setFormatCourseAccess] = useState<string>('')
+  useEffect(() => {
+    if (purchaseDetail && courseAccessOption) {
+      const ary: any = []
+      console.log('purchaseDetail:', purchaseDetail)
+      // if (!purchaseDetail.course_access) {
+      //   setFormatCourseAccess('-')
+      // } else {
+      //   for (const id of purchaseDetail.course_access) {
+      //     for (const option of courseAccessOption) {
+      //       if (id === option.id) {
+      //         ary.push(option.name)
+      //         break
+      //       }
+      //     }
+      //   }
+      // }
+      // setFormatCourseAccess(ary.join(', '))
+    }
+  }, [purchaseDetail, courseAccessOption]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // init page
   useEffect(() => {
     if (props.isShow) {
       const purchaseDetail = props.accountDetail.purchases[0]
@@ -76,6 +114,7 @@ const ModalEdit = (props: IProps) => {
     }
   }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // api
   const editAccount = () => {
     context.setIsLoading(true)
     api
@@ -86,8 +125,6 @@ const ModalEdit = (props: IProps) => {
       })
       .finally(() => context.setIsLoading(false))
   }
-
-  // TOCHECK are u sure popup
 
   return (
     <Modal
@@ -120,7 +157,7 @@ const ModalEdit = (props: IProps) => {
               placeholder='Please select'
               onChange={(val) => onSelect('purchase_id', val)}
             >
-              {purchaseList.map((item: any, index: number) => (
+              {purchaseList.map((item: any) => (
                 <Option value={item.id} key={item.id}>
                   {item.purchase_number}
                 </Option>
@@ -152,7 +189,7 @@ const ModalEdit = (props: IProps) => {
           <div className='ad-form-group'>
             <label>Course access</label>
             <div className='ad-form-group-value'>
-              {purchaseDetail ? `${purchaseDetail.course_access}` : '-'}
+              {formatCourseAccess || '-'}
             </div>
           </div>
         </Col>

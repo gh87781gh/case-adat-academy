@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from 'react'
 import { MyContext, StaticService } from 'storage'
+import GlobalApi from 'api/GlobalApi'
 import AccountApi from 'api/admin/AccountApi'
 import PurchaseApi from 'api/admin/PurchaseApi'
 
@@ -21,8 +22,20 @@ interface IState {
 
 const ModalCreate = (props: IProps) => {
   const context = useContext(MyContext)
-  const api = new AccountApi()
+  const api_global = new GlobalApi()
   const api_purchase = new PurchaseApi()
+  const api = new AccountApi()
+
+  // option
+  const [courseAccessOption, setCourseAccessOption] = useState<any>([])
+  useEffect(() => {
+    if (props.isShow) {
+      api_global
+        .getOptions(['purchase_management_course_access'])
+        .then((res: any) => setCourseAccessOption(res.data[0]))
+        .finally(() => context.setIsLoading(false))
+    }
+  }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // data
   const initData = {
@@ -50,8 +63,26 @@ const ModalCreate = (props: IProps) => {
     setData({ ...data, [key]: value })
   }
 
+  // purchase detail
   const [purchaseList, setPurchaseList] = useState<any>([])
   const [purchaseDetail, setPurchaseDetail] = useState<any>(null)
+  const [formatCourseAccess, setFormatCourseAccess] = useState<string>('')
+  useEffect(() => {
+    if (purchaseDetail && courseAccessOption) {
+      const ary: any = []
+      for (const id of purchaseDetail.course_access) {
+        for (const option of courseAccessOption) {
+          if (id === option.id) {
+            ary.push(option.name)
+            break
+          }
+        }
+      }
+      setFormatCourseAccess(ary.join(', '))
+    }
+  }, [purchaseDetail, courseAccessOption]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // init page
   useEffect(() => {
     if (props.isShow) {
       setIsEmail(undefined)
@@ -71,6 +102,7 @@ const ModalCreate = (props: IProps) => {
     }
   }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // api
   const createAccount = () => {
     context.setIsLoading(true)
 
@@ -92,32 +124,6 @@ const ModalCreate = (props: IProps) => {
         .finally(() => context.setIsLoading(false))
     }
   }
-
-  // TOCHECK are u sure popup
-  // const [isModalConfirmShow, setIsModalConfirmShow] = useState<boolean>(false)
-  // const renderConfirmModal = () => (
-  //   <Modal
-  //     title='Are you sure?'
-  //     visible={isModalConfirmShow}
-  //     onCancel={() => setIsModalConfirmShow(false)}
-  //     footer={[
-  //       <Button
-  //         key='Create'
-  //         type='primary'
-  //         // onClick={() => deletePurchase()}
-  //       >
-  //         Yes. Move it.
-  //       </Button>,
-  //       <Button key='Cancel' onClick={props.onCancel}>
-  //         No
-  //       </Button>
-  //     ]}
-  //     width={720}
-  //   >
-  //     “Leoo123@winbond.com” is in user ID “Leoo123”. Are you sure you want to
-  //     move the account to “winbond123”?
-  //   </Modal>
-  // )
 
   return (
     <Modal
@@ -187,7 +193,8 @@ const ModalCreate = (props: IProps) => {
           <div className='ad-form-group'>
             <label>Course access</label>
             <div className='ad-form-group-value'>
-              {purchaseDetail ? `${purchaseDetail.course_access}` : '-'}
+              {/* TODO */}
+              {formatCourseAccess || '-'}
             </div>
           </div>
         </Col>
