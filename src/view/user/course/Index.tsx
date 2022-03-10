@@ -7,6 +7,7 @@ import Header from 'view/user/layout/Header'
 import Footer from 'view/user/layout/Footer'
 import LearningPath from './learningPath/LearningPath'
 import NoCourse from 'view/user/layout/NoCourse'
+import FormatCourseStatus from './FormatCourseStatus'
 
 import { IconArrowDown, IconBookmark } from 'utility/icon'
 import { Btn } from 'utility/component'
@@ -142,19 +143,12 @@ const Index = () => {
                         Take class
                       </Btn>
                       <small>
-                        {course.available ? (
-                          course.status === 'Not started yet' ||
-                          course.status === 'All read' ? (
-                            <>{course.status}</>
-                          ) : course.status === 'In progress' ? (
-                            <>
-                              <span>{course.last_read_day} DAYS AGO</span> LAST
-                              READ
-                            </>
-                          ) : null
-                        ) : (
-                          'NOT AVAILABLE'
-                        )}
+                        <FormatCourseStatus
+                          type='STRING'
+                          available={course.available}
+                          status={course.status}
+                          last_read_day={course.last_read_day}
+                        />
                       </small>
                     </div>
                   </li>

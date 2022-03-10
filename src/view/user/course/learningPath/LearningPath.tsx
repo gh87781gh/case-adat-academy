@@ -2,63 +2,11 @@ import { useState, useContext, useEffect } from 'react'
 import { MyContext, StaticService } from 'storage'
 import { useHistory } from 'react-router-dom'
 import CourseApi from 'api/user/CourseApi'
-import { Btn } from 'utility/component'
-import {
-  IconPathEmpty,
-  IconPathInProgress,
-  IconPathCheck,
-  IconPathHover,
-  IconPathLine,
-  IconPathArrow
-} from 'utility/icon'
 
-// const fakeData = [
-//   {
-//     name: 'Stage 1',
-//     courses: [
-//       {
-//         id: '1ca6bc26-f9c8-45f8-8ea1-d5bcc391db27',
-//         name: 'Test Course A',
-//         logo_image_id: '',
-//         description: 'Test description',
-//         status: 'All read'
-//       },
-//       {
-//         id: '25bb6b0b-d341-4518-a1b3-2874831d6a21',
-//         name: 'Test Course B',
-//         logo_image_id: '',
-//         description: 'Test description',
-//         status: 'In progress'
-//       }
-//     ]
-//   },
-//   {
-//     name: 'Stage 2',
-//     courses: [
-//       {
-//         id: '1ca6bc26-f9c8-45f8-8ea1-d5bcc391db27123',
-//         name: 'Test Course C',
-//         logo_image_id: '',
-//         description: 'Test description',
-//         status: 'All read'
-//       },
-//       {
-//         id: '25bb6b0b-d341-4518-a1b3-2874831d6a215432',
-//         name: 'Test Course D',
-//         logo_image_id: '',
-//         description: 'Test description',
-//         status: 'Not started'
-//       },
-//       {
-//         id: '25bb6b0b-d341-4518-a1b3-2874831d6a21234565432',
-//         name: 'Test Course E',
-//         logo_image_id: '',
-//         description: 'Test description',
-//         status: 'Not started'
-//       }
-//     ]
-//   }
-// ]
+import FormatCourseStatus from '../FormatCourseStatus'
+
+import { Btn } from 'utility/component'
+import { IconPathHover, IconPathLine, IconPathArrow } from 'utility/icon'
 
 interface IPropsStage {
   stage: any
@@ -83,16 +31,11 @@ const Stage = (props: IPropsStage) => {
             >
               <div className='ad-course-banner-path-status'>
                 {index !== hoverIndex ? (
-                  <>
-                    {course.status === 'Not started yet' ||
-                    course.status === 'Not available' ? (
-                      <IconPathEmpty />
-                    ) : course.status === 'In progress' ? (
-                      <IconPathInProgress />
-                    ) : course.status === 'All read' ? (
-                      <IconPathCheck />
-                    ) : null}
-                  </>
+                  <FormatCourseStatus
+                    type='ICON'
+                    available={course.available}
+                    status={course.status}
+                  />
                 ) : (
                   <IconPathHover />
                 )}
@@ -114,13 +57,18 @@ const Stage = (props: IPropsStage) => {
                   </div>
                   <div className='info'>
                     <div className='desc'>{course.description}</div>
-                    <small>{course.status}</small>
+                    <small>
+                      <FormatCourseStatus
+                        type='STRING'
+                        available={course.available}
+                        status={course.status}
+                        last_read_day={course.last_read_day}
+                      />
+                    </small>
                     <Btn
                       feature='primary'
                       className='w-100'
-                      disabled={
-                        !course.available || course.status === 'Not available'
-                      }
+                      disabled={!course.available}
                       onClick={() => history.push(`/courseDetail/${course.id}`)}
                     >
                       Take class
