@@ -84,7 +84,7 @@ const Stage = (props: IPropsStage) => {
               <div className='ad-course-banner-path-status'>
                 {index !== hoverIndex ? (
                   <>
-                    {course.status === 'Not started' ||
+                    {course.status === 'Not started yet' ||
                     course.status === 'Not available' ? (
                       <IconPathEmpty />
                     ) : course.status === 'In progress' ? (

@@ -1,14 +1,9 @@
-import { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import { StaticService } from 'storage'
 
 import LoginTemplate from '../LoginTemplate'
 
-import { Btn, FormGroupMsg } from 'utility/component'
-import { ValidateStr } from 'utility/validate'
+import { Btn } from 'utility/component'
 import { IconArrowPrev } from 'utility/icon'
-import { Row, Col, Input, Checkbox, Select } from 'antd'
-const { Option } = Select
 
 const TermsPolicy = () => {
   const history = useHistory()

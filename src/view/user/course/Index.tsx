@@ -152,10 +152,8 @@ const Index = () => {
                               READ
                             </>
                           ) : null
-                        ) : course.status === 'Not available' ? (
-                          <>{course.status}</>
                         ) : (
-                          ''
+                          'NOT AVAILABLE'
                         )}
                       </small>
                     </div>
