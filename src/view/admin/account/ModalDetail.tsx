@@ -86,11 +86,11 @@ const ModalDetail = (props: IProps) => {
   return (
     <>
       <Modal
-        className='ad-modal-info'
+        className='aa-modal-info'
         title={
           <>
             Account details
-            <div className='ad-btn-group ad-float-right'>
+            <div className='aa-btn-group aa-float-right'>
               <Button
                 key='Edit'
                 type='primary'
@@ -121,11 +121,11 @@ const ModalDetail = (props: IProps) => {
       >
         <Row gutter={20}>
           <Col span={12}>
-            <div className='ad-form-group ad-form-group-horizontal'>
+            <div className='aa-form-group aa-form-group-horizontal'>
               <label>Purchase number</label>
               {accountDetail.purchases?.length > 0 ? (
                 <>
-                  <div className='ad-form-group-value'>
+                  <div className='aa-form-group-value'>
                     {accountDetail.purchases[0].purchase_number}
                   </div>
                   <Link
@@ -144,21 +144,21 @@ const ModalDetail = (props: IProps) => {
         </Row>
         <Row gutter={20}>
           <Col span={6}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label>Use ID</label>
-              <div className='ad-form-group-value'>{accountDetail.user_id}</div>
+              <div className='aa-form-group-value'>{accountDetail.user_id}</div>
             </div>
           </Col>
           <Col span={6}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label>Current email</label>
-              <div className='ad-form-group-value'>{accountDetail.email}</div>
+              <div className='aa-form-group-value'>{accountDetail.email}</div>
             </div>
           </Col>
           <Col span={6}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label>Current status</label>
-              <div className='ad-form-group-value'>{accountDetail.status}</div>
+              <div className='aa-form-group-value'>{accountDetail.status}</div>
             </div>
           </Col>
         </Row>

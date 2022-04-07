@@ -47,16 +47,16 @@ const UploadImg = (props: IProps) => {
   }, [props.replaceCount]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className={`ad-upload ${props.type} ${props.theme || ''}`}>
+    <div className={`aa-upload ${props.type} ${props.theme || ''}`}>
       <label>
         {props.imgId ? (
           <img
-            className='ad-upload-uploaded'
+            className='aa-upload-uploaded'
             src={`${StaticService.apiUrl}/archive/${props.imgId}`}
             alt=''
           />
         ) : (
-          <span className='ad-upload-watermark'>
+          <span className='aa-upload-watermark'>
             <IconImg />
             <em>{props.desc}</em>
           </span>
@@ -71,7 +71,7 @@ const UploadImg = (props: IProps) => {
         />
       </label>
       {props.imgId ? (
-        <div className='ad-btn-group'>
+        <div className='aa-btn-group'>
           <Btn feature='link' onClick={() => inputEl.current?.click()}>
             Replace
           </Btn>

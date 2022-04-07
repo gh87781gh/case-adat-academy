@@ -75,7 +75,7 @@ const PurchaseAccount = (props: IProps) => {
       dataIndex: 'action',
       width: 220,
       render: (text: any, record: any) => (
-        <div className='ad-btn-group'>
+        <div className='aa-btn-group'>
           <Button
             key='more'
             size='small'
@@ -113,7 +113,7 @@ const PurchaseAccount = (props: IProps) => {
   return (
     <>
       <Header />
-      <div className='ad-layout-admin'>
+      <div className='aa-layout-admin'>
         <AdminSideBar />
         <article>
           <>
@@ -123,10 +123,10 @@ const PurchaseAccount = (props: IProps) => {
               </Breadcrumb.Item>
               <Breadcrumb.Item>Account</Breadcrumb.Item>
             </Breadcrumb>
-            <h1 className='ad-layout-admin-article-title'>
+            <h1 className='aa-layout-admin-article-title'>
               Account
               <Button
-                className='ad-float-right'
+                className='aa-float-right'
                 type='primary'
                 onClick={() => {
                   setIsModalCreateShow(true)
@@ -135,28 +135,28 @@ const PurchaseAccount = (props: IProps) => {
                 Create account
               </Button>
             </h1>
-            <div className='ad-layout-admin-article-toolBar'>
+            <div className='aa-layout-admin-article-toolBar'>
               <Row gutter={20}>
                 <Col span={8}>
-                  <div className='ad-form-group ad-form-group-horizontal'>
+                  <div className='aa-form-group aa-form-group-horizontal'>
                     <label>purchase number</label>
-                    <div className='ad-form-group-value'>
+                    <div className='aa-form-group-value'>
                       {purchaseDetail.purchase_number}
                     </div>
                   </div>
                 </Col>
                 <Col span={6}>
-                  <div className='ad-form-group ad-form-group-horizontal'>
+                  <div className='aa-form-group aa-form-group-horizontal'>
                     <label>Quota</label>
-                    <div className='ad-form-group-value'>
+                    <div className='aa-form-group-value'>
                       {purchaseDetail.usage} used/ {purchaseDetail.quata}
                     </div>
                   </div>
                 </Col>
                 <Col span={6}>
-                  <div className='ad-form-group ad-form-group-horizontal'>
+                  <div className='aa-form-group aa-form-group-horizontal'>
                     <label>Status</label>
-                    <div className='ad-form-group-value'>
+                    <div className='aa-form-group-value'>
                       {purchaseDetail.status}
                     </div>
                   </div>
@@ -164,7 +164,7 @@ const PurchaseAccount = (props: IProps) => {
               </Row>
             </div>
             <Table
-              className='ad-admin-table'
+              className='aa-admin-table'
               columns={columns}
               dataSource={list}
               pagination={{

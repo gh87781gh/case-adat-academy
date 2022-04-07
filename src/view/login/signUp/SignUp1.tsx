@@ -82,18 +82,18 @@ const SignUp1 = () => {
   return (
     <LoginTemplate>
       <LoginPrompt text={errMsg} />
-      <div className='ad-login-content-header'>
+      <div className='aa-login-content-header'>
         SIGN UP
         <Btn
           feature='secondary'
-          className='ad-float-right'
+          className='aa-float-right'
           onClick={() => history.push('/login')}
         >
           Log in <IconArrowNext />
         </Btn>
       </div>
-      <div className='ad-login-content-body'>
-        <div className='ad-form-group'>
+      <div className='aa-login-content-body'>
+        <div className='aa-form-group'>
           <label className='required'>User ID</label>
           <Input
             placeholder={StaticService.placeholder.input}
@@ -103,7 +103,7 @@ const SignUp1 = () => {
           />
           <FormGroupMsg isShow={true} msg={schema.user_id.info} />
         </div>
-        <div className='ad-form-group'>
+        <div className='aa-form-group'>
           <label className='required'>Password</label>
           <Input.Password
             placeholder={StaticService.placeholder.password}
@@ -120,7 +120,7 @@ const SignUp1 = () => {
             msg={schema.password.errTooShort}
           />
         </div>
-        <div className='ad-form-group'>
+        <div className='aa-form-group'>
           <label className='required'>Password again</label>
           <Input.Password
             placeholder={StaticService.placeholder.password}
@@ -137,7 +137,7 @@ const SignUp1 = () => {
             msg={schema.password.errNotMatch}
           />
         </div>
-        <div className='ad-form-group'>
+        <div className='aa-form-group'>
           <label className='required'>Email</label>
           <Input
             placeholder={StaticService.placeholder.input}
@@ -154,7 +154,7 @@ const SignUp1 = () => {
           />
         </div>
       </div>
-      <div className='ad-login-content-footer'>
+      <div className='aa-login-content-footer'>
         <Btn
           feature='action'
           disabled={
@@ -166,7 +166,7 @@ const SignUp1 = () => {
             !data.email ||
             isEmail !== true
           }
-          className='ad-login-content-actionBtn'
+          className='aa-login-content-actionBtn'
           type='primary'
           block
           onClick={() => checkAccount()}

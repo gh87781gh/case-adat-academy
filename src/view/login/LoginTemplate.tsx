@@ -17,25 +17,25 @@ const LoginTemplate = (props: any) => {
 
   return (
     <>
-      <Row className='ad-login-bg'>
-        <Col span={16} className='ad-login-container-box'>
-          <div className='ad-login-container'>{props.children}</div>
+      <Row className='aa-login-bg'>
+        <Col span={16} className='aa-login-container-box'>
+          <div className='aa-login-container'>{props.children}</div>
         </Col>
-        <Col span={8} className='ad-login-footer'>
-          <div className='ad-login-footer-logo'>
+        <Col span={8} className='aa-login-footer'>
+          <div className='aa-login-footer-logo'>
             <IconADAT />
           </div>
-          <div className='ad-login-footer-btn-group'>
+          <div className='aa-login-footer-btn-group'>
             <Btn
               feature='link'
-              className='ad-mode-dark'
+              className='aa-mode-dark'
               onClick={() => history.push('/login/contact')}
             >
               Contact us
             </Btn>
             <Btn
               feature='link'
-              className='ad-mode-dark'
+              className='aa-mode-dark'
               onClick={() => history.push('/login/termsPolicy')}
             >
               Terms & policy
@@ -43,7 +43,7 @@ const LoginTemplate = (props: any) => {
           </div>
         </Col>
       </Row>
-      <span className='ad-layout-version'>v{version}</span>
+      <span className='aa-layout-version'>v{version}</span>
     </>
   )
 }

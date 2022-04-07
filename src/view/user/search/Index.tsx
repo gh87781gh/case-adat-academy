@@ -45,13 +45,13 @@ const Index = () => {
   return (
     <>
       <Header />
-      <article className='ad-page-container'>
-        <h1 className='ad-title'>Search result</h1>
-        <section className='ad-section-card'>
+      <article className='aa-page-container'>
+        <h1 className='aa-title'>Search result</h1>
+        <section className='aa-section-card'>
           {list.length > 0 ? (
             <>
               <div
-                className='ad-text-right ad-color-primary'
+                className='aa-text-right aa-color-primary'
                 style={{ marginBottom: '24px' }}
               >
                 Can’t find the solutions? Please visit{' '}
@@ -73,11 +73,11 @@ const Index = () => {
               ))}
               <Row gutter={20}>
                 <Col span={10}>
-                  <div className='ad-section-list-result'>
+                  <div className='aa-section-list-result'>
                     <span>{list.length}</span> Search results
                   </div>
                 </Col>
-                <Col span={14} className='ad-text-right'>
+                <Col span={14} className='aa-text-right'>
                   <Pagination
                     current={page}
                     total={total}

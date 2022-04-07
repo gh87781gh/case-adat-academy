@@ -57,10 +57,10 @@ const Header = () => {
 
   const renderMenu = () => {
     return (
-      <Menu className='ad-header-profile-menu'>
-        <Menu.Item className='ad-header-profile-menu-text' key='user' disabled>
+      <Menu className='aa-header-profile-menu'>
+        <Menu.Item className='aa-header-profile-menu-text' key='user' disabled>
           {context.auth?.user_id} <br />
-          <span className='ad-header-profile-menu-decs'>user ID</span>
+          <span className='aa-header-profile-menu-decs'>user ID</span>
         </Menu.Item>
         <Menu.Item
           key='learning profile'
@@ -75,7 +75,7 @@ const Header = () => {
           purchase detail
         </Menu.Item>
         <Menu.Item
-          className='ad-header-profile-menu-bd'
+          className='aa-header-profile-menu-bd'
           key='change password'
           onClick={() => history.push('/account/changePassword')}
         >
@@ -96,19 +96,19 @@ const Header = () => {
     )
   }
   return (
-    <header className='ad-header'>
-      <div className='ad-layout-container ad-header-container'>
+    <header className='aa-header'>
+      <div className='aa-layout-container aa-header-container'>
         <div
-          className={`ad-header-container-logo-primary ${
+          className={`aa-header-container-logo-primary ${
             isScrolling ? 'scroll-mode' : ''
           }`}
           onClick={() => history.push('/course')}
         >
           <IconADATFull />
         </div>
-        <ul className='ad-header-tabHead'>
+        <ul className='aa-header-tabHead'>
           <li
-            className={`ad-header-btn ${
+            className={`aa-header-btn ${
               location.pathname === '/course' ? 'active' : ''
             }`}
             onClick={() => history.push('/course')}
@@ -116,7 +116,7 @@ const Header = () => {
             Course
           </li>
           <li
-            className={`ad-header-btn ${
+            className={`aa-header-btn ${
               location.pathname === '/help' ? 'active' : ''
             }`}
             onClick={() => history.push('/helpCenter')}
@@ -124,7 +124,7 @@ const Header = () => {
             Help center
           </li>
         </ul>
-        <div className='ad-header-searchBar'>
+        <div className='aa-header-searchBar'>
           <Input
             placeholder='Search course content'
             value={data.text}
@@ -140,13 +140,13 @@ const Header = () => {
           />
         </div>
         <Dropdown overlay={renderMenu()} trigger={['click']}>
-          <div className='ad-header-btn'>
+          <div className='aa-header-btn'>
             {context.auth?.user_id}
             <IconArrowDown />
           </div>
         </Dropdown>
       </div>
-      <span className='ad-layout-version'>v{version}</span>
+      <span className='aa-layout-version'>v{version}</span>
     </header>
   )
 }

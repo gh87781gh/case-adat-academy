@@ -28,7 +28,7 @@ const LearningPath = () => {
       key: 'action',
       dataIndex: 'action',
       render: (text: any, record: any) => (
-        <div className='ad-btn-group'>
+        <div className='aa-btn-group'>
           <Button
             key='more'
             size='small'
@@ -57,7 +57,7 @@ const LearningPath = () => {
   return (
     <>
       <Header />
-      <div className='ad-layout-admin'>
+      <div className='aa-layout-admin'>
         <AdminSideBar />
         <article>
           <Breadcrumb separator='>'>
@@ -66,9 +66,9 @@ const LearningPath = () => {
             </Breadcrumb.Item>
             <Breadcrumb.Item>learning path</Breadcrumb.Item>
           </Breadcrumb>
-          <h1 className='ad-layout-admin-article-title'>Learning path</h1>
+          <h1 className='aa-layout-admin-article-title'>Learning path</h1>
           <Table
-            className='ad-admin-table'
+            className='aa-admin-table'
             columns={columns}
             dataSource={list}
             pagination={false}

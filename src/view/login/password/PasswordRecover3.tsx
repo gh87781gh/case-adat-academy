@@ -67,10 +67,10 @@ const PasswordRecover3 = () => {
 
   return (
     <LoginTemplate>
-      <div className='ad-login-content-header'>Change password</div>
-      <div className='ad-login-content-body'>
+      <div className='aa-login-content-header'>Change password</div>
+      <div className='aa-login-content-body'>
         <p>Please enter your new password</p>
-        <div className='ad-form-group'>
+        <div className='aa-form-group'>
           <label>New password</label>
           <Input.Password
             placeholder='Clear hint for the input'
@@ -84,7 +84,7 @@ const PasswordRecover3 = () => {
             msg='At least 8 characters. A mixture of letters and numbers.'
           />
         </div>
-        <div className='ad-form-group'>
+        <div className='aa-form-group'>
           <label>New password again</label>
           <Input.Password
             placeholder='Clear hint for the input'
@@ -108,13 +108,13 @@ const PasswordRecover3 = () => {
           />
         </div>
       </div>
-      <div className='ad-login-content-footer'>
+      <div className='aa-login-content-footer'>
         <Btn
           disabled={
             data.password && data.password2 && data.password !== data.password2
           }
           feature='action'
-          className='ad-login-content-actionBtn'
+          className='aa-login-content-actionBtn'
           block
           onClick={() => {
             if (state) loginWithNewPassword()

@@ -91,7 +91,7 @@ const Index = () => {
       dataIndex: 'action',
       width: 220,
       render: (text: any, record: any) => (
-        <div className='ad-btn-group'>
+        <div className='aa-btn-group'>
           <Btn
             feature='primary'
             key='more'
@@ -155,24 +155,24 @@ const Index = () => {
   return (
     <>
       <Header />
-      <div className='ad-layout-admin'>
+      <div className='aa-layout-admin'>
         <AdminSideBar />
         <article>
-          <h1 className='ad-layout-admin-article-title'>
+          <h1 className='aa-layout-admin-article-title'>
             Account management
             <Btn
               feature='action'
-              className='ad-float-right'
+              className='aa-float-right'
               type='primary'
               onClick={() => setIsModalCreateShow(true)}
             >
               Create account
             </Btn>
           </h1>
-          <div className='ad-layout-admin-article-toolBar'>
+          <div className='aa-layout-admin-article-toolBar'>
             <Row gutter={20}>
               <Col span={8}>
-                <div className='ad-form-group ad-form-group-horizontal'>
+                <div className='aa-form-group aa-form-group-horizontal'>
                   <label style={{ minWidth: '200px' }}>
                     Current purchase number
                   </label>
@@ -191,7 +191,7 @@ const Index = () => {
                 </div>
               </Col>
               <Col span={8}>
-                <div className='ad-form-group ad-form-group-horizontal'>
+                <div className='aa-form-group aa-form-group-horizontal'>
                   <label style={{ minWidth: '120px' }}>Current status</label>
                   <Select
                     value={data.status}
@@ -221,7 +221,7 @@ const Index = () => {
             </Row>
           </div>
           <Table
-            className='ad-admin-table'
+            className='aa-admin-table'
             columns={columns}
             dataSource={list}
             pagination={{

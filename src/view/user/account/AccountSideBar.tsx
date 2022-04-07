@@ -13,7 +13,7 @@ const AccountSideBar = () => {
 
   return (
     <Menu
-      className='ad-menu-user-course ad-menu-user-account-sideBar'
+      className='aa-menu-user-course aa-menu-user-account-sideBar'
       selectedKeys={[location.pathname]}
       mode='inline'
     >

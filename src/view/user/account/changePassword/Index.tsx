@@ -64,10 +64,10 @@ const Index = () => {
             <AccountSideBar />
           </Col>
           <Col span={19}>
-            <article className='ad-page-container ad-page-container-account'>
-              <h1 className='ad-title'>Change password</h1>
+            <article className='aa-page-container aa-page-container-account'>
+              <h1 className='aa-title'>Change password</h1>
               <div style={{ maxWidth: '500px' }}>
-                <div className='ad-form-group'>
+                <div className='aa-form-group'>
                   <label className='required'>Current password</label>
                   <Input.Password
                     placeholder={StaticService.placeholder.password}
@@ -85,7 +85,7 @@ const Index = () => {
                     msg={schema.password.errTooShort}
                   />
                 </div>
-                <div className='ad-form-group'>
+                <div className='aa-form-group'>
                   <label className='required'>New password</label>
                   <Input.Password
                     placeholder={StaticService.placeholder.password}
@@ -104,7 +104,7 @@ const Index = () => {
                     msg={schema.password.errTooShort}
                   />
                 </div>
-                <div className='ad-form-group'>
+                <div className='aa-form-group'>
                   <label className='required'>New password again</label>
                   <Input.Password
                     placeholder={StaticService.placeholder.password}
@@ -123,9 +123,9 @@ const Index = () => {
                     msg={schema.password.errNotMatch}
                   />
                 </div>
-                <div className='ad-modal-user-footer'>
+                <div className='aa-modal-user-footer'>
                   <p>Please note that changing password requires re-login.</p>
-                  <div className='ad-btn-group'>
+                  <div className='aa-btn-group'>
                     <Btn
                       disabled={
                         !data.password ||

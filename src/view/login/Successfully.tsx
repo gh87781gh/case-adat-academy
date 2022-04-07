@@ -10,7 +10,7 @@ const Successfully = () => {
 
   return (
     <LoginTemplate>
-      <div className='ad-login-content-header'>
+      <div className='aa-login-content-header'>
         Successfully{' '}
         {type === 'submitted'
           ? 'submitted!'
@@ -21,15 +21,15 @@ const Successfully = () => {
           : ''}
         !
       </div>
-      <div className='ad-login-content-body'>
+      <div className='aa-login-content-body'>
         {type === 'submitted' ? (
           <p>'Thank you! We will try to reach you within 2 working days.'</p>
         ) : null}
       </div>
-      <div className='ad-login-content-footer'>
+      <div className='aa-login-content-footer'>
         <Btn
           feature='primary'
-          className='ad-login-content-actionBtn'
+          className='aa-login-content-actionBtn'
           block
           onClick={() => history.push('/login')}
         >

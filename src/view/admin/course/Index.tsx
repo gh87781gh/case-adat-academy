@@ -95,7 +95,7 @@ const Index = (props: IProps) => {
       dataIndex: 'action',
       width: 370,
       render: (text: any, record: any) => (
-        <div className='ad-btn-group'>
+        <div className='aa-btn-group'>
           <Btn
             feature='primary'
             key='switch'
@@ -170,12 +170,12 @@ const Index = (props: IProps) => {
   return (
     <>
       <Header />
-      <div className='ad-layout-admin'>
+      <div className='aa-layout-admin'>
         <AdminSideBar />
         <article>
-          <h1 className='ad-layout-admin-article-title'>
+          <h1 className='aa-layout-admin-article-title'>
             Course management
-            <div className='ad-float-right ad-btn-group'>
+            <div className='aa-float-right aa-btn-group'>
               <Btn feature='action' onClick={() => setIsModalCreateShow(true)}>
                 Create course
               </Btn>
@@ -187,10 +187,10 @@ const Index = (props: IProps) => {
               </Btn>
             </div>
           </h1>
-          <div className='ad-layout-admin-article-toolBar'>
+          <div className='aa-layout-admin-article-toolBar'>
             <Row gutter={20}>
               <Col span={6}>
-                <div className='ad-form-group ad-form-group-horizontal'>
+                <div className='aa-form-group aa-form-group-horizontal'>
                   <label style={{ minWidth: '50px' }}>Status</label>
                   <Select
                     value={data.status || undefined}
@@ -220,7 +220,7 @@ const Index = (props: IProps) => {
             </Row>
           </div>
           <Table
-            className='ad-admin-table'
+            className='aa-admin-table'
             columns={columns}
             dataSource={list}
             pagination={{

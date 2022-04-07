@@ -7,14 +7,14 @@ const Footer = () => {
   const inputEl = useRef<HTMLInputElement>(null)
 
   return (
-    <footer ref={inputEl} className='ad-footer'>
-      <div className='ad-layout-container'>
+    <footer ref={inputEl} className='aa-footer'>
+      <div className='aa-layout-container'>
         <Row>
           <Col span={6}>
-            <IconADATFull className='ad-footer-logo-adat' />
+            <IconADATFull className='aa-footer-logo-adat' />
             <Row>
               <Col span={12}>
-                <div className='ad-footer-share'>
+                <div className='aa-footer-share'>
                   <IconLinkedin /> <IconWeb />
                 </div>
               </Col>
@@ -28,13 +28,13 @@ const Footer = () => {
           </Col>
           <Col span={6}></Col>
           <Col span={6}>
-            <p className='ad-footer-address'>
+            <p className='aa-footer-address'>
               EMAIL / adatservice@micb2b.com <br />
               TEL / +886-6-505-7624 <br />
               FAX / +886-6-505-7625
               {/* <br />
               <br />
-              <Btn feature='link' className='ad-mode-dark'>
+              <Btn feature='link' className='aa-mode-dark'>
                 Privacy policy
               </Btn> */}
             </p>

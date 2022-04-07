@@ -153,7 +153,7 @@ const ModalCreate = (props: IProps) => {
   return (
     <Modal
       zIndex={1001}
-      className='ad-modal-edit'
+      className='aa-modal-edit'
       title={
         props.mode === 'CREATE'
           ? 'Create purchase'
@@ -197,7 +197,7 @@ const ModalCreate = (props: IProps) => {
       <Row gutter={20}>
         {props.mode === 'CREATE' ? (
           <Col span={24}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label className='required'>Purchase number</label>
               <Input
                 placeholder={StaticService.placeholder.input}
@@ -210,24 +210,24 @@ const ModalCreate = (props: IProps) => {
         ) : props.mode === 'UPDATE' ? (
           <>
             <Col span={12}>
-              <div className='ad-form-group'>
+              <div className='aa-form-group'>
                 <label>Purchase number</label>
-                <div className='ad-form-group-value'>
+                <div className='aa-form-group-value'>
                   {data.purchase_number}
                 </div>
               </div>
             </Col>
             <Col span={12}>
-              <div className='ad-form-group'>
+              <div className='aa-form-group'>
                 <label>Status</label>
-                <div className='ad-form-group-value'>{data.status}</div>
+                <div className='aa-form-group-value'>{data.status}</div>
               </div>
             </Col>
           </>
         ) : null}
 
         <Col span={12}>
-          <div className='ad-form-group'>
+          <div className='aa-form-group'>
             <label className='required'>Company</label>
             <Select
               mode='tags'
@@ -244,7 +244,7 @@ const ModalCreate = (props: IProps) => {
           </div>
         </Col>
         <Col span={12}>
-          <div className='ad-form-group'>
+          <div className='aa-form-group'>
             <label className='required'>Duration</label>
             <RangePicker
               value={[
@@ -260,7 +260,7 @@ const ModalCreate = (props: IProps) => {
           </div>
         </Col>
         <Col span={12}>
-          <div className='ad-form-group'>
+          <div className='aa-form-group'>
             <label className={props.mode === 'EDIT' ? 'required' : ''}>
               Course access (multiple choice)
             </label>
@@ -279,7 +279,7 @@ const ModalCreate = (props: IProps) => {
           </div>
         </Col>
         <Col span={12}>
-          <div className='ad-form-group'>
+          <div className='aa-form-group'>
             <label className='required'>Quota</label>
             <InputNumber
               value={data.quata}
@@ -292,7 +292,7 @@ const ModalCreate = (props: IProps) => {
 
         {props.mode === 'UPDATE' ? (
           <Col span={24}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label>Remarks</label>
               <TextArea
                 placeholder={StaticService.placeholder.input}

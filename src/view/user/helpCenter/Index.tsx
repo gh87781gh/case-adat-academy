@@ -12,20 +12,20 @@ const HelpCenter = () => {
 
   const renderHelpCenterDesc = () => {
     return (
-      <div className='ad-helpCenter-desc'>
+      <div className='aa-helpCenter-desc'>
         <p>
           We will try to reach you within <b>2</b> working days. Our team
           members are here for you:
         </p>
-        <div className='ad-helpCenter-desc-cs'>
+        <div className='aa-helpCenter-desc-cs'>
           <img src={CS} alt='' />
           <h4>Demmy</h4>
         </div>
-        <div className='ad-helpCenter-desc-cs'>
+        <div className='aa-helpCenter-desc-cs'>
           <img src={CS} alt='' />
           <h4>Violet</h4>
         </div>
-        <div className='ad-helpCenter-desc-cs'>
+        <div className='aa-helpCenter-desc-cs'>
           <img src={CS} alt='' />
           <h4>Aster</h4>
         </div>
@@ -35,12 +35,12 @@ const HelpCenter = () => {
   return (
     <>
       <Header />
-      <article className='ad-page-container'>
-        <h1 className='ad-title'>Help center</h1>
+      <article className='aa-page-container'>
+        <h1 className='aa-title'>Help center</h1>
 
         <Row gutter={20}>
           <Col span={8}>
-            <div className='ad-helpCenter-card'>
+            <div className='aa-helpCenter-card'>
               <h2>Customer training support</h2>
               <ul>
                 <li>Account issues</li>
@@ -55,7 +55,7 @@ const HelpCenter = () => {
               </p>
             </div>
           </Col>
-          <Col span={16} className='ad-text-right'>
+          <Col span={16} className='aa-text-right'>
             {renderHelpCenterDesc()}
           </Col>
         </Row>

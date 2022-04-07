@@ -14,7 +14,7 @@ interface IProps {
 const LoginPrompt = (props: IProps) => {
   return (
     <div
-      className={`ad-login-prompt ${props.type || 'error'} ${
+      className={`aa-login-prompt ${props.type || 'error'} ${
         props.text ? 'show' : 'hide'
       }`}
     >

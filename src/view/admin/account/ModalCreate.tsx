@@ -127,7 +127,7 @@ const ModalCreate = (props: IProps) => {
 
   return (
     <Modal
-      className='ad-modal-edit'
+      className='aa-modal-edit'
       title='Create account'
       visible={props.isShow}
       onCancel={props.onCancel}
@@ -148,10 +148,10 @@ const ModalCreate = (props: IProps) => {
     >
       <Row gutter={20}>
         <Col span={12}>
-          <div className='ad-form-group'>
+          <div className='aa-form-group'>
             <label className='required'>Purchase number</label>
             {props.purchaseDetail ? (
-              <div className='ad-form-group-value'>
+              <div className='aa-form-group-value'>
                 {props.purchaseDetail.purchase_number}
               </div>
             ) : (
@@ -172,17 +172,17 @@ const ModalCreate = (props: IProps) => {
       </Row>
       <Row gutter={20}>
         <Col span={8}>
-          <div className='ad-form-group'>
+          <div className='aa-form-group'>
             <label>Company</label>
-            <div className='ad-form-group-value'>
+            <div className='aa-form-group-value'>
               {purchaseDetail ? `${purchaseDetail.company}` : '-'}
             </div>
           </div>
         </Col>
         <Col span={8}>
-          <div className='ad-form-group'>
+          <div className='aa-form-group'>
             <label>Status</label>
-            <div className='ad-form-group-value'>
+            <div className='aa-form-group-value'>
               {purchaseDetail ? `${purchaseDetail.status}` : '-'}
             </div>
           </div>
@@ -190,18 +190,18 @@ const ModalCreate = (props: IProps) => {
       </Row>
       <Row gutter={20}>
         <Col span={8}>
-          <div className='ad-form-group'>
+          <div className='aa-form-group'>
             <label>Course access</label>
-            <div className='ad-form-group-value'>
+            <div className='aa-form-group-value'>
               {/* TODO */}
               {formatCourseAccess || '-'}
             </div>
           </div>
         </Col>
         <Col span={8}>
-          <div className='ad-form-group'>
+          <div className='aa-form-group'>
             <label>Quota</label>
-            <div className='ad-form-group-value'>
+            <div className='aa-form-group-value'>
               {purchaseDetail
                 ? `${purchaseDetail.usage} used/ ${purchaseDetail.quata}`
                 : '-'}
@@ -209,9 +209,9 @@ const ModalCreate = (props: IProps) => {
           </div>
         </Col>
         <Col span={8}>
-          <div className='ad-form-group'>
+          <div className='aa-form-group'>
             <label>Duration</label>
-            <div className='ad-form-group-value'>
+            <div className='aa-form-group-value'>
               {purchaseDetail
                 ? `${purchaseDetail.duration_start}-${purchaseDetail.duration_end}`
                 : '-'}
@@ -220,7 +220,7 @@ const ModalCreate = (props: IProps) => {
         </Col>
         {data.purchase_id ? (
           <Col span={10}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label className='required'>
                 Please input the account’s email
               </label>

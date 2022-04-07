@@ -96,11 +96,11 @@ const ModalDetail = (props: IProps) => {
   return (
     <>
       <Modal
-        className='ad-modal-info'
+        className='aa-modal-info'
         title={
           <>
             Purchase details
-            <div className='ad-btn-group ad-float-right'>
+            <div className='aa-btn-group aa-float-right'>
               <Btn
                 key='Edit'
                 feature='action'
@@ -132,45 +132,45 @@ const ModalDetail = (props: IProps) => {
       >
         <Row gutter={20}>
           <Col span={12}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label>Purchase number</label>
-              <div className='ad-form-group-value'>
+              <div className='aa-form-group-value'>
                 {purchaseDetail.purchase_number}
               </div>
             </div>
           </Col>
           <Col span={12}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label>Status</label>
-              <div className='ad-form-group-value'>{purchaseDetail.status}</div>
+              <div className='aa-form-group-value'>{purchaseDetail.status}</div>
             </div>
           </Col>
           <Col span={12}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label>Company</label>
-              <div className='ad-form-group-value'>
+              <div className='aa-form-group-value'>
                 {purchaseDetail.company}
               </div>
             </div>
           </Col>
           <Col span={12}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label>Duration</label>
-              <div className='ad-form-group-value'>
+              <div className='aa-form-group-value'>
                 {purchaseDetail.duration_start} - {purchaseDetail.duration_end}
               </div>
             </div>
           </Col>
           <Col span={12}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label>Course access</label>
-              <div className='ad-form-group-value'>{courseAccessNameList}</div>
+              <div className='aa-form-group-value'>{courseAccessNameList}</div>
             </div>
           </Col>
           <Col span={12}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label>Quota</label>
-              <div className='ad-form-group-value'>
+              <div className='aa-form-group-value'>
                 {purchaseDetail.usage} used/ {purchaseDetail.quata}
               </div>
             </div>

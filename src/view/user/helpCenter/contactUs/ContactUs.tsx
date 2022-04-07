@@ -149,11 +149,11 @@ const ContactUs = () => {
     return (
       <Row gutter={20}>
         <Col span={24}>
-          <div className='ad-form-group'>
+          <div className='aa-form-group'>
             <label className='required'>Support type</label>
             <Checkbox.Group
               value={[data.support_type]}
-              className='ad-checkbox-btn-group'
+              className='aa-checkbox-btn-group'
               onChange={(checkedValue) =>
                 onChecks('support_type', checkedValue)
               }
@@ -161,7 +161,7 @@ const ContactUs = () => {
               <Row gutter={[10, 10]}>
                 {supportTypeOption.map((item: string, index: number) => (
                   <Col span={12} key={item}>
-                    <Checkbox className='ad-checkbox-btn' value={item}>
+                    <Checkbox className='aa-checkbox-btn' value={item}>
                       {item}
                     </Checkbox>
                   </Col>
@@ -171,7 +171,7 @@ const ContactUs = () => {
           </div>
         </Col>
         <Col span={24}>
-          <div className='ad-form-group'>
+          <div className='aa-form-group'>
             <label className='required'>Subject</label>
             <Input
               placeholder={StaticService.placeholder.input}
@@ -184,7 +184,7 @@ const ContactUs = () => {
         {data.support_type === 'Operation questions' ? (
           <>
             <Col span={24}>
-              <div className='ad-form-group'>
+              <div className='aa-form-group'>
                 <label className='required'>Product</label>
                 <Select
                   value={data.product || undefined}
@@ -200,13 +200,13 @@ const ContactUs = () => {
               </div>
             </Col>
             <Col span={12}>
-              <div className='ad-form-group'>
+              <div className='aa-form-group'>
                 <label className='required'>Issue happen time</label>
                 <DatePicker onChange={onDatePick} />
               </div>
             </Col>
             <Col span={12}>
-              <div className='ad-form-group'>
+              <div className='aa-form-group'>
                 <label className='required'>Issue happen frequency</label>
                 <Select
                   value={data.frequency || undefined}
@@ -222,7 +222,7 @@ const ContactUs = () => {
               </div>
             </Col>
             <Col span={24}>
-              <div className='ad-form-group'>
+              <div className='aa-form-group'>
                 <label className='required'>Product version</label>
                 <Input
                   placeholder={StaticService.placeholder.input}
@@ -235,7 +235,7 @@ const ContactUs = () => {
           </>
         ) : null}
         <Col span={24}>
-          <div className='ad-form-group'>
+          <div className='aa-form-group'>
             <label className='required'>
               Descriptions (operation process, issue details,etc)
             </label>
@@ -249,7 +249,7 @@ const ContactUs = () => {
           </div>
         </Col>
         <Col span={24}>
-          <div className='ad-form-group'>
+          <div className='aa-form-group'>
             <label>Attachment</label>
             <UploadImg
               type='rectangle'
@@ -259,29 +259,29 @@ const ContactUs = () => {
               imgId={data.attachment_image_id}
               setUploadId={(id: string) => onUpload('attachment_image_id', id)}
             />
-            <p className='ad-upload-info'>This is the description area</p>
+            <p className='aa-upload-info'>This is the description area</p>
           </div>
         </Col>
         <Col span={24}>
-          <div className='ad-form-group'>
+          <div className='aa-form-group'>
             <label className='required'>
               Preferred way of contact (multiple choice)
             </label>
             <Checkbox.Group
               value={data.prefered_way_of_contact}
-              className='ad-checkbox-btn-group'
+              className='aa-checkbox-btn-group'
               onChange={(checkedValue) =>
                 onChecks('prefered_way_of_contact', checkedValue)
               }
             >
               <Row gutter={[10, 10]}>
                 <Col span={12} key={'Phone number'}>
-                  <Checkbox className='ad-checkbox-btn' value={'Phone number'}>
+                  <Checkbox className='aa-checkbox-btn' value={'Phone number'}>
                     Phone number
                   </Checkbox>
                 </Col>
                 <Col span={12} key={'Email'}>
-                  <Checkbox className='ad-checkbox-btn' value={'Email'}>
+                  <Checkbox className='aa-checkbox-btn' value={'Email'}>
                     Email
                   </Checkbox>
                 </Col>
@@ -291,12 +291,12 @@ const ContactUs = () => {
         </Col>
         {data.prefered_way_of_contact.includes('Phone number') ? (
           <Col span={24}>
-            <div className='ad-form-group' style={{ marginBottom: '0' }}>
+            <div className='aa-form-group' style={{ marginBottom: '0' }}>
               <label className='required'>Phone number</label>
             </div>
             <Row gutter={20}>
               <Col span={6}>
-                <div className='ad-form-group'>
+                <div className='aa-form-group'>
                   <Select
                     value={data.contry_code || undefined}
                     placeholder={StaticService.placeholder.select}
@@ -311,7 +311,7 @@ const ContactUs = () => {
                 </div>
               </Col>
               <Col span={18}>
-                <div className='ad-form-group'>
+                <div className='aa-form-group'>
                   <Input
                     placeholder={StaticService.placeholder.input}
                     maxLength={schema.phone_number.max}
@@ -328,20 +328,20 @@ const ContactUs = () => {
   }
   const renderHelpCenterDesc = () => {
     return (
-      <div className='ad-helpCenter-desc'>
+      <div className='aa-helpCenter-desc'>
         <p>
           We will try to reach you within <b>2</b> working days. Our team
           members are here for you:
         </p>
-        <div className='ad-helpCenter-desc-cs'>
+        <div className='aa-helpCenter-desc-cs'>
           <img src={CS} alt='' />
           <h4>Demmy</h4>
         </div>
-        <div className='ad-helpCenter-desc-cs'>
+        <div className='aa-helpCenter-desc-cs'>
           <img src={CS} alt='' />
           <h4>Violet</h4>
         </div>
-        <div className='ad-helpCenter-desc-cs'>
+        <div className='aa-helpCenter-desc-cs'>
           <img src={CS} alt='' />
           <h4>Aster</h4>
         </div>
@@ -351,7 +351,7 @@ const ContactUs = () => {
   return (
     <>
       <Header />
-      <div className='ad-breadcrumb'>
+      <div className='aa-breadcrumb'>
         <Breadcrumb separator='|'>
           <Breadcrumb.Item onClick={() => history.push('/helpCenter')}>
             <Btn feature='link'>Help center</Btn>
@@ -361,12 +361,12 @@ const ContactUs = () => {
           </Breadcrumb.Item>
         </Breadcrumb>
       </div>
-      <article className='ad-page-container ad-page-container-contactUs'>
-        <h1 className='ad-title'>Dedicated team, On-time help</h1>
+      <article className='aa-page-container aa-page-container-contactUs'>
+        <h1 className='aa-title'>Dedicated team, On-time help</h1>
         <Row gutter={20}>
           <Col span={16}>
             {renderContactUsForm()}
-            <div className='ad-page-container-footer'>
+            <div className='aa-page-container-footer'>
               <Btn
                 disabled={
                   !data.support_type ||
@@ -389,7 +389,7 @@ const ContactUs = () => {
               </Btn>
             </div>
           </Col>
-          <Col span={8} className='ad-text-right'>
+          <Col span={8} className='aa-text-right'>
             {renderHelpCenterDesc()}
           </Col>
         </Row>

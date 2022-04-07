@@ -56,10 +56,10 @@ const PasswordRecover1 = () => {
         <IconArrowPrev />
         Back
       </Btn>
-      <div className='ad-login-content-header'>Recover password</div>
-      <div className='ad-login-content-body'>
+      <div className='aa-login-content-header'>Recover password</div>
+      <div className='aa-login-content-body'>
         <p>Don’t worry, happens to the best of us.</p>
-        <div className='ad-form-group'>
+        <div className='aa-form-group'>
           <label>User ID or Email</label>
           <Input
             placeholder='Clear hint for the input'
@@ -78,11 +78,11 @@ const PasswordRecover1 = () => {
           Forgot user ID or Email? Contact us
         </Btn>
       </div>
-      <div className='ad-login-content-footer'>
+      <div className='aa-login-content-footer'>
         <Btn
           feature='action'
           disabled={!data.account || isEmail === false}
-          className='ad-login-content-actionBtn'
+          className='aa-login-content-actionBtn'
           block
           onClick={() => recoverPassword()}
         >

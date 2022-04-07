@@ -112,12 +112,12 @@ const LearningProfile = () => {
       <>
         <Row gutter={20}>
           <Col span={24}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <b>Basic</b>
             </div>
           </Col>
           <Col span={12}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label className='required'>Full name</label>
               <Input
                 placeholder={StaticService.placeholder.input}
@@ -128,7 +128,7 @@ const LearningProfile = () => {
             </div>
           </Col>
           <Col span={12}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label>Gender</label>
               <Select
                 value={data.gender || undefined}
@@ -144,7 +144,7 @@ const LearningProfile = () => {
             </div>
           </Col>
           <Col span={12}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label>Age range</label>
               <Select
                 value={data.age_range || undefined}
@@ -160,7 +160,7 @@ const LearningProfile = () => {
             </div>
           </Col>
           <Col span={12}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label>Location</label>
               <Input
                 placeholder={StaticService.placeholder.input}
@@ -173,12 +173,12 @@ const LearningProfile = () => {
         </Row>
         <Row gutter={20}>
           <Col span={24}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <b>Work experience</b>
             </div>
           </Col>
           <Col span={12}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label className='required'>Industry</label>
               <Select
                 value={data.industry || undefined}
@@ -194,7 +194,7 @@ const LearningProfile = () => {
             </div>
           </Col>
           <Col span={12}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label className='required'>Position</label>
               <Input
                 placeholder={StaticService.placeholder.input}
@@ -205,7 +205,7 @@ const LearningProfile = () => {
             </div>
           </Col>
           <Col span={12}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label className='required'>Experience level</label>
               <Select
                 value={data.experience_level || undefined}
@@ -221,7 +221,7 @@ const LearningProfile = () => {
             </div>
           </Col>
           <Col span={12}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label>Current company</label>
               <Input
                 placeholder={StaticService.placeholder.input}
@@ -232,19 +232,19 @@ const LearningProfile = () => {
             </div>
           </Col>
           <Col span={24}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label className='required'>
                 What is your experience regarding to AIR? (multiple choices)
               </label>
               <Checkbox.Group
                 value={data.experience}
-                className='ad-checkbox-btn-group'
+                className='aa-checkbox-btn-group'
                 onChange={(checkedValue) => onChecks(checkedValue)}
               >
                 <Row gutter={[10, 10]}>
                   {options[0]?.map((item: string) => (
                     <Col span={6} key={item}>
-                      <Checkbox className='ad-checkbox-btn' value={item}>
+                      <Checkbox className='aa-checkbox-btn' value={item}>
                         {item}
                       </Checkbox>
                     </Col>
@@ -256,12 +256,12 @@ const LearningProfile = () => {
         </Row>
         <Row gutter={20}>
           <Col span={24}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <b>Education</b>
             </div>
           </Col>
           <Col span={12}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label>Highest degree</label>
               <Select
                 value={data.highest_degree || undefined}
@@ -277,7 +277,7 @@ const LearningProfile = () => {
             </div>
           </Col>
           <Col span={12}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label>University</label>
               <Input
                 placeholder={StaticService.placeholder.input}
@@ -288,7 +288,7 @@ const LearningProfile = () => {
             </div>
           </Col>
           <Col span={12}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label>Field or major</label>
               <Input
                 placeholder={StaticService.placeholder.input}
@@ -311,11 +311,11 @@ const LearningProfile = () => {
             <AccountSideBar />
           </Col>
           <Col span={19}>
-            <article className='ad-page-container ad-page-container-account'>
-              <h1 className='ad-title'>Learning profile</h1>
+            <article className='aa-page-container aa-page-container-account'>
+              <h1 className='aa-title'>Learning profile</h1>
               {renderForm()}
-              <div className='ad-page-container-footer'>
-                <div className='ad-btn-group'>
+              <div className='aa-page-container-footer'>
+                <div className='aa-btn-group'>
                   <Btn
                     disabled={
                       !data.name ||

@@ -24,8 +24,10 @@ const CourseDetail = () => {
   const api = new CourseApi()
   const history = useHistory()
   const location = useLocation()
-  const { courseId, sectionId } =
-    useParams<{ courseId: string; sectionId?: string }>()
+  const { courseId, sectionId } = useParams<{
+    courseId: string
+    sectionId?: string
+  }>()
   const { scrollY } = useScrolling()
   const breadcrumbRef = useRef<HTMLInputElement>(null)
 
@@ -104,19 +106,19 @@ const CourseDetail = () => {
   const scrollToTitle = (index: number) => {
     // handle active status
     const els: any = document.getElementsByClassName(
-      'ad-course-detail-chapterNav-item'
+      'aa-course-detail-chapterNav-item'
     )
     for (const el of els) {
       el.classList.remove('active')
     }
     document
-      .getElementById(`ad-course-detail-chapterNav-item-${index}`)
+      .getElementById(`aa-course-detail-chapterNav-item-${index}`)
       ?.classList.add('active')
 
     //scroll to y value of target title
     const y = findPos(
       document.getElementById(
-        `ad-course-detail-current-section-content-${index}`
+        `aa-course-detail-current-section-content-${index}`
       )
     )
     if (y) window.scroll(0, y - 200)
@@ -216,7 +218,7 @@ const CourseDetail = () => {
   const renderMenu = () => {
     return (
       <Menu
-        className='ad-menu-user-course'
+        className='aa-menu-user-course'
         onOpenChange={(keys: any) => setMenuOpenKeys(keys)}
         openKeys={menuOpenKeys}
         selectedKeys={[sectionId ? parseItemIdToKey(sectionId) : '']}
@@ -236,7 +238,7 @@ const CourseDetail = () => {
                     <Tooltip placement='right' title={section.name}>
                       <div>
                         <div>{section.name}</div>
-                        <div className='ad-menu-user-course-section-icon'>
+                        <div className='aa-menu-user-course-section-icon'>
                           {section.status === 'All read' ? (
                             <IconSuccessfully className='icon-success' />
                           ) : null}
@@ -255,7 +257,7 @@ const CourseDetail = () => {
   const renderCurrentSection = () => {
     const { chapterContentType, apiUrl } = StaticService
     return (
-      <div className='ad-course-detail-current-section'>
+      <div className='aa-course-detail-current-section'>
         <h2>{currentSection.name}</h2>
         {currentSection
           ? currentSection.sections?.map((content: any, index: number) => (
@@ -267,7 +269,7 @@ const CourseDetail = () => {
                 ) : content.type === chapterContentType.picture ? (
                   <img src={`${apiUrl}/archive/${content.archive_id}`} alt='' />
                 ) : content.type === chapterContentType.title ? (
-                  <h3 id={`ad-course-detail-current-section-content-${index}`}>
+                  <h3 id={`aa-course-detail-current-section-content-${index}`}>
                     {content.content}
                   </h3>
                 ) : content.type === chapterContentType.paragraph ? (
@@ -276,7 +278,7 @@ const CourseDetail = () => {
               </div>
             ))
           : null}
-        <div className='ad-course-detail-current-section-markRead'>
+        <div className='aa-course-detail-current-section-markRead'>
           {currentSection.status === 'Not started' ? (
             <Btn feature='primary' onClick={markAsRead}>
               Mark as read
@@ -288,7 +290,7 @@ const CourseDetail = () => {
             </div>
           ) : null}
         </div>
-        <div className='ad-course-detail-current-section-slide'>
+        <div className='aa-course-detail-current-section-slide'>
           <Btn
             feature='secondary'
             style={{ visibility: prevSectionId ? 'visible' : 'hidden' }}
@@ -315,12 +317,12 @@ const CourseDetail = () => {
   }
   const renderScrollToTitleBtn = () => {
     return (
-      <div className='ad-course-detail-chapterNav'>
+      <div className='aa-course-detail-chapterNav'>
         <h3>In section</h3>
         {currentSection
           ? currentSection.sections?.map(
               (content: any, index: number, ary: any) => {
-                const id: string = `ad-course-detail-chapterNav-item-${index}`
+                const id: string = `aa-course-detail-chapterNav-item-${index}`
                 let firstTitleContentIndexs: number[] = []
                 ary.forEach((item: any, index: number) => {
                   if (item.type === 'title') {
@@ -334,8 +336,8 @@ const CourseDetail = () => {
                     id={id}
                     className={
                       index === firstTitleContentIndex
-                        ? 'ad-course-detail-chapterNav-item active'
-                        : 'ad-course-detail-chapterNav-item'
+                        ? 'aa-course-detail-chapterNav-item active'
+                        : 'aa-course-detail-chapterNav-item'
                     }
                     key={index}
                     onClick={() => scrollToTitle(index)}
@@ -353,7 +355,7 @@ const CourseDetail = () => {
     <>
       <Header />
       {isScrolling ? (
-        <div className='ad-breadcrumb'>
+        <div className='aa-breadcrumb'>
           <Breadcrumb separator='|'>
             <Breadcrumb.Item onClick={() => history.push('/course')}>
               <Btn feature='link'>Course</Btn>
@@ -364,10 +366,10 @@ const CourseDetail = () => {
           </Breadcrumb>
         </div>
       ) : null}
-      <div className='ad-layout-banner'></div>
-      <article className='ad-layout-container'>
+      <div className='aa-layout-banner'></div>
+      <article className='aa-layout-container'>
         {!isScrolling ? (
-          <section className='ad-section ad-section-course-detail-breadcrumb ad-breadcrumb'>
+          <section className='aa-section aa-section-course-detail-breadcrumb aa-breadcrumb'>
             <Breadcrumb separator='|'>
               <Breadcrumb.Item onClick={() => history.push('/course')}>
                 <Btn feature='link'>Course</Btn>
@@ -378,8 +380,8 @@ const CourseDetail = () => {
             </Breadcrumb>
           </section>
         ) : null}
-        <section className='ad-section ad-section-course-detail-title'>
-          <div className='ad-course-detail-title'>
+        <section className='aa-section aa-section-course-detail-title'>
+          <div className='aa-course-detail-title'>
             {courseLogoImage ? (
               <span>
                 <img
@@ -391,12 +393,12 @@ const CourseDetail = () => {
             <h1>{courseName}</h1>
           </div>
         </section>
-        <section className='ad-section ad-section-course-detail'>
+        <section className='aa-section aa-section-course-detail'>
           <Row gutter={20}>
             <Col span={6}>{renderMenu()}</Col>
             <Col span={15}>{renderCurrentSection()}</Col>
             <Col span={3}>
-              <div className='ad-course-detail-bookmark'>
+              <div className='aa-course-detail-bookmark'>
                 <Btn feature='secondary' onClick={() => switchIsBookmarked()}>
                   {isBookmarked ? <IconBookmarked /> : <IconBookmark />}
                 </Btn>

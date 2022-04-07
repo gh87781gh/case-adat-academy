@@ -50,33 +50,33 @@ const CourseDetail = () => {
   return (
     <>
       <Header />
-      <div className='ad-layout-admin'>
+      <div className='aa-layout-admin'>
         <AdminSideBar />
         <article>
-          <div className='ad-layout-admin-courseDetail'>
+          <div className='aa-layout-admin-courseDetail'>
             <Breadcrumb separator='>'>
               <Breadcrumb.Item onClick={() => history.push('/admin/course')}>
                 Course management
               </Breadcrumb.Item>
               <Breadcrumb.Item>{courseDetail.name}</Breadcrumb.Item>
             </Breadcrumb>
-            <h1 className='ad-layout-admin-article-title'>
+            <h1 className='aa-layout-admin-article-title'>
               {courseDetail.name}
               <span style={{ marginLeft: '2rem', fontSize: '20px' }}>
                 {courseDetail.status}
               </span>
               <Btn
                 feature='primary'
-                className='ad-float-right'
+                className='aa-float-right'
                 onClick={() => setModalMenuEditShow(true)}
               >
                 Edit course menu
               </Btn>
             </h1>
             {menu.length === 0 ? (
-              <article className='ad-layout-container ad-layout-container-prompt'>
-                <div className=' ad-layout-container-prompt-content'>
-                  <h1 className='ad-title'>No content yet</h1>
+              <article className='aa-layout-container aa-layout-container-prompt'>
+                <div className=' aa-layout-container-prompt-content'>
+                  <h1 className='aa-title'>No content yet</h1>
                   <p>
                     Please start by editing course menu
                     <br />
@@ -85,11 +85,11 @@ const CourseDetail = () => {
                 </div>
               </article>
             ) : (
-              <Row gutter={20} className='ad-layout-admin-article-row'>
-                <Col span={7} className='ad-layout-admin-article-row-menu'>
+              <Row gutter={20} className='aa-layout-admin-article-row'>
+                <Col span={7} className='aa-layout-admin-article-row-menu'>
                   <MenuShow isModalMenuEditShow={isModalMenuEditShow} />
                 </Col>
-                <Col span={17} className='ad-layout-admin-article-row-section'>
+                <Col span={17} className='aa-layout-admin-article-row-section'>
                   <Section isModalMenuEditShow={isModalMenuEditShow} />
                 </Col>
               </Row>

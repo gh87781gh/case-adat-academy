@@ -29,7 +29,7 @@ const Stage = (props: IPropsStage) => {
               onMouseEnter={() => setHoverIndex(index)}
               onMouseLeave={() => setHoverIndex(null)}
             >
-              <div className='ad-course-banner-path-status'>
+              <div className='aa-course-banner-path-status'>
                 {index !== hoverIndex ? (
                   <FormatCourseStatus
                     type='ICON'
@@ -40,7 +40,7 @@ const Stage = (props: IPropsStage) => {
                   <IconPathHover />
                 )}
                 <IconPathLine
-                  className='ad-course-banner-path-dashLine'
+                  className='aa-course-banner-path-dashLine'
                   style={{ visibility: ary[index + 1] ? 'visible' : 'hidden' }}
                 />
               </div>
@@ -99,7 +99,7 @@ const LearningPath = () => {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className='ad-course-banner-path'>
+    <div className='aa-course-banner-path'>
       {data.map((stage: any, index: number) => (
         <Stage stage={stage} key={index} />
       ))}

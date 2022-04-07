@@ -125,13 +125,13 @@ const ModalCreate = (props: IProps) => {
             imgId={data.logo_image_id}
             setUploadId={(id: string) => onUpload('logo_image_id', id)}
           />
-          <p className='ad-upload-info'>
+          <p className='aa-upload-info'>
             Format should be .png, .jpg, .jpeg
             <br /> Recommend size 150px*150px (&lt; 5 MB)
           </p>
         </Col>
         <Col span={9}>
-          <div className='ad-form-group'>
+          <div className='aa-form-group'>
             <label className='required'>Course name</label>
             <Input
               value={data.name}
@@ -140,7 +140,7 @@ const ModalCreate = (props: IProps) => {
               onChange={(e) => onChange('name', e)}
             />
           </div>
-          <div className='ad-form-group'>
+          <div className='aa-form-group'>
             <label className='required'>Course description</label>
             <TextArea
               value={data.description}
@@ -152,9 +152,9 @@ const ModalCreate = (props: IProps) => {
           </div>
         </Col>
         <Col span={9}>
-          <div className='ad-form-group'>
+          <div className='aa-form-group'>
             <label>Background image</label>
-            <div className='ad-form-group-value'>
+            <div className='aa-form-group-value'>
               <UploadImg
                 theme='dark'
                 type='rectangle'
@@ -166,7 +166,7 @@ const ModalCreate = (props: IProps) => {
                   onUpload('background_image_id', id)
                 }
               />
-              <p className='ad-upload-info'>
+              <p className='aa-upload-info'>
                 Format should be .png, .jpg, .jpeg
                 <br /> Recommend size 340px*200px (&lt; 5 MB)
               </p>

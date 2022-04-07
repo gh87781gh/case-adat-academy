@@ -78,7 +78,7 @@ const Index = () => {
       dataIndex: 'action',
       width: 220,
       render: (text: any, record: any) => (
-        <div className='ad-btn-group'>
+        <div className='aa-btn-group'>
           <Btn
             feature='primary'
             key='more'
@@ -125,14 +125,14 @@ const Index = () => {
   return (
     <>
       <Header />
-      <div className='ad-layout-admin'>
+      <div className='aa-layout-admin'>
         <AdminSideBar />
         <article>
-          <h1 className='ad-layout-admin-article-title'>
+          <h1 className='aa-layout-admin-article-title'>
             Admin management
             <Btn
               feature='action'
-              className='ad-float-right'
+              className='aa-float-right'
               type='primary'
               onClick={() => {
                 setAdminId('')
@@ -142,10 +142,10 @@ const Index = () => {
               Create admin
             </Btn>
           </h1>
-          <div className='ad-layout-admin-article-toolBar'>
+          <div className='aa-layout-admin-article-toolBar'>
             <Row gutter={20}>
               <Col span={8}>
-                <div className='ad-form-group ad-form-group-horizontal'>
+                <div className='aa-form-group aa-form-group-horizontal'>
                   <label style={{ minWidth: '50px' }}>Role</label>
                   <Select
                     value={data.role || undefined}
@@ -175,7 +175,7 @@ const Index = () => {
             </Row>
           </div>
           <Table
-            className='ad-admin-table'
+            className='aa-admin-table'
             columns={columns}
             dataSource={list}
             pagination={{

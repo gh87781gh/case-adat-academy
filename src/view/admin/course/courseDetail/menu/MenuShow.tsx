@@ -15,8 +15,10 @@ const MenuShow = (props: IProps) => {
   const context = useContext(MyContext)
   const api = new CourseApi()
   const history = useHistory()
-  const { courseId, sectionId } =
-    useParams<{ courseId: string; sectionId?: string }>()
+  const { courseId, sectionId } = useParams<{
+    courseId: string
+    sectionId?: string
+  }>()
 
   // course detail and menu
   const [menu, setMenu] = useState<any>([])
@@ -78,9 +80,9 @@ const MenuShow = (props: IProps) => {
 
   // render
   return menu?.length > 0 ? (
-    <div className='ad-layout-admin-article-menu'>
+    <div className='aa-layout-admin-article-menu'>
       <Menu
-        className='ad-menu-user-course'
+        className='aa-menu-user-course'
         onOpenChange={(keys: any) => setMenuOpenKeys(keys)}
         openKeys={menuOpenKeys}
         selectedKeys={[sectionId ? parseItemIdToKey(sectionId) : '']}

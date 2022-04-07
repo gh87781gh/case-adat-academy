@@ -86,7 +86,7 @@ const LayoutTemplate = () => {
         getAuth
       }}
     >
-      <Spin className='ad-spin-global' spinning={isLoading} size='large'>
+      <Spin className='aa-spin-global' spinning={isLoading} size='large'>
         <HashRouter>
           <Switch>
             {process.env.REACT_APP_ENV === 'LOCAL' ? (

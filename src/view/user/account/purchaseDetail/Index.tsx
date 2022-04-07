@@ -61,12 +61,12 @@ const Index = () => {
             <AccountSideBar />
           </Col>
           <Col span={19}>
-            <article className='ad-page-container ad-page-container-account'>
-              <h1 className='ad-title'>
+            <article className='aa-page-container aa-page-container-account'>
+              <h1 className='aa-title'>
                 Purchase details
                 <Btn
                   feature='action'
-                  className='ad-float-right'
+                  className='aa-float-right'
                   onClick={() => setIsUpdateModalShow(true)}
                 >
                   Update email
@@ -74,77 +74,77 @@ const Index = () => {
               </h1>
               <Row gutter={20}>
                 <Col span={6}>
-                  <div className='ad-form-group ad-form-group-horizontal'>
+                  <div className='aa-form-group aa-form-group-horizontal'>
                     <label style={{ minWidth: '90px' }}>Full name</label>
-                    <div className='ad-form-group-value'>
+                    <div className='aa-form-group-value'>
                       <b>{data.user_id}</b>
                     </div>
                   </div>
                 </Col>
                 <Col span={6}>
-                  <div className='ad-form-group ad-form-group-horizontal'>
+                  <div className='aa-form-group aa-form-group-horizontal'>
                     <label style={{ minWidth: '70px' }}>Status</label>
-                    <div className='ad-form-group-value'>
+                    <div className='aa-form-group-value'>
                       <b>{data.status}</b>
                     </div>
                   </div>
                 </Col>
                 <Col span={12}>
-                  <div className='ad-form-group ad-form-group-horizontal'>
+                  <div className='aa-form-group aa-form-group-horizontal'>
                     <label style={{ minWidth: '120px' }}>Current email</label>
-                    <div className='ad-form-group-value'>
+                    <div className='aa-form-group-value'>
                       <b>{data.current_email}</b>
                     </div>
                   </div>
                 </Col>
               </Row>
-              <div className='ad-layout-article-contentCard'>
+              <div className='aa-layout-article-contentCard'>
                 {data.purchase_number ? (
                   <Row gutter={20}>
                     <Col span={8}>
-                      <div className='ad-form-group'>
+                      <div className='aa-form-group'>
                         <label>Purchase number</label>
-                        <div className='ad-form-group-value'>
+                        <div className='aa-form-group-value'>
                           {data.purchase_number}
                         </div>
                       </div>
                     </Col>
                     <Col span={8}>
-                      <div className='ad-form-group'>
+                      <div className='aa-form-group'>
                         <label>Company</label>
-                        <div className='ad-form-group-value'>
+                        <div className='aa-form-group-value'>
                           {data.company}
                         </div>
                       </div>
                     </Col>
                     <Col span={8}>
-                      <div className='ad-form-group'>
+                      <div className='aa-form-group'>
                         <label>Status</label>
-                        <div className='ad-form-group-value'>
+                        <div className='aa-form-group-value'>
                           {data.purchase_status}
                         </div>
                       </div>
                     </Col>
                     <Col span={8}>
-                      <div className='ad-form-group'>
+                      <div className='aa-form-group'>
                         <label>Duration</label>
-                        <div className='ad-form-group-value'>
+                        <div className='aa-form-group-value'>
                           {formatDate(data.duration_start)}-
                           {formatDate(data.duration_end)}
                         </div>
                       </div>
                     </Col>
                     <Col span={8}>
-                      <div className='ad-form-group'>
+                      <div className='aa-form-group'>
                         <label>Course access</label>
-                        <div className='ad-form-group-value'>
+                        <div className='aa-form-group-value'>
                           {data.course_access}
                         </div>
                       </div>
                     </Col>
                   </Row>
                 ) : (
-                  <div className='ad-layout-article-contentCard-empty'>
+                  <div className='aa-layout-article-contentCard-empty'>
                     <img src={Empty} alt='' />
                     <p>No data</p>
                   </div>

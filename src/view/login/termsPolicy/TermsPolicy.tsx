@@ -18,9 +18,9 @@ const TermsPolicy = () => {
         <IconArrowPrev />
         Back
       </Btn>
-      <div className='ad-login-content-header'>Terms & policy</div>
+      <div className='aa-login-content-header'>Terms & policy</div>
       <div
-        className='ad-login-content-body ad-login-content-body-termsPolicy'
+        className='aa-login-content-body aa-login-content-body-termsPolicy'
         style={{ maxHeight: '500px', overflowY: 'auto' }}
       >
         <b>Collecting and Using Your Personal Data</b>

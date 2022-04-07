@@ -299,7 +299,7 @@ const MenuEdit = (props: IProps) => {
 
   return (
     <>
-      <div className='ad-course-menu'>
+      <div className='aa-course-menu'>
         {props.menu.map((item: any, index: number) => {
           return (
             <div key={item.key}>

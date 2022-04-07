@@ -101,9 +101,9 @@ const Contact = () => {
         <IconArrowPrev />
         Back
       </Btn>
-      <div className='ad-login-content-header'>Contact us</div>
-      <div className='ad-login-content-body'>
-        <div className='ad-form-group'>
+      <div className='aa-login-content-header'>Contact us</div>
+      <div className='aa-login-content-body'>
+        <div className='aa-form-group'>
           <label className='required'>Full name</label>
           <Input
             placeholder='Clear hint for the input'
@@ -112,7 +112,7 @@ const Contact = () => {
             onChange={(e) => onChange('name', e)}
           />
         </div>
-        <div className='ad-form-group'>
+        <div className='aa-form-group'>
           <label className='required'>Subject</label>
           <Input
             value={data.subject}
@@ -121,7 +121,7 @@ const Contact = () => {
             onChange={(e) => onChange('subject', e)}
           />
         </div>
-        <div className='ad-form-group'>
+        <div className='aa-form-group'>
           <label className='required'>Description</label>
           <Input
             placeholder='Clear hint for the input'
@@ -134,19 +134,19 @@ const Contact = () => {
             msg='Try to help us recognize you.It’s okay to be incorrect or empty'
           />
         </div>
-        <div className='ad-form-group'>
+        <div className='aa-form-group'>
           <label className='required'>
             Your prefered way of contact (multiple choice)
           </label>
           <Checkbox.Group
             value={data.prefered_way_of_contact}
-            className='ad-checkbox-btn-group'
+            className='aa-checkbox-btn-group'
             onChange={onChecks}
           >
             <Row gutter={[10, 10]}>
               {preferWayOption.map((item: string) => (
                 <Col span={12} key={item}>
-                  <Checkbox className='ad-checkbox-btn' value={item}>
+                  <Checkbox className='aa-checkbox-btn' value={item}>
                     {item}
                   </Checkbox>
                 </Col>
@@ -154,7 +154,7 @@ const Contact = () => {
             </Row>
           </Checkbox.Group>
         </div>
-        <div className='ad-form-group'>
+        <div className='aa-form-group'>
           <label className='required'>Your valid email</label>
           <Input
             value={data.email}
@@ -174,12 +174,12 @@ const Contact = () => {
         </div>
         {data.prefered_way_of_contact.includes('Phone number') ? (
           <>
-            <div className='ad-form-group' style={{ marginBottom: '0' }}>
+            <div className='aa-form-group' style={{ marginBottom: '0' }}>
               <label className='required'>Phone number</label>
             </div>
             <Row gutter={20}>
               <Col span={6}>
-                <div className='ad-form-group'>
+                <div className='aa-form-group'>
                   <Select
                     value={data.contry_code || undefined}
                     placeholder={StaticService.placeholder.Select}
@@ -194,7 +194,7 @@ const Contact = () => {
                 </div>
               </Col>
               <Col span={18}>
-                <div className='ad-form-group'>
+                <div className='aa-form-group'>
                   <Input
                     placeholder='Please input'
                     maxLength={50}
@@ -207,7 +207,7 @@ const Contact = () => {
           </>
         ) : null}
       </div>
-      <div className='ad-login-content-footer'>
+      <div className='aa-login-content-footer'>
         <Btn
           feature='action'
           disabled={
@@ -221,7 +221,7 @@ const Contact = () => {
             !data.email ||
             isEmail === false
           }
-          className='ad-login-content-actionBtn'
+          className='aa-login-content-actionBtn'
           block
           onClick={() => contact()}
         >

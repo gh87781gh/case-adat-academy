@@ -105,18 +105,18 @@ const Login = () => {
   return (
     <LoginTemplate>
       <LoginPrompt text={errMsg} />
-      <div className='ad-login-content-header'>
+      <div className='aa-login-content-header'>
         LOG IN
         <Btn
           feature='secondary'
-          className='ad-float-right'
+          className='aa-float-right'
           onClick={() => history.push('/login/signUp1')}
         >
           Sign up <IconArrowNext />
         </Btn>
       </div>
-      <div className='ad-login-content-body'>
-        <div className='ad-form-group'>
+      <div className='aa-login-content-body'>
+        <div className='aa-form-group'>
           <label>User ID or Email</label>
           <Input
             placeholder={StaticService.placeholder.input}
@@ -130,7 +130,7 @@ const Login = () => {
             msg={schema.email.errFormat}
           />
         </div>
-        <div className='ad-form-group'>
+        <div className='aa-form-group'>
           <label>Password</label>
           <Input.Password
             placeholder={StaticService.placeholder.password}
@@ -150,7 +150,7 @@ const Login = () => {
           Forgot password ?
         </Btn>
       </div>
-      <div className='ad-login-content-footer'>
+      <div className='aa-login-content-footer'>
         <Checkbox
           checked={isKeep}
           onChange={(e) => setIsKeep(e.target.checked)}

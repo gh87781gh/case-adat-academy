@@ -43,7 +43,7 @@ const Bookmark = () => {
   return (
     <>
       <Header />
-      <div className='ad-breadcrumb'>
+      <div className='aa-breadcrumb'>
         <Breadcrumb separator='|'>
           <Breadcrumb.Item onClick={() => history.push('/course')}>
             <Btn feature='link'>Course</Btn>
@@ -53,9 +53,9 @@ const Bookmark = () => {
           </Breadcrumb.Item>
         </Breadcrumb>
       </div>
-      <article className='ad-page-container'>
-        <h1 className='ad-title'>Bookmark</h1>
-        <section className='ad-section-card'>
+      <article className='aa-page-container'>
+        <h1 className='aa-title'>Bookmark</h1>
+        <section className='aa-section-card'>
           {list.length > 0 ? (
             <>
               {list.map((card: any, index: number) => (
@@ -75,11 +75,11 @@ const Bookmark = () => {
               ))}
               <Row gutter={20}>
                 <Col span={10}>
-                  <div className='ad-section-list-result'>
+                  <div className='aa-section-list-result'>
                     <span>{list.length}</span> Bookmarks
                   </div>
                 </Col>
-                <Col span={14} className='ad-text-right'>
+                <Col span={14} className='aa-text-right'>
                   <Pagination
                     current={page}
                     total={total}

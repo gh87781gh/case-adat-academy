@@ -115,7 +115,7 @@ const ModalCreate = (props: IProps) => {
 
   return (
     <Modal
-      className='ad-modal-edit'
+      className='aa-modal-edit'
       title={props.adminId ? 'Edit admin' : 'Create admin'}
       visible={props.isShow}
       onCancel={props.onCancel}
@@ -149,7 +149,7 @@ const ModalCreate = (props: IProps) => {
     >
       <Row gutter={20}>
         <Col span={12}>
-          <div className='ad-form-group'>
+          <div className='aa-form-group'>
             <label className='required'>Role</label>
             <Select
               value={data.role}
@@ -165,7 +165,7 @@ const ModalCreate = (props: IProps) => {
           </div>
         </Col>
         <Col span={12}>
-          <div className='ad-form-group'>
+          <div className='aa-form-group'>
             <label className='required'>User ID</label>
             <Input
               value={data.user_id}
@@ -176,7 +176,7 @@ const ModalCreate = (props: IProps) => {
           </div>
         </Col>
         <Col span={12}>
-          <div className='ad-form-group'>
+          <div className='aa-form-group'>
             <label className='required'>Email</label>
             <Input
               value={data.email}
@@ -192,7 +192,7 @@ const ModalCreate = (props: IProps) => {
           </div>
         </Col>
         <Col span={12}>
-          <div className='ad-form-group'>
+          <div className='aa-form-group'>
             <label className=''>Password</label>
             <Input.Password
               placeholder='Clear hint for the input'

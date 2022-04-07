@@ -101,7 +101,7 @@ const ModalMenuEdit = (props: IProps) => {
             </DndProvider>
           </div>
           <div
-            className='ad-course-menu-addGroup'
+            className='aa-course-menu-addGroup'
             onClick={() => setAddLevelACount(addLevel1Count + 1)}
           >
             <span>

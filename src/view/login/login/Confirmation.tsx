@@ -10,8 +10,8 @@ const Successfully = () => {
 
   return (
     <LoginTemplate>
-      <div className='ad-login-content-header'>Confirmation needed.</div>
-      <div className='ad-login-content-body'>
+      <div className='aa-login-content-header'>Confirmation needed.</div>
+      <div className='aa-login-content-body'>
         {type === 'afterUpdateEmail' ? (
           <p>
             We notice you’ve updated the email. Please check your email box &
@@ -19,10 +19,10 @@ const Successfully = () => {
           </p>
         ) : null}
       </div>
-      <div className='ad-login-content-footer'>
+      <div className='aa-login-content-footer'>
         <Btn
           feature='link'
-          className='ad-login-content-actionBtn'
+          className='aa-login-content-actionBtn'
           onClick={() => history.push('/login/contact')}
         >
           Invalid email? Contact us.

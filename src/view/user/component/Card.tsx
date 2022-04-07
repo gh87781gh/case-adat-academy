@@ -18,7 +18,7 @@ const Card = (props: IProps) => {
   const history = useHistory()
 
   return (
-    <div className='ad-card'>
+    <div className='aa-card'>
       <Row gutter={20}>
         <Col span={20}>
           <h3>{props.subtitle}</h3>
@@ -26,8 +26,8 @@ const Card = (props: IProps) => {
           <p>{props.text}</p>
         </Col>
         <Col span={4} style={{ height: 'unset' }}>
-          <div className='ad-card-action'>
-            <div className='ad-btn-group'>
+          <div className='aa-card-action'>
+            <div className='aa-btn-group'>
               {props.type === 'BOOKMARK' ? (
                 <Btn feature='secondary' onClick={props.cancelBookmark}>
                   <IconTrash />

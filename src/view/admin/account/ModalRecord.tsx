@@ -70,14 +70,14 @@ const ModalRecord = (props: IProps) => {
   return (
     <Modal
       zIndex={1001}
-      className='ad-modal-info'
+      className='aa-modal-info'
       title={
         <>
           Records
-          <div className='ad-modal-title-sub'>
-            <div className='ad-form-group ad-form-group-horizontal'>
+          <div className='aa-modal-title-sub'>
+            <div className='aa-form-group aa-form-group-horizontal'>
               <label>User ID</label>
-              <div className='ad-form-group-value'>{props.userId ?? '-'}</div>
+              <div className='aa-form-group-value'>{props.userId ?? '-'}</div>
             </div>
           </div>
         </>
@@ -88,7 +88,7 @@ const ModalRecord = (props: IProps) => {
       footer={null}
     >
       <Table
-        className='ad-admin-table'
+        className='aa-admin-table'
         columns={columns}
         dataSource={list}
         pagination={{

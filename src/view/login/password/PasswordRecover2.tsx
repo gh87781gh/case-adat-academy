@@ -9,8 +9,8 @@ const PasswordRecover2 = () => {
 
   return (
     <LoginTemplate>
-      <div className='ad-login-content-header'>Recover password</div>
-      <div className='ad-login-content-body'>
+      <div className='aa-login-content-header'>Recover password</div>
+      <div className='aa-login-content-body'>
         <p>
           If account exists, an email will be sent with further instructions
         </p>
@@ -18,10 +18,10 @@ const PasswordRecover2 = () => {
           Invaild email? Contact us.
         </Btn>
       </div>
-      <div className='ad-login-content-footer'>
+      <div className='aa-login-content-footer'>
         <Btn
           feature='action'
-          className='ad-login-content-actionBtn'
+          className='aa-login-content-actionBtn'
           block
           onClick={() => history.push('/login')}
         >

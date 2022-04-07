@@ -42,7 +42,7 @@ const DemoPage = () => {
               padding: '1px'
             }}
           >
-            <Btn feature='link' className='ad-mode-dark'>
+            <Btn feature='link' className='aa-mode-dark'>
               Link Btn
             </Btn>
           </span>

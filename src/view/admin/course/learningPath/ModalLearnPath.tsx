@@ -108,9 +108,9 @@ const ModalLearnPath = (props: IProps) => {
         </Btn>
       ]}
     >
-      <div className='ad-form-group ad-form-group-horizontal'>
+      <div className='aa-form-group aa-form-group-horizontal'>
         <label>learning goal</label>
-        <div className='ad-form-group-value'>{props.learningGoal}</div>
+        <div className='aa-form-group-value'>{props.learningGoal}</div>
       </div>
       <FormGroupMsg
         isShow={true}
@@ -128,7 +128,7 @@ const ModalLearnPath = (props: IProps) => {
         />
       </DndProvider>
       <div
-        className='ad-course-menu-addGroup'
+        className='aa-course-menu-addGroup'
         onClick={() => setAddLevelACount(addLevel1Count + 1)}
       >
         <span>

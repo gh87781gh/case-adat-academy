@@ -11,9 +11,9 @@ const NoResult = () => {
   return (
     <>
       <Header />
-      <article className='ad-layout-container ad-layout-container-prompt'>
-        <div className=' ad-layout-container-prompt-content'>
-          <h1 className='ad-title'>No results.</h1>
+      <article className='aa-layout-container aa-layout-container-prompt'>
+        <div className=' aa-layout-container-prompt-content'>
+          <h1 className='aa-title'>No results.</h1>
           <p>
             Can’t find solutions? Please visit help center, and contact us for
             more information

@@ -7,11 +7,11 @@
 }
 article {
   background-color: @color-gray01;
-  &.ad-layout-container {
+  &.aa-layout-container {
     min-height: 500px;
   }
 }
-.ad-layout-version {
+.aa-layout-version {
   position: absolute;
   top: 15px;
   right: 15px;
@@ -19,10 +19,10 @@ article {
 }
 
 // user
-.ad-layout-article {
+.aa-layout-article {
   padding-top: @global-header-height;
 }
-.ad-layout-article-contentCard {
+.aa-layout-article-contentCard {
   padding: 40px 50px;
   border: 1px solid @color-primary-light01;
   background-color: @color-white;
@@ -34,7 +34,7 @@ article {
     }
   }
 }
-.ad-layout-container {
+.aa-layout-container {
   max-width: @layout-user-container-max-width;
   margin-left: auto;
   margin-right: auto;
@@ -44,7 +44,7 @@ article {
   // }
 }
 
-.ad-layout-container-prompt {
+.aa-layout-container-prompt {
   text-align: center;
   min-height: @layout-user-page-min-height;
   position: relative;
@@ -53,7 +53,7 @@ article {
     min-height: @layout-user-page-min-height-sm;
   }
 }
-.ad-layout-container-prompt-content {
+.aa-layout-container-prompt-content {
   .center();
   .size(auto,auto);
   display: inline-block;
@@ -70,28 +70,28 @@ article {
   }
 }
 @layout-user-page-container-padding-top: 68px;
-.ad-page-container {
+.aa-page-container {
   max-width: @layout-user-container-max-width;
   min-height: @layout-user-page-min-height;
   padding-top: @layout-user-page-container-padding-top;
   padding-bottom: 95px;
   margin-left: auto;
   margin-right: auto;
-  .ad-page-container-footer {
+  .aa-page-container-footer {
     margin-top: 64px;
     .ant-btn {
       min-width: 230px;
     }
   }
-  &.ad-page-container-account {
+  &.aa-page-container-account {
     margin-left: 40px;
     margin-right: calc(50vw - @layout-user-container-max-width*0.5);
   }
 }
-.ad-page-container-contactUs {
+.aa-page-container-contactUs {
   padding-top: @layout-user-page-container-padding-top * 1.5;
 }
-.ad-layout-banner {
+.aa-layout-banner {
   height: 275px;
   background-image: url('/assets/img/industry.jpg');
 
@@ -116,7 +116,7 @@ article {
 @admin-layout-courseDetail-footer-height: 90px;
 @admin-layout-course-detail-content-padding-bottom: 50px;
 @admin-layout-courseDetail-footer-height: 100px;
-.ad-layout-admin {
+.aa-layout-admin {
   display: flex;
   flex-wrap: nowrap;
   height: 100%;
@@ -129,27 +129,27 @@ article {
     padding: @admin-layout-article-padding-y @admin-layout-article-padding-x;
   }
 }
-.ad-layout-admin-article-title {
+.aa-layout-admin-article-title {
   .clearFix();
   font-size: 30px;
   font-weight: 700;
 }
-.ad-layout-admin-article-toolBar {
+.aa-layout-admin-article-toolBar {
   margin-bottom: @layout-admin-section-gutter;
-  .ad-form-group > label {
+  .aa-form-group > label {
     .typo-bodyBold();
   }
 }
-.ad-layout-admin-courseDetail {
+.aa-layout-admin-courseDetail {
   height: 100%;
-  .ad-layout-admin-article-row {
+  .aa-layout-admin-article-row {
     height: calc(100% - 60px);
   }
-  .ad-layout-admin-article-title {
+  .aa-layout-admin-article-title {
     border-bottom: 1px solid #ccc;
     padding-bottom: 1rem;
   }
-  .ad-layout-admin-article-row-menu {
+  .aa-layout-admin-article-row-menu {
     height: 100%;
     padding-right: 1rem;
     padding-bottom: @admin-layout-course-detail-content-padding-bottom;
@@ -159,15 +159,15 @@ article {
     z-index: 1;
     background-color: @color-gray01;
   }
-  .ad-layout-admin-article-row-section {
+  .aa-layout-admin-article-row-section {
     height: 100%;
     overflow-y: auto;
     padding-bottom: 100px;
     position: relative;
-    .ad-layout-admin-article-content {
+    .aa-layout-admin-article-content {
       padding-bottom: 50px;
     }
-    .ad-layout-admin-article-row-section-footer {
+    .aa-layout-admin-article-row-section-footer {
       .size(100%,@admin-layout-courseDetail-footer-height);
       background-color: @color-gray01;
       text-align: right;
@@ -183,12 +183,12 @@ article {
   }
 
   // TODO
-  .ad-layout-admin-article-menu {
+  .aa-layout-admin-article-menu {
     // height: 100%;
     // padding-right: 1rem;
     // border-right: 1px solid #ccc;
   }
-  .ad-layout-admin-article-content {
+  .aa-layout-admin-article-content {
     // height: 100%;
     // overflow-y: auto;
     // padding-bottom: 50px;

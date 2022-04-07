@@ -41,8 +41,10 @@ const contentInitItem: any = {
 const Section = (props: IProps) => {
   const context = useContext(MyContext)
   const api = new CourseApi()
-  const { courseId, sectionId } =
-    useParams<{ courseId: string; sectionId?: string }>()
+  const { courseId, sectionId } = useParams<{
+    courseId: string
+    sectionId?: string
+  }>()
 
   // data
   const [currentSectionDetail, setCurrentSectionDetail] = useState<any>({})
@@ -217,7 +219,7 @@ const Section = (props: IProps) => {
   // render
   const renderSectionItem = () => {
     return (
-      <div className='ad-course-sections'>
+      <div className='aa-course-sections'>
         {currentSectionContent.map((item: any, index: number) => {
           // the first video is fixed on the top, other contents render here and can be dragged and dropped.
           if (item.key !== 0) {
@@ -253,7 +255,7 @@ const Section = (props: IProps) => {
   return (
     <>
       <h2>{currentSectionDetail.name}</h2>
-      <div className='ad-layout-admin-article-content'>
+      <div className='aa-layout-admin-article-content'>
         {currentSectionContent.length > 0 ? (
           <>
             {/* the first video is fixed on the top */}
@@ -267,7 +269,7 @@ const Section = (props: IProps) => {
                 updateCurrentSectionContent(0, 'video', id)
               }}
             />
-            <p className='ad-upload-info'>
+            <p className='aa-upload-info'>
               Format should be .mp4 The file size limit is 300mb.
               <br /> This section video is required, and will be fixed on the
               top
@@ -275,7 +277,7 @@ const Section = (props: IProps) => {
             <DndProvider backend={HTML5Backend}>
               {renderSectionItem()}
             </DndProvider>
-            <div className='ad-course-menu-addGroup'>
+            <div className='aa-course-menu-addGroup'>
               <Dropdown
                 overlay={
                   <Menu>
@@ -302,8 +304,8 @@ const Section = (props: IProps) => {
                 </span>
               </Dropdown>
             </div>
-            <div className='ad-layout-admin-article-row-section-footer'>
-              <div className='ad-btn-group'>
+            <div className='aa-layout-admin-article-row-section-footer'>
+              <div className='aa-btn-group'>
                 <Btn feature='action' onClick={() => save()}>
                   Save
                 </Btn>

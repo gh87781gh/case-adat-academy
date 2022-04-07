@@ -224,7 +224,7 @@ const MenuEditItem = (props: IProps) => {
             >
               {props.item.name}{' '}
               {props.item.level === 2 && props.item.enable === false ? (
-                <IconDanger className='ad-color-danger' />
+                <IconDanger className='aa-color-danger' />
               ) : null}
             </div>
           )}

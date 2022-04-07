@@ -60,8 +60,8 @@ const Index = () => {
   return (
     <>
       <Header />
-      <div className='ad-course-banner'>
-        <div className='ad-layout-container'>
+      <div className='aa-course-banner'>
+        <div className='aa-layout-container'>
           <p className='desc'>
             Based on your{' '}
             <Btn
@@ -79,11 +79,11 @@ const Index = () => {
         </div>
       </div>
       <article>
-        <section className='ad-layout-container ad-section ad-section-course'>
+        <section className='aa-layout-container aa-section aa-section-course'>
           <Row>
             <Col span={20}>
-              <div className='ad-clearfix'>
-                <div className='ad-form-group ad-form-group-horizontal ad-float-right'>
+              <div className='aa-clearfix'>
+                <div className='aa-form-group aa-form-group-horizontal aa-float-right'>
                   <label>
                     <b>Show</b>
                   </label>
@@ -116,22 +116,22 @@ const Index = () => {
           </Row>
           {list.length > 0 ? (
             <>
-              <ul className='ad-course-list-group'>
+              <ul className='aa-course-list-group'>
                 {list.map((course: any) => (
-                  <li className='ad-course-list' key={course.id}>
+                  <li className='aa-course-list' key={course.id}>
                     {course.logo_image_id ? (
-                      <div className='ad-course-list-img'>
+                      <div className='aa-course-list-img'>
                         <img
                           src={`${StaticService.apiUrl}/archive/${course.logo_image_id}`}
                           alt=''
                         />
                       </div>
                     ) : null}
-                    <div className='ad-course-list-content'>
+                    <div className='aa-course-list-content'>
                       <h2>{course.name}</h2>
                       <p>{course.description}</p>
                     </div>
-                    <div className='ad-course-list-action'>
+                    <div className='aa-course-list-action'>
                       <Btn
                         className='w-100'
                         feature='primary'
@@ -156,11 +156,11 @@ const Index = () => {
               </ul>
               <Row gutter={20}>
                 <Col span={10}>
-                  <div className='ad-section-list-result'>
+                  <div className='aa-section-list-result'>
                     <span>{total}</span> courses
                   </div>
                 </Col>
-                <Col span={14} className='ad-text-right'>
+                <Col span={14} className='aa-text-right'>
                   <Pagination
                     current={page}
                     total={total}

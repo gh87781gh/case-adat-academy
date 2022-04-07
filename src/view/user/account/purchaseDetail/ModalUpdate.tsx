@@ -81,28 +81,28 @@ const ModalUpdate = (props: IProps) => {
 
   return (
     <Modal
-      className='ad-modal-user'
+      className='aa-modal-user'
       visible={props.isShow}
       onCancel={props.onCancel}
       width={1100}
       footer={null}
     >
-      <h1 className='ad-title'>Update course access</h1>
-      <div className='ad-form-group'>
+      <h1 className='aa-title'>Update course access</h1>
+      <div className='aa-form-group'>
         <label className='required'>Do you have a purchase number?</label>
         <Checkbox.Group
           value={data.have_purchase_number ? [data.have_purchase_number] : []}
-          className='ad-checkbox-btn-group'
+          className='aa-checkbox-btn-group'
           onChange={onChecks}
         >
           <Row gutter={[10, 10]}>
             <Col span={12} key={'Yes, I have.'}>
-              <Checkbox className='ad-checkbox-btn' value={'true'}>
+              <Checkbox className='aa-checkbox-btn' value={'true'}>
                 Yes, I have.
               </Checkbox>
             </Col>
             <Col span={12} key={'No, I don’t.'}>
-              <Checkbox className='ad-checkbox-btn' value={'false'}>
+              <Checkbox className='aa-checkbox-btn' value={'false'}>
                 No, I don’t.
               </Checkbox>
             </Col>
@@ -111,7 +111,7 @@ const ModalUpdate = (props: IProps) => {
       </div>
       <Row gutter={20}>
         <Col span={12}>
-          <div className='ad-form-group'>
+          <div className='aa-form-group'>
             <label className='required'>New email</label>
             <Input
               placeholder='Please input'
@@ -129,7 +129,7 @@ const ModalUpdate = (props: IProps) => {
         </Col>
         {data.have_purchase_number === 'true' ? (
           <Col span={12}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label className='required'>New purchase number</label>
               <Input
                 placeholder='Please input'
@@ -141,7 +141,7 @@ const ModalUpdate = (props: IProps) => {
           </Col>
         ) : null}
         <Col span={12}>
-          <div className='ad-form-group'>
+          <div className='aa-form-group'>
             <label className='required'>
               Pleas enter your password for security purpose
             </label>
@@ -154,9 +154,9 @@ const ModalUpdate = (props: IProps) => {
           </div>
         </Col>
       </Row>
-      <div className='ad-modal-user-footer'>
+      <div className='aa-modal-user-footer'>
         <p>Please note that updating email requires re-login.</p>
-        <div className='ad-btn-group'>
+        <div className='aa-btn-group'>
           <Btn
             disabled={
               !data.have_purchase_number ||

@@ -30,7 +30,7 @@ const AdminSideBar = () => {
   }, [location]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <ul className='ad-sideBar'>
+    <ul className='aa-sideBar'>
       {menu.map((item: any) => (
         <li
           className={item.childPage.includes(activePath) ? 'active' : ''}

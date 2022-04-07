@@ -39,12 +39,12 @@ const UploadVideo = (props: IProps) => {
   }
 
   return (
-    <div className={`ad-upload ${props.type} dark`}>
+    <div className={`aa-upload ${props.type} dark`}>
       <label>
         {props.archiveId ? (
           <VideoPlayer id={props.archiveId} />
         ) : (
-          <span className='ad-upload-watermark'>
+          <span className='aa-upload-watermark'>
             <IconUploadVideo />
             <em>{props.desc}</em>
           </span>
@@ -59,7 +59,7 @@ const UploadVideo = (props: IProps) => {
         />
       </label>
       {props.archiveId ? (
-        <div className='ad-btn-group'>
+        <div className='aa-btn-group'>
           <Button type='link' onClick={() => inputEl.current?.click()}>
             Replace
           </Button>

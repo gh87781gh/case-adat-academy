@@ -34,7 +34,6 @@ export class ApiEngine {
     )
     this.instance.interceptors.response.use(
       (res: any) => {
-        // TODO 研究為什麼 return res.data.data 時，data這個變數會被污染
         return res
       },
       (err: any) => {
@@ -44,7 +43,7 @@ export class ApiEngine {
           if (err.response.status === 401) {
             message.error('Unauthorized')
             history.push('/login')
-            window.location.reload() //TODO
+            window.location.reload()
           } else {
             message.error(err.response.data.message)
           }

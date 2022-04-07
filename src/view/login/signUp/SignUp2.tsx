@@ -108,15 +108,15 @@ const SignUp2 = () => {
         <IconArrowPrev />
         Back
       </Btn>
-      <div className='ad-login-content-header'>SIGN UP</div>
-      <div className='ad-login-content-body'>
+      <div className='aa-login-content-header'>SIGN UP</div>
+      <div className='aa-login-content-body'>
         <p>
           Help us recommend learning path for you by providing your work
           experiences
         </p>
         <Row gutter={20}>
           <Col span={24}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label className='required'>Full name</label>
               <Input
                 placeholder={StaticService.placeholder.input}
@@ -127,7 +127,7 @@ const SignUp2 = () => {
             </div>
           </Col>
           <Col span={12}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label className='required'>Industry</label>
               <Select
                 placeholder={StaticService.placeholder.select}
@@ -143,7 +143,7 @@ const SignUp2 = () => {
             </div>
           </Col>
           <Col span={12}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label className='required'>Position</label>
               <Input
                 placeholder={StaticService.placeholder.input}
@@ -154,7 +154,7 @@ const SignUp2 = () => {
             </div>
           </Col>
           <Col span={12}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label className='required'>Experience level</label>
               <Select
                 placeholder={StaticService.placeholder.select}
@@ -170,7 +170,7 @@ const SignUp2 = () => {
             </div>
           </Col>
           <Col span={12}>
-            <div className='ad-form-group'>
+            <div className='aa-form-group'>
               <label>Current Company</label>
               <Input
                 placeholder={StaticService.placeholder.input}
@@ -181,19 +181,19 @@ const SignUp2 = () => {
             </div>
           </Col>
         </Row>
-        <div className='ad-form-group'>
+        <div className='aa-form-group'>
           <label className='required'>
             What is your experience regarding to AIR? (multiple choice)
           </label>
           <Checkbox.Group
             value={data.experience}
-            className='ad-checkbox-btn-group'
+            className='aa-checkbox-btn-group'
             onChange={onChecks}
           >
             <Row gutter={[10, 10]}>
               {experienceOption.map((item: string, index: number) => (
                 <Col span={12} key={item}>
-                  <Checkbox className='ad-checkbox-btn' value={item}>
+                  <Checkbox className='aa-checkbox-btn' value={item}>
                     {item}
                   </Checkbox>
                 </Col>
@@ -202,7 +202,7 @@ const SignUp2 = () => {
           </Checkbox.Group>
         </div>
       </div>
-      <div className='ad-login-content-footer'>
+      <div className='aa-login-content-footer'>
         <p className=''>By signing up, you agree with our terms & policy.</p>
         <Btn
           feature='action'
@@ -212,7 +212,7 @@ const SignUp2 = () => {
             !data.experience_level ||
             data.experience.length === 0
           }
-          className='ad-login-content-actionBtn'
+          className='aa-login-content-actionBtn'
           block
           onClick={() => signUp()}
         >
