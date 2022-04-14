@@ -98,7 +98,7 @@ const CourseDetail = () => {
     context.setIsLoading(true)
     api
       .markAsRead(courseId, sectionId || '')
-      .then(() => getInitData(courseId, sectionId))
+      .then(() => getInitData(courseId))
       .finally(() => context.setIsLoading(false))
   }
 
@@ -162,7 +162,7 @@ const CourseDetail = () => {
   // init page / course detail setting
   const [courseName, setCourseName] = useState<string>('')
   const [courseLogoImage, setCourseLogoImage] = useState<string>('')
-  const getInitData = (courseId: string, sectionId?: string) => {
+  const getInitData = (courseId: string) => {
     context.setIsLoading(true)
     api
       .getCourseDetail(courseId)
@@ -204,13 +204,14 @@ const CourseDetail = () => {
               break
             }
           }
+          console.log('firstSection:', firstSection)
           if (firstSection) history.push(`${location.pathname}/${firstSection}`)
         }
       }
     }
   }, [menu, lastReadSectionId]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
-    if (courseId) getInitData(courseId, sectionId)
+    if (courseId) getInitData(courseId)
     if (courseId && sectionId) getDefaultIsBookmark()
   }, [courseId, sectionId]) // eslint-disable-line react-hooks/exhaustive-deps
 

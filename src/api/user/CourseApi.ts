@@ -35,48 +35,78 @@ export default class CourseApi {
       this.restAPI
         .request('get', `/user/course/${id}`, {})
         .then((res: any) => {
-          // add key on every item
-          let keyA: number = 0
-          let keyB: number = 0
-          let keyC: number = 0
+          let indexA: number = 0
+          let indexB: number = 0
+          let indexC: number = 0
+          res.data.forEach((item: any, index: number, ary: any) => {
+            const level = item.level
+            const nextLevel = ary[index + 1]?.level
 
-          // 轉成巢狀結構以因應 ui 的 menu component
-          let newAry: any = []
-          let newIndexA: number | null = null
-          let newIndexB: number | null = null
+            let isShowChildren = null
+            if (nextLevel && level < nextLevel) isShowChildren = true // 預設展開 child
 
-          res.data.forEach((item: any, index: number) => {
             switch (item.level) {
               case 1:
-                if (keyA !== 0) {
-                  keyB = 0
-                  keyC = 0
+                if (indexA !== 0) {
+                  indexB = 0
+                  indexC = 0
                 }
-                keyA++
-                item.key = `${keyA}`
-                newAry.push(item)
-                newIndexA === null ? (newIndexA = 0) : newIndexA++
-                newAry[newIndexA].children = []
+                indexA++
+                item.key = `${indexA}`
+                item.isShowChildren = isShowChildren
+                item.isShow = true
                 break
               case 2:
-                keyB++
-                item.key = `${keyA}-${keyB}`
-                if (newIndexA !== null) {
-                  newAry[newIndexA].children.push(item)
-                  newIndexB === null ? (newIndexB = 0) : newIndexB++
-                  newAry[newIndexA].children[newIndexB].children = []
-                }
+                indexB++
+                item.key = `${indexA}-${indexB}`
+                item.isShowChildren = isShowChildren
+                item.isShow = true
                 break
               case 3:
-                keyC++
-                item.key = `${keyA}-${keyB}-${keyC}`
-                if (newIndexA !== null && newIndexB !== null) {
-                  newAry[newIndexA].children[newIndexB].children.push(item)
-                }
+                indexC++
+                item.key = `${indexA}-${indexB}-${indexC}`
+                item.isShowChildren = null
+                item.isShow = true
                 break
             }
+            item.index = index
           })
-          res.data = newAry
+
+          let level1s: any = []
+          for (const item of res.data) {
+            // collect level 1
+            if (item.level === 1) {
+              item.children = []
+              level1s.push(item)
+            }
+          }
+          // collect level 2
+          for (const item of res.data) {
+            if (item.level === 2) {
+              for (const el1 of level1s) {
+                if (el1.key === item.key.split('-')[0]) {
+                  item.children = []
+                  el1.children.push(item)
+                }
+              }
+            }
+          }
+          // collect level 3
+          for (const item of res.data) {
+            if (item.level === 3) {
+              for (const el1 of level1s) {
+                for (const el2 of el1.children) {
+                  const aryStr = item.key.split('-')
+                  if (el2.key === `${aryStr[0]}-${aryStr[1]}`) {
+                    el2.children.push(item)
+                    break
+                  }
+                }
+              }
+            }
+          }
+          // console.log('level1s:', level1s)
+          res.data = level1s
           resolve(res)
         })
         .catch(() => {
