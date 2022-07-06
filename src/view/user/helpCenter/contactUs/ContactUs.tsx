@@ -7,13 +7,12 @@ import HelpCenterApi from 'api/user/HelpCenter'
 import Header from 'view/user/layout/Header'
 import Footer from 'view/user/layout/Footer'
 import { UploadImg } from 'utility/component'
-import { ValidateStr } from 'utility/validate'
 
 // TODO 等真正的照片
 import CS from 'assets/img/temp-cs.jpeg'
 
 import schema from 'utility/validate'
-import { Btn, FormGroupMsg } from 'utility/component'
+import { Btn } from 'utility/component'
 import {
   Row,
   Col,

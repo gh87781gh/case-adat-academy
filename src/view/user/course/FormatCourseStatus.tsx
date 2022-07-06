@@ -1,11 +1,4 @@
-import {
-  IconPathEmpty,
-  IconPathInProgress,
-  IconPathCheck,
-  IconPathHover,
-  IconPathLine,
-  IconPathArrow
-} from 'utility/icon'
+import { IconPathEmpty, IconPathInProgress, IconPathCheck } from 'utility/icon'
 
 interface IProps {
   type: string

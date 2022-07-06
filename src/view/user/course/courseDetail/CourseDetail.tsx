@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useRef } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { MyContext, StaticService } from 'storage'
 import { useHistory, useParams, useLocation } from 'react-router-dom'
 import CourseApi from 'api/user/CourseApi'
@@ -29,7 +29,7 @@ const CourseDetail = () => {
     sectionId?: string
   }>()
   const { scrollY } = useScrolling()
-  const breadcrumbRef = useRef<HTMLInputElement>(null)
+  // const breadcrumbRef = useRef<HTMLInputElement>(null)
 
   // scrolling style change
   const [isScrolling, setIsScrolling] = useState<boolean>(false)

@@ -166,6 +166,10 @@ const Login = () => {
           Log in
         </Btn>
       </div>
+      <div className='aa-login-container-outside-note'>
+        For the best learning experience, we suggest to use the latest version
+        of Google Chrome.
+      </div>
     </LoginTemplate>
   )
 }

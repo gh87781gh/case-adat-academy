@@ -4,6 +4,7 @@
   align-items: center;
   justify-content: center;
 }
+
 .aa-login-bg {
   height: 100%;
   background-image: url('/assets/img/industry.jpg');
@@ -26,6 +27,14 @@
   max-width: 660px;
   background-color: @color-gray01;
   padding: 48px 80px;
+  position: relative;
+}
+.aa-login-container-outside-note {
+  position: absolute;
+  left: 0;
+  top: 102%;
+  color: @color-white;
+  .typo-small();
 }
 .aa-login-prompt {
   .typo-bodyDefault();
