@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import { MyContext, StaticService } from 'storage'
 import PurchaseApi from 'api/admin/PurchaseApi'
+import { useHistory } from 'react-router-dom'
 
 import Header from 'view/user/layout/Header'
 import AdminSideBar from 'view/admin/AdminSideBar'
@@ -11,16 +12,11 @@ import ModalRecord from 'view/admin/account/ModalRecord'
 
 import { Row, Col, Button, Table, Breadcrumb } from 'antd'
 
-interface IProps {
-  prev: () => void
-  purchaseId: string
-  setPurchaseId: (id: string) => void
-}
-
-const PurchaseAccount = (props: IProps) => {
+const PurchaseAccount = () => {
   const context = useContext(MyContext)
   const api = new PurchaseApi()
   const { purchaseId } = useParams<{ purchaseId: string }>()
+  const history = useHistory()
 
   // init page data
   const [purchaseDetail, setPurchaseDetail] = useState<any>({})
@@ -118,7 +114,7 @@ const PurchaseAccount = (props: IProps) => {
         <article>
           <>
             <Breadcrumb separator='>'>
-              <Breadcrumb.Item onClick={props.prev}>
+              <Breadcrumb.Item onClick={() => history.push('/admin/purchase')}>
                 Purchase management
               </Breadcrumb.Item>
               <Breadcrumb.Item>Account</Breadcrumb.Item>

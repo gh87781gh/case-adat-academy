@@ -135,7 +135,7 @@ const Index = (props: IProps) => {
             key='account'
             size='small'
             onClick={() => {
-              history.push(`/admin/purchaseAccount/${record.id}`)
+              history.push(`/admin/purchase/account/${record.id}`)
             }}
           >
             View Account
