@@ -24,7 +24,7 @@ interface IProps {
   mode: string // CREATE, UPDATE
   isShow: boolean
   onCancel: () => void
-  getList: () => void
+  getInitData: () => void
   getPurchaseDetail?: () => void // only UPDATE
   purchaseId?: string // only UPDATE
   isModalEditShow?: boolean // only UPDATE
@@ -133,7 +133,7 @@ const ModalCreate = (props: IProps) => {
     api
       .createPurchase(data)
       .then(() => {
-        props.getList()
+        props.getInitData()
         props.onCancel()
       })
       .finally(() => context.setIsLoading(false))
@@ -144,7 +144,7 @@ const ModalCreate = (props: IProps) => {
       .updatePurchase(data)
       .then(() => {
         if (props.getPurchaseDetail) props.getPurchaseDetail()
-        props.getList()
+        props.getInitData()
         props.onCancel()
       })
       .finally(() => context.setIsLoading(false))

@@ -35,7 +35,7 @@ const Index = (props: IProps) => {
 
   const [companyOption, setCompanyOption] = useState<any>([])
   const [statusOption, setStatusOption] = useState<any>([])
-  useEffect(() => {
+  const getOptionList = () => {
     api_global
       .getOptions(['purchase_management_company', 'purchase_management_status'])
       .then((res: any) => {
@@ -43,11 +43,11 @@ const Index = (props: IProps) => {
         setStatusOption(res.data[1])
       })
       .finally(() => context.setIsLoading(false))
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }
 
   const [data, setData] = useState<IState>({
     company: '',
-    status: '',
+    status: 'Active',
     search: ''
   })
   const onSelect = (key: string, value: any) => {
@@ -88,6 +88,7 @@ const Index = (props: IProps) => {
       title: 'Quota',
       dataIndex: 'quata',
       key: 'quata',
+      width: 120,
       render: (text: string, record: any) => (
         <>
           {record.usage} used/ {text}
@@ -168,6 +169,11 @@ const Index = (props: IProps) => {
       .finally(() => context.setIsLoading(false))
   }
 
+  const getInitData = async () => {
+    await getOptionList()
+    await getList()
+  }
+
   const isInitMount = useRef(true)
   useEffect(() => {
     if (isInitMount.current) {
@@ -177,7 +183,7 @@ const Index = (props: IProps) => {
     }
   }, [data.search]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
-    getList()
+    getInitData()
   }, [data.company, data.status]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // modal
@@ -215,8 +221,10 @@ const Index = (props: IProps) => {
                     value={data.company}
                     placeholder='Please select'
                     onChange={(val) => onSelect('company', val)}
-                    allowClear={true}
                   >
+                    <Option value='' key='All'>
+                      All
+                    </Option>
                     {companyOption.map((item: string) => (
                       <Option value={item} key={item}>
                         {item}
@@ -232,8 +240,10 @@ const Index = (props: IProps) => {
                     value={data.status}
                     placeholder='Please select'
                     onChange={(val) => onSelect('status', val)}
-                    allowClear={true}
                   >
+                    <Option value='' key='All'>
+                      All
+                    </Option>
                     {statusOption.map((item: string) => (
                       <Option value={item} key={item}>
                         {item}
@@ -271,7 +281,7 @@ const Index = (props: IProps) => {
       <ModalEdit
         isShow={isModalEditShow}
         onCancel={() => setIsModalEditShow(false)}
-        getList={() => getList()}
+        getInitData={() => getInitData()}
         mode={modalEditMode}
         purchaseId={purchaseId}
       />
