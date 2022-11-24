@@ -74,6 +74,7 @@ const ModalCreate = (props: IProps) => {
     duration_end: '',
     remark: ''
   }
+  const [usedQuata, setUsedQuata] = useState<number | null>(null)
   const [data, setData] = useState<IState>({
     ...initData
   })
@@ -122,7 +123,10 @@ const ModalCreate = (props: IProps) => {
         context.setIsLoading(true)
         api
           .getPurchaseDetail(props.purchaseId)
-          .then((res: any) => setData(res.data))
+          .then((res: any) => {
+            setData(res.data)
+            setUsedQuata(res.data.usage)
+          })
           .finally(() => context.setIsLoading(false))
       }
     } else {
@@ -256,9 +260,9 @@ const ModalCreate = (props: IProps) => {
               ]}
               onChange={onPick}
               format={StaticService.format.date}
-              disabledDate={(current: any) =>
-                DisabledMoment('isStartFromToday', current)
-              }
+              // disabledDate={(current: any) =>
+              //   DisabledMoment('isStartFromToday', current)
+              // } TODO
             />
           </div>
         </Col>
@@ -287,7 +291,13 @@ const ModalCreate = (props: IProps) => {
             <label className='required'>Quota</label>
             <InputNumber
               value={data.quata}
-              min={schema.quata.min}
+              min={
+                props.mode === 'CREATE'
+                  ? schema.quata.min
+                  : props.mode === 'UPDATE'
+                  ? usedQuata
+                  : undefined
+              }
               max={schema.quata.max}
               onChange={(val: any) => onCount('quata', val)}
               precision={0}
