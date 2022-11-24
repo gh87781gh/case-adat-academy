@@ -144,15 +144,18 @@ const Index = () => {
           </h1>
           <div className='aa-layout-admin-article-toolBar'>
             <Row gutter={20}>
-              <Col span={8}>
+              <Col span={9}>
                 <div className='aa-form-group aa-form-group-horizontal'>
                   <label style={{ minWidth: '50px' }}>Role</label>
                   <Select
                     value={data.role || undefined}
                     placeholder={StaticService.placeholder.select}
                     onChange={(val: any) => onSelect('role', val)}
-                    allowClear={true}
+                    style={{ minWidth: '50px' }}
                   >
+                    <Option value='' key='All'>
+                      All
+                    </Option>
                     {roleOption.map((item: string) => (
                       <Option value={item} key={item}>
                         {item}
@@ -161,7 +164,7 @@ const Index = () => {
                   </Select>
                 </div>
               </Col>
-              <Col span={8} offset={8}>
+              <Col span={8} offset={7}>
                 <Input
                   value={data.search}
                   maxLength={schema.search.max}
