@@ -125,6 +125,7 @@ const PurchaseAccount = () => {
               <Button
                 className='aa-float-right'
                 type='primary'
+                disabled={purchaseDetail.usage >= purchaseDetail.quata}
                 onClick={() => {
                   setIsModalCreateShow(true)
                 }}
