@@ -93,6 +93,9 @@ const ModalCreate = (props: IProps) => {
     setData({ ...data, [key]: value })
   }
   const onAutoCompleteSelect = (key: string, value: any) => {
+    if (value[0]) {
+      if (schema[key].validateStr(value[0])) return false
+    }
     if (value.length > 1) {
       value.shift()
     }
@@ -287,6 +290,7 @@ const ModalCreate = (props: IProps) => {
               min={schema.quata.min}
               max={schema.quata.max}
               onChange={(val: any) => onCount('quata', val)}
+              precision={0}
             />
           </div>
         </Col>

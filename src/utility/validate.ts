@@ -61,6 +61,10 @@ export const schema: any = {
     max: 200,
     validateStr: (val: any) => ValidateStr('isNoSymbol', val)
   },
+  company: {
+    max: 200,
+    validateStr: (val: any) => ValidateStr('isNoSymbol', val)
+  },
   purchase_number: {
     max: 50,
     validateStr: (val: any) => ValidateStr('isEngInt', val)
