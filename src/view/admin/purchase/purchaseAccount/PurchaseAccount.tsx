@@ -48,7 +48,8 @@ const PurchaseAccount = () => {
     {
       title: 'User ID',
       dataIndex: 'user_id',
-      key: 'user_id'
+      key: 'user_id',
+      render: (text: any) => text || '-'
     },
     {
       title: 'Current email',
@@ -135,7 +136,7 @@ const PurchaseAccount = () => {
               <Row gutter={20}>
                 <Col span={8}>
                   <div className='aa-form-group aa-form-group-horizontal'>
-                    <label>purchase number</label>
+                    <label>Purchase number</label>
                     <div className='aa-form-group-value'>
                       {purchaseDetail.purchase_number}
                     </div>
