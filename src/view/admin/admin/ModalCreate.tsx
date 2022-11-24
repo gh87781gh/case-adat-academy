@@ -42,24 +42,21 @@ const ModalCreate = (props: IProps) => {
     if (value) {
       switch (key) {
         case 'user_id':
-          if (schema.user_id.validateStr(value)) return false
+        case 'email':
+          if (schema[key].validateStr(value)) return false
           break
         case 'password':
         case 'password2':
           if (schema.password.validateStr(value)) return false
-          break
-        case 'email':
-          if (schema.email.validateStr(value)) return false
-          setIsEmail(schema.email.validateFormat(value))
           break
       }
     }
     setData({ ...data, [key]: value })
   }
   useEffect(() => {
-    // data.email
-    //   ? setIsEmail(ValidateStr('isEmail', data.email))
-    //   : setIsEmail(undefined)
+    data.email
+      ? setIsEmail(schema.email.validateFormat(data.email))
+      : setIsEmail(undefined)
   }, [data.email]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [roleOption, setRoleOption] = useState<any>([])
