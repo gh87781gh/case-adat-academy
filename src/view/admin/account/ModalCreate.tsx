@@ -149,7 +149,7 @@ const ModalCreate = (props: IProps) => {
       <Row gutter={20}>
         <Col span={12}>
           <div className='aa-form-group'>
-            <label className='required'>Purchase number</label>
+            <label>Purchase number</label>
             {props.purchaseDetail ? (
               <div className='aa-form-group-value'>
                 {props.purchaseDetail.purchase_number}
