@@ -266,6 +266,7 @@ const ModalCreate = (props: IProps) => {
             </label>
             <Select
               mode='multiple'
+              className='aa-select-autoHeight'
               placeholder={StaticService.placeholder.select}
               value={data.course_access || undefined}
               onChange={(val: any) => onSelect('course_access', val)}
