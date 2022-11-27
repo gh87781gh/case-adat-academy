@@ -99,6 +99,10 @@ const ModalCreate = (props: IProps) => {
           .then((res: any) => setPurchaseList(res.data))
           .finally(() => context.setIsLoading(false))
       }
+    } else {
+      setData({ ...initData })
+      setPurchaseDetail(null)
+      setPurchaseList([])
     }
   }, [props.isShow]) // eslint-disable-line react-hooks/exhaustive-deps
 

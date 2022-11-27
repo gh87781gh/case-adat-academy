@@ -88,7 +88,7 @@ export const schema: any = {
   },
   search: {
     max: 50,
-    validateStr: (val: any) => ValidateStr('isSymbolStrict', val)
+    validateStr: (val: any) => ValidateStr('isEmailEngIntSymbol', val)
   },
   subject: {
     max: 50,
