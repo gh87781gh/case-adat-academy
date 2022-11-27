@@ -199,8 +199,10 @@ const Index = () => {
                     value={data.status}
                     placeholder='Please select'
                     onChange={(val) => onSelect('status', val)}
-                    allowClear={true}
                   >
+                    <Option value='' key='All'>
+                      All
+                    </Option>
                     {statusOption.map((item: string) => (
                       <Option value={item} key={item}>
                         {item}
