@@ -173,15 +173,17 @@ const Index = () => {
             <Row gutter={20}>
               <Col span={8}>
                 <div className='aa-form-group aa-form-group-horizontal'>
-                  <label style={{ minWidth: '200px' }}>
+                  <label style={{ minWidth: '210px' }}>
                     Current purchase number
                   </label>
                   <Select
                     value={data.purchase_number}
                     placeholder='Please select'
                     onChange={(val) => onSelect('purchase_number', val)}
-                    allowClear={true}
                   >
+                    <Option value='' key='All'>
+                      All
+                    </Option>
                     {purchaseNumberOption.map((item: string) => (
                       <Option value={item} key={item}>
                         {item}
