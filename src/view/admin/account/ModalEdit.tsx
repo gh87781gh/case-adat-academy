@@ -153,6 +153,8 @@ const ModalEdit = (props: IProps) => {
           <div className='aa-form-group'>
             <label className='required'>Purchase number</label>
             <Select
+              showSearch={true}
+              optionFilterProp='children'
               value={data.purchase_id}
               placeholder='Please select'
               onChange={(val) => onSelect('purchase_id', val)}
