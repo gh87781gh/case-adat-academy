@@ -40,7 +40,7 @@ const Index = (props: IProps) => {
 
   // data
   const [data, setData] = useState<IState>({
-    status: '',
+    status: 'All',
     search: ''
   })
   const onSelect = (key: string, value: any) => {
@@ -196,8 +196,10 @@ const Index = (props: IProps) => {
                     value={data.status || undefined}
                     placeholder={StaticService.placeholder.select}
                     onChange={(val) => onSelect('status', val)}
-                    allowClear={true}
                   >
+                    <Option value='All' key='All'>
+                      All
+                    </Option>
                     {statusOption.map((item: string) => (
                       <Option value={item} key={item}>
                         {item}
