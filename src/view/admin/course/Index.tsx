@@ -51,7 +51,7 @@ const Index = (props: IProps) => {
     if (value) {
       switch (key) {
         case 'search':
-          if (schema.search.validateStr(value)) return false
+          if (schema.course_name.validateStr(value)) return false
           break
       }
     }

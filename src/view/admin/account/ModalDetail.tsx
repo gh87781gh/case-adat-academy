@@ -64,6 +64,8 @@ const ModalDetail = (props: IProps) => {
     </Modal>
   )
   const handleStatusChange = () => {
+    console.log('handleStatusChange', accountDetail)
+    // TODO
     if (accountDetail.status === 'Enabled') {
       accountDetail.purchases.length > 0 && accountDetail.user_id
         ? setIsModalConfirmShow(true)
