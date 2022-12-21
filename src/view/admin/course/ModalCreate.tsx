@@ -40,7 +40,7 @@ const ModalCreate = (props: IProps) => {
         case 'name':
           if (schema.course_name.validateStr(value)) return false
           break
-        case 'name':
+        case 'description':
           if (schema[key].validateStr(value)) return false
           break
       }
