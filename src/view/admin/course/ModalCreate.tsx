@@ -160,7 +160,7 @@ const ModalCreate = (props: IProps) => {
               <UploadImg
                 theme='dark'
                 type='rectangle'
-                desc='Upload logo'
+                desc='Upload background image'
                 system='course'
                 systemId={props.courseId}
                 imgId={data.background_image_id}
