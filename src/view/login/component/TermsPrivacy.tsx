@@ -5,12 +5,12 @@ const TermsPrivacy = () => {
   const history = useHistory()
   return (
     <>
-      <div className='aa-login-content-header'>
+      <h1 className='aa-login-content-header'>
         <Button className='aa-mb-1' onClick={() => history.push('/login')}>
           Back
         </Button>
         <h1>Terms & privacy</h1>
-      </div>
+      </h1>
       <div className='aa-login-content-body'>
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati

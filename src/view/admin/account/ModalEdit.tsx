@@ -72,11 +72,11 @@ const ModalEdit = (props: IProps) => {
   // purchase detail
   const [purchaseList, setPurchaseList] = useState<any>([])
   const [purchaseDetail, setPurchaseDetail] = useState<any>(null)
-  const [formatCourseAccess, setFormatCourseAccess] = useState<string>('')
+  // const [formatCourseAccess, setFormatCourseAccess] = useState<string>('')
   useEffect(() => {
     if (purchaseDetail && courseAccessOption) {
-      const ary: any = []
-      console.log('purchaseDetail:', purchaseDetail)
+      // const ary: any = []
+      // console.log('purchaseDetail:', purchaseDetail)
       // if (!purchaseDetail.course_access) {
       //   setFormatCourseAccess('-')
       // } else {
@@ -191,7 +191,8 @@ const ModalEdit = (props: IProps) => {
           <div className='aa-form-group'>
             <label>Course access</label>
             <div className='aa-form-group-value'>
-              {formatCourseAccess || '-'}
+              {/* TODO */}
+              {/* {formatCourseAccess || '-'} */}
             </div>
           </div>
         </Col>

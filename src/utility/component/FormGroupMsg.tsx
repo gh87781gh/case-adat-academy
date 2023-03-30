@@ -12,7 +12,10 @@ const FormGroupMsg = (props: IProps) => {
   return (
     <>
       {props.isShow ? (
-        <span className={`aa-form-group-msg ${props.type}`}>
+        <span
+          data-cy='form-group-alert'
+          className={`aa-form-group-msg ${props.type}`}
+        >
           {props.isShowIcon ? icon() : null} {props.msg}
         </span>
       ) : null}

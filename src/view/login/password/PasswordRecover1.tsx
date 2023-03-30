@@ -56,7 +56,7 @@ const PasswordRecover1 = () => {
         <IconArrowPrev />
         Back
       </Btn>
-      <div className='aa-login-content-header'>Recover password</div>
+      <h1 className='aa-login-content-header'>Recover password</h1>
       <div className='aa-login-content-body'>
         <p>Don’t worry, happens to the best of us.</p>
         <div className='aa-form-group'>

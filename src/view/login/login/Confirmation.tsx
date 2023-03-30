@@ -10,7 +10,7 @@ const Successfully = () => {
 
   return (
     <LoginTemplate>
-      <div className='aa-login-content-header'>Confirmation needed.</div>
+      <h1 className='aa-login-content-header'>Confirmation needed.</h1>
       <div className='aa-login-content-body'>
         {type === 'afterUpdateEmail' ? (
           <p>

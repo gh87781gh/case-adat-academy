@@ -82,7 +82,7 @@ const SignUp1 = () => {
   return (
     <LoginTemplate>
       <LoginPrompt text={errMsg} />
-      <div className='aa-login-content-header'>
+      <h1 className='aa-login-content-header'>
         SIGN UP
         <Btn
           feature='secondary'
@@ -91,7 +91,7 @@ const SignUp1 = () => {
         >
           Log in <IconArrowNext />
         </Btn>
-      </div>
+      </h1>
       <div className='aa-login-content-body'>
         <div className='aa-form-group'>
           <label className='required'>User ID</label>

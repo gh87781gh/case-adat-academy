@@ -9,7 +9,7 @@ const PasswordRecover2 = () => {
 
   return (
     <LoginTemplate>
-      <div className='aa-login-content-header'>Recover password</div>
+      <h1 className='aa-login-content-header'>Recover password</h1>
       <div className='aa-login-content-body'>
         <p>
           If account exists, an email will be sent with further instructions

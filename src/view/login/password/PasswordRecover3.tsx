@@ -67,7 +67,7 @@ const PasswordRecover3 = () => {
 
   return (
     <LoginTemplate>
-      <div className='aa-login-content-header'>Change password</div>
+      <h1 className='aa-login-content-header'>Change password</h1>
       <div className='aa-login-content-body'>
         <p>Please enter your new password</p>
         <div className='aa-form-group'>

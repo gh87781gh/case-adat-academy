@@ -18,7 +18,7 @@ const TermsPolicy = () => {
         <IconArrowPrev />
         Back
       </Btn>
-      <div className='aa-login-content-header'>Terms & policy</div>
+      <h1 className='aa-login-content-header'>Terms & policy</h1>
       <div
         className='aa-login-content-body aa-login-content-body-termsPolicy'
         style={{ maxHeight: '500px', overflowY: 'auto' }}

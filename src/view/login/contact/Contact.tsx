@@ -101,7 +101,7 @@ const Contact = () => {
         <IconArrowPrev />
         Back
       </Btn>
-      <div className='aa-login-content-header'>Contact us</div>
+      <h1 className='aa-login-content-header'>Contact us</h1>
       <div className='aa-login-content-body'>
         <div className='aa-form-group'>
           <label className='required'>Full name</label>

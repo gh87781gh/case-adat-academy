@@ -108,7 +108,7 @@ const SignUp2 = () => {
         <IconArrowPrev />
         Back
       </Btn>
-      <div className='aa-login-content-header'>SIGN UP</div>
+      <h1 className='aa-login-content-header'>SIGN UP</h1>
       <div className='aa-login-content-body'>
         <p>
           Help us recommend learning path for you by providing your work

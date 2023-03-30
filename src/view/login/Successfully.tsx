@@ -10,7 +10,7 @@ const Successfully = () => {
 
   return (
     <LoginTemplate>
-      <div className='aa-login-content-header'>
+      <h1 className='aa-login-content-header'>
         Successfully{' '}
         {type === 'submitted'
           ? 'submitted!'
@@ -20,7 +20,7 @@ const Successfully = () => {
           ? 'logged out'
           : ''}
         !
-      </div>
+      </h1>
       <div className='aa-login-content-body'>
         {type === 'submitted' ? (
           <p>'Thank you! We will try to reach you within 2 working days.'</p>
